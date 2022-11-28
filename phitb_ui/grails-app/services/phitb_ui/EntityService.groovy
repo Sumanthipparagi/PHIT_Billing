@@ -2727,4 +2727,15 @@ class EntityService {
 
     }
 
+
+    boolean billDetailsCheckUserType(String userId){
+        def user = getUser(userId);
+        if(user!=null){
+            if(user.role.name == Constants.SUPER_USER){
+                return  true
+            }else{
+                return false
+            }
+        }
+    }
 }

@@ -398,93 +398,198 @@ class PurchaseOrderController
     def printPurchaseOrder() {
         String purchaseBillId = params.id
         JSONObject purchaseOrderDetail = new PurchaseService().getPurchaseOrderDetailsById(purchaseBillId)
-        JSONArray purchaseOrderProductDetails = new PurchaseService().getPurchaseProductDetailsByOrder(purchaseBillId)
-        JSONObject series = new EntityService().getSeriesById(purchaseOrderDetail.get("seriesId").toString())
-        JSONObject supplier = new EntityService().getEntityById(purchaseOrderDetail.get("supplierId").toString())
-        JSONObject supcity = new SystemService().getCityById(supplier.get('cityId').toString())
-        JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
-        JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
-        JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
-        termsConditions.each {
-            JSONObject formMaster =  new SystemService().getFormById(it.formId.toString())
-            if(formMaster!=null)
-            {
-                if(it.formId == formMaster.id)
+        def checkUser = new EntityService().billDetailsCheckUserType(session.getAttribute('userId').toString())
+        if(purchaseOrderDetail.entityId == session.getAttribute('entityId'))
+        {
+            JSONArray purchaseOrderProductDetails = new PurchaseService().getPurchaseProductDetailsByOrder(purchaseBillId)
+            JSONObject series = new EntityService().getSeriesById(purchaseOrderDetail.get("seriesId").toString())
+            JSONObject supplier = new EntityService().getEntityById(purchaseOrderDetail.get("supplierId").toString())
+            JSONObject supcity = new SystemService().getCityById(supplier.get('cityId').toString())
+            JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+            JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+            JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+            termsConditions.each {
+                JSONObject formMaster = new SystemService().getFormById(it.formId.toString())
+                if (formMaster != null)
                 {
-                    it.put("form", formMaster)
+                    if (it.formId == formMaster.id)
+                    {
+                        it.put("form", formMaster)
+                    }
                 }
             }
-        }
-        println(termsConditions)
-        purchaseOrderProductDetails.each {
-            JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(), it.batchNumber, session.getAttribute("entityId").toString())
-            def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
-            JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
-            for (JSONObject batch : batchArray) {
-                if (batch.batchNumber == it.batchNumber) {
-                    it.put("batch", batch)
+            println(termsConditions)
+            purchaseOrderProductDetails.each {
+                JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(), it.batchNumber, session.getAttribute("entityId").toString())
+                def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                for (JSONObject batch : batchArray)
+                {
+                    if (batch.batchNumber == it.batchNumber)
+                    {
+                        it.put("batch", batch)
+                    }
+                }
+                def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+                it.put("packingDesc", stockBook?.packingDesc)
+            }
+            def totalcgst = UtilsService.round(purchaseOrderProductDetails.cgstAmount.sum(), 2)
+            def totalsgst = UtilsService.round(purchaseOrderProductDetails.sgstAmount.sum(), 2)
+            def totaligst = UtilsService.round(purchaseOrderProductDetails.igstAmount.sum(), 2)
+            def totaldiscount = UtilsService.round(purchaseOrderProductDetails.discount.sum(), 2)
+            def totalBeforeTaxes = 0
+            HashMap<String, Double> gstGroup = new HashMap<>()
+            HashMap<String, Double> sgstGroup = new HashMap<>()
+            HashMap<String, Double> cgstGroup = new HashMap<>()
+            HashMap<String, Double> igstGroup = new HashMap<>()
+            for (Object it : purchaseOrderProductDetails)
+            {
+                double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                totalBeforeTaxes += amountBeforeTaxes
+                if (it.igstPercentage > 0)
+                {
+                    def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                    if (igstPercentage == null)
+                        igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                }
+                else
+                {
+                    def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                    if (gstPercentage == null)
+                        gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+
+                    def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                    if (sgstPercentage == null)
+                        sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                    def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                    if (cgstPercentage == null)
+                        cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
                 }
             }
-            def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
-            it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
-            it.put("packingDesc",stockBook?.packingDesc)
-        }
 
-        def totalcgst = UtilsService.round(purchaseOrderProductDetails.cgstAmount.sum(), 2)
-        def totalsgst = UtilsService.round(purchaseOrderProductDetails.sgstAmount.sum(), 2)
-        def totaligst = UtilsService.round(purchaseOrderProductDetails.igstAmount.sum(), 2)
-        def totaldiscount = UtilsService.round(purchaseOrderProductDetails.discount.sum(), 2)
-        def totalBeforeTaxes = 0
-        HashMap<String, Double> gstGroup = new HashMap<>()
-        HashMap<String, Double> sgstGroup = new HashMap<>()
-        HashMap<String, Double> cgstGroup = new HashMap<>()
-        HashMap<String, Double> igstGroup = new HashMap<>()
-        for (Object it : purchaseOrderProductDetails) {
-            double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
-            totalBeforeTaxes += amountBeforeTaxes
-            if (it.igstPercentage > 0) {
-                def igstPercentage = igstGroup.get(it.igstPercentage.toString())
-                if (igstPercentage == null)
-                    igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
-                else
-                    igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
-            } else {
-                def gstPercentage = gstGroup.get(it.gstPercentage.toString())
-                if (gstPercentage == null)
-                    gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
-                else
-                    gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+            def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+            render(view: "/purchase/purchaseOrder/purchase-order-print", model: [purchaseOrderDetail        : purchaseOrderDetail,
+                                                                                 purchaseOrderProductDetails: purchaseOrderProductDetails,
+                                                                                 series                     : series, entity: entity,
+                                                                                 supplier                   : supplier, city: city, supcity: supcity,
+                                                                                 total                      : total,
+                                                                                 totalcgst                  : totalcgst, totalsgst: totalsgst,
+                                                                                 totaligst                  : totaligst,
+                                                                                 totaldiscount              : totaldiscount,
+                                                                                 termsConditions            : termsConditions,
+                                                                                 gstGroup                   : gstGroup,
+                                                                                 sgstGroup                  : sgstGroup,
+                                                                                 cgstGroup                  : cgstGroup,
+                                                                                 igstGroup                  : igstGroup,
+                                                                                 totalBeforeTaxes           : totalBeforeTaxes
 
-                def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
-                if (sgstPercentage == null)
-                    sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
-                else
-                    sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
-                def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
-                if (cgstPercentage == null)
-                    cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
-                else
-                    cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+            ])
+        }else if(checkUser){
+            JSONArray purchaseOrderProductDetails = new PurchaseService().getPurchaseProductDetailsByOrder(purchaseBillId)
+            JSONObject series = new EntityService().getSeriesById(purchaseOrderDetail.get("seriesId").toString())
+            JSONObject supplier = new EntityService().getEntityById(purchaseOrderDetail.get("supplierId").toString())
+            JSONObject supcity = new SystemService().getCityById(supplier.get('cityId').toString())
+            JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+            JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+            JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+            termsConditions.each {
+                JSONObject formMaster = new SystemService().getFormById(it.formId.toString())
+                if (formMaster != null)
+                {
+                    if (it.formId == formMaster.id)
+                    {
+                        it.put("form", formMaster)
+                    }
+                }
             }
+            println(termsConditions)
+            purchaseOrderProductDetails.each {
+                JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(), it.batchNumber, session.getAttribute("entityId").toString())
+                def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                for (JSONObject batch : batchArray)
+                {
+                    if (batch.batchNumber == it.batchNumber)
+                    {
+                        it.put("batch", batch)
+                    }
+                }
+                def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+                it.put("packingDesc", stockBook?.packingDesc)
+            }
+            def totalcgst = UtilsService.round(purchaseOrderProductDetails.cgstAmount.sum(), 2)
+            def totalsgst = UtilsService.round(purchaseOrderProductDetails.sgstAmount.sum(), 2)
+            def totaligst = UtilsService.round(purchaseOrderProductDetails.igstAmount.sum(), 2)
+            def totaldiscount = UtilsService.round(purchaseOrderProductDetails.discount.sum(), 2)
+            def totalBeforeTaxes = 0
+            HashMap<String, Double> gstGroup = new HashMap<>()
+            HashMap<String, Double> sgstGroup = new HashMap<>()
+            HashMap<String, Double> cgstGroup = new HashMap<>()
+            HashMap<String, Double> igstGroup = new HashMap<>()
+            for (Object it : purchaseOrderProductDetails)
+            {
+                double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                totalBeforeTaxes += amountBeforeTaxes
+                if (it.igstPercentage > 0)
+                {
+                    def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                    if (igstPercentage == null)
+                        igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                }
+                else
+                {
+                    def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                    if (gstPercentage == null)
+                        gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+
+                    def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                    if (sgstPercentage == null)
+                        sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                    def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                    if (cgstPercentage == null)
+                        cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+                }
+            }
+
+            def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+            render(view: "/purchase/purchaseOrder/purchase-order-print", model: [purchaseOrderDetail        : purchaseOrderDetail,
+                                                                                 purchaseOrderProductDetails: purchaseOrderProductDetails,
+                                                                                 series                     : series, entity: entity,
+                                                                                 supplier                   : supplier, city: city, supcity: supcity,
+                                                                                 total                      : total,
+                                                                                 totalcgst                  : totalcgst, totalsgst: totalsgst,
+                                                                                 totaligst                  : totaligst,
+                                                                                 totaldiscount              : totaldiscount,
+                                                                                 termsConditions            : termsConditions,
+                                                                                 gstGroup                   : gstGroup,
+                                                                                 sgstGroup                  : sgstGroup,
+                                                                                 cgstGroup                  : cgstGroup,
+                                                                                 igstGroup                  : igstGroup,
+                                                                                 totalBeforeTaxes           : totalBeforeTaxes
+
+            ])
+        }else{
+
+            render("No invoice found")
         }
-
-        def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
-        render(view: "/purchase/purchaseOrder/purchase-order-print", model: [purchaseOrderDetail    : purchaseOrderDetail,
-                                                                             purchaseOrderProductDetails: purchaseOrderProductDetails,
-                                                                         series                : series, entity: entity,
-                                                                         supplier              : supplier, city: city, supcity: supcity,
-                                                                         total                 : total,
-                                                                         totalcgst             : totalcgst, totalsgst: totalsgst,
-                                                                         totaligst             : totaligst,
-                                                                         totaldiscount         : totaldiscount,
-                                                                         termsConditions       : termsConditions,
-                                                                         gstGroup              : gstGroup,
-                                                                         sgstGroup             : sgstGroup,
-                                                                         cgstGroup             : cgstGroup,
-                                                                         igstGroup             : igstGroup,
-                                                                         totalBeforeTaxes      : totalBeforeTaxes
-
-        ])
     }
 
 

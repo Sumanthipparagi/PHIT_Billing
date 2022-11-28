@@ -97,6 +97,14 @@
         -moz-appearance: textfield;
     }
 
+    .addColor{
+        background-color: darkseagreen;
+    }
+
+    .subColor{
+        background-color: red;
+    }
+
     </style>
 </head>
 

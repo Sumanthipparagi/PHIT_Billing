@@ -799,6 +799,7 @@
                                             calculateTotalAmt();
                                         }
 %{--                                        </g:if>--}%
+                                        hot.render();
 
                                     },
                                     error: function (jqXHR, textStatus, errorThrown) {
@@ -824,8 +825,9 @@
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6) {
-                    if (e.keyCode === 13 || e.keyCode === 9) {
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 || selection > 6
+                    && selection <= 15) {
+                    if (e.keyCode === 13 || e.keyCode === 9 || e.keyCode === 37 || e.keyCode === 39 || e.type === "click") {
                         var discount = 0;
                         if (selection === 6) {
                             var mrp = hot.getDataAtCell(row, 7);
