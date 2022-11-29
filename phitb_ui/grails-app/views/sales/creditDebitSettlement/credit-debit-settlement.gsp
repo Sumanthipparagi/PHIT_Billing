@@ -384,7 +384,7 @@
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="' + "invBal" + value.id + '" >' + value.balance.toFixed(2) + '</td>\n' +
-                                '                                        <td><input type="checkbox"  value="true"></td>\n' +
+                                '                                        <td><input type="checkbox" id="' + "invdebitCheck" + value.id + '"  value="true"></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
 
@@ -403,7 +403,7 @@
                                 '                                        <td id="' + "crntAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="' + "crntBal" + value.id + '" >' + "-" + value.balance.toFixed(2) +
                                 '</td>\n' +
-                                '                                        <td><input type="checkbox"  value="true"></td>\n' +
+                                '                                        <td><input type="checkbox" id="' + "creditCheck" + value.id + '"  value="true"></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
                             crntData.push(value.id)
@@ -588,6 +588,18 @@
             });
         });
     });
+
+
+
+
+    $('#invdebitCheck'+id).change(function(){
+        if($(this).is(":checked")) {
+            $('div.menuitem').addClass("add");
+        } else {
+            $('div.menuitem').removeClass("sub");
+        }
+    });
+
 
 </script>
 %{--<g:include view="controls/footer-content.gsp"/>--}%
