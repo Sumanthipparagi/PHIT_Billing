@@ -628,6 +628,7 @@ public class Links
     public static String GET_TEMP_STOCK_PRODUCT_BATCH = APP_CONTEXT_PATH + "inventory/tempstockbookbyproductandbatch";
     public static String TEMP_STOCK_BOOK_SAVE = APP_CONTEXT_PATH + "inventory/tempstockbook";
     public static String TEMP_STOCK_BOOK_BY_USER = APP_CONTEXT_PATH + "inventory/tempstockbook/user";
+    public static String UPDATE_STOCK_BATCH_DETAILS = APP_CONTEXT_PATH + "inventory/stockbook/update-batch-details";
 
 
 

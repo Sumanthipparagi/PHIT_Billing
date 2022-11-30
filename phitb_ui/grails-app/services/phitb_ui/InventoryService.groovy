@@ -648,12 +648,10 @@ class InventoryService {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
-
             Response apiResponse = target
                     .path(new Links().STOCK_BOOK_BY_USER + "/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-
             return apiResponse
         }
         catch (Exception ex) {
@@ -690,4 +688,21 @@ class InventoryService {
         }
         return saleFreeQty
     }
+
+    def updateBatchDetailsToStock(JSONObject jsonObject){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().UPDATE_STOCK_BATCH_DETAILS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :InventoryService , action :  updateBatchDetailsToStock  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  updateBatchDetailsToStock  , Ex:' + ex)
+        }
+    }
+
 }

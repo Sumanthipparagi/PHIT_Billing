@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 class StockBookService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy")
-//    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy")
+    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy")
 
     def getAll(String limit, String offset, String query) {
 
@@ -402,5 +402,45 @@ class StockBookService {
         responseObject.put("savedStocks",stockArray)
         responseObject.put("unsavedStocks",unusedArray)
         return  responseObject
+    }
+
+    def updateBatchDetails(JSONObject jsonObject){
+        try{
+            long productId = Long.parseLong(jsonObject.get('product').toString())
+            String batchNumber = jsonObject.get('batchNumber').toString()
+            long entityId = Long.parseLong(jsonObject.get('entityId').toString())
+            StockBook stockBook = StockBook.findByProductIdAndBatchNumberAndEntityId(productId,batchNumber,entityId)
+            if(stockBook){
+                stockBook.isUpdatable = true
+                stockBook.expDate = sdf1.parse(jsonObject.get("expiryDate").toString())
+                stockBook.manufacturingDate = sdf1.parse(jsonObject.get("manfDate").toString())
+                stockBook.purchaseRate = Double.parseDouble(jsonObject.get('purchaseRate').toString())
+                stockBook.saleRate = Double.parseDouble(jsonObject.get('saleRate').toString())
+                stockBook.mrp = Double.parseDouble(jsonObject.get('mrp').toString())
+                StockBook stockBook1 = stockBook.save(flush:true)
+                if (!stockBook1.hasErrors()) {
+                    StockActivity stockActivity = new StockActivity()
+                    stockActivity.productId = productId
+                    stockActivity.batch = batchNumber
+                    stockActivity.remainingQty = stockBook.remainingQty
+                    stockActivity.remainingSchemeQty = stockBook.remainingFreeQty
+                    stockActivity.prevRemQty = 0
+                    stockActivity.prevSchemeQty = 0
+                    stockActivity.saleRate = stockBook.saleRate
+                    stockActivity.prevSaleRate = 0
+                    stockActivity.status = Long.parseLong(jsonObject.get("status").toString())
+                    stockActivity.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+                    stockActivity.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+                    stockActivity.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+                    stockActivity.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+                    stockActivity.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+                    stockActivity.save(flush: true)
+                    return stockBook
+                } else
+                    throw new BadRequestException()
+            }
+        }catch(Exception ex){
+            println(ex)
+        }
     }
 }

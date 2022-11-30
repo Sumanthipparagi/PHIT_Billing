@@ -21,6 +21,7 @@
                                         <option value="${p.id}">${p.productName}</option>
                                     </g:each>
                                 </select>
+                                <input type="hidden" class="productId" name="productId"/>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">

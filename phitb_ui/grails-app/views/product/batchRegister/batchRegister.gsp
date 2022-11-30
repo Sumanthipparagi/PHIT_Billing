@@ -175,6 +175,7 @@
 
     var fridgetable;
     var id = null;
+    var productId = null;
     $(function () {
         fridgeTable();
     });
@@ -290,7 +291,6 @@
         //grab all form data
         var formData = new FormData(this);
         console.log(formData);
-
         var url = '';
         var type = '';
         if (id) {
@@ -302,6 +302,7 @@
         }
         var beforeSendSwal;
         console.log(type);
+        console.log(formData)
         $.ajax({
             url: url,
             type: type,
@@ -336,12 +337,16 @@
         $(".batchTitle").text("Add Batch Register");
         $(".batchForm")[0].reset();
         id = null;
+        $('.product').prop('disabled', false);
         $('.product').select2();
+
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".product").val($(this).attr('data-product')).change();
+        $('.product').prop('disabled', true);
+        $(".productId").val($(this).attr('data-product'));
+        $(".productId").val($(this).attr('data-product'));
         $(".batchNumber").val($(this).attr('data-batchNumber'));
         $(".manfDate").val($(this).attr('data-manfDate'));
         $(".expiryDate").val($(this).attr('data-expiryDate'));

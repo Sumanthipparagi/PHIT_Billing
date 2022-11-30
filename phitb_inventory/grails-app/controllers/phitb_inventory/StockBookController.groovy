@@ -632,4 +632,27 @@ class StockBookController
     }
 
 
+    def updateBatchDetails()
+    {
+        try
+        {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            respond stockBookService.updateBatchDetails(jsonObject)
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

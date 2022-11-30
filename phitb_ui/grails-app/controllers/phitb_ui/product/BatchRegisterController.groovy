@@ -5,6 +5,7 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.EntityService
+import phitb_ui.InventoryService
 import phitb_ui.ProductService
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.SeriesController
@@ -114,14 +115,18 @@ class BatchRegisterController
     {
         try
         {
-            println(params)
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("product",params.productId)
+            def stockData = new InventoryService().getStocksOfProductAndBatch(params.productId.toString(), params.batchNumber.toString(), params.entityId.toString())
+            if(stockData!=null){
+                def stockResponse = new InventoryService().updateBatchDetailsToStock(jsonObject)
+                println(stockResponse)
+            }
             def apiResponse = new ProductService().putBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
-                //JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                //respond obj, formats: ['json'], status: 200
-                redirect(uri: "/batch-register")
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
             }
             else
             {
