@@ -1349,6 +1349,7 @@
                     }
                     var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * saleData[i].discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+
                     hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
                     if (gst !== 0) {
                         hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
