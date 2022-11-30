@@ -22,6 +22,7 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
     String originalId
     long redundantBatch
     Boolean replacement
+    double discount
     long entityTypeId
     long entityId
     String uuid

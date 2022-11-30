@@ -135,6 +135,7 @@ class TempStockBookService {
         long userOrderFreeQty = Long.parseLong(jsonObject.get("userOrderFreeQty").toString())
         long productId = Long.parseLong(jsonObject.get("productId").toString())
         String batchNumber = jsonObject.get("batchNumber")
+        double discount = Double.parseDouble(jsonObject.get('discount').toString())
 
         //check if requested stock available in main stockbook
         StockBook mainStockBook = StockBook.findByProductIdAndBatchNumber(productId, batchNumber)
@@ -182,6 +183,7 @@ class TempStockBookService {
                 tempStockBook.originalSqty = Long.parseLong(jsonObject.get("originalSqty").toString())
                 tempStockBook.originalFqty = Long.parseLong(jsonObject.get("originalFqty").toString())
                 tempStockBook.replacement = jsonObject.get('replacement')
+                tempStockBook.discount = discount
                 tempStockBook.uuid = jsonObject.get("uuid")
                 tempStockBook.save(flush: true)
                 if (!tempStockBook.hasErrors()) {

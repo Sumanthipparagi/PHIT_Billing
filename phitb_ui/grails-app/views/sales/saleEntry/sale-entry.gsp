@@ -83,7 +83,9 @@
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option data-state="${cs.stateId}" value="${cs.id}" data-address="${cs.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + " , "+cs.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+" ,"+ cs?.city?.stateName+", "+cs?.city?.districtName+"-"+cs?.city?.pincode}" data-gstin="${cs.gstn}"
+                                            <option data-state="${cs.stateId}" value="${cs.id}"
+                                                    data-address="${cs.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + " , " + cs.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + cs?.city?.stateName + ", " + cs?.city?.districtName + "-" + cs?.city?.pincode}"
+                                                    data-gstin="${cs.gstn}"
                                                     <g:if
                                                             test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
                                         </g:if>
@@ -95,7 +97,7 @@
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date" <g:if
-                                        test="${entityConfigs?.DATE_EDITABLE?.saleEntry!=true}">readonly</g:if>/>
+                                        test="${entityConfigs?.DATE_EDITABLE?.saleEntry != true}">readonly</g:if>/>
                             </div>
 
                             <div class="col-md-2">
@@ -141,7 +143,7 @@
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${users}" var="u">
                                         <option value="${u.id}"
-                                                <g:if test="${saleBillDetail?.rep == u.id.toString()}">selected</g:if>>${u.userName} ${"- "+u?.name}</option>
+                                                <g:if test="${saleBillDetail?.rep == u.id.toString()}">selected</g:if>>${u.userName} ${"- " + u?.name}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -157,7 +159,6 @@
                                 <label for="refDate">Ref. Date:</label>
                                 <input type="date" class="form-control date" name="refDate" id="refDate"/>
                             </div>
-
 
 
                             <div class="col-md-2 mt-2">
@@ -310,9 +311,9 @@
 
                         <div class="row mt-2">
                             <div class="col-md-12 col-lg-12 col-sm-12">
-                              <div id="address">
+                                <div id="address">
 
-                              </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -659,10 +660,10 @@
 
                             batchSelection(newValue, row);
                         }
-                        if(!hot.isEmptyRow(0)){
+                        if (!hot.isEmptyRow(0)) {
                             customerLock(true)
 
-                        }else{
+                        } else {
                             customerLock(false)
                         }
                     });
@@ -736,7 +737,7 @@
                         }*/
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty > 0 || hot.getDataAtCell(row,15) === true) {
+                        if (sqty && sqty > 0 || hot.getDataAtCell(row, 15) === true) {
                             var tmpStockId = hot.getDataAtCell(row, 16);
                             if (tmpStockId == null) {
                                 var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
@@ -790,7 +791,7 @@
                                         for (var i = 0; i < 16; i++) {
                                             hot.setCellMeta(row, i, 'readOnly', true);
                                         }
-%{--                                    <g:if test="${settings?.ALLOW_SAME_BATCH!="YES" && settings!=null}">--}%
+                                        %{--                                    <g:if test="${settings?.ALLOW_SAME_BATCH!="YES" && settings!=null}">--}%
                                         if (id !== data.id) {
                                             mainTableRow = row + 1;
                                             hot.alter('insert_row');
@@ -798,7 +799,7 @@
                                             hot.render();
                                             calculateTotalAmt();
                                         }
-%{--                                        </g:if>--}%
+                                        %{--                                        </g:if>--}%
                                         hot.render();
 
                                     },
@@ -820,7 +821,7 @@
                                 hot.render();
                             }
                         } else {
-                                alert("Invalid Quantity, please enter quantity greater than 0");
+                            alert("Invalid Quantity, please enter quantity greater than 0");
 
                         }
 
@@ -881,7 +882,7 @@
                         var remFQty = 0;
                         var freeQtyEntry = false;
                         <g:if test="${settings?.ZERO_INVOICE_VALUE== Constants.YES && settings!=null}">
-                        if(hot.getDataAtCell(row, 6) === 0){
+                        if (hot.getDataAtCell(row, 6) === 0) {
                             alert("Zero invoice not allowed");
                             hot.alter("remove_row", row);
                             return;
@@ -1265,18 +1266,15 @@
                     hot.setDataAtCell(i, 4, sQty);
                     hot.setDataAtCell(i, 5, fQty);
                     hot.setDataAtCell(i, 7, saleData[i]["mrp"]);
-                    hot.setDataAtCell(i, 8, 0);
+                    hot.setDataAtCell(i, 8, saleData[i]["discount"]);
                     hot.setDataAtCell(i, 9, saleData[i]["packingDesc"]);
                     gst = saleData[i]["gst"];
                     sgst = saleData[i]["sgst"];
                     cgst = saleData[i]["cgst"];
                     igst = saleData[i]["igst"];
-                    // var discount = hot.getDataAtCell(i, 8);
-                    var discount = 0; //TODO: discount to be set
-                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * saleData[i].discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                     hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
-
                     if (gst !== 0) {
                         hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
                         hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
@@ -1291,7 +1289,7 @@
                     else
                         hot.setDataAtCell(i, 14, 0);
 
-                    hot.setDataAtCell(i,15,saleData[i].replacement);
+                    hot.setDataAtCell(i, 15, saleData[i].replacement);
                     hot.setDataAtCell(i, 16, saleData[i].id);
                     hot.setDataAtCell(i, 17, gst);
                     hot.setDataAtCell(i, 18, sgst);
@@ -1337,7 +1335,7 @@
                     hot.setDataAtCell(i, 4, sQty);
                     hot.setDataAtCell(i, 5, fQty);
                     hot.setDataAtCell(i, 7, saleData[i].mrp);
-                    hot.setDataAtCell(i, 8, 0);
+                    hot.setDataAtCell(i, 8, saleData[i].discount);
                     hot.setDataAtCell(i, 9, saleData[i].productId.unitPacking);
                     gst = saleData[i].gst;
                     if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
@@ -1349,8 +1347,7 @@
                         sgst = 0;
                         cgst = 0;
                     }
-                    var discount = 0; //TODO: discount to be set
-                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * saleData[i].discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                     hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
                     if (gst !== 0) {
@@ -1418,9 +1415,9 @@
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
-                        if(!hot.isEmptyRow(0)){
+                        if (!hot.isEmptyRow(0)) {
                             customerLock(true)
-                        }else{
+                        } else {
                             customerLock(false)
                         }
                         Swal.fire({
@@ -1435,9 +1432,9 @@
                 });
             } else
                 hot.alter("remove_row", row);
-            if(!hot.isEmptyRow(0)){
+            if (!hot.isEmptyRow(0)) {
                 customerLock(true)
-            }else{
+            } else {
                 customerLock(false)
             }
         } else
@@ -1568,7 +1565,7 @@
                         uuid: self.crypto.randomUUID()
                     },
                     beforeSend: function () {
-                          Swal.fire({
+                        Swal.fire({
                             // title: "Loading",
                             html:
                                 '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
@@ -1645,8 +1642,7 @@
                         });
                     }
                 });
-            }
-            else if (result.isDenied) {
+            } else if (result.isDenied) {
                 $("#saveBtn").prop("disabled", false);
                 $("#saveDraftBtn").prop("disabled", false);
                 Swal.fire('Changes are not saved', '', 'info')
@@ -1657,8 +1653,8 @@
 
     function customerSelectChanged() {
         var customerId = $("#customerSelect").val();
-         var address = $('#customerSelect option:selected').attr('data-address');
-         var gstin = $('#customerSelect option:selected').attr('data-gstin');
+        var address = $('#customerSelect option:selected').attr('data-address');
+        var gstin = $('#customerSelect option:selected').attr('data-gstin');
         var noOfCrDays = 0;
         if (customers.length > 0) {
             for (var i = 0; i < customers.length; i++) {
@@ -1666,19 +1662,19 @@
                     noOfCrDays = customers[i].noOfCrDays;
                 }
             }
-           if(!hot.isEmptyRow(0)){
+            if (!hot.isEmptyRow(0)) {
                 // $('#customerSelect').prop('disabled', true);
-               customerLock(true)
-            }else{
-               // $('#customerSelect').prop('disabled',false);
-               customerLock(false)
+                customerLock(true)
+            } else {
+                // $('#customerSelect').prop('disabled',false);
+                customerLock(false)
             }
-           if(customerId!=null && customerId!=''){
-               $('#address').html('Customer Address: ' +
-                   '  <span style="font-size: 12px">'+address+'</span><br>GSTIN: '+gstin+'')
-           }else{
-               $('#address').html('')
-           }
+            if (customerId != null && customerId != '') {
+                $('#address').html('Customer Address: ' +
+                    '  <span style="font-size: 12px">' + address + '</span><br>GSTIN: ' + gstin + '')
+            } else {
+                $('#address').html('')
+            }
         } else {
             <g:if test="${customer != null}">
             noOfCrDays = ${customer.noOfCrDays};
@@ -1762,7 +1758,6 @@
     }
 
 
-
     function checkForDuplicateEntry(batchNumber) {
         var productId = hot.getDataAtCell(mainTableRow, 1);
         var saleTableData = hot.getData();
@@ -1783,18 +1778,18 @@
 
     function printInvoice() {
         if (readOnly) {
-%{--            <g:if test="${session.getAttribute('domainType') == Constants.FURNITURE}">--}%
-%{--            window.open(--}%
-%{--                '/sale-entry/print-invoice-furniture?id=' + saleBillId,--}%
-%{--                '_blank'--}%
-%{--            );--}%
-%{--            </g:if>--}%
-%{--            <g:else>--}%
+            %{--            <g:if test="${session.getAttribute('domainType') == Constants.FURNITURE}">--}%
+            %{--            window.open(--}%
+            %{--                '/sale-entry/print-invoice-furniture?id=' + saleBillId,--}%
+            %{--                '_blank'--}%
+            %{--            );--}%
+            %{--            </g:if>--}%
+            %{--            <g:else>--}%
             window.open(
                 'sale-entry/print-invoice?id=' + saleBillId,
                 '_blank'
             );
-%{--            </g:else>--}%
+            %{--            </g:else>--}%
 
             resetData();
         }
@@ -1968,17 +1963,17 @@
     }
 
 
-    function customerLock(lock){
+    function customerLock(lock) {
         var selectedId = $('#customerSelect').val();
-        if(selectedId!=null && selectedId!==''){
-           $('#customerSelect').prop('disabled',lock);
-           if(lock){
-               $('#freezeContent').html('<small style="color: red;">Customer locked, clear products to unlock.</small>')
-           }else{
-               $('#freezeContent').html('')
-           }
-        }else{
-            $('#customerSelect').prop('disabled',false);
+        if (selectedId != null && selectedId !== '') {
+            $('#customerSelect').prop('disabled', lock);
+            if (lock) {
+                $('#freezeContent').html('<small style="color: red;">Customer locked, clear products to unlock.</small>')
+            } else {
+                $('#freezeContent').html('')
+            }
+        } else {
+            $('#customerSelect').prop('disabled', false);
             $('#freezeContent').html('')
 
         }

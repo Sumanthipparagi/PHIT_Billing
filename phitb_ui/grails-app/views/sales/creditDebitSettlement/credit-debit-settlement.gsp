@@ -406,7 +406,7 @@
                                 '                                        <td><input type="checkbox" id="' + "creditCheck" + value.id + '"  value="true"></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
-                            crntData.push(value.id)
+                            crntData.push(value.id);
                             crntIdArray.push(value.id);
                             console.log(crntIdArray)
 

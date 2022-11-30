@@ -529,6 +529,7 @@ class StockBookController
             JSONArray jsonArray = new JSONArray(params.rowData)
             String productId = jsonArray[1].toString()
             String batchNumber = jsonArray[2].toString()
+            double discount = Double.parseDouble(jsonArray[8].toString())
             long saleQty = jsonArray[4]
             long saleFreeQty = jsonArray[5]
             def draftEdit = Boolean.parseBoolean(params.draftEdit)
@@ -717,6 +718,7 @@ class StockBookController
             jsonObject.put("remainingFreeQty", remainingFreeQty)
             jsonObject.put("remainingReplQty", 0)
             jsonObject.put("saleRate", jsonArray[6])
+            jsonObject.put("discount", discount)
             jsonObject.put("purchaseRate", stockBook.purchaseRate)
             jsonObject.put("mrp", jsonArray[7])
             jsonObject.put("discount", jsonArray[8])
