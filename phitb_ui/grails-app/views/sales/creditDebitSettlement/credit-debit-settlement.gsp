@@ -69,6 +69,13 @@
         z-index: 1;
     }
 
+
+    .table tfoot {
+        position: sticky;
+        inset-block-end: 0; /* "bottom" */
+    }
+
+
     /* Just common table stuff. Really. */
     table {
         border-collapse: collapse;
@@ -79,10 +86,11 @@
         padding: 8px 16px;
     }
 
-    th {
+    th, tfoot {
         background: #313740;
         color: white;
     }
+
 
 
     /* Chrome, Safari, Edge, Opera  - hide input arrow keys*/
@@ -180,13 +188,13 @@
                             <div class="container mt-5">
 
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6" style="padding: 2px;">
                                         <div class="tab tableFixHead" style="width:100%;overflow:auto;
                                         max-height:300px;">
                                             <table class="table table-bordered" id="table1">
                                                 <thead>
                                                 <tr>
-                                                    <th>D.Type</th>
+                                                    <th>Type</th>
                                                     <th>Doc.Id</th>
                                                     <th>Doc.Date</th>
                                                     <th>Amt.</th>
@@ -201,16 +209,26 @@
                                                 </div>
                                                 </td></tr>
                                                 </tbody>
+                                                <tfoot class="tab">
+                                                <tr>
+                                                    <td>TOTAL</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td id="invTotalAmt">0.00</td>
+                                                    <td id="invPendingTotalAmt">0.00</td>
+                                                    <td></td>
+                                                </tr>
+                                                </tfoot>
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6"  style="padding: 2px;">
                                         <div class="tab tableFixHead" style="width:100%;overflow:auto;
                                         max-height:300px;">
                                             <table class="table table-bordered" id="table2">
                                                 <thead>
                                                 <tr>
-                                                    <th>D.Type</th>
+                                                    <th>Type</th>
                                                     <th>Doc.Id</th>
                                                     <th>Doc.Date</th>
                                                     <th>Amt.</th>
@@ -226,8 +244,30 @@
                                                 </div>
                                                 </td></tr>
                                                 </tbody>
+                                                <tfoot class="tab">
+                                                <tr>
+                                                    <td>TOTAL</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td id="crntTotalAmt">0.00</td>
+                                                    <td id="crntPendingTotalAmt">0.00</td>
+                                                    <td></td>
+                                                </tr>
+                                                </tfoot>
                                             </table>
                                         </div>
+                                    </div>
+
+                                    <div class="col-lg-12" style="background-color: lightgrey;padding: 10px;">
+                                        <p style="font-weight: bold;background: green;
+                                        color: #fff;padding: 10px;">CALCULATING VALUE:&nbsp;<span
+                                                id="totalDebitBalance">0.00</span>
+                                            <span id="totalCreditBalance" style="float: right;">0.00</span></p>
+
+                                    <p style="font-weight: bold;background-color: #313740;
+                                    color: #fff;
+                                    padding: 10px;">CR.DB SETTLEMENT VALUE :&nbsp;<span
+                                            id="crdbAmt">0.00</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -237,6 +277,7 @@
                             <input type="hidden" name="syncStatus" value="1">
                             <input type="hidden" name="createdUser" value="1">
                             <input type="hidden" name="modifiedUser" value="1">
+
 
                             <div class="col-lg-12">
                                 <div class="" style="float: right;">
@@ -357,22 +398,30 @@
                 url: '/recipts/getallbilldetails?id=' + id,
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
+                    console.log(data);
                     var invHTML = '';
                     var crntHTML = '';
                     invHTML += '';
                     crntHTML += '';
-                    var invoice = "INVS";
+                    var invoice = "INV";
                     var creditNote = "CRNT";
                     var gtn = "GTN";
-                    var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var invAdjAmt = data[0].map(data => data.adjAmount).reduce((acc, adjAmt) => acc + adjAmt, 0);
-                    var crnt = data[1].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var crntAdjAmt = data[1].map(data => data.adjAmount).reduce((acc, adjAmount) => acc + adjAmount, 0);
-                    var total_bal_s = invAdjAmt - crntAdjAmt;
-                    $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
-                    $('.tba').val(total_bal_s.toFixed(2));
-                    $('.amountPaid').val(total_bal_s.toFixed(2));
+                    var invPendingTotalAmt = data[0].filter(data => data.billStatus!=="CANCELLED").map(data =>
+                        data.balance).reduce((acc, amount) => acc + amount, 0);
+                    var invTotalAmt = data[0].filter(data => data.billStatus!=="CANCELLED").map(data =>
+                        data.totalAmount).reduce((acc, amount) => acc + amount, 0);
+
+                    var crntPendingTotalAmt = data[1].filter(data => data.returnStatus!=="CANCELLED").map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
+                    var  crntTotalAmt= data[1].filter(data => data.returnStatus!=="CANCELLED").map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0);
+                    $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR'
+                    }).format(0.00));
+                    $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR'
+                    }).format(0.00));
+                    $('#crdbAmt').text(0.00);
+                    $('#invTotalAmt').text(invTotalAmt.toFixed(2));
+                    $('#invPendingTotalAmt').text(invPendingTotalAmt.toFixed(2));
+                    $('#crntTotalAmt').text(crntPendingTotalAmt.toFixed(2));
+                    $('#crntPendingTotalAmt').text(crntTotalAmt.toFixed(2));
                     var invoiceData = [];
                     var crntData = [];
                     $.each(data[0], function (key, value) {
@@ -384,7 +433,10 @@
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="' + "invBal" + value.id + '" >' + value.balance.toFixed(2) + '</td>\n' +
-                                '                                        <td><input type="checkbox" id="' + "invdebitCheck" + value.id + '"  value="true"></td>\n' +
+                                '                                        <td><input type="checkbox" id="' +
+                                "invdebitCheck" + value.id + '"  value="true" class="invdebitCheck" data-invid="'+
+                                value.id +'"  data-balance="'+ value.balance + '"  data-totalAmt="'+
+                                value.totalAmount + '"></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
 
@@ -401,9 +453,11 @@
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "crntAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "crntBal" + value.id + '" >' + "-" + value.balance.toFixed(2) +
+                                '                                        <td id="' + "crntBal" + value.id + '" >'  + value.balance.toFixed(2) +
                                 '</td>\n' +
-                                '                                        <td><input type="checkbox" id="' + "creditCheck" + value.id + '"  value="true"></td>\n' +
+                                '                                        <td><input type="checkbox" id="' +
+                                "creditCheck" + value.id +
+                                '"  data-balance="'+ value.balance + '" data-crntid="'+ value.id + '"  value="true" class="creditCheck" ></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
                             crntData.push(value.id);
@@ -592,14 +646,78 @@
 
 
 
-    $('#invdebitCheck'+id).change(function(){
-        if($(this).is(":checked")) {
-            $('div.menuitem').addClass("add");
-        } else {
-            $('div.menuitem').removeClass("sub");
+    // $('#invdebitCheck'+id).change(function(){
+    //     if($(this).is(":checked")) {
+    //         $('div.menuitem').addClass("add");
+    //     } else {
+    //         $('div.menuitem').removeClass("sub");
+    //     }
+    // });
+
+    var debitBalanceArray =[];
+    $(document).on('change', '.invdebitCheck', function (e) {
+        var id = $(this).attr('data-invid');
+        var balance = parseFloat($(this).attr('data-balance'));
+        var totalBalance;
+        if($('#invdebitCheck'+id).prop('checked')){
+            $('#IN'+id).css("background-color", "#d7e1f3");
+            debitBalanceArray.push(balance);
+            totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
+            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            crdbVal();
+        }else{
+            $('#IN'+id).css("background-color", "transparent");
+            removeItem(debitBalanceArray, balance);
+            totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
+            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            crdbVal();
         }
     });
 
+
+    var creditbalanceArray =[];
+    $(document).on('change', '.creditCheck', function (e) {
+        var id = $(this).attr('data-crntid');
+        var balance = parseFloat($(this).attr('data-balance'));
+        var totalBalance;
+        if($('#creditCheck'+id).prop('checked')){
+            $('#CN'+id).css("background-color", "#ffc0c0");
+            creditbalanceArray.push(balance);
+            totalBalance =
+                new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(creditbalanceArray.reduce((a, b) => a + b, 0).toFixed(2));
+            $('#totalCreditBalance').text(totalBalance);
+            crdbVal();
+        }else{
+            $('#CN'+id).css("background-color", "transparent");
+            removeItem(creditbalanceArray, balance);
+            totalBalance =
+                new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(creditbalanceArray.reduce((a, b) => a + b, 0).toFixed(2));
+            $('#totalCreditBalance').text(totalBalance);
+            crdbVal();
+        }
+    });
+
+
+
+
+    function crdbVal() {
+        if(creditbalanceArray.length!==0){
+            var crdb = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2) - creditbalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
+            $('#crdbAmt').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(crdb));
+        }else{
+            $('#crdbAmt').text(0.00);
+        }
+    }
+
+
+    function removeItem(array, item){
+        for(var i in array){
+            if(array[i]===item){
+                array.splice(i,1);
+                break;
+            }
+        }
+    }
 
 </script>
 %{--<g:include view="controls/footer-content.gsp"/>--}%
@@ -608,3 +726,4 @@
 </script>
 </body>
 </html>
+
