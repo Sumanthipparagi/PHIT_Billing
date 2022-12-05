@@ -1689,9 +1689,8 @@
            Swal.fire({
                title: 'Are you sure?',
                text: "Do you want to enter a scheme for this product?",
-               showCancelButton: true,
-               confirmButtonColor: '#3085d6',
-               cancelButtonColor: '#d33',
+               showDenyButton: true,
+               showCancelButton: false,
                confirmButtonText: 'Yes'
            }).then((result) => {
                if (result.isConfirmed) {

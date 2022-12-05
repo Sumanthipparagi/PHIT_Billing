@@ -305,8 +305,6 @@
                         %{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
                         %{--                </g:if>--}%
                         <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
-
-
                     </ul>
                 </td>
                 <td colspan="6" style="vertical-align:top;">

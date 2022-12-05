@@ -531,6 +531,7 @@ class PurchaseEntryController {
             return
         }*/
 
+
         JSONObject jsonObject = new PurchaseService().cancelPurchaseInvoice(id, entityId, financialYear, userId)
         if (jsonObject)
         {

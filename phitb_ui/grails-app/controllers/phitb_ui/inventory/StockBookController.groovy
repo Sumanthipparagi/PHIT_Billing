@@ -606,7 +606,17 @@ class StockBookController
                 }
                 else
                 {
-                    stockBook = new InventoryService().getStockBookById(stockBookId)
+                 /*   JSONArray tempStockBookData = new InventoryService().getTempStocksOfProductAndBatchAndEntityId(productId,
+                            batchNumber,session.getAttribute('entityId').toString())
+                    if(tempStockBookData.size()!=0 || tempStockBookData!=null)
+                    {
+                        JSONObject jsonObject = new JSONObject()
+                        jsonObject.put("temp_stock",false)
+                        respond jsonObject,formats: ['json'],status: 200;
+                        return;
+                    }else{*/
+                        stockBook = new InventoryService().getStockBookById(stockBookId)
+//                    }
                 }
             }
             else
@@ -744,7 +754,6 @@ class StockBookController
                 jsonObject.put("replacement",false)
             }
 
-
             JSONObject settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
             if (settings == null)
             {
@@ -770,6 +779,7 @@ class StockBookController
             {
                 emitTempStockPool()
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                obj.put("temp_stock",true)
                 respond obj, formats: ['json'], status: 200
             }
             else

@@ -257,7 +257,6 @@
                                             </table>
                                         </div>
                                     </div>
-
                                     <div class="col-lg-12" style="background-color: lightgrey;padding: 10px;">
                                         <p style="font-weight: bold;background: green;
                                         color: #fff;padding: 10px;">CALCULATING VALUE:&nbsp;<span
@@ -432,11 +431,15 @@
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "invBal" + value.id + '" >' + value.balance.toFixed(2) + '</td>\n' +
+                                '                           <td id="' + "invBal" + value.id +
+                                '" ><input type="number" value="' + value.balance + '"  data-inid="' + value.id +
+                                '"   data-bal="' + value.balance +
+                                '" style="width: 95%;" id="invBalance' + value.id +
+                                '" class="balance" readonly></td>\n' +
                                 '                                        <td><input type="checkbox" id="' +
                                 "invdebitCheck" + value.id + '"  value="true" class="invdebitCheck" data-invid="'+
                                 value.id +'"  data-balance="'+ value.balance + '"  data-totalAmt="'+
-                                value.totalAmount + '"></td>\n' +
+                                value.totalAmount + '" ></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
 
@@ -492,154 +495,13 @@
                 return false;
             }
         });
-
-
     });
 
 
 
     $(document).ready(function () {
-
         $(document).on('click', '#submitData', function (e) {
-            var sum = 0.0;
-            $('.paidNowInv').each(function () {
-                sum += parseFloat($(this).val());
-            });
-            e.preventDefault();
-            var receivedFrom = $("#receivedFrom").val();
-            var date = $("#date").val();
-            var paymentMode = $("#paymentMode").val();
-            var accountMode = $("#accountMode").val();
-            var bank = $("#bank").val();
-            var cardNumber = $("#cardNumber").val();
-            var paymentDate = $("#paymentDate").val();
-            var chequeNumber = $("#chequeNumber").val();
-            var depositTo = $("#depositTo").val();
-            var wallet = "0";
-            var note = $("#note").val();
-            var amount = sum;
-            if (!paymentDate) {
-                alert("Please select payment Date.");
-                waitingSwal.close();
-                return;
-            }
-            if (!receivedFrom) {
-                alert("Please select customer.");
-                waitingSwal.close();
-                return;
-            }
-
-            if (!paymentMode && paymentMode !== '') {
-                alert("Please select customer.");
-                waitingSwal.close();
-                return;
-            }
-
-            if ($('#paymentMode option:selected').attr('data-mode') !== "CASH") {
-                if (!depositTo) {
-                    alert("Please select deposit account.");
-                    return;
-                }
-            }
-
-
-            if ($('#paymentMode option:selected').attr('data-mode') === "BANK") {
-                if (!bank) {
-                    alert("Please select Bank.");
-                    waitingSwal.close();
-                    return;
-                }
-                if (!chequeNumber) {
-                    alert("Please select Cheque number.");
-                    waitingSwal.close();
-                    return;
-                }
-            } else if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
-                if (!cardNumber) {
-                    alert("Please select card number.");
-                    waitingSwal.close();
-                    return;
-                }
-            }
-            var tbl = $('#table1 tbody tr').map(function (idxRow, ele) {
-                //
-                // start building the retVal object
-                //
-                var retVal = {id: ++idxRow};
-                //
-                // for each cell
-                //
-                var $td = $(ele).find('td').map(function (idxCell, ele) {
-                    var input = $(ele).find(':input');
-                    //
-                    // if cell contains an input or select....
-                    //
-                    if (input.length === 1) {
-                        var attr = $('#table1 thead tr th').eq(idxCell).text();
-                        retVal[attr] = input.val();
-                    } else {
-                        var attr = $('#table1 thead tr th').eq(idxCell).text();
-                        retVal[attr] = $(ele).text();
-                    }
-                });
-                return retVal;
-            }).get();
-            var reciptData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
-            var waitingSwal = Swal.fire({
-                title: "Saving, Please wait!",
-                showDenyButton: false,
-                showCancelButton: false,
-                showConfirmButton: false,
-                allowOutsideClick: false
-            });
-            $.ajax({
-                type: "POST",
-                url: "/receipt",
-                dataType: 'json',
-                data: {
-                    reciptData: reciptData,
-                    receivedFrom: receivedFrom,
-                    paymentMode: paymentMode,
-                    cardNumber: cardNumber,
-                    bank: bank,
-                    accountModeId: accountMode,
-                    paymentDate: paymentDate,
-                    wallet: wallet,
-                    chequeNumber: chequeNumber,
-                    narration: note,
-                    amountPaid: amount,
-                    depositTo: depositTo,
-                    date: date,
-                    createdUser: '${session.getAttribute('userId')}',
-                    modifiedUser: '${session.getAttribute('userId')}',
-                    status: 1,
-                    syncStatus: 1,
-                },
-                success: function (data) {
-                    Swal.fire({
-                        title: "Success!",
-                        showDenyButton: true,
-                        showCancelButton: false,
-                        confirmButtonText: 'OK',
-                        denyButtonText: 'Print',
-                        allowOutsideClick: false
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        } else if (result.isDenied) {
-                            location.reload();
-                            window.open("/print-recipt/" + data.receivedFrom + "/recipt/" + data.id, '_blank');
-                        }
-                    });
-                },
-                error: function () {
-                    Swal.fire({
-                        title: 'Something went wrong!',
-                        showConfirmButton: false,
-                        timer: 1000
-                    });
-                }
-            });
+            Swal.fire("Under Progress!Will be updated soon!")
         });
     });
 
@@ -661,6 +523,7 @@
         var totalBalance;
         if($('#invdebitCheck'+id).prop('checked')){
             $('#IN'+id).css("background-color", "#d7e1f3");
+            $("#invBalance"+id).attr("readonly", false);
             debitBalanceArray.push(balance);
             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
@@ -708,6 +571,23 @@
             $('#crdbAmt').text(0.00);
         }
     }
+
+
+    $(document).on('keyup', '.balance', function (e) {
+        var id = $(this).attr('data-cnid');
+        var bal = Number($(this).attr('data-crbal')).toFixed(2)
+        var value = $('#paidNowCrnt' + id).val();
+        if (Number(value) > Number(bal)) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Amount should not be greater!',
+                showConfirmButton: false,
+                timer: 1000
+            });
+            $('#paidNowCrnt' + id).val(0);
+        }
+    });
 
 
     function removeItem(array, item){

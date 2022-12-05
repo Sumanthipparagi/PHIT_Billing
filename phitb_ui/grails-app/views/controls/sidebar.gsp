@@ -471,7 +471,7 @@
                                 </li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_DEBIT_SETTLEMENT", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="#">Credit Debit Settlement</a></li>
+                                <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>
                             </g:if>
                         %{--                        <li><a href="/sample-conversion">Sample Conversion</a></li>--}%
 

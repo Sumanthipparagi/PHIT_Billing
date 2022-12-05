@@ -636,7 +636,7 @@
                 {type: 'text', readOnly: true} //saved draft product id
                 </g:if>
             ],
-            hiddenColumns: true,
+           hiddenColumns: true,
             hiddenColumns: {
                 <g:if test="${customer != null}">
                 columns: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
@@ -783,6 +783,17 @@
                                     success: function (data) {
                                         beforeSendSwal.close();
                                         console.log("Data saved");
+                                       /* if(draftEdit){
+                                            if(data?.temp_stock){
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Please delete temp stock',
+                                                    text: 'Please delete temp stock for this product',
+                                                    // footer: '<a href="">Why do I have this issue?</a>'
+                                                });
+                                               deleteTempStockRow(null, row)
+                                            }
+                                        }*/
                                         batchHot.updateSettings({
                                             data: []
                                         });
@@ -1313,11 +1324,33 @@
     }
 
     function loadDraftProducts() {
+        var beforeSendSwal;
         $.ajax({
             type: "GET",
             url: "/sale-product-details/sale-bill?id=${saleBillDetail?.id}",
             dataType: 'json',
+            beforeSend: function () {
+                beforeSendSwal= Swal.fire({
+                    // title: "Loading",
+                    html:
+                        '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    background: 'transparent'
+
+                });
+                // document.addEventListener('keypress', function (e) {
+                //     if (e.keyCode === 13 || e.which === 13) {
+                //         e.preventDefault();
+                //         return false;
+                //     }
+                // });
+                // hot.deselectCell()
+            },
             success: function (data) {
+                beforeSendSwal.close();
                 saleData = data;
                 console.log(data);
                 for (var i = 0; i < saleData.length; i++) {
