@@ -819,7 +819,7 @@
                                         console.log("Failed");
                                         if (jqXHR.status === 400){
                                             if(draftEdit)
-                                                alert("Please save row");
+                                                alert("Please delete temp stock of this product and try again!");
                                             else
                                                 alert("Unable to save the row, please delete it and add again.");
                                         }
