@@ -466,7 +466,7 @@
 
     function genrateIRN(id) {
         Swal.fire({
-            title: "Genrate IRN ?",
+            title: "Generate IRN ?",
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
@@ -481,7 +481,7 @@
                     success: function (data) {
                         Swal.fire(
                             'Success!',
-                            'IRN genarated Successfully',
+                            'IRN generated Successfully',
                             'success'
                         );
                         loadSaleInvoiceTable();
@@ -489,7 +489,7 @@
                     error: function () {
                         Swal.fire(
                             'Error!',
-                            'Unable to cancel invoice at the moment, try later.',
+                            'Unable to generate IRN at the moment, try later.',
                             'danger'
                         );
                     }

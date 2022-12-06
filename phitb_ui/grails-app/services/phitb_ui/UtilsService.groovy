@@ -250,7 +250,7 @@ class UtilsService {
     boolean isValidPhoneNumber(String phoneNumber) {
         boolean result = true;
         try {
-           if(phoneNumber.length() >= 6 && phoneNumber.length() <= 12){
+           if(phoneNumber?.length() >= 6 && phoneNumber?.length() <= 12){
                result = true;
            }else{
                result = false;

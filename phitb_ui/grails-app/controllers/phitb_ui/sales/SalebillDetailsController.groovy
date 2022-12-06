@@ -436,15 +436,15 @@ class SalebillDetailsController {
                 response.status = 400
         }
         catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.printStackTrace())
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.printStackTrace())
             response.status = 400
         }
     }
 
     def genrateIrn(){
         String billId = params.id
-        def saleBillDetail = new SalesService().getSaleProductDetailsById(billId)
+        def saleBillDetail = new SalesService().getSaleBillDetailsById(billId)
         if(saleBillDetail){
             String billStatus =  saleBillDetail.billStatus
             def saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillDetail.id.toString())
