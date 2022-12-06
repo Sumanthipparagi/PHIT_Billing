@@ -530,6 +530,7 @@
             crdbVal();
         }else{
             $('#IN'+id).css("background-color", "transparent");
+            $("#invBalance"+id).attr("readonly", true);
             removeItem(debitBalanceArray, balance);
             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));

@@ -2753,24 +2753,29 @@ class SaleEntryController
             if (params.id)
             {
                 JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(params.id)
-                def saleBillResponse = new SalesService().getSaleBillDetailsById(params.id.toString())
-                saleProductDetails.each {
-                    println(it.batchNumber)
-                    def stockResponse = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(),
-                            it.batchNumber.toString(), session.getAttribute('entityId').toString())
-                    if (it.batchNumber == stockResponse.batchNumber)
-                    {
-                        def tax = new TaxController().show(stockResponse.taxId.toString())
-                        it.put("gst", tax.taxValue)
-                        it.put("sgst", tax.salesSgst)
-                        it.put("cgst", tax.salesCgst)
-                        it.put("igst", tax.salesIgst)
+                if(saleProductDetails!=null){
+                    def saleBillResponse = new SalesService().getSaleBillDetailsById(params.id.toString())
+                    saleProductDetails.each {
+                        println(it.batchNumber)
+                        def stockResponse = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(),
+                                it.batchNumber.toString(), session.getAttribute('entityId').toString())
+                        if (it.batchNumber == stockResponse.batchNumber)
+                        {
+                            def tax = new TaxController().show(stockResponse.taxId.toString())
+                            it.put("gst", tax.taxValue)
+                            it.put("sgst", tax.salesSgst)
+                            it.put("cgst", tax.salesCgst)
+                            it.put("igst", tax.salesIgst)
+                        }
+                        it.put("billId", saleBillResponse as JSONObject)
+                        def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                        it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
                     }
-                    it.put("billId", saleBillResponse as JSONObject)
-                    def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
-                    it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+                    respond saleProductDetails, formats: ['json'], status: 200;
+                }else{
+                    response.status = 400
                 }
-                respond saleProductDetails, formats: ['json'], status: 200;
+
             }
             else
             {

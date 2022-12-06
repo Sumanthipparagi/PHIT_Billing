@@ -817,8 +817,12 @@
                                     error: function (jqXHR, textStatus, errorThrown) {
                                         beforeSendSwal.close();
                                         console.log("Failed");
-                                        if (jqXHR.status === 400)
-                                            alert("Unable to save the row, please delete it and add again.");
+                                        if (jqXHR.status === 400){
+                                            if(draftEdit)
+                                                alert("Please save row");
+                                            else
+                                                alert("Unable to save the row, please delete it and add again.");
+                                        }
                                         else if (jqXHR.status === 404) {
                                             batchSelection(batchId, mainTableRow, false);
                                             alert("Requested quantity not available in stocks.");
@@ -1350,7 +1354,6 @@
                 // hot.deselectCell()
             },
             success: function (data) {
-                beforeSendSwal.close();
                 saleData = data;
                 console.log(data);
                 for (var i = 0; i < saleData.length; i++) {
@@ -1370,16 +1373,19 @@
                     hot.setDataAtCell(i, 7, saleData[i].mrp);
                     hot.setDataAtCell(i, 8, saleData[i].discount);
                     hot.setDataAtCell(i, 9, saleData[i].productId.unitPacking);
-                    gst = saleData[i].gst;
-                    if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
-                        sgst = saleData[i].sgst;
-                        cgst = saleData[i].cgst;
-                        igst = saleData[i].igst;
-                    } else {
-                        igst = gst;
-                        sgst = 0;
-                        cgst = 0;
-                    }
+                    gst = saleData[i]?.gstPercentage;
+                    %{--if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {--}%
+                    %{--    sgst = saleData[i].sgstPercentage;--}%
+                    %{--    cgst = saleData[i].cgstPercentage;--}%
+                    %{--    igst = saleData[i].igstPercentage;--}%
+                    %{--} else {--}%
+                    %{--    igst = gst;--}%
+                    %{--    sgst = 0;--}%
+                    %{--    cgst = 0;--}%
+                    %{--}--}%
+                    sgst = saleData[i]?.sgstPercentage;
+                    cgst = saleData[i]?.cgstPercentage;
+                    igst = saleData[i]?.igstPercentage;
                     var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * saleData[i].discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
 
@@ -1420,11 +1426,15 @@
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
                 }
-
+                beforeSendSwal.close();
                 setTimeout(function () {
                     hot.selectCell(0, 1);
                     calculateTotalAmt();
                 }, 1000);
+            },
+            error:function (data) {
+                beforeSendSwal.close();
+                Swal.fire("No products found")
             }
         });
 
