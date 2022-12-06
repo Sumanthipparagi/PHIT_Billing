@@ -310,6 +310,7 @@
                         var cancelInvoice = "";
                         var editInvoice = "";
                         var cloneInvoice="";
+                        var irn="";
                         if (json.data[i].billStatus !== "CANCELLED") {
                             cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#" style="color: red;"><i class="fa fa-times"></i> Cancel</a>';
                         } else if (json.data[i].billStatus !== "DRAFT") {
@@ -325,6 +326,16 @@
                         }
                         if(json.data[i].receiptLog.length > 0){
                             cancelInvoice=""
+                        }
+
+
+                        if(json.data[i].irnDetails===undefined){
+
+                            if(json.data[i].billStatus!=="DRAFT" && json.data[i].billStatus!=="CANCELLED"){
+                                irn = '<a class="dropdown-item" title="IRN"  onclick="genrateIRN('+json.data[i].id+')" target="_blank"><i class="fa fa-print"></i> Genrate IRN</a>';
+                            }
+                        }else{
+                            irn='';
                         }
 
 %{--                <g:if test="${session.getAttribute('domainType') == Constants.FURNITURE}">--}%
@@ -365,6 +376,7 @@
                             editInvoice +
                             cloneInvoice +
                             cancelInvoice +
+                            irn +
                             "  </div>\n" +
                             "</div>"
                         invoiceNumber = "<a href='#' onclick='listItemClicked(" + json.data[i].id + ")'>" + invoiceNumber + "</a>";
@@ -452,6 +464,43 @@
     }
 
 
+    function genrateIRN(id) {
+        Swal.fire({
+            title: "Genrate IRN ?",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = '/sale-bill/genarate-irn?id=' + id;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: 'json',
+                    success: function (data) {
+                        Swal.fire(
+                            'Success!',
+                            'IRN genarated Successfully',
+                            'success'
+                        );
+                        loadSaleInvoiceTable();
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'Unable to cancel invoice at the moment, try later.',
+                            'danger'
+                        );
+                    }
+                });
+            } else if (result.isDenied) {
+
+            }
+        });
+
+
+    }
 
 
     function invoiceStatusChanged() {

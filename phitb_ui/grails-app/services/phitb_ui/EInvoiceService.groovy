@@ -278,7 +278,8 @@ class EInvoiceService {
                 SellerDtls.put("Loc", sellerCity.get("areaName"))
 
             SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
-            SellerDtls.put("Ph", sellerDetails.get("mobileNumber"))
+            if(new UtilsService().isValidPhoneNumber())
+                SellerDtls.put("Ph", sellerDetails.get("mobileNumber"))
             if(new UtilsService().isValidEmailAddress(sellerDetails?.get("email")?.toString()))
                 SellerDtls.put("Em", sellerDetails.get("email"))
             SellerDtls.put("Stcd", sellerState.get("irnStateCode"))
@@ -301,7 +302,8 @@ class EInvoiceService {
                 BuyerDtls.put("Loc", buyerCity.get("areaName"))
 
             BuyerDtls.put("Pin", Long.parseLong(buyerDetails.get("pinCode").toString()))
-            BuyerDtls.put("Ph", buyerDetails.get("mobileNumber"))
+            if(new UtilsService().isValidPhoneNumber())
+                BuyerDtls.put("Ph", buyerDetails.get("mobileNumber"))
             if(new UtilsService().isValidEmailAddress(buyerDetails?.get("email")?.toString()))
                 BuyerDtls.put("Em", buyerDetails.get("email"))
             BuyerDtls.put("Stcd", buyerState.get("irnStateCode"))
@@ -353,7 +355,11 @@ class EInvoiceService {
                 Integer fqty = Integer.parseInt(freeQty)
 
                 double totalAmount = UtilsService.round((sRate * sqty), 2)
-                double assAmt = UtilsService.round(totalAmount - Double.parseDouble(saleProduct.get("discount").toString()), 2)
+                double discountAmt = 0;
+                if(saleProduct.get("discount")!=0){
+                   discountAmt =  saleProduct.get("amount")/100*saleProduct.get("discount")
+                }
+                double assAmt = UtilsService.round(totalAmount - discountAmt, 2)
                 double igst = UtilsService.round(Double.parseDouble(saleProduct.get("igstAmount").toString()), 2)
                 double cgst = UtilsService.round(Double.parseDouble(saleProduct.get("cgstAmount").toString()), 2)
                 double sgst = UtilsService.round(Double.parseDouble(saleProduct.get("sgstAmount").toString()), 2)
@@ -411,14 +417,15 @@ class EInvoiceService {
             }
             irnObject.put("ItemList", ItemList)
 
+
             //Total Value Details
             JSONObject ValDtls = new JSONObject()
-            ValDtls.put("AssVal", TotAssVal)
-            ValDtls.put("CgstVal", TotCgstVal)
-            ValDtls.put("SgstVal", TotSgstVal)
-            ValDtls.put("IgstVal", TotIgstVal)
-            ValDtls.put("TotInvVal", TotInvVal)
-            ValDtls.put("Discount", TotDiscount)
+            ValDtls.put("AssVal",  UtilsService.round(TotAssVal, 2))
+            ValDtls.put("CgstVal", UtilsService.round(TotCgstVal, 2))
+            ValDtls.put("SgstVal", UtilsService.round(TotSgstVal, 2))
+            ValDtls.put("IgstVal", UtilsService.round(TotIgstVal, 2))
+            ValDtls.put("TotInvVal", UtilsService.round(TotInvVal, 2))
+            ValDtls.put("Discount", UtilsService.round(TotDiscount, 2))
             //ValDtls.put("CesVal", )
             // ValDtls.put("StCesVal", )
             //ValDtls.put("OthChrg", )

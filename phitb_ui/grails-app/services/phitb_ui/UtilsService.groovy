@@ -246,4 +246,19 @@ class UtilsService {
         }
         return result;
     }
+
+    boolean isValidPhoneNumber(String phoneNumber) {
+        boolean result = true;
+        try {
+           if(phoneNumber.length() >= 6 && phoneNumber.length() <= 12){
+               result = true;
+           }else{
+               result = false;
+           }
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
+    }
+
 }

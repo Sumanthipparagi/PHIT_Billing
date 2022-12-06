@@ -726,15 +726,7 @@ class SaleEntryController
                 String tempStockRowId = sale.get("16")
                 //clear tempstockbook but do not update stockbook
                 new InventoryService().deleteTempStock(tempStockRowId, false)
-                try {
-                    if (billStatus.equalsIgnoreCase("ACTIVE")) {
-                        //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                        new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
-                    }
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace()
-                }
+
 
                 /* def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
                  stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
@@ -814,6 +806,18 @@ class SaleEntryController
             }else {
                 println("Transportation Details not found!")
             }
+
+            try {
+                if (billStatus.equalsIgnoreCase("ACTIVE")) {
+                    //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                    new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                }
+            }
+            catch (Exception ex) {
+                ex.printStackTrace()
+            }
+
+
             def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
             JSONObject salesEmailConfig
             if(emailSettings!=null){
@@ -3296,20 +3300,10 @@ class SaleEntryController
                         {
                             new InventoryService().deleteTempStock(tempStockRowId, false)
                         } //just drop temp stock
-                        try
-                        {
-                            if (billStatus.equalsIgnoreCase("ACTIVE"))
-                            {
-                                //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                                new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            ex.printStackTrace()
-                        }
+
                     }
                 }
+
                 if (params.saleTransportDetailsId != null || params.saleTransportDetailsId != '')
                 {
                     if (params.lrNumber != '' && params.lrDate != '' && params.transporter != '')
@@ -3420,6 +3414,19 @@ class SaleEntryController
                     }
                 }
 
+
+                try
+                {
+                    if (billStatus.equalsIgnoreCase("ACTIVE"))
+                    {
+                        //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                        new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace()
+                }
                 //email
                 def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
                 JSONObject salesEmailConfig
@@ -3653,6 +3660,8 @@ class SaleEntryController
 //        }
 
     }
+
+
 
 
 

@@ -513,6 +513,7 @@ class UrlMappings {
         "/sale-bill/adjust-credits"(controller: "salebillDetails", action: 'adjustCredits')
         "/sale-bill/download-irn"(controller: "salebillDetails", action: 'exportGSTEInvoiceJSON')
         "/sale-bill/download-irn/$id"(controller: "salebillDetails", action: 'exportSingleGSTEInvoiceJSON')
+        "/sale-bill/genarate-irn"(controller: 'salebillDetails', action: 'genrateIrn')
         "/mail-template"(controller: 'saleEntry', action: 'mailInvoice')
 
 

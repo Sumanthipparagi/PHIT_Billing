@@ -441,4 +441,29 @@ class SalebillDetailsController {
             response.status = 400
         }
     }
+
+    def genrateIrn(){
+        String billId = params.id
+        def saleBillDetail = new SalesService().getSaleProductDetailsById(billId)
+        if(saleBillDetail){
+            String billStatus =  saleBillDetail.billStatus
+            def saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillDetail.id.toString())
+            try
+            {
+                if (billStatus.equalsIgnoreCase("ACTIVE"))
+                {
+                    //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                   def result = new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                    respond result, formats: ['json'],status: 200
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace()
+            }
+
+        }
+
+    }
+
 }
