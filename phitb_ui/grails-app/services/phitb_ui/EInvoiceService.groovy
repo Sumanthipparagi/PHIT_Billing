@@ -358,7 +358,7 @@ class EInvoiceService {
                 double discountAmt = 0;
                 double discountPercentage = UtilsService.round(Double.parseDouble(saleProduct.get("discount").toString()), 2) //Percentage
                 if(saleProduct.get("discount")!=0){
-                   discountAmt =  (saleProduct.get("amount")/100)*discountPercentage
+                   discountAmt =  totalAmount*(discountPercentage/100)
                 }
                 double assAmt = UtilsService.round(totalAmount - discountAmt, 2)
                 double igst = UtilsService.round(Double.parseDouble(saleProduct.get("igstAmount").toString()), 2)
@@ -369,7 +369,7 @@ class EInvoiceService {
                 TotCgstVal += cgst
                 TotIgstVal += igst
                 TotSgstVal += sgst
-                TotDiscount += discountAmt
+                TotDiscount += UtilsService.round(discountAmt,2)
                 TotInvVal += amount
                 item.put("SlNo", slNo.toString())
                 item.put("PrdDesc", product.get("productName"))
@@ -380,7 +380,7 @@ class EInvoiceService {
                 item.put("UnitPrice", UtilsService.round(sRate, 2))
                 item.put("Unit", "OTH")
                 item.put("TotAmt", totalAmount)
-                item.put("Discount", discountAmt)
+                item.put("Discount", UtilsService.round(discountAmt,2))
                 item.put("AssAmt", assAmt)
                 item.put("GstRt", UtilsService.round(Double.parseDouble(saleProduct.get("gstPercentage").toString()), 2))
                 item.put("IgstAmt", igst)

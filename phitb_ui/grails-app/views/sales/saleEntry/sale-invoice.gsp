@@ -516,10 +516,11 @@
                         <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty + (long) pd.freeQty}</td>
                         <td>${(long) pd.sqty}</td>
                         <%
-                            float amount = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
+                            //float amount = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
+                            float amount = pd.sqty * pd.sRate
                         %>
                         <td>${String.format("%.2f", amount)}</td>
-                        <td>${String.format("%.2f", amount/100*pd.discount)}<br>${pd.discount}</td>
+                        <td>${String.format("%.2f", amount*(pd.discount/100))}<br>${pd.discount}</td>
                         <%
                             cgst.push(pd.cgstAmount / amount * 100)
                             sgst.push(pd.sgstAmount / amount * 100)
@@ -586,10 +587,11 @@
                     <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.sqty + (long) sp.freeQty}</td>
                     <td>${(long) sp.sqty}</td>
                     <%
-                        float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
+                        //float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
+                        float amount = pd.sqty * pd.sRate
                     %>
                     <td>${String.format("%.2f", amount)}</td>
-                    <td>${String.format("%.2f", amount/100*sp.discount)}<br>${sp.discount}</td>
+                    <td>${String.format("%.2f", amount*(sp.discount/100))}<br>${sp.discount}</td>
                     <%
                         cgst.push(sp.cgstAmount / amount * 100)
                         sgst.push(sp.sgstAmount / amount * 100)
