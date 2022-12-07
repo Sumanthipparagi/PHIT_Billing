@@ -1544,7 +1544,8 @@ class SaleEntryController
                     for (Object it : saleProductDetails)
                     {
                         double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
-                        totalDiscAmt += amountBeforeTaxes/100*it.discount
+                        double amountBeforeDiscount = it.sqty * it.sRate
+                        totalDiscAmt += amountBeforeDiscount*(it.discount/100)
                         totalBeforeTaxes += amountBeforeTaxes
                         if (it.igstPercentage > 0)
                         {

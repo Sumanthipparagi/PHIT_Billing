@@ -354,22 +354,33 @@ class EInvoiceService {
                 Integer sqty = Integer.parseInt(saleQty)
                 Integer fqty = Integer.parseInt(freeQty)
 
-                double totalAmount = UtilsService.round((sRate * sqty), 2)
-                double discountAmt = 0;
-                if(saleProduct.get("discount")!=0){
-                   discountAmt =  saleProduct.get("amount")/100*saleProduct.get("discount")
+                //replacement quantity added to free quantity
+                String repQty = saleProduct.get("repQty").toString()
+                repQty = repQty.replaceAll("\\.0","")
+                if(repQty != null) {
+                    Integer rQty = Integer.parseInt(repQty)
+                    if(rQty>0) {
+                        fqty = fqty + rQty
+                    }
                 }
-                double assAmt = UtilsService.round(totalAmount - discountAmt, 2)
+
+                double itemAmount = UtilsService.round((sRate * sqty), 2)
+                double discountAmt = 0;
+                double discountPercentage = UtilsService.round(Double.parseDouble(saleProduct.get("discount").toString()), 2) //Percentage
+                if(saleProduct.get("discount")!=0){
+                   discountAmt =  itemAmount*(discountPercentage/100)
+                }
+                double assAmt = UtilsService.round(itemAmount - discountAmt, 2)
                 double igst = UtilsService.round(Double.parseDouble(saleProduct.get("igstAmount").toString()), 2)
                 double cgst = UtilsService.round(Double.parseDouble(saleProduct.get("cgstAmount").toString()), 2)
                 double sgst = UtilsService.round(Double.parseDouble(saleProduct.get("sgstAmount").toString()), 2)
-                double discount = UtilsService.round(Double.parseDouble(saleProduct.get("discount").toString()), 2)
-                double amount = UtilsService.round(Double.parseDouble(saleProduct.get("amount").toString()), 2)
+                //double amount = UtilsService.round(Double.parseDouble(saleProduct.get("amount").toString()), 2)
+                double amount = assAmt + igst + cgst + sgst
                 TotAssVal += assAmt
                 TotCgstVal += cgst
                 TotIgstVal += igst
                 TotSgstVal += sgst
-                TotDiscount += discount
+                TotDiscount += UtilsService.round(discountAmt,2)
                 TotInvVal += amount
                 item.put("SlNo", slNo.toString())
                 item.put("PrdDesc", product.get("productName"))
@@ -379,14 +390,14 @@ class EInvoiceService {
                 item.put("FreeQty", fqty)
                 item.put("UnitPrice", UtilsService.round(sRate, 2))
                 item.put("Unit", "OTH")
-                item.put("TotAmt", totalAmount)
-                item.put("Discount", discount)
+                item.put("TotAmt", itemAmount)
+                item.put("Discount", UtilsService.round(discountAmt,2))
                 item.put("AssAmt", assAmt)
                 item.put("GstRt", UtilsService.round(Double.parseDouble(saleProduct.get("gstPercentage").toString()), 2))
                 item.put("IgstAmt", igst)
                 item.put("CgstAmt", cgst)
                 item.put("SgstAmt", sgst)
-                item.put("TotItemVal", amount)
+                item.put("TotItemVal", UtilsService.round(amount,2))
                 //item.put("OrgCntry", sellerState.get("country")["irnCountryCode"])
                 //item.put("Barcde", "")
                 // item.put("Unit", "OTH")
@@ -420,11 +431,16 @@ class EInvoiceService {
 
             //Total Value Details
             JSONObject ValDtls = new JSONObject()
-            ValDtls.put("AssVal",  UtilsService.round(TotAssVal, 2))
-            ValDtls.put("CgstVal", UtilsService.round(TotCgstVal, 2))
-            ValDtls.put("SgstVal", UtilsService.round(TotSgstVal, 2))
-            ValDtls.put("IgstVal", UtilsService.round(TotIgstVal, 2))
-            ValDtls.put("TotInvVal", UtilsService.round(TotInvVal, 2))
+            TotAssVal = UtilsService.round(TotAssVal, 2)
+            TotCgstVal = UtilsService.round(TotCgstVal, 2)
+            TotSgstVal = UtilsService.round(TotSgstVal, 2)
+            TotIgstVal = UtilsService.round(TotIgstVal, 2)
+            TotInvVal = UtilsService.round(TotInvVal, 2)
+            ValDtls.put("AssVal",  TotAssVal)
+            ValDtls.put("CgstVal", TotCgstVal)
+            ValDtls.put("SgstVal", TotSgstVal)
+            ValDtls.put("IgstVal", TotIgstVal)
+            ValDtls.put("TotInvVal", TotInvVal)
             ValDtls.put("Discount", UtilsService.round(TotDiscount, 2))
             //ValDtls.put("CesVal", )
             // ValDtls.put("StCesVal", )
