@@ -356,20 +356,20 @@ class EInvoiceService {
 
                 double totalAmount = UtilsService.round((sRate * sqty), 2)
                 double discountAmt = 0;
+                double discountPercentage = UtilsService.round(Double.parseDouble(saleProduct.get("discount").toString()), 2) //Percentage
                 if(saleProduct.get("discount")!=0){
-                   discountAmt =  saleProduct.get("amount")/100*saleProduct.get("discount")
+                   discountAmt =  (saleProduct.get("amount")/100)*discountPercentage
                 }
                 double assAmt = UtilsService.round(totalAmount - discountAmt, 2)
                 double igst = UtilsService.round(Double.parseDouble(saleProduct.get("igstAmount").toString()), 2)
                 double cgst = UtilsService.round(Double.parseDouble(saleProduct.get("cgstAmount").toString()), 2)
                 double sgst = UtilsService.round(Double.parseDouble(saleProduct.get("sgstAmount").toString()), 2)
-                double discount = UtilsService.round(Double.parseDouble(saleProduct.get("discount").toString()), 2)
                 double amount = UtilsService.round(Double.parseDouble(saleProduct.get("amount").toString()), 2)
                 TotAssVal += assAmt
                 TotCgstVal += cgst
                 TotIgstVal += igst
                 TotSgstVal += sgst
-                TotDiscount += discount
+                TotDiscount += discountAmt
                 TotInvVal += amount
                 item.put("SlNo", slNo.toString())
                 item.put("PrdDesc", product.get("productName"))
@@ -380,7 +380,7 @@ class EInvoiceService {
                 item.put("UnitPrice", UtilsService.round(sRate, 2))
                 item.put("Unit", "OTH")
                 item.put("TotAmt", totalAmount)
-                item.put("Discount", discount)
+                item.put("Discount", discountAmt)
                 item.put("AssAmt", assAmt)
                 item.put("GstRt", UtilsService.round(Double.parseDouble(saleProduct.get("gstPercentage").toString()), 2))
                 item.put("IgstAmt", igst)
