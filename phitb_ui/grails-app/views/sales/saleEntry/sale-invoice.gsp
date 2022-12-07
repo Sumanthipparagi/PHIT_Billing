@@ -588,7 +588,7 @@
                     <td>${(long) sp.sqty}</td>
                     <%
                         //float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
-                        float amount = pd.sqty * pd.sRate
+                        float amount = sp.sqty * sp.sRate
                     %>
                     <td>${String.format("%.2f", amount)}</td>
                     <td>${String.format("%.2f", amount*(sp.discount/100))}<br>${sp.discount}</td>
