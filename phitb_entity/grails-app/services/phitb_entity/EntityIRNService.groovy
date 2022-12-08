@@ -75,7 +75,6 @@ class EntityIRNService {
                 entityIRN.unDelete()
             }
         }
-
         entityIRN.irnUsername = jsonObject.get("irnUsername").toString()
         entityIRN.irnPassword = jsonObject.get("irnPassword").toString()
         entityIRN.irnGSTIN = jsonObject.get("irnGSTIN").toString()
@@ -98,19 +97,19 @@ class EntityIRNService {
             entityIRN.irnUsername = jsonObject.get("irnUsername").toString()
             entityIRN.irnPassword = jsonObject.get("irnPassword").toString()
             entityIRN.irnGSTIN = jsonObject.get("irnGSTIN").toString()
-            entityIRN.authToken = jsonObject.get("authToken").toString()
-            entityIRN.tokenExpiry = jsonObject.get("tokenExpiry").toString()
-            entityIRN.sessionId = jsonObject.get("sessionId").toString()
-            entityIRN.appKey = jsonObject.get("appKey").toString()
-            entityIRN.aspSecretKey = jsonObject.get("aspSecretKey").toString()
-            entityIRN.sek = jsonObject.get("sek").toString()
+//            entityIRN.authToken = jsonObject.get("authToken").toString()
+//            entityIRN.tokenExpiry = jsonObject.get("tokenExpiry").toString()
+//            entityIRN.sessionId = jsonObject.get("sessionId").toString()
+//            entityIRN.appKey = jsonObject.get("appKey").toString()
+//            entityIRN.aspSecretKey = jsonObject.get("aspSecretKey").toString()
+//            entityIRN.sek = jsonObject.get("sek").toString()
             entityIRN.forceRefreshAccessToken = Boolean.parseBoolean(jsonObject.get("forceRefreshAccessToken").toString())
             entityIRN.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
             entityIRN.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
             entityIRN.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             entityIRN.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-            entityIRN.active = Boolean.parseBoolean(jsonObject.get("isActive").toString())
-            entityIRN.save(flush: true)
+            entityIRN.setActive(jsonObject.has("isActive"))
+           def save = entityIRN.save(flush: true)
             if (!entityIRN.hasErrors())
                 return entityIRN
             else
