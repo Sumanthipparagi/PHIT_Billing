@@ -199,7 +199,7 @@
                         $.each(bill.products, function (key, product) {
                             if(bill.billStatus !== "CANCELLED") {
                                 ntv += Number(product.amount.toFixed("2")) - Number(product.gstAmount.toFixed("2"));
-                                discount += Number(product.discount.toFixed("2"));
+                                discount += Number(product.amount) * Number(product.discount)/100;
                                 gst += Number(product.gstAmount.toFixed("2"));
                                 custNetAmtTotal += Number(product.amount.toFixed("2"));
                                 sQty += product.sqty;
