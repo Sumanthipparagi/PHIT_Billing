@@ -432,7 +432,8 @@
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                           <td id="' + "invBal" + value.id +
-                                '" ><input type="number" value="' + value.balance + '"  data-inid="' + value.id +
+                                '" ><input type="number" value="' + value.balance.toFixed(2) + '"  data-inid="' +
+                                value.id +
                                 '"   data-bal="' + value.balance +
                                 '" style="width: 95%;" id="invBalance' + value.id +
                                 '" class="balance" readonly></td>\n' +
@@ -531,6 +532,7 @@
         }else{
             $('#IN'+id).css("background-color", "transparent");
             $("#invBalance"+id).attr("readonly", true);
+            $("#invBalance"+id).val(balance.toFixed(2));
             removeItem(debitBalanceArray, balance);
             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
