@@ -262,6 +262,7 @@
                                         color: #fff;padding: 10px;">CALCULATING VALUE:&nbsp;<span
                                                 id="totalDebitBalance">0.00</span>
                                             <span id="totalCreditBalance" style="float: right;">0.00</span></p>
+                                        <input type="hidden" id="totalDebitBalanceValue" >
 
                                     <p style="font-weight: bold;background-color: #313740;
                                     color: #fff;
@@ -432,11 +433,9 @@
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                           <td id="' + "invBal" + value.id +
-                                '" ><input type="number" value="' + value.balance.toFixed(2) + '"  data-inid="' +
-                                value.id +
-                                '"   data-bal="' + value.balance +
-                                '" style="width: 95%;" id="invBalance' + value.id +
-                                '" class="balance" readonly></td>\n' +
+                                '" ><input type="number" value="' + value.balance.toFixed(2) + '"  data-id="' +
+                                value.id + '"   data-bal="' + value.balance + '" style="width: 95%;"  id="invBalance' + value.id +
+                                '" class="invBalance"  disabled></td>\n' +
                                 '                                        <td><input type="checkbox" id="' +
                                 "invdebitCheck" + value.id + '"  value="true" class="invdebitCheck" data-invid="'+
                                 value.id +'"  data-balance="'+ value.balance + '"  data-totalAmt="'+
@@ -524,18 +523,20 @@
         var totalBalance;
         if($('#invdebitCheck'+id).prop('checked')){
             $('#IN'+id).css("background-color", "#d7e1f3");
-            $("#invBalance"+id).attr("readonly", false);
+            $("#invBalance"+id).attr("disabled", false);
             debitBalanceArray.push(balance);
             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalDebitBalanceValue').val(totalBalance);
             crdbVal();
         }else{
             $('#IN'+id).css("background-color", "transparent");
-            $("#invBalance"+id).attr("readonly", true);
+            $("#invBalance"+id).attr("disabled", true);
             $("#invBalance"+id).val(balance.toFixed(2));
             removeItem(debitBalanceArray, balance);
             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalDebitBalanceValue').val(totalBalance);
             crdbVal();
         }
     });
@@ -576,10 +577,10 @@
     }
 
 
-    $(document).on('keyup', '.balance', function (e) {
-        var id = $(this).attr('data-cnid');
-        var bal = Number($(this).attr('data-crbal')).toFixed(2)
-        var value = $('#paidNowCrnt' + id).val();
+    $(document).on('keyup', '.invBalance', function (e) {
+        var id = $(this).attr('data-id');
+        var bal = Number($(this).attr('data-bal')).toFixed(2)
+        var value = $("#invBalance"+id).val();
         if (Number(value) > Number(bal)) {
             Swal.fire({
                 position: 'top-end',
@@ -588,7 +589,10 @@
                 showConfirmButton: false,
                 timer: 1000
             });
-            $('#paidNowCrnt' + id).val(0);
+            $('#invBalance' + id).val(bal);
+        }else{
+            $('#totalDebitBalance').text(Number(value));
+
         }
     });
 
