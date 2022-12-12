@@ -338,7 +338,7 @@ class EInvoiceService {
             double TotCgstVal = 0.00
             double TotSgstVal = 0.00
             double TotIgstVal = 0.00
-            double TotDiscount = 0.00
+            double cashDiscount = 0.00
             double TotInvVal = 0.00
             int slNo = 1
             for (JSONObject saleProduct : saleProductDetails) {
@@ -380,7 +380,6 @@ class EInvoiceService {
                 TotCgstVal += cgst
                 TotIgstVal += igst
                 TotSgstVal += sgst
-                TotDiscount += UtilsService.round(discountAmt,2)
                 TotInvVal += amount
                 item.put("SlNo", slNo.toString())
                 item.put("PrdDesc", product.get("productName"))
@@ -436,12 +435,18 @@ class EInvoiceService {
             TotSgstVal = UtilsService.round(TotSgstVal, 2)
             TotIgstVal = UtilsService.round(TotIgstVal, 2)
             TotInvVal = UtilsService.round(TotInvVal, 2)
+
+            //TODO: this is cash discount which is calculated on invoice amount,
+            // not calculated from individual products, so set to 0 as of now
+            cashDiscount = UtilsService.round(cashDiscount, 2)
+
             ValDtls.put("AssVal",  TotAssVal)
             ValDtls.put("CgstVal", TotCgstVal)
             ValDtls.put("SgstVal", TotSgstVal)
             ValDtls.put("IgstVal", TotIgstVal)
+            ValDtls.put("Discount", cashDiscount)
             ValDtls.put("TotInvVal", TotInvVal)
-            ValDtls.put("Discount", UtilsService.round(TotDiscount, 2))
+
             //ValDtls.put("CesVal", )
             // ValDtls.put("StCesVal", )
             //ValDtls.put("OthChrg", )
