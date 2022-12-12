@@ -148,6 +148,11 @@ class EInvoiceService {
                 entityIrnDetails.put("authToken", authToken.get("authtoken").toString())
                 entityIrnDetails.put("sek", authToken.get("sek").toString())
                 entityIrnDetails.put("tokenExpiry", authToken.get("tokenExp").toString())
+
+                entityIrnDetails.put("entity",  entityIrnDetails.get("entity").id)
+                entityIrnDetails.put("entityType",  entityIrnDetails.get("entityType").id)
+                entityIrnDetails.put("isActive", entityIrnDetails.get("active"))
+
                 new EntityService().updateEntityIRN(entityIrnDetails)
                 return entityIrnDetails
             } else {
@@ -263,6 +268,7 @@ class EInvoiceService {
             //Seller Details
             JSONObject SellerDtls = new JSONObject()
             SellerDtls.put("Gstin", sellerDetails.get("gstn"))
+            //SellerDtls.put("Gstin", "27ABFPD4021L002") //TODO: to be removed
             SellerDtls.put("LglNm", sellerDetails.get("entityName"))
             SellerDtls.put("TrdNm", sellerDetails.get("entityName"))
             SellerDtls.put("Addr1", new UtilsService().truncateString(sellerDetails.get("addressLine1").toString(),100))
@@ -278,11 +284,14 @@ class EInvoiceService {
                 SellerDtls.put("Loc", sellerCity.get("areaName"))
 
             SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
+            //SellerDtls.put("Pin", 431116) //TODO:to be removed
+
             if(new UtilsService().isValidPhoneNumber())
                 SellerDtls.put("Ph", sellerDetails.get("mobileNumber"))
             if(new UtilsService().isValidEmailAddress(sellerDetails?.get("email")?.toString()))
                 SellerDtls.put("Em", sellerDetails.get("email"))
             SellerDtls.put("Stcd", sellerState.get("irnStateCode"))
+           // SellerDtls.put("Stcd", "27") //TODO: to be removed
             irnObject.put("SellerDtls", SellerDtls)
 
             //Buyer Details
@@ -338,7 +347,7 @@ class EInvoiceService {
             double TotCgstVal = 0.00
             double TotSgstVal = 0.00
             double TotIgstVal = 0.00
-            double TotDiscount = 0.00
+            double cashDiscount = 0.00
             double TotInvVal = 0.00
             int slNo = 1
             for (JSONObject saleProduct : saleProductDetails) {
@@ -380,7 +389,6 @@ class EInvoiceService {
                 TotCgstVal += cgst
                 TotIgstVal += igst
                 TotSgstVal += sgst
-                TotDiscount += UtilsService.round(discountAmt,2)
                 TotInvVal += amount
                 item.put("SlNo", slNo.toString())
                 item.put("PrdDesc", product.get("productName"))
@@ -436,12 +444,18 @@ class EInvoiceService {
             TotSgstVal = UtilsService.round(TotSgstVal, 2)
             TotIgstVal = UtilsService.round(TotIgstVal, 2)
             TotInvVal = UtilsService.round(TotInvVal, 2)
+
+            //TODO: this is cash discount which is calculated on invoice amount,
+            // not calculated from individual products, so set to 0 as of now
+            cashDiscount = UtilsService.round(cashDiscount, 2)
+
             ValDtls.put("AssVal",  TotAssVal)
             ValDtls.put("CgstVal", TotCgstVal)
             ValDtls.put("SgstVal", TotSgstVal)
             ValDtls.put("IgstVal", TotIgstVal)
+            ValDtls.put("Discount", cashDiscount)
             ValDtls.put("TotInvVal", TotInvVal)
-            ValDtls.put("Discount", UtilsService.round(TotDiscount, 2))
+
             //ValDtls.put("CesVal", )
             // ValDtls.put("StCesVal", )
             //ValDtls.put("OthChrg", )
