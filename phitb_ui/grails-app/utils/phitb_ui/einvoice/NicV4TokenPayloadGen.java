@@ -72,7 +72,7 @@ public class NicV4TokenPayloadGen {
         System.out.println("base64EncodedPayload : " + base64EncodedPayload);
 
         //Public Key Path
-        byte[] b = readFile("C:\\Users\\arjun\\Desktop\\publicKey.pem");
+        byte[] b = readFile("publicKey.pem");
         NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
 
         gen.encryptPayload(base64EncodedPayload);*/
