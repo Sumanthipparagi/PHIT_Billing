@@ -445,7 +445,7 @@
 
                             invoiceData.push(value.id);
                             invIdArray.push(value.id);
-                            console.log(invIdArray)
+                            // console.log(invIdArray)
                         }
                     });
                     $.each(data[1], function (key, value) {
@@ -465,7 +465,7 @@
                                 '                                        </tr>';
                             crntData.push(value.id);
                             crntIdArray.push(value.id);
-                            console.log(crntIdArray)
+                            // console.log(crntIdArray)
 
                         }
                     });
@@ -516,15 +516,20 @@
     //     }
     // });
 
+
+
+
+
     var debitBalanceArray =[];
-    $(document).on('change', '.invdebitCheck', function (e) {
+   /* $(document).on('change', '.invdebitCheck', function (e) {
         var id = $(this).attr('data-invid');
         var balance = parseFloat($(this).attr('data-balance'));
         var totalBalance;
+        var b = parseFloat($("#invBalance"+id).val());
         if($('#invdebitCheck'+id).prop('checked')){
             $('#IN'+id).css("background-color", "#d7e1f3");
             $("#invBalance"+id).attr("disabled", false);
-            debitBalanceArray.push(balance);
+            debitBalanceArray.push(b);
             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
             $('#totalDebitBalanceValue').val(totalBalance);
@@ -533,16 +538,45 @@
             $('#IN'+id).css("background-color", "transparent");
             $("#invBalance"+id).attr("disabled", true);
             $("#invBalance"+id).val(balance.toFixed(2));
-            removeItem(debitBalanceArray, balance);
+            removeItem(debitBalanceArray, b);
+            console.log(debitBalanceArray)
             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
             $('#totalDebitBalanceValue').val(totalBalance);
             crdbVal();
         }
-    });
+    });*/
+
+
+     $(document).on('change', '.invdebitCheck', function (e) {
+         var id = $(this).attr('data-invid');
+         var balance = parseFloat($(this).attr('data-balance'));
+         var totalBalance = 0;
+         if($('#invdebitCheck'+id).prop('checked')){
+             $('#IN'+id).css("background-color", "#d7e1f3");
+             $("#invBalance"+id).attr("disabled", false);
+             $(".invBalance:not(:disabled)").each(function() {
+                 totalBalance += Number($(this).val())
+             });
+             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+             $('#totalDebitBalanceValue').val(totalBalance);
+             crdbVal()
+         }else{
+             $('#IN'+id).css("background-color", "transparent");
+             $("#invBalance"+id).attr("disabled", true);
+             $("#invBalance"+id).val(balance.toFixed(2));
+             $(".invBalance:not(:disabled)").each(function() {
+                 totalBalance += Number($(this).val())
+             });
+             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+             $('#totalDebitBalanceValue').val(totalBalance);
+             crdbVal()
+         }
+     });
 
 
     var creditbalanceArray =[];
+/*
     $(document).on('change', '.creditCheck', function (e) {
         var id = $(this).attr('data-crntid');
         var balance = parseFloat($(this).attr('data-balance'));
@@ -563,25 +597,40 @@
             crdbVal();
         }
     });
+*/
 
 
 
-
-    function crdbVal() {
-        if(creditbalanceArray.length!==0){
-            var crdb = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2) - creditbalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
-            $('#crdbAmt').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(crdb));
+    $(document).on('change', '.creditCheck', function (e) {
+        var id = $(this).attr('data-crntid');
+        var balance = parseFloat($(this).attr('data-balance'));
+        var totalBalance=0;
+        if($('#creditCheck'+id).prop('checked')){
+            $('#CN'+id).css("background-color", "#ffc0c0");
+            $(".creditCheck:checked").each (function () {
+                totalBalance += Number($(this).attr('data-balance'))
+            });
+            totalBalance = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance);
+            $('#totalCreditBalance').text(totalBalance);
+            crdbVal();
         }else{
-            $('#crdbAmt').text(0.00);
+            $('#CN'+id).css("background-color", "transparent");
+            $(".creditCheck:checked").each(function () {
+                totalBalance += Number($(this).attr('data-balance'))
+            });
+            totalBalance = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance);
+            $('#totalCreditBalance').text(totalBalance);
+            crdbVal();
         }
-    }
+    });
 
 
     $(document).on('keyup', '.invBalance', function (e) {
         var id = $(this).attr('data-id');
         var bal = Number($(this).attr('data-bal')).toFixed(2)
         var value = $("#invBalance"+id).val();
-        if (Number(value) > Number(bal)) {
+        var totalBalance =0;
+        if(Number(value) > Number(bal)) {
             Swal.fire({
                 position: 'top-end',
                 icon: 'error',
@@ -590,12 +639,39 @@
                 timer: 1000
             });
             $('#invBalance' + id).val(bal);
+            $('#invdebitCheck' + id).prop('checked', false);
+            $('#IN'+id).css("background-color", "transparent");
+            $("#invBalance"+id).attr("disabled", true);
+            $(".invBalance:not(:disabled)").each(function() {
+                totalBalance += Number($(this).val())
+            });
+            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalDebitBalanceValue').val(totalBalance);
+            crdbVal()
         }else{
-            $('#totalDebitBalance').text(Number(value));
-
+            $(".invBalance:not(:disabled)").each(function() {
+                totalBalance += Number($(this).val())
+            });
+            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            crdbVal()
         }
     });
 
+
+
+    function crdbVal() {
+            // alert(debitAmt);
+            var totalDebitBalance = 0;
+            var totalCreditBalance = 0;
+            $(".invBalance:not(:disabled)").each(function() {
+                totalDebitBalance += Number($(this).val())
+            });
+            $(".creditCheck:checked").each(function () {
+                totalCreditBalance += Number($(this).attr('data-balance'))
+            });
+            var crdb = Number(totalDebitBalance) - Number(totalCreditBalance);
+            $('#crdbAmt').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(crdb));
+    }
 
     function removeItem(array, item){
         for(var i in array){
