@@ -263,11 +263,12 @@
                                                 id="totalDebitBalance">0.00</span>
                                             <span id="totalCreditBalance" style="float: right;">0.00</span></p>
                                         <input type="hidden" id="totalDebitBalanceValue" >
+                                        <input type="hidden" id="totalCreditBalanceValue" >
 
                                     <p style="font-weight: bold;background-color: #313740;
                                     color: #fff;
-                                    padding: 10px;">CR.DB SETTLEMENT VALUE :&nbsp;<span
-                                            id="crdbAmt">0.00</span></p>
+                                    padding: 10px;">CR.DB SETTLEMENT VALUE :&nbsp;<span id="crdbAmt">0.00</span></p>
+                                        <input type="hidden" id="crdbAmtValue" >
                                     </div>
                                 </div>
                             </div>
