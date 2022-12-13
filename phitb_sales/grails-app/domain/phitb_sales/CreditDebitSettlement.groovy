@@ -5,7 +5,6 @@ import gorm.logical.delete.LogicalDelete
 class CreditDebitSettlement implements Serializable, LogicalDelete<CreditDebitSettlement>
 {
     long finId
-    String date
     long userId
     long customerId
     String status
@@ -21,7 +20,7 @@ class CreditDebitSettlement implements Serializable, LogicalDelete<CreditDebitSe
     static constraints = {
     }
     static  mapping = {
-        remarks sqlType: "longText"
+        remarks sqlType: "longText", nullable:true
     }
 
     boolean isUpdatable

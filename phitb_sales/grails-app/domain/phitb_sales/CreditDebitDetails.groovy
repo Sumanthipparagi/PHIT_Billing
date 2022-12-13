@@ -7,18 +7,19 @@ class CreditDebitDetails implements Serializable, LogicalDelete<CreditDebitDetai
 
     long cId
     long debitId
-    long debitSeries
+    String debitSeries
     String debitFinancialYear
     long crdbAdjusted
     long creditId
-    long creditSeries
+    String creditSeries
     String creditFinancialYear
     String financialYear
+    String creditAmt
+    String debitAmt
     long status
     long syncStatus
     long entityTypeId
     long entityId
-
     Date dateCreated
     Date lastUpdated
 

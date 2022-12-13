@@ -438,7 +438,7 @@
                                 value.id + '"   data-bal="' + value.balance + '" style="width: 95%;"  id="invBalance' + value.id +
                                 '" class="invBalance"  disabled></td>\n' +
                                 '                                        <td><input type="checkbox" id="' +
-                                "invdebitCheck" + value.id + '"  value="true" class="invdebitCheck" data-invid="'+
+                                "invdebitCheck" + value.id + '"  class="invdebitCheck" data-invid="'+
                                 value.id +'"  data-balance="'+ value.balance + '"  data-totalAmt="'+
                                 value.totalAmount + '" ></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
@@ -461,7 +461,7 @@
                                 '</td>\n' +
                                 '                                        <td><input type="checkbox" id="' +
                                 "creditCheck" + value.id +
-                                '"  data-balance="'+ value.balance + '" data-crntid="'+ value.id + '"  value="true" class="creditCheck" ></td>\n' +
+                                '"  data-balance="'+ value.balance + '" data-crntid="'+ value.id + '"   class="creditCheck" ></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
                             crntData.push(value.id);
@@ -500,27 +500,6 @@
 
 
 
-    $(document).ready(function () {
-        $(document).on('click', '#submitData', function (e) {
-            Swal.fire("Under Progress!Will be updated soon!")
-        });
-    });
-
-
-
-
-    // $('#invdebitCheck'+id).change(function(){
-    //     if($(this).is(":checked")) {
-    //         $('div.menuitem').addClass("add");
-    //     } else {
-    //         $('div.menuitem').removeClass("sub");
-    //     }
-    // });
-
-
-
-
-
     var debitBalanceArray =[];
    /* $(document).on('change', '.invdebitCheck', function (e) {
         var id = $(this).attr('data-invid');
@@ -547,8 +526,6 @@
             crdbVal();
         }
     });*/
-
-
      $(document).on('change', '.invdebitCheck', function (e) {
          var id = $(this).attr('data-invid');
          var balance = parseFloat($(this).attr('data-balance'));
@@ -574,8 +551,6 @@
              crdbVal()
          }
      });
-
-
     var creditbalanceArray =[];
 /*
     $(document).on('change', '.creditCheck', function (e) {
@@ -599,9 +574,6 @@
         }
     });
 */
-
-
-
     $(document).on('change', '.creditCheck', function (e) {
         var id = $(this).attr('data-crntid');
         var balance = parseFloat($(this).attr('data-balance'));
@@ -611,21 +583,19 @@
             $(".creditCheck:checked").each (function () {
                 totalBalance += Number($(this).attr('data-balance'))
             });
-            totalBalance = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance);
-            $('#totalCreditBalance').text(totalBalance);
+            $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalCreditBalanceValue').val(totalBalance.toFixed(2));
             crdbVal();
         }else{
             $('#CN'+id).css("background-color", "transparent");
             $(".creditCheck:checked").each(function () {
                 totalBalance += Number($(this).attr('data-balance'))
             });
-            totalBalance = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance);
-            $('#totalCreditBalance').text(totalBalance);
+            $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalCreditBalanceValue').val(totalBalance.toFixed(2));
             crdbVal();
         }
     });
-
-
     $(document).on('keyup', '.invBalance', function (e) {
         var id = $(this).attr('data-id');
         var bal = Number($(this).attr('data-bal')).toFixed(2)
@@ -654,12 +624,10 @@
                 totalBalance += Number($(this).val())
             });
             $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalDebitBalanceValue').val(totalBalance);
             crdbVal()
         }
     });
-
-
-
     function crdbVal() {
             // alert(debitAmt);
             var totalDebitBalance = 0;
@@ -673,7 +641,6 @@
             var crdb = Number(totalDebitBalance) - Number(totalCreditBalance);
             $('#crdbAmt').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(crdb));
     }
-
     function removeItem(array, item){
         for(var i in array){
             if(array[i]===item){
@@ -682,6 +649,124 @@
             }
         }
     }
+
+
+
+    $(document).ready(function () {
+        $(document).on('click', '#submitData', function (e) {
+            var debitValue = $('#totalDebitBalanceValue').val();
+            var creditValue = $('#totalCreditBalanceValue').val();
+            var receivedFrom = $("#receivedFrom").val();
+            var crdb = Number(debitValue) - Number(creditValue);
+            var debitTbl = $('#table1 tbody tr').map(function (idxRow, ele) {
+                //
+                // start building the retVal object
+                //
+                var retVal = {id: ++idxRow};
+                //
+                // for each cell
+                //
+                var $td = $(ele).find('td').map(function (idxCell, ele) {
+                    var input = $(ele).find(':input');
+                    //
+                    // if cell contains an input or select....
+                    //
+                    // console.log(input.is(":checked"))
+                    if (input.length === 1) {
+                        var attr = $('#table1 thead tr th').eq(idxCell).text();
+                        if(input.attr('type')!=='checkbox'){
+                            retVal[attr.toLowerCase().replace(".", "").trim()] = input.val();
+                        }else{
+                            retVal['checked'] = input.is(":checked");
+                        }
+                    } else {
+                        var attr = $('#table1 thead tr th').eq(idxCell).text();
+                        retVal[attr.toLowerCase().replace(".", "").trim()] = $(ele).text();
+                    }
+                });
+                return retVal;
+            }).get();
+            var debitData = JSON.stringify(debitTbl).replace(/\s(?=\w+":)/g, "");
+            var creditTbl = $('#table2 tbody tr').map(function (idxRow, ele) {
+                //
+                // start building the retVal object
+                //
+                var retVal = {id: ++idxRow};
+                //
+                // for each cell
+                //
+                var $td = $(ele).find('td').map(function (idxCell, ele) {
+                    var input = $(ele).find(':input');
+                    //
+                    // if cell contains an input or select....
+                    //
+                    if (input.length === 1) {
+                        var attr = $('#table1 thead tr th').eq(idxCell).text();
+                        if(input.attr('type')!=='checkbox'){
+                            retVal[attr.toLowerCase().replace(".", "").trim()] = input.val();
+                        }else{
+                            retVal['checked'] = input.is(":checked");
+                        }
+                    } else {
+                        var attr = $('#table1 thead tr th').eq(idxCell).text();
+                        retVal[attr.toLowerCase().replace(".", "").trim()] = $(ele).text();
+                    }
+                });
+                return retVal;
+            }).get();
+            var creditData = JSON.stringify(creditTbl).replace(/\s(?=\w+":)/g, "");
+            var waitingSwal = Swal.fire({
+                title: "Saving, Please wait!",
+                showDenyButton: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+            if( Number(debitValue)===0){
+                waitingSwal.close()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Calculating value should not be zero!',
+                });
+                return;
+            }
+            if(Number(creditValue)===0){
+                waitingSwal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Credit value should not be zero!',
+                });
+                return;
+            }
+            if(Number(crdb)!==0){
+                waitingSwal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Settlement value must be adjusted to zero!',
+                });
+                return;
+            }
+            if (!receivedFrom) {
+                waitingSwal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please select customer!',
+                });
+                return;
+            }
+            console.log(debitData)
+            console.log(creditData)
+            waitingSwal.close();
+            return;
+
+        });
+
+    });
+
 
 </script>
 %{--<g:include view="controls/footer-content.gsp"/>--}%
