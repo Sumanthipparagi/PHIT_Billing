@@ -816,9 +816,9 @@
 
 
 </script>
-%{--<g:include view="controls/footer-content.gsp"/>--}%
+<g:include view="controls/footer-content.gsp"/>
 <script>
-    // selectSideMenu("accounts-menu");
+    selectSideMenu("sales-menu");
 </script>
 </body>
 </html>
