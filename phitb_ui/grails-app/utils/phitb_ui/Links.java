@@ -856,6 +856,7 @@ public class Links
 
 
 //    CrDb Settlement
-    public static String SAVE_CRDB_SETTLEMENT = APP_CONTEXT_PATH + "sales/crdb-settlement";
+    public static String SAVE_CRDB_SETTLEMENT = APP_CONTEXT_PATH + "sales/save-crdb-settlement";
+    public static String GET_CRDB_DETAILS_BY_ID = APP_CONTEXT_PATH +"sales/getcrdbsettlement";
 
 }

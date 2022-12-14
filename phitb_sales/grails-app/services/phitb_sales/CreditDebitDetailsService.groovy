@@ -96,16 +96,34 @@ class CreditDebitDetailsService {
     {
         CreditDebitDetails creditDebitDetails = new CreditDebitDetails()
         creditDebitDetails.cId =  Long.parseLong(jsonObject.get("cId").toString())
-        creditDebitDetails.debitId = Long.parseLong(jsonObject.get("debitId").toString())
-        creditDebitDetails.debitSeries = Long.parseLong(jsonObject.get("debitSeries").toString())
-        creditDebitDetails.debitFinancialYear = jsonObject.get("debitFinancialYear").toString()
-        creditDebitDetails.crdbAdjusted = Long.parseLong(jsonObject.get("crdbAdjusted").toString())
-        creditDebitDetails.creditId = Long.parseLong(jsonObject.get("creditId").toString())
-        creditDebitDetails.creditSeries = Long.parseLong(jsonObject.get("creditSeries").toString())
-        creditDebitDetails.creditFinancialYear = jsonObject.get("creditFinancialYear").toString()
+        if(jsonObject.transType == "DEBIT"){
+            creditDebitDetails.debitId = Long.parseLong(jsonObject.get("debitId").toString())
+            creditDebitDetails.debitSeries = jsonObject.get("debitSeries").toString()
+            creditDebitDetails.debitFinancialYear = jsonObject.get("debitFinancialYear").toString()
+            creditDebitDetails.debitAmt = Double.parseDouble(jsonObject.get('debitAmt').toString())
+        }else{
+            creditDebitDetails.debitId = 0
+            creditDebitDetails.debitSeries = "NA";
+            creditDebitDetails.debitFinancialYear = 'NA';
+            creditDebitDetails.debitAmt = 0;
+        }
+        if(jsonObject.transType == "CREDIT"){
+            creditDebitDetails.creditId = Long.parseLong(jsonObject.get("creditId").toString())
+            creditDebitDetails.creditSeries = jsonObject.get("creditSeries").toString()
+            creditDebitDetails.creditFinancialYear = jsonObject.get("creditFinancialYear").toString()
+            creditDebitDetails.creditAmt = Double.parseDouble(jsonObject.get('creditAmt').toString())
+        }else{
+            creditDebitDetails.creditId = 0
+            creditDebitDetails.creditFinancialYear = 'NA'
+            creditDebitDetails.creditSeries = 'NA'
+            creditDebitDetails.creditAmt = 0
+        }
+        creditDebitDetails.crdbAdjusted = 0
+//        creditDebitDetails.creditId = Long.parseLong(jsonObject.get("creditId").toString())
+//        creditDebitDetails.creditSeries = jsonObject.get("creditSeries").toString()
         creditDebitDetails.financialYear = jsonObject.get("financialYear").toString()
-        creditDebitDetails.status = Long.parseLong(jsonObject.get("status").toString())
-        creditDebitDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+        creditDebitDetails.status = 0
+        creditDebitDetails.syncStatus = 0
         creditDebitDetails.financialYear = jsonObject.get("financialYear").toString()
         creditDebitDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         creditDebitDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())

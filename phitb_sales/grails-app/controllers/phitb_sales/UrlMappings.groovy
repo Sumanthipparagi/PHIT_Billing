@@ -46,6 +46,8 @@ class UrlMappings {
             "/creditdebitsettlementbydays/$days(.$format)?"(controller: 'creditDebitSettlement') {
                 action = [GET: 'getAllByDays']
             }
+            "/save-crdb-settlement"(controller: 'creditDebitSettlement', action: 'saveCrDbSettlement')
+            "/getcrdbsettlement"(controller: 'creditDebitSettlement', action: 'getCrDbDetails')
 
             //Old Software Return Details
             "/oldsoftwarereturndetails(.$format)?"(controller: 'oldSoftwareReturnDetails') {

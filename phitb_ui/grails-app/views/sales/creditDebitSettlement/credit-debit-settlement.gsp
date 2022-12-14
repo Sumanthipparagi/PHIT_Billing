@@ -787,10 +787,9 @@
             var data = JSON.parse(debitData).filter(a => a.checked === true).concat(JSON.parse(creditData).filter(a => a.checked === true));
             console.log(data)
             waitingSwal.close();
-
-        /*    $.ajax({
+            $.ajax({
                 type: "POST",
-                url: "/receipt",
+                url: "/save-crdb-settlement",
                 dataType: 'json',
                 data: {
                     debitValue: debitValue,
@@ -799,15 +798,17 @@
                     crdb: crdb,
                     debitData: JSON.parse(debitData).filter(a => a.checked === true).toString(),
                     creditData: JSON.parse(creditData).filter(a => a.checked === true).toString(),
-                    data:data.toString()
+                    data:JSON.stringify(data)
                 },
                 success: function (data) {
-
+                    Swal.fire("success");
+                    waitingSwal.close();
                 },
                 error: function (data) {
-
+                    Swal.fire("error");
+                    waitingSwal.close();
                 }
-            });*/
+            });
 
         });
 

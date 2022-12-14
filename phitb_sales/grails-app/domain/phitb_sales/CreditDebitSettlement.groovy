@@ -19,10 +19,11 @@ class CreditDebitSettlement implements Serializable, LogicalDelete<CreditDebitSe
     Date dateCreated
     Date lastUpdated
     static constraints = {
+        remarks  nullable:true
+        crdbNumber unique: true, nullable: true
     }
     static  mapping = {
-        remarks sqlType: "longText", nullable:true
-        crdbNumber unique: true
+        remarks sqlType: "longText"
     }
 
     boolean isUpdatable

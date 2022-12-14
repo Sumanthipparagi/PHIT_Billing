@@ -2132,16 +2132,37 @@ contains both deliveryChallan and products
         try {
             println(jsonObject)
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_SAVE)
+                    .path(new Links().SAVE_CRDB_SETTLEMENT)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
-            println(apiResponse)
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :saveCrDbSettlement , action :  save  , Ex:' + ex)
+            log.error('Service :saveCrDbSettlement , action :  save  , Ex:' + ex)
         }
+    }
 
+    def getCrDbDetailsById(String id, String entityId){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_CRDB_DETAILS_BY_ID)
+                    .queryParam("entityId", entityId)
+                    .queryParam("id", id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONObject crdbDetails = new JSONObject(apiResponse.readEntity(String.class))
+                return crdbDetails
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getSaleDraftDetails  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleDraftDetails  , Ex:' + ex)
+        }
     }
 }

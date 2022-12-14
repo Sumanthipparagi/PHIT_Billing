@@ -852,7 +852,10 @@ class UrlMappings {
 //       Credit-debit Settlement
 
         "/credit-debit-settlement"(controller: 'creditDebitSettlement', action: 'index')
-        
+        "/save-crdb-settlement"(controller: 'creditDebitSettlement',action: 'saveCrDbSettlement')
+        "/credit-debit-settlement/print-crdb"(controller: 'creditDebitSettlement', action: 'printCrDbDetails')
+
+
 
 
     }

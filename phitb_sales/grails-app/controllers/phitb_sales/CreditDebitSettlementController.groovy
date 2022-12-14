@@ -13,6 +13,7 @@ class CreditDebitSettlementController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
     CreditDebitSettlementService creditDebitSettlementService
+    CreditDebitDetailsService creditDebitDetailsService
     /**
      * Gets all Credit Debit Settlement
      * @param query
@@ -202,8 +203,8 @@ class CreditDebitSettlementController {
                 JSONArray crdbDetails = jsonObject.get("crdbDetails")
                 for (JSONObject product : crdbDetails) {
                     product.put("cId", creditDebitSettlement.id)
-                    creditDebitSettlementService.save(product)
-                    println("product saved")
+                    creditDebitDetailsService.save(product)
+                    println("crdb logs saved")
                 }
             }
             respond creditDebitSettlement
@@ -220,4 +221,23 @@ class CreditDebitSettlementController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    /**
+     * Gets all Credit Debit Settlement By Id
+     * @param Id
+     * @param entityId
+     * @return list of Credit Debit Settlement By Id
+     */
+    def getCrDbDetails() {
+        try {
+            String id = params.id
+            String entityId = params.entityId
+            respond creditDebitSettlementService.getCrdbDetails(id,entityId)
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

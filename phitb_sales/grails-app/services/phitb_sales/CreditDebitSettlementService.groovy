@@ -1,6 +1,8 @@
 package phitb_sales
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
@@ -97,15 +99,15 @@ class CreditDebitSettlementService {
         creditDebitSettlement.finId =  Long.parseLong(jsonObject.get("finId").toString())
         creditDebitSettlement.userId = Long.parseLong(jsonObject.get("userId").toString())
         creditDebitSettlement.customerId = Long.parseLong(jsonObject.get("customerId").toString())
-        creditDebitSettlement.status = jsonObject.get("status").toString()
-        creditDebitSettlement.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+        creditDebitSettlement.status = "0"
+        creditDebitSettlement.syncStatus = 0
         creditDebitSettlement.remarks = jsonObject.get("remarks").toString()
         creditDebitSettlement.financialYear = jsonObject.get("financialYear").toString()
         creditDebitSettlement.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         creditDebitSettlement.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         creditDebitSettlement.createdUser = Long.parseLong(jsonObject.get("userId").toString())
         creditDebitSettlement.modifiedUser = Long.parseLong(jsonObject.get("userId").toString())
-        creditDebitSettlement.crdbNumber = jsonObject.get("crdbNumber").toString()
+        creditDebitSettlement.crdbNumber = null
         creditDebitSettlement.save(flush: true)
         if (!creditDebitSettlement.hasErrors())
         {
@@ -117,11 +119,10 @@ class CreditDebitSettlementService {
             DecimalFormat mFormat = new DecimalFormat("00")
             month = mFormat.format(Double.valueOf(month));
             String crDbNumber = null;
-            CreditDebitSettlement creditDebitSettlement1
             crDbNumber = creditDebitSettlement.entityId + "S" + month + year + creditDebitSettlement.id
             println("Invoice Number generated: " + crDbNumber)
-            creditDebitSettlement.crdbNumber = crDbNumber
             creditDebitSettlement.isUpdatable = true
+            creditDebitSettlement.crdbNumber = crDbNumber
             creditDebitSettlement.save(flush: true)
             return creditDebitSettlement
         }
@@ -183,6 +184,21 @@ class CreditDebitSettlementService {
         else
         {
             throw new BadRequestException()
+        }
+    }
+
+
+    def getCrdbDetails(String id, String entityId){
+        CreditDebitSettlement creditDebitSettlement = CreditDebitSettlement.findByIdAndEntityId(Long.parseLong(id), Long.parseLong(entityId))
+        JSONObject crdb = new JSONObject()
+        if(creditDebitSettlement){
+            ArrayList<CreditDebitDetails> creditDebitDetails = CreditDebitDetails.findAllByCId(creditDebitSettlement.id)
+            JSONArray crdbDetailsArray = new JSONArray((creditDebitDetails as JSON).toString())
+            crdb.put('crdbSettlement',creditDebitSettlement)
+            crdb.put('crdbDetails',crdbDetailsArray)
+            return crdb
+        }else {
+            throw new ResourceNotFoundException()
         }
     }
 }
