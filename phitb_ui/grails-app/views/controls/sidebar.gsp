@@ -471,7 +471,14 @@
                                 </li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_DEBIT_SETTLEMENT", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>
+%{--                                <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>--}%
+                                <li><a href="javascript:void(0);" class="menu-toggle">Credit Debit Settlement</span> <span
+                                        class="badge badge-success float-right"></span></a>
+                                    <ul class="ml-menu">
+                                        <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>
+                                        <li><a href="/credit-debit-settlement/crdb-list">CR DB Settlement List</a></li>
+                                    </ul>
+                                </li>
                             </g:if>
                         %{--                        <li><a href="/sample-conversion">Sample Conversion</a></li>--}%
 
