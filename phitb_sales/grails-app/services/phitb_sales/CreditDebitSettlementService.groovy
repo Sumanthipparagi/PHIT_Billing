@@ -121,7 +121,7 @@ class CreditDebitSettlementService {
             DecimalFormat mFormat = new DecimalFormat("00")
             month = mFormat.format(Double.valueOf(month));
             String crDbNumber = null;
-            crDbNumber = creditDebitSettlement.entityId + "S" + month + year + creditDebitSettlement.id
+            crDbNumber = creditDebitSettlement.entityId + "CRDB" + month + year + creditDebitSettlement.id
             println("Invoice Number generated: " + crDbNumber)
             creditDebitSettlement.isUpdatable = true
             creditDebitSettlement.crdbNumber = crDbNumber
