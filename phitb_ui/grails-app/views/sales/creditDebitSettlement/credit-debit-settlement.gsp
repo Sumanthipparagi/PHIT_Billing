@@ -684,6 +684,14 @@
             var creditValue = $('#totalCreditBalanceValue').val();
             var customer = $("#receivedFrom").val();
             var crdb = Number(debitValue) - Number(creditValue);
+            var waitingSwal = Swal.fire({
+                title: "Saving, Please wait!",
+                showDenyButton: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+            var beforeSendSwal;
             var debitTbl = $('#table1 tbody tr').map(function (idxRow, ele) {
                 //
                 // start building the retVal object
@@ -741,13 +749,6 @@
                 return retVal;
             }).get();
             var creditData = JSON.stringify(creditTbl).replace(/\s(?=\w+":)/g, "");
-            var waitingSwal = Swal.fire({
-                title: "Saving, Please wait!",
-                showDenyButton: false,
-                showCancelButton: false,
-                showConfirmButton: false,
-                allowOutsideClick: false
-            });
             if (Number(debitValue) === 0) {
                 waitingSwal.close()
                 Swal.fire({
@@ -800,12 +801,26 @@
                     creditData: JSON.parse(creditData).filter(a => a.checked === true).toString(),
                     data:JSON.stringify(data)
                 },
+                beforeSend: function () {
+                    beforeSendSwal = Swal.fire({
+                        // title: "Loading",
+                        html:
+                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                        showDenyButton: false,
+                        showCancelButton: false,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        background: 'transparent'
+                    });
+                },
                 success: function (data) {
                     Swal.fire("success");
+                    beforeSendSwal.close();
                     waitingSwal.close();
                 },
                 error: function (data) {
                     Swal.fire("error");
+                    beforeSendSwal.close();
                     waitingSwal.close();
                 }
             });
