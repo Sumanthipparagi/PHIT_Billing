@@ -684,13 +684,6 @@
             var creditValue = $('#totalCreditBalanceValue').val();
             var customer = $("#receivedFrom").val();
             var crdb = Number(debitValue) - Number(creditValue);
-            var waitingSwal = Swal.fire({
-                title: "Saving, Please wait!",
-                showDenyButton: false,
-                showCancelButton: false,
-                showConfirmButton: false,
-                allowOutsideClick: false
-            });
             var beforeSendSwal;
             var debitTbl = $('#table1 tbody tr').map(function (idxRow, ele) {
                 //
@@ -749,6 +742,14 @@
                 return retVal;
             }).get();
             var creditData = JSON.stringify(creditTbl).replace(/\s(?=\w+":)/g, "");
+            var waitingSwal = Swal.fire({
+                title: "Saving, Please wait!",
+                showDenyButton: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+
             if (Number(debitValue) === 0) {
                 waitingSwal.close()
                 Swal.fire({
@@ -814,8 +815,23 @@
                     });
                 },
                 success: function (data) {
-                    Swal.fire("success");
                     beforeSendSwal.close();
+                    Swal.fire({
+                        title: "Success!",
+                        showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        denyButtonText: 'Print',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        } else if (result.isDenied) {
+                            location.reload();
+                            window.open("/credit-debit-settlement/print-crdb?id="+ data.id, '_blank');
+                        }
+                    });
+
                     waitingSwal.close();
                 },
                 error: function (data) {
