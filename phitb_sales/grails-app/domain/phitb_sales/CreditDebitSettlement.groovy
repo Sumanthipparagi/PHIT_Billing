@@ -11,6 +11,7 @@ class CreditDebitSettlement implements Serializable, LogicalDelete<CreditDebitSe
     long syncStatus
     String remarks
     String financialYear
+    String crdbNumber
     long entityTypeId
     long entityId
     long createdUser
@@ -21,6 +22,7 @@ class CreditDebitSettlement implements Serializable, LogicalDelete<CreditDebitSe
     }
     static  mapping = {
         remarks sqlType: "longText", nullable:true
+        crdbNumber unique: true
     }
 
     boolean isUpdatable

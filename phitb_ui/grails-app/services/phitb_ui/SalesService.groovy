@@ -2124,6 +2124,24 @@ contains both deliveryChallan and products
             System.err.println('Service :SalesService , action :  getSaleBillDetailsByPendingIRN  , Ex:' + ex)
             log.error('Service :SalesService , action :  getSaleBillDetailsByPendingIRN  , Ex:' + ex)
         }
+    }
+
+    def saveCrDbSettlement(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
 
     }
 }

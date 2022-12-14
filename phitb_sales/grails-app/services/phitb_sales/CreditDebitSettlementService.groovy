@@ -5,6 +5,7 @@ import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -94,7 +95,6 @@ class CreditDebitSettlementService {
     {
         CreditDebitSettlement creditDebitSettlement = new CreditDebitSettlement()
         creditDebitSettlement.finId =  Long.parseLong(jsonObject.get("finId").toString())
-        creditDebitSettlement.date = jsonObject.get("date").toString()
         creditDebitSettlement.userId = Long.parseLong(jsonObject.get("userId").toString())
         creditDebitSettlement.customerId = Long.parseLong(jsonObject.get("customerId").toString())
         creditDebitSettlement.status = jsonObject.get("status").toString()
@@ -103,11 +103,26 @@ class CreditDebitSettlementService {
         creditDebitSettlement.financialYear = jsonObject.get("financialYear").toString()
         creditDebitSettlement.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         creditDebitSettlement.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-        creditDebitSettlement.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-        creditDebitSettlement.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        creditDebitSettlement.createdUser = Long.parseLong(jsonObject.get("userId").toString())
+        creditDebitSettlement.modifiedUser = Long.parseLong(jsonObject.get("userId").toString())
+        creditDebitSettlement.crdbNumber = jsonObject.get("crdbNumber").toString()
         creditDebitSettlement.save(flush: true)
         if (!creditDebitSettlement.hasErrors())
         {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(creditDebitSettlement.dateCreated)
+            String month = cal.get(Calendar.MONTH) + 1
+            String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
+            DecimalFormat mFormat = new DecimalFormat("00")
+            month = mFormat.format(Double.valueOf(month));
+            String crDbNumber = null;
+            CreditDebitSettlement creditDebitSettlement1
+            crDbNumber = creditDebitSettlement.entityId + "S" + month + year + creditDebitSettlement.id
+            println("Invoice Number generated: " + crDbNumber)
+            creditDebitSettlement.crdbNumber = crDbNumber
+            creditDebitSettlement.isUpdatable = true
+            creditDebitSettlement.save(flush: true)
             return creditDebitSettlement
         }
         else

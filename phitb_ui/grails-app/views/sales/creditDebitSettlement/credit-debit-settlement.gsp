@@ -92,7 +92,6 @@
     }
 
 
-
     /* Chrome, Safari, Edge, Opera  - hide input arrow keys*/
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -105,11 +104,11 @@
         -moz-appearance: textfield;
     }
 
-    .addColor{
+    .addColor {
         background-color: darkseagreen;
     }
 
-    .subColor{
+    .subColor {
         background-color: red;
     }
 
@@ -201,6 +200,7 @@
                                                     <th>Pend.Amt</th>
                                                     <th></th>
                                                     <th style="display: none;">BillId</th>
+                                                    <th style="display: none;">finyear</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="debitDetails">
@@ -222,7 +222,8 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6"  style="padding: 2px;">
+
+                                    <div class="col-lg-6" style="padding: 2px;">
                                         <div class="tab tableFixHead" style="width:100%;overflow:auto;
                                         max-height:300px;">
                                             <table class="table table-bordered" id="table2">
@@ -235,14 +236,16 @@
                                                     <th>Pend.Amt</th>
                                                     <th></th>
                                                     <th style="display: none;">BillId</th>
+                                                    <th style="display: none;">finyear</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="creditDetails">
                                                 <tr>
                                                     <td colspan='9'><div
-                                                        style='text-align: center;'><h2 style="font-size: 1.4em;">Please select customer</h2>
-                                                </div>
-                                                </td></tr>
+                                                            style='text-align: center;'><h2
+                                                                style="font-size: 1.4em;">Please select customer</h2>
+                                                    </div>
+                                                    </td></tr>
                                                 </tbody>
                                                 <tfoot class="tab">
                                                 <tr>
@@ -257,18 +260,19 @@
                                             </table>
                                         </div>
                                     </div>
+
                                     <div class="col-lg-12" style="background-color: lightgrey;padding: 10px;">
                                         <p style="font-weight: bold;background: green;
                                         color: #fff;padding: 10px;">CALCULATING VALUE:&nbsp;<span
                                                 id="totalDebitBalance">0.00</span>
                                             <span id="totalCreditBalance" style="float: right;">0.00</span></p>
-                                        <input type="hidden" id="totalDebitBalanceValue" >
-                                        <input type="hidden" id="totalCreditBalanceValue" >
+                                        <input type="hidden" id="totalDebitBalanceValue">
+                                        <input type="hidden" id="totalCreditBalanceValue">
 
-                                    <p style="font-weight: bold;background-color: #313740;
-                                    color: #fff;
-                                    padding: 10px;">CR.DB SETTLEMENT VALUE :&nbsp;<span id="crdbAmt">0.00</span></p>
-                                        <input type="hidden" id="crdbAmtValue" >
+                                        <p style="font-weight: bold;background-color: #313740;
+                                        color: #fff;
+                                        padding: 10px;">CR.DB SETTLEMENT VALUE :&nbsp;<span id="crdbAmt">0.00</span></p>
+                                        <input type="hidden" id="crdbAmtValue">
                                     </div>
                                 </div>
                             </div>
@@ -407,16 +411,18 @@
                     var invoice = "INV";
                     var creditNote = "CRNT";
                     var gtn = "GTN";
-                    var invPendingTotalAmt = data[0].filter(data => data.billStatus!=="CANCELLED").map(data =>
+                    var invPendingTotalAmt = data[0].filter(data => data.billStatus !== "CANCELLED").map(data =>
                         data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var invTotalAmt = data[0].filter(data => data.billStatus!=="CANCELLED").map(data =>
+                    var invTotalAmt = data[0].filter(data => data.billStatus !== "CANCELLED").map(data =>
                         data.totalAmount).reduce((acc, amount) => acc + amount, 0);
 
-                    var crntPendingTotalAmt = data[1].filter(data => data.returnStatus!=="CANCELLED").map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var  crntTotalAmt= data[1].filter(data => data.returnStatus!=="CANCELLED").map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0);
-                    $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR'
+                    var crntPendingTotalAmt = data[1].filter(data => data.returnStatus !== "CANCELLED").map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
+                    var crntTotalAmt = data[1].filter(data => data.returnStatus !== "CANCELLED").map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0);
+                    $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', {
+                        style: 'currency', currency: 'INR'
                     }).format(0.00));
-                    $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR'
+                    $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', {
+                        style: 'currency', currency: 'INR'
                     }).format(0.00));
                     $('#crdbAmt').text(0.00);
                     $('#invTotalAmt').text(invTotalAmt.toFixed(2));
@@ -438,10 +444,11 @@
                                 value.id + '"   data-bal="' + value.balance + '" style="width: 95%;"  id="invBalance' + value.id +
                                 '" class="invBalance"  disabled></td>\n' +
                                 '                                        <td><input type="checkbox" id="' +
-                                "invdebitCheck" + value.id + '"  class="invdebitCheck" data-invid="'+
-                                value.id +'"  data-balance="'+ value.balance + '"  data-totalAmt="'+
+                                "invdebitCheck" + value.id + '"  class="invdebitCheck" data-invid="' +
+                                value.id + '"  data-balance="' + value.balance + '"  data-totalAmt="' +
                                 value.totalAmount + '" ></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
+                                '                                        <td style="display: none;">' + value.financialYear + '</td>\n' +
                                 '                                        </tr>';
 
                             invoiceData.push(value.id);
@@ -457,12 +464,13 @@
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "crntAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "crntBal" + value.id + '" >'  + value.balance.toFixed(2) +
+                                '                                        <td id="' + "crntBal" + value.id + '" >' + value.balance.toFixed(2) +
                                 '</td>\n' +
                                 '                                        <td><input type="checkbox" id="' +
                                 "creditCheck" + value.id +
-                                '"  data-balance="'+ value.balance + '" data-crntid="'+ value.id + '"   class="creditCheck" ></td>\n' +
+                                '"  data-balance="' + value.balance + '" data-crntid="' + value.id + '"   class="creditCheck" ></td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
+                                '                                        <td style="display: none;">' + value.financialYear + '</td>\n' +
                                 '                                        </tr>';
                             crntData.push(value.id);
                             crntIdArray.push(value.id);
@@ -475,7 +483,7 @@
                     if (invoiceData.length === 0) {
                         $('#debitDetails').html("<tr><td colspan='9'><div style='text-align: center;'><p style='font-size: 1.4 em;'>No Data Found</p></div></td></tr>");
                     }
-                    if(crntData.length === 0){
+                    if (crntData.length === 0) {
                         $('#creditDetails').html("<tr><td colspan='9'><div style='text-align: center;'><p style='font-size: 1.4 em;'>No Data Found</p></div></td></tr>");
                     }
                 },
@@ -499,99 +507,110 @@
     });
 
 
-
-    var debitBalanceArray =[];
-   /* $(document).on('change', '.invdebitCheck', function (e) {
-        var id = $(this).attr('data-invid');
-        var balance = parseFloat($(this).attr('data-balance'));
-        var totalBalance;
-        var b = parseFloat($("#invBalance"+id).val());
-        if($('#invdebitCheck'+id).prop('checked')){
-            $('#IN'+id).css("background-color", "#d7e1f3");
-            $("#invBalance"+id).attr("disabled", false);
-            debitBalanceArray.push(b);
-            totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
-            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
-            $('#totalDebitBalanceValue').val(totalBalance);
-            crdbVal();
-        }else{
-            $('#IN'+id).css("background-color", "transparent");
-            $("#invBalance"+id).attr("disabled", true);
-            $("#invBalance"+id).val(balance.toFixed(2));
-            removeItem(debitBalanceArray, b);
-            console.log(debitBalanceArray)
-            totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
-            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
-            $('#totalDebitBalanceValue').val(totalBalance);
-            crdbVal();
-        }
-    });*/
-     $(document).on('change', '.invdebitCheck', function (e) {
+    var debitBalanceArray = [];
+    /* $(document).on('change', '.invdebitCheck', function (e) {
          var id = $(this).attr('data-invid');
          var balance = parseFloat($(this).attr('data-balance'));
-         var totalBalance = 0;
+         var totalBalance;
+         var b = parseFloat($("#invBalance"+id).val());
          if($('#invdebitCheck'+id).prop('checked')){
              $('#IN'+id).css("background-color", "#d7e1f3");
              $("#invBalance"+id).attr("disabled", false);
-             $(".invBalance:not(:disabled)").each(function() {
-                 totalBalance += Number($(this).val())
-             });
+             debitBalanceArray.push(b);
+             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
              $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
              $('#totalDebitBalanceValue').val(totalBalance);
-             crdbVal()
+             crdbVal();
          }else{
              $('#IN'+id).css("background-color", "transparent");
              $("#invBalance"+id).attr("disabled", true);
              $("#invBalance"+id).val(balance.toFixed(2));
-             $(".invBalance:not(:disabled)").each(function() {
-                 totalBalance += Number($(this).val())
-             });
+             removeItem(debitBalanceArray, b);
+             console.log(debitBalanceArray)
+             totalBalance = debitBalanceArray.reduce((a, b) => a + b, 0).toFixed(2);
              $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
              $('#totalDebitBalanceValue').val(totalBalance);
-             crdbVal()
+             crdbVal();
          }
-     });
-    var creditbalanceArray =[];
-/*
-    $(document).on('change', '.creditCheck', function (e) {
-        var id = $(this).attr('data-crntid');
+     });*/
+    $(document).on('change', '.invdebitCheck', function (e) {
+        var id = $(this).attr('data-invid');
         var balance = parseFloat($(this).attr('data-balance'));
-        var totalBalance;
-        if($('#creditCheck'+id).prop('checked')){
-            $('#CN'+id).css("background-color", "#ffc0c0");
-            creditbalanceArray.push(balance);
-            totalBalance =
-                new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(creditbalanceArray.reduce((a, b) => a + b, 0).toFixed(2));
-            $('#totalCreditBalance').text(totalBalance);
-            crdbVal();
-        }else{
-            $('#CN'+id).css("background-color", "transparent");
-            removeItem(creditbalanceArray, balance);
-            totalBalance =
-                new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(creditbalanceArray.reduce((a, b) => a + b, 0).toFixed(2));
-            $('#totalCreditBalance').text(totalBalance);
-            crdbVal();
+        var totalBalance = 0;
+        if ($('#invdebitCheck' + id).prop('checked')) {
+            $('#IN' + id).css("background-color", "#d7e1f3");
+            $("#invBalance" + id).attr("disabled", false);
+            $(".invBalance:not(:disabled)").each(function () {
+                totalBalance += Number($(this).val())
+            });
+            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(totalBalance));
+            $('#totalDebitBalanceValue').val(totalBalance);
+            crdbVal()
+        } else {
+            $('#IN' + id).css("background-color", "transparent");
+            $("#invBalance" + id).attr("disabled", true);
+            $("#invBalance" + id).val(balance.toFixed(2));
+            $(".invBalance:not(:disabled)").each(function () {
+                totalBalance += Number($(this).val())
+            });
+            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(totalBalance));
+            $('#totalDebitBalanceValue').val(totalBalance);
+            crdbVal()
         }
     });
-*/
+    var creditbalanceArray = [];
+    /*
+        $(document).on('change', '.creditCheck', function (e) {
+            var id = $(this).attr('data-crntid');
+            var balance = parseFloat($(this).attr('data-balance'));
+            var totalBalance;
+            if($('#creditCheck'+id).prop('checked')){
+                $('#CN'+id).css("background-color", "#ffc0c0");
+                creditbalanceArray.push(balance);
+                totalBalance =
+                    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(creditbalanceArray.reduce((a, b) => a + b, 0).toFixed(2));
+                $('#totalCreditBalance').text(totalBalance);
+                crdbVal();
+            }else{
+                $('#CN'+id).css("background-color", "transparent");
+                removeItem(creditbalanceArray, balance);
+                totalBalance =
+                    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(creditbalanceArray.reduce((a, b) => a + b, 0).toFixed(2));
+                $('#totalCreditBalance').text(totalBalance);
+                crdbVal();
+            }
+        });
+    */
     $(document).on('change', '.creditCheck', function (e) {
         var id = $(this).attr('data-crntid');
         var balance = parseFloat($(this).attr('data-balance'));
-        var totalBalance=0;
-        if($('#creditCheck'+id).prop('checked')){
-            $('#CN'+id).css("background-color", "#ffc0c0");
-            $(".creditCheck:checked").each (function () {
-                totalBalance += Number($(this).attr('data-balance'))
-            });
-            $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
-            $('#totalCreditBalanceValue').val(totalBalance.toFixed(2));
-            crdbVal();
-        }else{
-            $('#CN'+id).css("background-color", "transparent");
+        var totalBalance = 0;
+        if ($('#creditCheck' + id).prop('checked')) {
+            $('#CN' + id).css("background-color", "#ffc0c0");
             $(".creditCheck:checked").each(function () {
                 totalBalance += Number($(this).attr('data-balance'))
             });
-            $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(totalBalance));
+            $('#totalCreditBalanceValue').val(totalBalance.toFixed(2));
+            crdbVal();
+        } else {
+            $('#CN' + id).css("background-color", "transparent");
+            $(".creditCheck:checked").each(function () {
+                totalBalance += Number($(this).attr('data-balance'))
+            });
+            $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(totalBalance));
             $('#totalCreditBalanceValue').val(totalBalance.toFixed(2));
             crdbVal();
         }
@@ -599,9 +618,9 @@
     $(document).on('keyup', '.invBalance', function (e) {
         var id = $(this).attr('data-id');
         var bal = Number($(this).attr('data-bal')).toFixed(2)
-        var value = $("#invBalance"+id).val();
-        var totalBalance =0;
-        if(Number(value) > Number(bal)) {
+        var value = $("#invBalance" + id).val();
+        var totalBalance = 0;
+        if (Number(value) > Number(bal)) {
             Swal.fire({
                 position: 'top-end',
                 icon: 'error',
@@ -611,52 +630,59 @@
             });
             $('#invBalance' + id).val(bal);
             $('#invdebitCheck' + id).prop('checked', false);
-            $('#IN'+id).css("background-color", "transparent");
-            $("#invBalance"+id).attr("disabled", true);
-            $(".invBalance:not(:disabled)").each(function() {
+            $('#IN' + id).css("background-color", "transparent");
+            $("#invBalance" + id).attr("disabled", true);
+            $(".invBalance:not(:disabled)").each(function () {
                 totalBalance += Number($(this).val())
             });
-            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(totalBalance));
             $('#totalDebitBalanceValue').val(totalBalance);
             crdbVal()
-        }else{
-            $(".invBalance:not(:disabled)").each(function() {
+        } else {
+            $(".invBalance:not(:disabled)").each(function () {
                 totalBalance += Number($(this).val())
             });
-            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(totalBalance));
+            $('#totalDebitBalance').text(new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(totalBalance));
             $('#totalDebitBalanceValue').val(totalBalance);
             crdbVal()
         }
     });
+
     function crdbVal() {
-            // alert(debitAmt);
-            var totalDebitBalance = 0;
-            var totalCreditBalance = 0;
-            $(".invBalance:not(:disabled)").each(function() {
-                totalDebitBalance += Number($(this).val())
-            });
-            $(".creditCheck:checked").each(function () {
-                totalCreditBalance += Number($(this).attr('data-balance'))
-            });
-            var crdb = Number(totalDebitBalance) - Number(totalCreditBalance);
-            $('#crdbAmt').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(crdb));
+        // alert(debitAmt);
+        var totalDebitBalance = 0;
+        var totalCreditBalance = 0;
+        $(".invBalance:not(:disabled)").each(function () {
+            totalDebitBalance += Number($(this).val())
+        });
+        $(".creditCheck:checked").each(function () {
+            totalCreditBalance += Number($(this).attr('data-balance'))
+        });
+        var crdb = Number(totalDebitBalance) - Number(totalCreditBalance);
+        $('#crdbAmt').text(new Intl.NumberFormat('en-US', {style: 'currency', currency: 'INR'}).format(crdb));
     }
-    function removeItem(array, item){
-        for(var i in array){
-            if(array[i]===item){
-                array.splice(i,1);
+
+    function removeItem(array, item) {
+        for (var i in array) {
+            if (array[i] === item) {
+                array.splice(i, 1);
                 break;
             }
         }
     }
 
 
-
     $(document).ready(function () {
         $(document).on('click', '#submitData', function (e) {
             var debitValue = $('#totalDebitBalanceValue').val();
             var creditValue = $('#totalCreditBalanceValue').val();
-            var receivedFrom = $("#receivedFrom").val();
+            var customer = $("#receivedFrom").val();
             var crdb = Number(debitValue) - Number(creditValue);
             var debitTbl = $('#table1 tbody tr').map(function (idxRow, ele) {
                 //
@@ -674,9 +700,9 @@
                     // console.log(input.is(":checked"))
                     if (input.length === 1) {
                         var attr = $('#table1 thead tr th').eq(idxCell).text();
-                        if(input.attr('type')!=='checkbox'){
+                        if (input.attr('type') !== 'checkbox') {
                             retVal[attr.toLowerCase().replace(".", "").trim()] = input.val();
-                        }else{
+                        } else {
                             retVal['checked'] = input.is(":checked");
                         }
                     } else {
@@ -702,9 +728,9 @@
                     //
                     if (input.length === 1) {
                         var attr = $('#table1 thead tr th').eq(idxCell).text();
-                        if(input.attr('type')!=='checkbox'){
+                        if (input.attr('type') !== 'checkbox') {
                             retVal[attr.toLowerCase().replace(".", "").trim()] = input.val();
-                        }else{
+                        } else {
                             retVal['checked'] = input.is(":checked");
                         }
                     } else {
@@ -722,7 +748,7 @@
                 showConfirmButton: false,
                 allowOutsideClick: false
             });
-            if( Number(debitValue)===0){
+            if (Number(debitValue) === 0) {
                 waitingSwal.close()
                 Swal.fire({
                     icon: 'error',
@@ -731,7 +757,7 @@
                 });
                 return;
             }
-            if(Number(creditValue)===0){
+            if (Number(creditValue) === 0) {
                 waitingSwal.close();
                 Swal.fire({
                     icon: 'error',
@@ -740,7 +766,7 @@
                 });
                 return;
             }
-            if(Number(crdb)!==0){
+            if (Number(crdb) !== 0) {
                 waitingSwal.close();
                 Swal.fire({
                     icon: 'error',
@@ -749,7 +775,7 @@
                 });
                 return;
             }
-            if (!receivedFrom) {
+            if (!customer) {
                 waitingSwal.close();
                 Swal.fire({
                     icon: 'error',
@@ -758,10 +784,30 @@
                 });
                 return;
             }
-            console.log(debitData)
-            console.log(creditData)
+            var data = JSON.parse(debitData).filter(a => a.checked === true).concat(JSON.parse(creditData).filter(a => a.checked === true));
+            console.log(data)
             waitingSwal.close();
-            return;
+
+        /*    $.ajax({
+                type: "POST",
+                url: "/receipt",
+                dataType: 'json',
+                data: {
+                    debitValue: debitValue,
+                    creditValue: creditValue,
+                    customer: customer,
+                    crdb: crdb,
+                    debitData: JSON.parse(debitData).filter(a => a.checked === true).toString(),
+                    creditData: JSON.parse(creditData).filter(a => a.checked === true).toString(),
+                    data:data.toString()
+                },
+                success: function (data) {
+
+                },
+                error: function (data) {
+
+                }
+            });*/
 
         });
 

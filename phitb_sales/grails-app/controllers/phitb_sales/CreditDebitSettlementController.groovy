@@ -4,6 +4,7 @@ package phitb_sales
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
@@ -179,6 +180,39 @@ class CreditDebitSettlementController {
         }
         catch (BadRequestException ex)
         {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
+     * Save new Sale Bill Details along with products
+     * @param Sale Bill Details
+     * @return saved Sale Bill Details
+     */
+    def saveCrDbSettlement() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            CreditDebitSettlement creditDebitSettlement = creditDebitSettlementService.save(jsonObject.get("crdbSettlement"))
+            if (creditDebitSettlement) {
+                JSONArray crdbDetails = jsonObject.get("crdbDetails")
+                for (JSONObject product : crdbDetails) {
+                    product.put("cId", creditDebitSettlement.id)
+                    creditDebitSettlementService.save(product)
+                    println("product saved")
+                }
+            }
+            respond creditDebitSettlement
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }

@@ -854,4 +854,8 @@ public class Links
     public static String BULK_SAVE_BATCH_DETAIL = APP_CONTEXT_PATH + "product/save-bulk-batch-register";
     public static String BULK_SAVE_STOCK_DETAIL = APP_CONTEXT_PATH + "inventory/save-bulk-stocks";
 
+
+//    CrDb Settlement
+    public static String SAVE_CRDB_SETTLEMENT = APP_CONTEXT_PATH + "sales/crdb-settlement";
+
 }
