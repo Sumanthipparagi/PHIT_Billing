@@ -185,13 +185,14 @@
                                 </button>
                             </div>
 
+                            <g:if test="${customer!=null}">
                             <div class="col-md-3 mt-2">
                                 <br>
                                 <button class="btn btn-primary waves-effect" data-toggle="modal" data-target="#massDiscountModal"
-                                        style="background-color: #94fa4b;">Mass Discount
+                                        style="background-color: black;"> Mass Discount
                                 </button>
                             </div>
-
+                            </g:if>
                         %{--                            data-toggle="modal"--}%
                         %{--                            data-target="#myModal"--}%
                             <g:if test="${tempStockArray != null}">
@@ -2275,6 +2276,15 @@
            });
            $('.discount').val(0);
        }
+
+        if($('.discount').val() < 0){
+            Swal.fire({
+                icon: 'error',
+                title: 'Discount must be greater than 0',
+                text: 'Discount must be greater than 0',
+            });
+            $('.discount').val(0);
+        }
     });
 
 
@@ -2283,6 +2293,24 @@
         var idArray = [];
         for(var i=0;i<hotData.length;i++){
             idArray.push(hotData[i][25])
+        }
+        if($('.discount').val() > 100){
+            Swal.fire({
+                icon: 'error',
+                title: 'Discount must be less than 100',
+                text: 'Discount must be less than 100',
+            });
+            $('.discount').val(0);
+            return
+        }
+        if($('.discount').val() < 0){
+            Swal.fire({
+                icon: 'error',
+                title: 'Discount must be greater than 0',
+                text: 'Discount must be greater than 0',
+            });
+            $('.discount').val(0);
+            return
         }
         $.ajax({
             type: "GET",
