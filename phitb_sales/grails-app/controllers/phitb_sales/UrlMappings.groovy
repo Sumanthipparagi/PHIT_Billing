@@ -135,8 +135,9 @@ class UrlMappings {
             "/salebillbydaterangecustomer(.$format)?"(controller: 'saleBillDetails', action: 'getByDateRangeAndCustomerId')
 
 
-
             "/salebilldetails/getrecent(.$format)?"(controller: 'saleBillDetails', action: 'getRecentByFinancialYearAndEntity')
+
+            "/updatemassdiscount(.$format)?"(controller: 'saleProductDetails', action: 'updateMassDiscount')
 
             "/setpaymentstatus/$id/type/$paid(.$format)?"(controller: 'saleBillDetails') {
                 action = [POST: 'updatePaymentStatus']

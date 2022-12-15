@@ -860,4 +860,7 @@ public class Links
     public static String GET_CRDB_DETAILS_BY_ID = APP_CONTEXT_PATH +"sales/getcrdbsettlement";
     public static String CRDB_DATATABLE = APP_CONTEXT_PATH +"sales/creditdebitsettlement/datatable";
 
+//    Update mass Discount
+    public static String UPDATE_MASS_DISCOUNT = APP_CONTEXT_PATH +"sales/updatemassdiscount";
+
 }

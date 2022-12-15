@@ -185,6 +185,12 @@
                                 </button>
                             </div>
 
+                            <div class="col-md-3 mt-2">
+                                <br>
+                                <button class="btn btn-primary waves-effect" data-toggle="modal" data-target="#massDiscountModal"
+                                        style="background-color: #94fa4b;">Mass Discount
+                                </button>
+                            </div>
 
                         %{--                            data-toggle="modal"--}%
                         %{--                            data-target="#myModal"--}%
@@ -484,6 +490,7 @@
 
 
 <g:include view="controls/sales/batch-detail.gsp"/>
+<g:include view="controls/sales/mass-discount.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 
@@ -2258,6 +2265,47 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
+
+    $(document).on('keyup', '.discount', function (e) {
+       if($('.discount').val() > 100){
+           Swal.fire({
+               icon: 'error',
+               title: 'Discount must be less than 100',
+               text: 'Discount must be less than 100',
+           });
+           $('.discount').val(0);
+       }
+    });
+
+
+    $('#massDiscount').click(function (e) {
+        var hotData = hot.getSourceData();
+        var idArray = [];
+        for(var i=0;i<hotData.length;i++){
+            idArray.push(hotData[i][25])
+        }
+        $.ajax({
+            type: "GET",
+            url: '/update-mass-discount',
+            dataType: 'json',
+            data:{
+                data:JSON.stringify(idArray),
+                discount: $('.discount').val()
+            },
+            success: function (data) {
+                $('#massDiscountModal').modal('hide');
+                loadDraftProducts()
+            },
+            error:function (data) {
+                Swal.fire(
+                    'Oops',
+                    'Something went wrong!',
+                    'error'
+                )
+            }
+        });
+
+    });
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

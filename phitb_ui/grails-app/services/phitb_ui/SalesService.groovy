@@ -2184,4 +2184,24 @@ contains both deliveryChallan and products
 
     }
 
+
+    def updateMassDiscount(JSONArray jsonArray,double discount){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().UPDATE_MASS_DISCOUNT)
+                    .queryParam("idArray", URLEncoder.encode(jsonArray.toString(), "UTF-8"))
+                    .queryParam("discount", discount)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
+            log.error('Service :showSalesService , action :  show  , Ex:' + ex)
+        }
+
+    }
+
 }

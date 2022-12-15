@@ -1,6 +1,7 @@
 package phitb_sales
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
@@ -291,4 +292,42 @@ class SaleProductDetailsService
         }
     }
 
+
+    def updateMassDiscount(JSONArray idArray, double discount)
+    {
+        try{
+            if(idArray.size()!=0){
+                JSONArray jsonArray = new JSONArray()
+                for(long id:idArray){
+                    SaleProductDetails saleProductDetails = SaleProductDetails.findById(id)
+                    saleProductDetails.discount = discount
+                    def priceBeforeGst = (saleProductDetails.getsRate() * saleProductDetails.getSqty()) - ((saleProductDetails.getsRate() * saleProductDetails.getSqty()) * discount) / 100
+                    def finalPrice = priceBeforeGst + (priceBeforeGst * (saleProductDetails.getGstPercentage() / 100))
+                    saleProductDetails.amount = finalPrice
+                    if(saleProductDetails.getGstPercentage()!=0){
+                        saleProductDetails.gstAmount = priceBeforeGst * (saleProductDetails.getGstPercentage() / 100)
+                        saleProductDetails.sgstAmount = priceBeforeGst * (saleProductDetails.getSgstAmount() / 100)
+                        saleProductDetails.cgstAmount = priceBeforeGst * (saleProductDetails.getCgstAmount() / 100)
+                    }else{
+                        saleProductDetails.gstAmount  = 0
+                        saleProductDetails.sgstAmount = 0
+                        saleProductDetails.cgstAmount = 0
+                    }
+                    if(saleProductDetails.getIgstPercentage()!=0){
+                        saleProductDetails.igstAmount = priceBeforeGst * (saleProductDetails.getIgstPercentage() / 100)
+                    }else{
+                        saleProductDetails.igstAmount = 0
+                    }
+                    saleProductDetails.isUpdatable = true
+                    SaleProductDetails saleProductDetails1 = saleProductDetails.save(flush:true)
+                    jsonArray.add(saleProductDetails1)
+                }
+                return jsonArray
+            }
+        }catch(Exception ex){
+            println(ex)
+        }
+
+
+    }
 }

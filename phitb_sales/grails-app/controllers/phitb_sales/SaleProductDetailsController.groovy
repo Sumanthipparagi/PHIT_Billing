@@ -330,4 +330,16 @@ class SaleProductDetailsController
             println(controllerName+":"+ex)
         }
     }
+
+
+    def updateMassDiscount(){
+        try{
+            double discount = Double.parseDouble(params.discount.toString())
+            JSONArray jsonArray = new JSONArray(params.idArray.toString())
+            respond saleProductDetailsService.updateMassDiscount(jsonArray, discount)
+        }
+        catch(Exception ex){
+            println(ex)
+        }
+    }
 }

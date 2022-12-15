@@ -96,10 +96,19 @@ class SaleEntryController
         def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
         def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
+        JSONArray customerArray = new JSONArray(customers)
+        for (JSONObject c : customerArray)
+        {
+            if (c?.cityId != 0)
+            {
+                def city = new SystemService().getCityById(c?.cityId?.toString())
+                c.put("city", city)
+            }
+        }
         if(entityConfigs?.REGEN_NEW_DOC?.saleEntry == true)
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
-            render(view: '/sales/saleEntry/sale-entry', model: [customers         : customers, divisions: divisions, series: series,
+            render(view: '/sales/saleEntry/sale-entry', model: [customers         : customerArray, divisions: divisions, series: series,
                                                                 priorityList      : priorityList, saleBillDetail: saleBillDetail,
                                                                 saleProductDetails: saleProductDetails,
                                                                 transporter       : transporter,
@@ -110,7 +119,7 @@ class SaleEntryController
             if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT')
             {
                 JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
-                render(view: '/sales/saleEntry/sale-entry', model: [customers         : customers, divisions: divisions, series: series,
+                render(view: '/sales/saleEntry/sale-entry', model: [customers         : customerArray, divisions: divisions, series: series,
                                                                     priorityList      : priorityList, saleBillDetail: saleBillDetail,
                                                                     saleProductDetails: saleProductDetails,
                                                                     transporter       : transporter,
@@ -3662,11 +3671,24 @@ class SaleEntryController
 
     }
 
-
-
-
-
     def mailInvoice(){
         render(view: '/templates/_bill-template')
+    }
+
+
+    def updateMassDiscount(){
+        try{
+            JSONArray jsonArray = new JSONArray(params.data)
+            def updateDiscount = new SalesService().updateMassDiscount(jsonArray,Double.parseDouble(params.discount.toString()))
+            if(updateDiscount?.status == 200){
+                JSONArray responseArray = new JSONArray(updateDiscount.readEntity(String.class))
+                respond responseArray, formats: ['json'], status: 200;
+            }else{
+                response.status = 400
+            }
+        }
+        catch(Exception ex){
+            println(ex)
+        }
     }
 }
