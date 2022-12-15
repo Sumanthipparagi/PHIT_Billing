@@ -857,9 +857,11 @@ class UrlMappings {
         "/credit-debit-settlement/print-crdb"(controller: 'creditDebitSettlement', action: 'printCrDbDetails')
         "/credit-debit-settlement/crdb-list"(controller: 'creditDebitSettlement',action: 'crdbList')
         "/get-all-crdb"(controller: 'creditDebitSettlement', action: 'dataTable')
+        "/getall-bills-crdb"(controller: 'creditDebitSettlement', action: 'getAllBillDetailsByCustomerId')
 
 
-
+//        sale entry retailer
+        "/sale-entry-retailer"(controller: 'saleEntry', action: 'saleEntryRetailer')
 
     }
 }

@@ -51,6 +51,15 @@ class PurchaseReturnDetailService {
         }
     }
 
+
+    def getAllBySupplierId(String id,String financialYear,String entityId)
+    {
+        if(id)
+        {
+            return PurchaseReturn.findAllBySupplierIdAndFinancialYearAndEntityId(id, financialYear,Long.parseLong(entityId))
+        }
+    }
+
     PurchaseReturnDetail get(String id)
     {
         return PurchaseReturnDetail.findById(Long.parseLong(id))

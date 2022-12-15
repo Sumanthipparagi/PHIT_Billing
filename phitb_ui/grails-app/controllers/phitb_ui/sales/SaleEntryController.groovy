@@ -3691,4 +3691,38 @@ class SaleEntryController
             println(ex)
         }
     }
+
+
+    def saleEntryRetailer()
+    {
+        String entityId = session.getAttribute("entityId")?.toString()
+        String userId = session.getAttribute("userId")?.toString()
+        def users = new UserRegisterController().getByEntity()
+        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        def priorityList = new SystemService().getPriorityByEntity(entityId)
+        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
+        def series = new SeriesController().getByEntity(entityId)
+        ArrayList<String> salesmanList = []
+        /*users.each {
+            if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
+                salesmanList.add(it)
+            }
+        }*/
+        JSONArray customerArray = new JSONArray(customers)
+        for (JSONObject c : customerArray)
+        {
+            if (c?.cityId != 0)
+            {
+                def city = new SystemService().getCityById(c?.cityId?.toString())
+                c.put("city", city)
+            }
+        }
+        def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+        def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
+        render(view: '/sales/saleEntry/sale-entry-retailer', model: [customers   : customerArray, divisions: divisions, series: series,
+                                                            salesmanList: salesmanList, priorityList: priorityList,
+                                                            transporter : transporter, settings: settings, users:
+                                                                    users,entityConfigs:entityConfigs])
+    }
 }

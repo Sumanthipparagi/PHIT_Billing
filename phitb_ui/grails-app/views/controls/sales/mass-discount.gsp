@@ -11,7 +11,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-dark" id="massDiscount">Apply</button>
+                <button type="button" class="btn btn-dark" style="background-color: black" id="massDiscount">Apply
+                </button>
             </div>
         </div>
     </div>

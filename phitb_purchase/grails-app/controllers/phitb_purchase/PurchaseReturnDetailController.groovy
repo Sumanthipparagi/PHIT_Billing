@@ -206,7 +206,7 @@ class PurchaseReturnDetailController {
     {
         try
         {
-            PurchaseReturnDetail purchaseReturn = PurchaseReturnDetail.findById(Long.parseLong(params.id))
+            PurchaseReturn purchaseReturn = PurchaseReturn.findById(Long.parseLong(params.id))
             if (purchaseReturn)
             {
                 purchaseReturn.isUpdatable = true
@@ -222,10 +222,10 @@ class PurchaseReturnDetailController {
                     purchaseReturn.balance = purchaseReturn.getBalance()
                     purchaseReturn.adjAmount = purchaseReturn.getAdjAmount()
                 }
-                PurchaseReturnDetail purchaseReturnDetail = purchaseReturn.save(flush: true)
-                if (purchaseReturnDetail)
+                PurchaseReturn purchaseReturn1 = purchaseReturn.save(flush: true)
+                if (purchaseReturn1)
                 {
-                    respond purchaseReturnDetail
+                    respond purchaseReturn1
                     return
                 }
             }

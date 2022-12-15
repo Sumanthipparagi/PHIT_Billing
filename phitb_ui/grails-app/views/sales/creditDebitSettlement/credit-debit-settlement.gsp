@@ -400,24 +400,46 @@
         if (id) {
             $.ajax({
                 type: 'GET',
-                url: '/recipts/getallbilldetails?id=' + id,
+                url: '/getall-bills-crdb?id=' + id,
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
                     var invHTML = '';
                     var crntHTML = '';
-                    invHTML += '';
-                    crntHTML += '';
-                    var invoice = "INV";
+                    var purInvHTML = '';
+                    var purRetHTML = '';
+                    /*invHTML += '';*/
+                    /*crntHTML += '';*/
+                    var invoice = "SI";
                     var creditNote = "CRNT";
-                    var gtn = "GTN";
+                    var purchaseInv = "PI";
+                    var purchaseReturn = "PR";
+
+                    //sale invoice
                     var invPendingTotalAmt = data[0].filter(data => data.billStatus !== "CANCELLED").map(data =>
                         data.balance).reduce((acc, amount) => acc + amount, 0);
                     var invTotalAmt = data[0].filter(data => data.billStatus !== "CANCELLED").map(data =>
                         data.totalAmount).reduce((acc, amount) => acc + amount, 0);
 
+                    //crnt
                     var crntPendingTotalAmt = data[1].filter(data => data.returnStatus !== "CANCELLED").map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
                     var crntTotalAmt = data[1].filter(data => data.returnStatus !== "CANCELLED").map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0);
+
+
+                    //purchase bill
+                    var purInvPendingTotalAmt = data[2].filter(data => data.billStatus !== "CANCELLED").map(data =>
+                        data.balAmount).reduce((acc, amount) => acc + amount, 0);
+                    var purInvTotalAmt = data[2].filter(data => data.billStatus !== "CANCELLED").map(data =>
+                        data.totalAmount).reduce((acc, amount) => acc + amount, 0);
+
+                    //purchase Return
+                    var purReturnPendingTotalAmt = data[3].filter(data => data.returnStatus !== "CANCELLED").map(data =>
+                        data.balance).reduce((acc, amount) => acc + amount, 0);
+                    var purReturnTotalAmt = data[3].filter(data => data.returnStatus !== "CANCELLED").map(data =>
+                        data.totalAmount).reduce((acc, amount) => acc + amount, 0);
+
+
+
                     $('#totalCreditBalance').text(new Intl.NumberFormat('en-US', {
                         style: 'currency', currency: 'INR'
                     }).format(0.00));
@@ -425,12 +447,14 @@
                         style: 'currency', currency: 'INR'
                     }).format(0.00));
                     $('#crdbAmt').text(0.00);
-                    $('#invTotalAmt').text(invTotalAmt.toFixed(2));
-                    $('#invPendingTotalAmt').text(invPendingTotalAmt.toFixed(2));
-                    $('#crntTotalAmt').text(crntPendingTotalAmt.toFixed(2));
-                    $('#crntPendingTotalAmt').text(crntTotalAmt.toFixed(2));
+                    $('#invTotalAmt').text((Number(invTotalAmt+purReturnTotalAmt)).toFixed(2));
+                    $('#invPendingTotalAmt').text(Number(invPendingTotalAmt + purReturnPendingTotalAmt).toFixed(2));
+                    $('#crntTotalAmt').text((Number(crntPendingTotalAmt) + Number(purInvPendingTotalAmt)).toFixed(2));
+                    $('#crntPendingTotalAmt').text((Number(crntTotalAmt) + Number(purInvTotalAmt)).toFixed(2));
                     var invoiceData = [];
                     var crntData = [];
+
+                    //sale invoice
                     $.each(data[0], function (key, value) {
                         var balance = value.balance.toFixed(2);
                         if (Number(balance) !== 0 && value.billStatus !== 'DRAFT' && value.billStatus !== 'CANCELLED') {
@@ -456,6 +480,9 @@
                             // console.log(invIdArray)
                         }
                     });
+
+
+                    //crnt
                     $.each(data[1], function (key, value) {
                         var date = new Date(value.entryDate);
                         if (value.balance !== 0 && value.returnStatus !== 'CANCELLED') {
@@ -478,8 +505,64 @@
 
                         }
                     });
-                    $('#debitDetails').html(invHTML);
-                    $('#creditDetails').html(crntHTML);
+
+
+                    //purchaseInvoice
+                    $.each(data[2], function (key, value) {
+                        var date = new Date(value.entryDate);
+                        if (value.balAmount !== 0 && value.billStatus !== 'CANCELLED') {
+                            purInvHTML += ' <tr id="' + "CN" + value.id + '">\n' +
+                                '                                        <td>' + purchaseInv + '</td>\n' +
+                                '                                        <td>' + value.invoiceNumber + '</td>\n' +
+                                '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
+                                '                                        <td id="' + "crntAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
+                                '                                        <td id="' + "crntBal" + value.id + '" >' + value.balAmount.toFixed(2) +
+                                '</td>\n' +
+                                '                                        <td><input type="checkbox" id="' +
+                                "creditCheck" + value.id +
+                                '"  data-balance="' + value.balAmount + '" data-crntid="' + value.id + '"   class="creditCheck" ></td>\n' +
+                                '                                        <td style="display: none;">' + value.id + '</td>\n' +
+                                '                                        <td style="display: none;">' + value.financialYear + '</td>\n' +
+                                '                                        </tr>';
+                            crntData.push(value.id);
+                            crntIdArray.push(value.id);
+                            // console.log(crntIdArray)
+
+                        }
+                    });
+
+
+                    //purchaseReturn
+                    $.each(data[3], function (key, value) {
+                        var balance = value.balance.toFixed(2);
+                        if (Number(balance) !== 0 && value.billStatus !== 'DRAFT' && value.billStatus !== 'CANCELLED') {
+                            purRetHTML += ' <tr id="' + "IN" + value.id + '">\n' +
+                                '                                        <td>' + purchaseReturn + '</td>\n' +
+                                '                                        <td>' + value.invoiceNumber + '</td>\n' +
+                                '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
+                                '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.totalAmount.toFixed(2) + '</td>\n' +
+                                '                           <td id="' + "invBal" + value.id +
+                                '" ><input type="number" value="' + value.balance.toFixed(2) + '"  data-id="' +
+                                value.id + '"   data-bal="' + value.balance + '" style="width: 95%;"  id="invBalance' + value.id +
+                                '" class="invBalance"  disabled></td>\n' +
+                                '                                        <td><input type="checkbox" id="' +
+                                "invdebitCheck" + value.id + '"  class="invdebitCheck" data-invid="' +
+                                value.id + '"  data-balance="' + value.balance + '"  data-totalAmt="' +
+                                value.totalAmount + '" ></td>\n' +
+                                '                                        <td style="display: none;">' + value.id + '</td>\n' +
+                                '                                        <td style="display: none;">' + value.financialYear + '</td>\n' +
+                                '                                        </tr>';
+
+                            invoiceData.push(value.id);
+                            invIdArray.push(value.id);
+                            // console.log(invIdArray)
+                        }
+                    });
+
+
+
+                    $('#debitDetails').html(invHTML+purRetHTML);
+                    $('#creditDetails').html(crntHTML+purInvHTML);
                     if (invoiceData.length === 0) {
                         $('#debitDetails').html("<tr><td colspan='9'><div style='text-align: center;'><p style='font-size: 1.4 em;'>No Data Found</p></div></td></tr>");
                     }
@@ -547,7 +630,7 @@
                 style: 'currency',
                 currency: 'INR'
             }).format(totalBalance));
-            $('#totalDebitBalanceValue').val(totalBalance);
+            $('#totalDebitBalanceValue').val(totalBalance.toFixed(2));
             crdbVal()
         } else {
             $('#IN' + id).css("background-color", "transparent");
@@ -560,7 +643,7 @@
                 style: 'currency',
                 currency: 'INR'
             }).format(totalBalance));
-            $('#totalDebitBalanceValue').val(totalBalance);
+            $('#totalDebitBalanceValue').val(totalBalance.toFixed(2));
             crdbVal()
         }
     });
@@ -639,7 +722,7 @@
                 style: 'currency',
                 currency: 'INR'
             }).format(totalBalance));
-            $('#totalDebitBalanceValue').val(totalBalance);
+            $('#totalDebitBalanceValue').val(totalBalance.toFixed(2));
             crdbVal()
         } else {
             $(".invBalance:not(:disabled)").each(function () {
@@ -649,7 +732,7 @@
                 style: 'currency',
                 currency: 'INR'
             }).format(totalBalance));
-            $('#totalDebitBalanceValue').val(totalBalance);
+            $('#totalDebitBalanceValue').val(totalBalance.toFixed(2));
             crdbVal()
         }
     });

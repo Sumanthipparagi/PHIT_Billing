@@ -166,10 +166,13 @@
 <div class="container" style="display: flex; height: 160px;">
     <div style="float: left;margin-left: -200px;">
         <table class="print" style="margin-top: 10px;width: 100%;">
+            <thead>
             <tr>
                 <th>Tran No.</th>
                 <th>Amount</th>
             </tr>
+            </thead>
+            <tbody>
             <%
                 double debitAmt = 0;
                 double creditAmt = 0;
@@ -190,19 +193,18 @@
             </g:each>
             <tr>
                 <td style="visibility: hidden;"></td>
-                <td>${debitAmt - creditAmt}</td>
+                <td>${creditAmt - debitAmt}</td>
             </tr>
+            </tbody>
+            <tfoot>
+
+            </tfoot>
         </table>
     </div>
 </div>
 <br>
 <br>
 
-<p class="signatory" style="float: right;margin-right: 24px;">Authorized Signatory</p>
-
-<p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute('entityName')}</p>
-
-<p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
 </body>
 </html>
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
