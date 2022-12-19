@@ -440,12 +440,9 @@
                             sgst.push(pd.sgstAmount / amount * 100)
                             igst.push(pd.igstAmount / amount * 100)
                         %>
-                        <td>${String.format("%.2f", pd.cgstAmount)}<br><g:if test="${pd.cgstAmount!=0}">${String.format("%.2f",
-                                pd.cgstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
-                        <td>${String.format("%.2f", pd.sgstAmount)}<br><g:if test="${pd.sgstAmount!=0}">${String.format("%.2f",
-                                pd.sgstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
-                        <td>${String.format("%.2f", pd.igstAmount)}<br><g:if test="${pd.igstAmount!=0}">${String.format("%.2f",
-                                pd.igstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
+                        <td>${String.format("%.2f", pd.cgstAmount)}<br>${String.format("%.2f", pd.cgstPercentage).toString()+"%"}</td>
+                        <td>${String.format("%.2f", pd.sgstAmount)}<br>${String.format("%.2f", pd.sgstPercentage).toString()+"%"}</td>
+                        <td>${String.format("%.2f", pd.igstAmount)}<br>${String.format("%.2f", pd.igstPercentage).toString()+"%"}</td>
                         <td>${String.format("%.2f", pd.amount)}</td>
                     </tr>
                 </g:each>
@@ -490,12 +487,9 @@
                         sgst.push(pp.sgstAmount / amount * 100)
                         igst.push(pp.igstAmount / amount * 100)
                     %>
-                    <td>${String.format("%.2f", pp.cgstAmount)}<br><g:if test="${pp.cgstAmount!=0}">${String.format("%.2f",
-                            pp.cgstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
-                    <td>${String.format("%.2f", pp.sgstAmount)}<br><g:if test="${pp.sgstAmount!=0}">${String.format("%.2f",
-                            pp.sgstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
-                    <td>${String.format("%.2f", pp.igstAmount)}<br><g:if test="${pp.igstAmount!=0}">${String.format("%.2f",
-                            pp.igstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
+                    <td>${String.format("%.2f", pp.cgstAmount)}<br>${String.format("%.2f", pp.cgstPercentage).toString()+"%"}</td>
+                    <td>${String.format("%.2f", pp.sgstAmount)}<br>${String.format("%.2f", pp.sgstPercentage).toString()+"%"}</td>
+                    <td>${String.format("%.2f", pp.igstAmount)}<br>${String.format("%.2f", pp.igstPercentage).toString()+"%"}</td>
                     <td>${String.format("%.2f", pp.amount)}</td>
                 </tr>
             </g:each>

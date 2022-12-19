@@ -208,20 +208,20 @@
                         var manfDate = new Date(json.data[i].manfDate);
                         var expiryDate = new Date(json.data[i].expiryDate);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-product="' + json.data[i].product.id + '"' +
-                            '" data-batchNumber="' + json.data[i].batchNumber + '"' +
-                            '" data-manfDate="' + moment(manfDate).format('DD/MM/YYYY') + '"' +
-                            '" data-expiryDate="' +  moment(expiryDate).format('DD/MM/YYYY') + '"' +
-                            '" data-purchaseRate="' + json.data[i].purchaseRate + '"' +
-                            '" data-ptr="' + json.data[i].ptr + '"' +
-                            '" data-qty="' + json.data[i].qty + '"' +
-                            '" data-saleRate="' + json.data[i].saleRate + '"' +
-                            '" data-mrp="' + json.data[i].mrp + '"' +
-                            '" data-box="' + json.data[i].box + '"' +
-                            '" data-caseWt="' + json.data[i].caseWt + '"' +
-                            '" data-productCat="' + json.data[i].productCat.id + '"' +
-                            '" data-entityId="' + json.data[i].entityId + '"' +
-                            '" data-entityType="' + json.data[i].entityTypeId + '"' +
+                            '"data-product="' + json.data[i].product.id + '"' +
+                            'data-batchNumber="' + json.data[i].batchNumber + '"' +
+                            'data-manfDate="' + moment(manfDate).format('DD/MM/YYYY') + '"' +
+                            ' data-expiryDate="' +  moment(expiryDate).format('DD/MM/YYYY') + '"' +
+                            ' data-purchaseRate="' + json.data[i].purchaseRate + '"' +
+                            ' data-ptr="' + json.data[i].ptr + '"' +
+                            ' data-qty="' + json.data[i].qty + '"' +
+                            ' data-saleRate="' + json.data[i].saleRate + '"' +
+                            ' data-mrp="' + json.data[i].mrp + '"' +
+                            ' data-box="' + json.data[i].box + '"' +
+                            ' data-caseWt="' + json.data[i].caseWt + '"' +
+                            ' data-productCat="' + json.data[i].productCat.id + '"' +
+                            ' data-entityId="' + json.data[i].entityId + '"' +
+                            ' data-entityType="' + json.data[i].entityTypeId + '"' +
                             '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addbatchModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
@@ -344,10 +344,11 @@
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $('.product').prop('disabled', true);
+        $("#product").val($(this).attr('data-product')).change()
+        // alert($(this).attr('data-batchNumber'))
+        $('#product').prop('disabled', true);
         $(".productId").val($(this).attr('data-product'));
-        $(".productId").val($(this).attr('data-product'));
-        $(".batchNumber").val($(this).attr('data-batchNumber'));
+        $("#batchNumber").val($(this).attr('data-batchNumber'));
         $(".manfDate").val($(this).attr('data-manfDate'));
         $(".expiryDate").val($(this).attr('data-expiryDate'));
         $(".purchaseRate").val($(this).attr('data-purchaseRate'));

@@ -77,23 +77,9 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect"
-                                        onchange="customerSelectChanged()">
-                                    <option selected disabled>--SELECT--</option>
-                                    <g:each in="${customers}" var="cs">
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option data-state="${cs.stateId}" value="${cs.id}"
-                                                    data-address="${cs.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + " , " + cs.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + cs?.city?.stateName + ", " + cs?.city?.districtName + "-" + cs?.city?.pincode}"
-                                                    data-gstin="${cs.gstn}"
-                                                    <g:if
-                                                            test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
-                                        </g:if>
-                                    </g:each>
-                                </select>
-                                <span id="freezeContent"></span>
+                                <label>Patient:</label>
+                                <input type="hidden" class="customerId"/>
                             </div>
-
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date" <g:if
@@ -138,7 +124,7 @@
                             </div>
 
                             <div class="col-md-2 mt-2">
-                                <label for="customerSelect">Rep:</label>
+                                <label for="">Rep:</label>
                                 <select class="form-control show-tick" id="repSelect">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${users}" var="u">
@@ -520,14 +506,19 @@
         '<strong>Product</strong>',
         '<strong>Batch</strong>',
         '<strong>Exp Dt</strong>',
+        '<strong>Pres.Qty</strong>',
         '<strong>Sale Qty</strong>',
         '<strong>Free Qty</strong>',
+        '<strong>M</strong>',
+        '<strong>A</strong>',
+        '<strong>N</strong>',
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Disc.(%)</strong>',
         '<strong>Pack</strong>',
         '<strong>GST</strong>',
         '<strong>Value</strong>',
+        '<strong>Dr.Name</strong>',
         'SGST',
         'CGST',
         'IGST',
@@ -572,6 +563,7 @@
     var stateId = null;
 
     $(document).ready(function () {
+        $('#phoneNumberModal').modal({backdrop: 'static', keyboard: false}, 'show');
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${saleTransportDetail?.lrDate}').format('YYYY-MM-DD'));
@@ -2334,7 +2326,41 @@
         });
 
     });
+
+    $(document).on('click', '#phoneNumber', function (e) {
+        var phoneNumber = $('.phoneNumber').val();
+      if(phoneNumber.length < 10 || phoneNumber.length > 10){
+          Swal.fire({
+              icon: 'error',
+              title: 'Enter valid number',
+              text: 'Phone number must be of 10 digits',
+          });
+          return;
+      }
+        $.ajax({
+            type: "GET",
+            url: '/update-mass-discount',
+            dataType: 'json',
+            data:{
+                data:JSON.stringify(idArray),
+                discount: $('.discount').val()
+            },
+            success: function (data) {
+                $('#massDiscountModal').modal('hide');
+                loadDraftProducts()
+            },
+            error:function (data) {
+                Swal.fire(
+                    'Oops',
+                    'Something went wrong!',
+                    'error'
+                )
+            }
+        });
+    });
 </script>
+<g:include view="controls/sales/add-patient-modal.gsp"/>
+<g:include view="controls/sales/phone-number.gsp"/>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("sales-menu");

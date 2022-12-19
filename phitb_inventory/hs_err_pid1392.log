@@ -1,0 +1,153 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1048576 bytes for AllocateHeap
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (memory/allocation.inline.hpp:61), pid=1392, tid=0x0000000000000aec
+#
+# JRE version:  (8.0_121-b13) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.121-b13 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000002a55000):  JavaThread "Unknown thread" [_thread_in_vm, id=2796, stack(0x00000000028b0000,0x00000000029b0000)]
+
+Stack: [0x00000000028b0000,0x00000000029b0000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x0000000002a55000 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=2796, stack(0x00000000028b0000,0x00000000029b0000)]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ PSYoungGen      total 229376K, used 3932K [0x00000000f0000000, 0x0000000100000000, 0x0000000100000000)
+  eden space 196608K, 2% used [0x00000000f0000000,0x00000000f03d70b0,0x00000000fc000000)
+  from space 32768K, 0% used [0x00000000fe000000,0x00000000fe000000,0x0000000100000000)
+  to   space 32768K, 0% used [0x00000000fc000000,0x00000000fc000000,0x00000000fe000000)
+ ParOldGen       total 524288K, used 0K [0x00000000d0000000, 0x00000000f0000000, 0x00000000f0000000)
+  object space 524288K, 0% used [0x00000000d0000000,0x00000000d0000000,0x00000000f0000000)
+ Metaspace       used 781K, capacity 4480K, committed 4480K, reserved 1056768K
+  class space    used 75K, capacity 384K, committed 384K, reserved 1048576K
+
+Card table byte_map: [0x0000000012010000,0x00000000121a0000] byte_map_base: 0x0000000011990000
+
+Marking Bits: (ParMarkBitMap*) 0x00000000740fb6d0
+ Begin Bits: [0x00000000126a0000, 0x00000000132a0000)
+ End Bits:   [0x00000000132a0000, 0x0000000013ea0000)
+
+Polling page: 0x0000000000f60000
+
+CodeCache: size=245760Kb used=328Kb max_used=328Kb free=245431Kb
+ bounds [0x0000000002c50000, 0x0000000002ec0000, 0x0000000011c50000]
+ total_blobs=58 nmethods=0 adapters=38
+ compilation: enabled
+
+Compilation events (0 events):
+No events
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.054 loading class java/lang/Short
+Event: 0.055 loading class java/lang/Short done
+Event: 0.055 loading class java/lang/Integer
+Event: 0.055 loading class java/lang/Integer done
+Event: 0.055 loading class java/lang/Long
+Event: 0.055 loading class java/lang/Long done
+Event: 0.056 loading class java/lang/NullPointerException
+Event: 0.056 loading class java/lang/NullPointerException done
+Event: 0.056 loading class java/lang/ArithmeticException
+Event: 0.056 loading class java/lang/ArithmeticException done
+
+
+Dynamic libraries:
+0x00007ff743ed0000 - 0x00007ff743f07000 	C:\Program Files\Java\jdk1.8.0_121\bin\java.exe
+0x00007ff911770000 - 0x00007ff911968000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff911640000 - 0x00007ff9116ff000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff90f0e0000 - 0x00007ff90f3b2000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff910390000 - 0x00007ff91043e000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff910aa0000 - 0x00007ff910b3e000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff910ba0000 - 0x00007ff910c3c000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff90f7b0000 - 0x00007ff90f8d5000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff910d70000 - 0x00007ff910f11000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff90f030000 - 0x00007ff90f052000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff911700000 - 0x00007ff91172b000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff90f460000 - 0x00007ff90f56f000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff90f3c0000 - 0x00007ff90f45d000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff90f6b0000 - 0x00007ff90f7b0000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff8fe1c0000 - 0x00007ff8fe45a000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.1110_none_60b5254171f9507e\COMCTL32.dll
+0x00007ff911430000 - 0x00007ff911462000 	C:\WINDOWS\System32\IMM32.DLL
+0x0000000074180000 - 0x0000000074252000 	C:\Program Files\Java\jdk1.8.0_121\jre\bin\msvcr100.dll
+0x00000000738e0000 - 0x000000007417b000 	C:\Program Files\Java\jdk1.8.0_121\jre\bin\server\jvm.dll
+0x00007ff90f8e0000 - 0x00007ff90f8e8000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ff900a60000 - 0x00007ff900a87000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff8fdc70000 - 0x00007ff8fdc7a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff8fdd00000 - 0x00007ff8fdd09000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ff910550000 - 0x00007ff9105bb000 	C:\WINDOWS\System32\WS2_32.dll
+0x00000000738d0000 - 0x00000000738df000 	C:\Program Files\Java\jdk1.8.0_121\jre\bin\verify.dll
+0x00000000738a0000 - 0x00000000738c9000 	C:\Program Files\Java\jdk1.8.0_121\jre\bin\java.dll
+0x00000000737b0000 - 0x00000000737e5000 	C:\Program Files\Java\jdk1.8.0_121\jre\bin\jdwp.dll
+0x00000000737a0000 - 0x00000000737a8000 	C:\Program Files\Java\jdk1.8.0_121\jre\bin\npt.dll
+0x0000000073770000 - 0x0000000073793000 	C:\Program Files\Java\jdk1.8.0_121\jre\bin\instrument.dll
+0x0000000073880000 - 0x0000000073896000 	C:\Program Files\Java\jdk1.8.0_121\jre\bin\zip.dll
+
+VM Arguments:
+jvm_args: -Dendpoints.shutdown.enabled=true -Denv=development -Dfull.stacktrace=false -Dgrails.env=development -Dgrails.full.stacktrace=false -Dinfo.app.grailsVersion=3.3.6 -Dinfo.app.name=phitb_inventory -Dinfo.app.version=0.1 -Djdk.reflect.allowGetCallerClass=true -Drun.active=true -Dserver.port=8086 -Dspring.output.ansi.enabled=always -Dspring.profiles.active -Dspringloaded=inclusions=grails.plugins..*;synchronize=true;allowSplitPackages=true;cacheDir=D:\PharmIT-Billing\phitb_inventory\build\springloaded -Dverbose=false -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:CICompilerCount=3 -agentlib:jdwp=transport=dt_socket,address=63558,suspend=y,server=y -javaagent:C:\Users\User\.IntelliJIdea2019.3\system\captureAgent\debugger-agent.jar -javaagent:C:\Users\User\.gradle\caches\modules-2\files-2.1\org.springframework\springloaded\1.2.8.RELEASE\b60bac05b0451cdc1863bfec617f39aa0dcaaa43\springloaded-1.2.8.RELEASE.jar -Xverify:none -Xms768m -Xmx768m -Dfile.encoding=UTF-8 -Duser.country=IN -Duser.language=en -Duser.variant 
+java_command: phitb_inventory.Application
+java_class_path (initial): D:\PharmIT-Billing\phitb_inventory\src\main\resources;D:\PharmIT-Billing\phitb_inventory\grails-app\views;D:\PharmIT-Billing\phitb_inventory\grails-app\i18n;D:\PharmIT-Billing\phitb_inventory\grails-app\conf;D:\PharmIT-Billing\phitb_inventory\build\classes\main;D:\PharmIT-Billing\phitb_inventory\build\resources\main;D:\PharmIT-Billing\phitb_inventory\build\gson-classes\main;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-logging\1.5.14.RELEASE\970e7424050d1d1179640ec53b24953fa29fdcbd\spring-boot-starter-logging-1.5.14.RELEASE.jar;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-autoconfigure\1.5.14.RELEASE\a33f2ce0b5c4a41d61aa5fa1817d0055dea7150e\spring-boot-autoconfigure-1.5.14.RELEASE.jar;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.grails\grails-core\3.3.6\4e108aaae7ce13bfb2aaa054deeed91c96d5926d\grails-core-3.3.6.jar;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-actuator\1.5.14.RELEASE\b25f52cc7db0bbe03c69a8a7efb2bbb6183c0796\spring-boot-starter-actuator-1.5.14.RELEASE.jar;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.grails\grails-plugin-url-mappings\3.3.6\2e7b161f04b8bdfd949c2aefa459f500d684e836\grails-plugin-url-mappings-3.3.6.jar;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.grails\grails-plugin-rest\3.3.6\76b5c665d761a3c49d0b9b0d5f6fb1a91990ba6b\grails-plugin-rest-3.3.6.jar;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.grails\grails-plugin-codecs\3.3.6\c9ce4ed7f1248f92d97a4419987eec0936cee3f5\grails-plugin-codecs-3.3.6.jar;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.grails\grails-plugin-interceptors\3.3.6\3479d25f18ce9b2e8cb4014bb7d30580c6fa2175\grails-plugin-interceptors-3.3.6.jar;C:\Users\User\.gradle\caches\modules-2\files-2.1\org.grails\grails-plugin-services\3.3.6\4113c50ad833808b199b5ffb2dbaf25d89900ad5\grails-plugin-services-3.3.6.jar;C:\Users\User\.gradle
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk-15.0.2
+PATH=C:\Program Files\Common Files\Oracle\Java\javapath;C:\Python39\Scripts\;C:\Python39\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_121\bin;C:\hadoop\bin;C:\hadoop\sbin;C:\grails-3.3.6\bin;C:\Program Files\PostgreSQL\14\bin;C:\Program Files\PuTTY\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\Users\User\AppData\Roaming\npm;C:\Users\User\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.4\bin;;
+USERNAME=Capulus
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 61 Stepping 4, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 19041 (10.0.19041.2364)
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 61 stepping 4, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, rtm, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx
+
+Memory: 4k page, physical 8277520k(218780k free), swap 26593948k(4536k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.121-b13) for windows-amd64 JRE (1.8.0_121-b13), built on Dec 12 2016 18:21:36 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Mon Dec 19 18:04:23 2022
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

@@ -421,6 +421,8 @@ class PurchaseEntryController {
                         {
                             def tax = new EntityService().getTaxRegisterByValueAndEntity(purchase.get("20").toString(), entityId)
                             stockBook.put("taxId", tax.id)
+                        }else{
+                            stockBook.put("taxId", taxId)
                         }
                         stockBook.put("manufacturingDate", manfDate)
                         stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
@@ -2547,13 +2549,12 @@ class PurchaseEntryController {
                     stockBook.put("remainingQty", saleQty)
                     stockBook.put("remainingFreeQty", freeQty)
                     stockBook.put("remainingReplQty", 0)
-                    if(taxId!="" || taxId!=0)
+                    if (taxId == "" || taxId == 0 || taxId == "0")
                     {
-                        stockBook.put("taxId", taxId) //TODO: to be set from front end
-                    }
-                    else
-                    {
-                        stockBook.put("taxId", 0)
+                        def tax = new EntityService().getTaxRegisterByValueAndEntity(purchase.get("20").toString(), entityId)
+                        stockBook.put("taxId", tax.id)
+                    }else{
+                        stockBook.put("taxId", taxId)
                     }
                     stockBook.put("manufacturingDate", manfDate)
                     stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
