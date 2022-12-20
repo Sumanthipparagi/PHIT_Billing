@@ -329,6 +329,7 @@
     var customers = [];
     var readOnly = false;
     var scheme = null;
+    var stateId = null;
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -656,6 +657,11 @@
             }
         });
 
+        stateId = $('#customerSelect option:selected').attr('data-state');
+        $('#customerSelect').change(function () {
+            stateId = $('#customerSelect option:selected').attr('data-state');
+        });
+
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -728,9 +734,18 @@
                         hot.setDataAtCell(mainTableRow, 8, 0);
                         hot.setDataAtCell(mainTableRow, 9, rowData[7]);
                         gst = rowData[8];
-                        sgst = rowData[9];
+                       /* sgst = rowData[9];
                         cgst = rowData[10];
-                        igst = rowData[11];
+                        igst = rowData[11];*/
+                        if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                            sgst = rowData[9];
+                            cgst = rowData[10];
+                            igst = 0
+                        } else {
+                            igst = rowData[11];
+                            sgst = 0;
+                            cgst = 0;
+                        }
                         hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 16, gst);
                         hot.setDataAtCell(mainTableRow, 17, sgst);
@@ -812,6 +827,7 @@
         $('#duedate').prop("readonly", false);
         $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
         $('#duedate').prop("readonly", true);
+        calculateTaxes();
     }
 
     function calculateTotalAmt() {
@@ -1488,6 +1504,39 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
+
+    function calculateTaxes() {
+        var data = hot.getData();
+        for (var row = 0; row < data.length; row++) {
+            var sgstAmount = Number(hot.getDataAtCell(row, 12));
+            var cgstAmount = Number(hot.getDataAtCell(row, 13));
+            var igstAmount = Number(hot.getDataAtCell(row, 14));
+            var gstPercentage = hot.getDataAtCell(row, 17);
+            var sgstPercentage = hot.getDataAtCell(row, 18);
+            var cgstPercentage = hot.getDataAtCell(row, 19);
+            if (stateId === '${session.getAttribute('stateId')}') {
+                if (igstAmount !== 0) {
+                    hot.setDataAtCell(row, 12, Number(igstAmount / 2).toFixed(2)); //SGST
+                    hot.setDataAtCell(row, 13, Number(igstAmount / 2).toFixed(2)); //CGST
+                    hot.setDataAtCell(row, 14, 0); //IGST
+
+                    hot.setDataAtCell(row, 18, sgstPercentage);
+                    hot.setDataAtCell(row, 19, cgstPercentage);
+                    hot.setDataAtCell(row, 20, 0);
+                }
+            } else {
+                if (sgstAmount !== 0 && cgstAmount !== 0) {
+                    hot.setDataAtCell(row, 12, 0); //SGST
+                    hot.setDataAtCell(row, 13, 0); //CGST
+                    hot.setDataAtCell(row, 14, (sgstAmount + cgstAmount).toFixed(2)); //IGST
+
+                    hot.setDataAtCell(row, 18, 0);
+                    hot.setDataAtCell(row, 19, 0);
+                    hot.setDataAtCell(row, 20, sgstPercentage + cgstPercentage);
+                }
+            }
+        }
+    }
 
 
     $(document).ready(function () {
