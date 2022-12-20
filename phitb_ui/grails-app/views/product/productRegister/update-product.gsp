@@ -402,7 +402,8 @@
                                             </label>
                                             <select class="form-control show-tick taxId" name="taxId" id="taxId">
                                                 <g:each var="t" in="${tax}">
-                                                    <option value="${t.id}" <g:if test="${t.id == product.taxId}">selected</g:if>>${t.taxName}</option>
+                                                    <option value="${t.id}"
+                                                            <g:if test="${t.id == product.taxId}">selected</g:if>>${t.taxName}  (${t.taxValue}%)</option>
                                                 </g:each>
                                             </select>
                                         </div>
