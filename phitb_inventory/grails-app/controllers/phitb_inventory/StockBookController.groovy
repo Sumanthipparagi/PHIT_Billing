@@ -181,6 +181,7 @@ class StockBookController
         }
         catch (Exception ex)
         {
+            println(ex)
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
