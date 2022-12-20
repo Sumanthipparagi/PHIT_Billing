@@ -582,7 +582,7 @@
                 <tr>
                     <th>Add Rounding off*</th>
                     <td>0.00</td>
-                    <td>0.00</td>
+                    <td id="roundoff"></td>
                 </tr>
                 <tr>
                     <th>Net Payable Amt.</th>
@@ -710,6 +710,7 @@
         </g:else>
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
+        $("#roundoff").text((Number(netInvAmt).toFixed(2) - Number('${total}').toFixed(2)).toFixed(2));
 
 
         <g:if test="${purchaseBillDetail?.refDate!=null}">

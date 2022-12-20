@@ -517,14 +517,13 @@ class PurchaseEntryController {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String userId = session.getAttribute("userId")
-       /* def purchaseProductDetailsByBill = new PurchaseService().getPurchaseProductDetailsByBill(id)
-        */
-       /* JSONObject jsonObject1 = new JSONObject()
+        def purchaseProductDetailsByBill = new PurchaseService().getPurchaseProductDetailsByBill(id)
+        /*JSONObject jsonObject1 = new JSONObject()
         for(JSONObject purchaseProduct:purchaseProductDetailsByBill){
             def product = new ProductService().getProductById(purchaseProduct.productId.toString())
             purchaseProduct.put("product",product)
             def stocks = new InventoryService().getStocksOfProductAndBatch(purchaseProduct.productId.toString(), purchaseProduct.batchNumber,purchaseProduct.entityId.toString())
-            if(stocks.remainingQty == purchaseProduct.sqty || stocks.remainingFreeQty == purchaseProduct.freeQty){
+            if(stocks.remainingQty < purchaseProduct.sqty || stocks.remainingFreeQty < purchaseProduct.freeQty){
                 jsonObject1.put("purchaseProduct",purchaseProduct)
             }
         }
@@ -532,8 +531,6 @@ class PurchaseEntryController {
             respond jsonObject1, formats:['json'], status: 201;
             return
         }*/
-
-
         JSONObject jsonObject = new PurchaseService().cancelPurchaseInvoice(id, entityId, financialYear, userId)
         if (jsonObject)
         {
@@ -558,7 +555,7 @@ class PurchaseEntryController {
 //                JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
 //                new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
 //            }
-            respond jsonObject, formats: ['json']
+            respond jsonObject, formats: ['json'], status: 200
         }
         else
         {

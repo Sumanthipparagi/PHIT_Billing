@@ -311,12 +311,22 @@
                     url: url,
                     dataType: 'json',
                     success: function (data) {
-                        Swal.fire(
-                            'Success!',
-                            'Invoice Cancelled',
-                            'success'
-                        );
-                        purchaseInvoiceTable();
+                        if(data.status === 201){
+                            Swal.fire(
+                                'Permission Denied',
+                                'This consist of used stocks',
+                                'success'
+                            );
+                            purchaseInvoiceTable();
+                        }else{
+                            Swal.fire(
+                                'Success!',
+                                'Invoice Cancelled',
+                                'success'
+                            );
+                            purchaseInvoiceTable();
+                        }
+
                     },
                     error: function () {
                         Swal.fire(

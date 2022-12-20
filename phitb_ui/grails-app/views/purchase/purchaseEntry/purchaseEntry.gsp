@@ -89,6 +89,7 @@
                                 <label for="supplier">Supplier:</label>
                                 <select class="form-control show-tick" id="supplier"
                                         onchange="supplierChanged()">
+%{--                                    <option value="">--Please select --</option>--}%
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option
@@ -1959,6 +1960,7 @@
                             if (result.isConfirmed) {
                                 printInvoice();
                             } else if (result.isDenied) {
+                                $('#supplier').prop('selectedIndex',0);
                                 resetData();
                                 location.reload();
                             }
@@ -2200,8 +2202,8 @@ function loadProducts(series) {
             var cgstAmount = Number(hot.getDataAtCell(row, 15));
             var igstAmount = Number(hot.getDataAtCell(row, 16));
 
-            var sgstPercentage = hot.getDataAtCell(row, 19);
-            var cgstPercentage = hot.getDataAtCell(row, 20);
+            var sgstPercentage = hot.getDataAtCell(row, 21);
+            var cgstPercentage = hot.getDataAtCell(row, 22);
 
             if (stateId === '${session.getAttribute('stateId')}') {
                 if (igstAmount !== 0) {
