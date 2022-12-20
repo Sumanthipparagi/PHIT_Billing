@@ -457,6 +457,8 @@
     var taxRegister = [];
     var readOnly = false;
     var scheme = null;
+    var stateId = null;
+
     $(document).ready(function () {
         var isCheckedYes = "YES";
         // var isCheckedNo = $('.prev_sales_no').prop('checked');
@@ -474,7 +476,7 @@
             isCheckedYes = "YES"
         });
         $("#customer").select2();
-        var stateId = $('#customer option:selected').attr('data-stateId')
+         stateId = $('#customer option:selected').attr('data-stateId')
         $('#customer').change(function () {
             stateId = $('#customer option:selected').attr('data-stateId')
         });
@@ -950,6 +952,11 @@
             }
         });
 
+        stateId = $('#customer option:selected').attr('data-stateId');
+        $('#customer').change(function () {
+            stateId = $('#customer option:selected').attr('data-stateId');
+        });
+
 
         $(document).ready(function () {
             $("input[name$='prev_sales']").click(function () {
@@ -1121,15 +1128,24 @@
                         hot.setDataAtCell(mainTableRow, 9, 0);
                         hot.setDataAtCell(mainTableRow, 10, rowData[8]);
                         hot.setDataAtCell(mainTableRow, 11, rowData[9].toFixed(2));
-                        hot.setDataAtCell(mainTableRow, 12, rowData[9]);
-                        hot.setDataAtCell(mainTableRow, 14, rowData[10]);
-                        hot.setDataAtCell(mainTableRow, 15, rowData[11]);
-                        hot.setDataAtCell(mainTableRow, 16, rowData[12]);
                         hot.setDataAtCell(mainTableRow, 17, "NA");
                         gst = rowData[9];
-                        sgst = rowData[10];
+                       /* sgst = rowData[10];
                         cgst = rowData[11];
-                        igst = rowData[12];
+                        igst = rowData[12];*/
+                        if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                            sgst = rowData[10];
+                            cgst = rowData[11];
+                            igst = 0
+                        } else {
+                            igst = rowData[12];
+                            sgst = 0;
+                            cgst = 0;
+                        }
+                        hot.setDataAtCell(mainTableRow, 12, gst);
+                        hot.setDataAtCell(mainTableRow, 14, sgst);
+                        hot.setDataAtCell(mainTableRow, 15, cgst);
+                        hot.setDataAtCell(mainTableRow, 16, igst);
                         hot.selectCell(mainTableRow, 5);
                         hot.setDataAtCell(mainTableRow, 18, "");
                         hot.setDataAtCell(mainTableRow, 19, 0);

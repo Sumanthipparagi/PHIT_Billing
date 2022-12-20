@@ -454,8 +454,8 @@
                             igst.push(pd.igstAmount / amount * 100)
                         %>
                         <td>${String.format("%.2f", pd.cgstAmount)}<br><g:if test="${pd.cgstAmount!=0}">${String.format("%.2f", pd.cgstPercentage)}</g:if></td>
-                        <td>${String.format("%.2f", pd.sgstAmount)}<br><g:if test="${pd.cgstAmount!=0}">${String.format("%.2f", pd.sgstPercentage)}</g:if></td>
-                        <td>${String.format("%.2f", pd.igstAmount)}<br><g:if test="${pd.cgstAmount!=0}">${String.format("%.2f", pd.igstPercentage)}</g:if></td>
+                        <td>${String.format("%.2f", pd.sgstAmount)}<br><g:if test="${pd.sgstAmount!=0}">${String.format("%.2f", pd.sgstPercentage)}</g:if></td>
+                        <td>${String.format("%.2f", pd.igstAmount)}<br><g:if test="${pd.igstAmount!=0}">${String.format("%.2f", pd.igstPercentage)}</g:if></td>
                         <td>${String.format("%.2f", pd.amount)}</td>
                     </tr>
                 </g:each>
@@ -506,8 +506,8 @@
                         igst.push(sp.igstAmount / amount * 100)
                     %>
                     <td>${String.format("%.2f", sp.cgstAmount)}<br><g:if test="${sp.cgstAmount!=0}">${String.format("%.2f", sp.cgstPercentage)}</g:if></td>
-                    <td>${String.format("%.2f", sp.sgstAmount)}<br><g:if test="${sp.cgstAmount!=0}">${String.format("%.2f", sp.sgstPercentage)}</g:if></td>
-                    <td>${String.format("%.2f", sp.igstAmount)}<br><g:if test="${sp.cgstAmount!=0}">${String.format("%.2f", sp.igstPercentage)}</g:if></td>
+                    <td>${String.format("%.2f", sp.sgstAmount)}<br><g:if test="${sp.sgstAmount!=0}">${String.format("%.2f", sp.sgstPercentage)}</g:if></td>
+                    <td>${String.format("%.2f", sp.igstAmount)}<br><g:if test="${sp.igstAmount!=0}">${String.format("%.2f", sp.igstPercentage)}</g:if></td>
                     <td>${String.format("%.2f", sp.amount)}</td>
                 </tr>
             </g:each>
