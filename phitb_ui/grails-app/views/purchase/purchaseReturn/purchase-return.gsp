@@ -2145,7 +2145,7 @@
 
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("sale-menu");
+    selectSideMenu("purchase-menu");
 </script>
 </body>
 </html>
