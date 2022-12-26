@@ -7,6 +7,7 @@ import phitb_ui.AccountsService
 import phitb_ui.EmailService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
+import phitb_ui.SalesService
 import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.sales.SalebillDetailsController
@@ -638,13 +639,21 @@ class ReciptDetailController {
                     billDetailLog.put('id',billDetailLog.billId)
                     if(billDetailLog.billType == "INVS")
                     {
-                        saleBillResponse = new AccountsService().updateSaleBalance(billDetailLog)
-                        if(saleBillResponse?.status==200)
-                        {
-                            println("Sale balance updated successfully!")
+                        def salebillDetails = new SalesService().getSaleBillDetailsById(billDetailLog.billId.toString())
+                        if(salebillDetails!=null){
+                            if(salebillDetails.balance!= 0){
+                                saleBillResponse = new AccountsService().updateSaleBalance(billDetailLog)
+                                if(saleBillResponse?.status==200)
+                                {
+                                    println("Sale balance updated successfully!")
+                                }
+                            }
+                            else{
+                                return
+                            }
                         }
                     }
-                    if(billDetailLog.billType == "CRNT")
+                   /* if(billDetailLog.billType == "CRNT")
                     {
                         saleReturnResponse = new AccountsService().updateSaleReturnBalance(billDetailLog)
                         if(saleReturnResponse?.status==200)
@@ -659,7 +668,7 @@ class ReciptDetailController {
                         {
                             println("Sale Return balance updated successfully!")
                         }
-                    }
+                    }*/
                 }
             }
             //email
