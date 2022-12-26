@@ -513,17 +513,17 @@
                                                    />
                                         </div>
 
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="saleMarginPercent">
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+                                           %{-- <label for="saleMarginPercent">
                                                 Sale Margin Percent
                                                 <span class="required-indicator" style="color: red;">*</span>
 
-                                            </label>
-                                            <input type="number" id="saleMarginPercent" onblur="setTwoNumberDecimal"
+                                            </label>--}%
+                                            <input type="hidden" id="saleMarginPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control saleMarginPercent" name="saleMarginPercent"
                                                    placeholder="Sale Margin Percent" value="0.00" step="0.25" required
                                                    />
-                                        </div>
+%{--                                        </div>--}%
                                        %{-- <div class="col-lg-6 form-group  form-float">
                                             <label for="soundexCode">
                                                 Soundex Code
