@@ -28,6 +28,7 @@ class TaxRegisterService {
         return TaxRegister.createCriteria().list(max: l,offset:o){
             entity{
                 eq('id', entityId)
+                eq('deleted', false)
             }
         }
     }
