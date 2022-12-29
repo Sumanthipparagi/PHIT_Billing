@@ -12,6 +12,8 @@ public class Constants
     public static String APP_SHORT_NAME = "PHITB";
 //    public String API_GATEWAY = "http://172.16.17.143:81/";
     public String API_GATEWAY = "http://localhost/";
+    public String SMS_URL = "https://2factor.in/API/V1/48f6af5c-a0fd-11ec-a4c2-0200cd936042/ADDON_SERVICES/SEND/TSMS";
+    public String SMS_SENDER_ID = "PHAERP";
 
 
     public static String ROLE_SALESMAN = "SALESMAN";

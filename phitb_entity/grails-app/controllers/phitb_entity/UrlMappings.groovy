@@ -406,6 +406,22 @@ class UrlMappings
 
             //Entity Domain type
             "/entity-domain-type(.$format)"(controller: 'entitySetting'){action = [POST: 'saveEntityDomainType', GET: 'getEntityDomainTypes']}
+
+
+            //sms log
+            "/smslog(.$format)?"(controller: 'SMSLog') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/smslog/datatable(.$format)?"(controller: 'SMSLog') {action = [GET: 'dataTable']}
+            "/smslog/$id(.$format)?"(controller: 'SMSLog') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/smslogbyentity/$id(.$format)?"(controller: 'SMSLog') {
+                action = [GET: 'getAllByEntityId']
+            }
+
         }
     }
 }

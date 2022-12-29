@@ -194,6 +194,7 @@ public class Links
     public static String EMAIL_LOG_DATATABLE = APP_CONTEXT_PATH + "entity/emaillog/datatable";
     public static String EMAIL_LOG_BY_ENTITY = APP_CONTEXT_PATH + "entity/emaillog/getbyentityid";
 
+
     //Email Config
     public static String SAVE_EMAIL_CONFIG = APP_CONTEXT_PATH + "entity/saveemailconfig";
 
@@ -201,6 +202,15 @@ public class Links
     public static String ENTITY_CONFIG_SAVE = APP_CONTEXT_PATH + "entity/entityconfig";
     public static String ENTITY_CONFIG_BY_ENTITY = APP_CONTEXT_PATH + "entity/entityconfig/getbyentityid";
 
+
+
+    //SMS Log
+    public static String SMS_LOG_SHOW = APP_CONTEXT_PATH + "entity/smslog";
+    public static String SMS_LOG_UPDATE = APP_CONTEXT_PATH + "entity/smslog/{id}";
+    public static String SMS_LOG_DELETE = APP_CONTEXT_PATH + "entity/smslog/{id}";
+    public static String SMS_LOG_SAVE = APP_CONTEXT_PATH + "entity/smslog";
+    public static String SMS_LOG_DATATABLE = APP_CONTEXT_PATH + "entity/smslog/datatable";
+    public static String SMS_LOG_BY_ENTITY = APP_CONTEXT_PATH + "entity/smslogbyentity";
 
     //Account Register
     public static String ACCOUNT_REGISTER_SHOW = APP_CONTEXT_PATH + "entity/accountregister";
