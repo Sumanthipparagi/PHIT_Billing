@@ -823,7 +823,7 @@ class SaleEntryController
                     new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
 
                     //Send SMS
-                    new SMSService().sendSaleInvoiceSMS(saleBillDetail)
+                    //new SMSService().sendSaleInvoiceSMS(saleBillDetail)
                 }
             }
             catch (Exception ex) {
