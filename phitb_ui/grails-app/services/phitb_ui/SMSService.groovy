@@ -1,6 +1,7 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.apache.commons.lang.StringUtils
 import org.grails.web.json.JSONObject
 import phitb_ui.entity.EntityRegisterController
 
@@ -44,7 +45,8 @@ class SMSService {
                     JSONObject smsTemplate = getSMSTemplate(new Constants().SALE_INVOICE_SMS)
                     if(smsTemplate) {
                         String message = smsTemplate.get("template")
-                        message = message.replace("\$customer", customerName)
+                        //message = message.replace("\$customer", customerName)//Not sending customer name
+                        message = message.replace("\$customer", "")//Not sending customer name
                         message = message.replace("\$seller", entityName)
                         message = message.replace("\$docNo", docNo)
                         message = message.replace("\$orderDate", orderDate)
@@ -54,11 +56,12 @@ class SMSService {
                             @Override
                             void run() {
                                 try {
-                                    String response = sendSMS(mobileNumber, message, new Constants().SALE_INVOICE_SMS, smsTemplate.get("senderId").toString())
+                                    String response = sendSMS(mobileNumber, message, smsTemplate.get("senderId").toString())
                                     if (response) {
                                         JSONObject responseObject = new JSONObject(response)
                                         if (!responseObject.get("Status").toString().equalsIgnoreCase("Error")) {
-                                            buildSMSLog(entityId, userId, mobileNumber, response, message, docType, docId, docNo)
+                                            String messageId = responseObject.get("Details")
+                                            buildSMSLog(entityId, userId, mobileNumber, messageId, message, docType, docId, docNo)
                                         } else {
                                             log.info("SMS send failed: " + mobileNumber)
                                         }
@@ -82,7 +85,7 @@ class SMSService {
     }
 
 
-    def sendSMS(String mobileNumber, String message, String templateName, String senderId = null) {
+    def sendSMS(String mobileNumber, String message, String senderId = null) {
         Form form = new Form()
         if(senderId == null)
             senderId = new Constants().SMS_SENDER_ID
@@ -105,6 +108,8 @@ class SMSService {
         }
         else
         {
+            String response = apiResponse.readEntity(String.class)
+            println(response)
             println("SMS sending failed")
             return null
         }
@@ -132,7 +137,6 @@ class SMSService {
     static JSONObject saveSMSLog(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-       // WebTarget target = client.target("http://localhost:8088")
         try {
             Response apiResponse = target
                     .path(new Links().SMS_LOG_SAVE)
@@ -146,7 +150,7 @@ class SMSService {
             }
         }
         catch (Exception ex) {
-            System.err.println('Service :SMSService , action :  saveSMSLog  , Ex:' + ex)
+            System.err.println('Service :SMSService , action :  saveSMSLog, Ex:' + ex)
             return null
         }
 
@@ -206,7 +210,6 @@ class SMSService {
     static JSONObject getSMSTemplate(String templateName, String entityId = null) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8088/")
         try {
             Response apiResponse = target
                     .path(new Links().SMS_TEMPLATE)
@@ -235,7 +238,13 @@ class SMSService {
             str = str.trim()
             str = str.replaceAll(">","")
             str = str.replaceAll("<","")
+            str = str.replaceAll("&","")
             str = str.replaceAll(" +", " ") //replace consecutive spaces with single space
+
+            if(str.length()>17)
+            {
+                str = StringUtils.left(str, 17) + ".."
+            }
         }
         return str
     }

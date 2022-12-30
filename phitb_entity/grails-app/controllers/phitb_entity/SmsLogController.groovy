@@ -1,24 +1,24 @@
 package phitb_entity
 
-import grails.converters.JSON
+import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
-class SMSLogController {
+class SmsLogController {
     static responseFormats = ['json', 'xml']
 
     static allowedMethods = [index: "GET", show: "GET", save: "POST",
                              update: "PUT", delete: "DELETE", dataTable: "GET", getSMSTemplateByName: "GET"]
 
-    SMSLogService smsLogService
+    SmsLogService smsLogService
     /**
-     * Gets all SMSLog 
+     * Gets all SMSLog
      * @param query
      * @param offset
      * @param limit
-     * @return list of SMSLog 
+     * @return list of SMSLog
      */
     def index() {
 
@@ -31,9 +31,9 @@ class SMSLogController {
     }
 
     /**
-     * Get requested SMSLog 
+     * Get requested SMSLog
      * @param id
-     * @return get requested SMSLog 
+     * @return get requested SMSLog
      */
     def show() {
         try {
@@ -58,9 +58,9 @@ class SMSLogController {
     }
 
     /**
-     * Get requested SMSLog 
+     * Get requested SMSLog
      * @param id
-     * @return get requested SMSLog 
+     * @return get requested SMSLog
      */
     def getAllByEntityId() {
         try {
@@ -84,9 +84,9 @@ class SMSLogController {
     }
 
     /**
-     * Save new SMSLog 
-     * @param SMSLog 
-     * @return saved SMSLog 
+     * Save new SMSLog
+     * @param SMSLog
+     * @return saved SMSLog
      */
     def save() {
         try {
@@ -109,10 +109,10 @@ class SMSLogController {
     }
 
     /**
-     * Update existing SMSLog 
+     * Update existing SMSLog
      * @param id
-     * @param SMSLog 
-     * @return updated SMSLog 
+     * @param SMSLog
+     * @return updated SMSLog
      */
     def update() {
         try {
@@ -136,7 +136,7 @@ class SMSLogController {
     }
 
     /**
-     * Delete selected SMSLog 
+     * Delete selected SMSLog
      * @param id
      * @return returns status code 200
      */
@@ -163,7 +163,7 @@ class SMSLogController {
 
     /**
      * Gets all bank  in datatables format
-     * @return list of bank 
+     * @return list of bank
      */
     def dataTable() {
         try {
@@ -196,7 +196,8 @@ class SMSLogController {
     def getSMSTemplateByName() {
         try {
             String entityId = params.entityId
-            respond new SMSLogService().getTemplate(params.templateName, entityId)
+            SMSTemplate smsTemplate = smsLogService.getTemplate(params.templateName, entityId)
+            respond smsTemplate, formats: ['json']
         }
         catch (ResourceNotFoundException ex)
         {

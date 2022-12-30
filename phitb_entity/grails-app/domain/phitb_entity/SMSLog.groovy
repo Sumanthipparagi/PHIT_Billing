@@ -2,7 +2,7 @@ package phitb_entity
 
 import gorm.logical.delete.LogicalDelete
 
-class SMSLog implements LogicalDelete<AccountRegister> {
+class SMSLog implements LogicalDelete<SMSLog> {
 
     EntityRegister entity
     UserRegister sentByUser

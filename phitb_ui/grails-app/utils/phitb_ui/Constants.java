@@ -262,6 +262,6 @@ public class Constants
 
 
     //SMS Templates
-    public static String SALE_INVOICE_SMS = "Invoice ERP";
+    public static String SALE_INVOICE_SMS = "SALE_INVOICE_SMS";
 
 }

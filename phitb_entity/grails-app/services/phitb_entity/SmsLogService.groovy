@@ -5,12 +5,8 @@ import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
-import java.text.SimpleDateFormat
-
 @Transactional
-class SMSLogService {
-
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+class SmsLogService {
 
     def getAll(String limit, String offset, String query)
     {
@@ -69,8 +65,8 @@ class SMSLogService {
         }
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
-        def emailLogCriteria = SMSLog.createCriteria()
-        def emailLogArrayList = emailLogCriteria.list(max: max, offset: offset) {
+        def smsLogCriteria = SMSLog.createCriteria()
+        def smsLogArrayList = smsLogCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "")
                 {
@@ -84,34 +80,37 @@ class SMSLogService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-        def recordsTotal = emailLogArrayList.totalCount
+        def recordsTotal = smsLogArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", emailLogArrayList)
+        jsonObject.put("data", smsLogArrayList)
         return jsonObject
     }
 
     def save(JSONObject jsonObject)
     {
-        SMSLog emailLog = new SMSLog()
-        emailLog.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
-        emailLog.sentByUser = UserRegister.findById(Long.parseLong(jsonObject.get("user").toString()))
-        emailLog.mobileNumber = jsonObject.get("mobileNumber")
-        emailLog.smsContent = jsonObject.get("smsContent")
+        SMSLog smsLog = new SMSLog()
+        smsLog.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+        smsLog.sentByUser = UserRegister.findById(Long.parseLong(jsonObject.get("sentByUser").toString()))
+        smsLog.mobileNumber = jsonObject.get("mobileNumber")
+        smsLog.smsContent = jsonObject.get("smsContent")
         if(jsonObject.has("deliveryStatus"))
-            emailLog.deliveryStatus = jsonObject.get("deliveryStatus")
+            smsLog.deliveryStatus = jsonObject.get("deliveryStatus")
         if(jsonObject.has("docNo"))
-            emailLog.docNo = jsonObject.get("docNo")
+            smsLog.docNo = jsonObject.get("docNo")
         if(jsonObject.has("docId"))
-            emailLog.docId = jsonObject.get("docId")
+            smsLog.docId = jsonObject.get("docId")
         if(jsonObject.has("docType"))
-            emailLog.docType = jsonObject.get("docType")
-        emailLog.save(flush: true)
-        if (!emailLog.hasErrors())
+            smsLog.docType = jsonObject.get("docType")
+        if(jsonObject.has("messageId"))
+            smsLog.messageId = jsonObject.get("messageId")
+
+        smsLog.save(flush: true)
+        if (!smsLog.hasErrors())
         {
-            return emailLog
+            return smsLog
         }
         else
         {
@@ -121,26 +120,26 @@ class SMSLogService {
 
     def update(JSONObject jsonObject, String id)
     {
-        SMSLog emailLog = SMSLog.findById(Long.parseLong(id))
-        if (emailLog)
+        SMSLog smsLog = SMSLog.findById(Long.parseLong(id))
+        if (smsLog)
         {
-            emailLog.isUpdatable = true
-            emailLog.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
-            emailLog.sentByUser = UserRegister.findById(Long.parseLong(jsonObject.get("user").toString()))
-            emailLog.mobileNumber = jsonObject.get("mobileNumber")
-            emailLog.smsContent = jsonObject.get("smsContent")
+            smsLog.isUpdatable = true
+            smsLog.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            smsLog.sentByUser = UserRegister.findById(Long.parseLong(jsonObject.get("user").toString()))
+            smsLog.mobileNumber = jsonObject.get("mobileNumber")
+            smsLog.smsContent = jsonObject.get("smsContent")
             if(jsonObject.has("deliveryStatus"))
-                emailLog.deliveryStatus = jsonObject.get("deliveryStatus")
+                smsLog.deliveryStatus = jsonObject.get("deliveryStatus")
             if(jsonObject.has("docNo"))
-                emailLog.docNo = jsonObject.get("docNo")
+                smsLog.docNo = jsonObject.get("docNo")
             if(jsonObject.has("docId"))
-                emailLog.docId = jsonObject.get("docId")
+                smsLog.docId = jsonObject.get("docId")
             if(jsonObject.has("docType"))
-                emailLog.docType = jsonObject.get("docType")
-            emailLog.save(flush: true)
-            if (!emailLog.hasErrors())
+                smsLog.docType = jsonObject.get("docType")
+            smsLog.save(flush: true)
+            if (!smsLog.hasErrors())
             {
-                return emailLog
+                return smsLog
             }
             else
             {
@@ -157,11 +156,11 @@ class SMSLogService {
     {
         if (id)
         {
-            SMSLog emailLog = SMSLog.findById(Long.parseLong(id))
-            if (emailLog)
+            SMSLog smsLog = SMSLog.findById(Long.parseLong(id))
+            if (smsLog)
             {
-                emailLog.isUpdatable = true
-                emailLog.delete()
+                smsLog.isUpdatable = true
+                smsLog.delete()
             }
             else
             {
@@ -183,11 +182,17 @@ class SMSLogService {
             if(entityRegister)
                 return SMSTemplate.findByTemplateNameAndEntityRegister(templateName, entityRegister)
             else
-                return null
+                throw new BadRequestException()
         }
         else
         {
-            return SMSTemplate.findByTemplateName(templateName)
+            SMSTemplate smsTemplate = SMSTemplate.findByTemplateName(templateName)
+            if(smsTemplate)
+            {
+                return smsTemplate
+            }
+            else
+                throw new ResourceNotFoundException()
         }
 
     }

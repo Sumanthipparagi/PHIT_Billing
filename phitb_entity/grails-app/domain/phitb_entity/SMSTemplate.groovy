@@ -2,7 +2,7 @@ package phitb_entity
 
 import gorm.logical.delete.LogicalDelete
 
-class SMSTemplate implements LogicalDelete<AccountRegister> {
+class SMSTemplate implements LogicalDelete<SMSTemplate> {
 
     String template
     String templateName

@@ -409,20 +409,20 @@ class UrlMappings
 
 
             //sms log
-            "/smslog(.$format)?"(controller: 'SMSLog') {
+            "/smslog(.$format)?"(controller: 'smsLog') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/smslog/datatable(.$format)?"(controller: 'SMSLog') {action = [GET: 'dataTable']}
-            "/smslog/$id(.$format)?"(controller: 'SMSLog') {
+            "/smslog/datatable(.$format)?"(controller: 'smsLog') {action = [GET: 'dataTable']}
+            "/smslog/$id(.$format)?"(controller: 'smsLog') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/smslogbyentity/$id(.$format)?"(controller: 'SMSLog') {
+            "/smslogbyentity/$id(.$format)?"(controller: 'smsLog') {
                 action = [GET: 'getAllByEntityId']
             }
 
-            "/smslog/template(.$format)?"(controller: 'SMSLog', action: 'getSMSTemplateByName')
+            "/smslog/template(.$format)?"(controller: 'smsLog', action: 'getSMSTemplateByName')
 
         }
     }
