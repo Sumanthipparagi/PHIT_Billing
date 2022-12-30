@@ -9,7 +9,8 @@ import phitb_entity.Exception.ResourceNotFoundException
 class SMSLogController {
     static responseFormats = ['json', 'xml']
 
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index: "GET", show: "GET", save: "POST",
+                             update: "PUT", delete: "DELETE", dataTable: "GET", getSMSTemplateByName: "GET"]
 
     SMSLogService smsLogService
     /**
@@ -171,6 +172,31 @@ class SMSLogController {
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
             respond smsLogService.dataTables(paramsJsonObject, start, length)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested SMS Template
+     * @param id
+     * @return get requested Template
+     */
+    def getSMSTemplateByName() {
+        try {
+            String entityId = params.entityId
+            respond new SMSLogService().getTemplate(params.templateName, entityId)
         }
         catch (ResourceNotFoundException ex)
         {

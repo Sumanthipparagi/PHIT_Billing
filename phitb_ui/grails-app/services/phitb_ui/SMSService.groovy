@@ -1,7 +1,6 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
-import org.apache.tomcat.util.bcel.Const
 import org.grails.web.json.JSONObject
 import phitb_ui.entity.EntityRegisterController
 
@@ -39,33 +38,39 @@ class SMSService {
                 long bal = (long) UtilsService.round(Double.parseDouble(balance), 0)
                 String entityName = sanitizeStringForSMS(entity.get("entityName").toString())
                 String customerName = sanitizeStringForSMS(customer.get("entityName").toString())
-                String message = "Hello " + customerName + ", " + entityName + " generated an Invoice " + docNo + " dt." + orderDate + " with value " + it + ". CurBal is " + bal + " - Sw by PHARMIT"
                 String mobileNumber = customer.get("mobileNumber")
                 if (mobileNumber.length() > 0) {
 
-                    new Thread(new Runnable() {
-                        @Override
-                        void run() {
-                            try{
-                                String response = sendSMS(mobileNumber, message)
-                                if (response) {
-                                    JSONObject responseObject = new JSONObject(response)
-                                    if (!responseObject.get("Status").toString().equalsIgnoreCase("Error")) {
-                                        buildSMSLog(entityId, userId, mobileNumber, response, message, docType, docId, docNo)
-                                    }
-                                    else
-                                    {
-                                        log.info("SMS send failed: "+mobileNumber)
+                    JSONObject smsTemplate = getSMSTemplate(new Constants().SALE_INVOICE_SMS)
+                    if(smsTemplate) {
+                        String message = smsTemplate.get("template")
+                        message = message.replace("\$customer", customerName)
+                        message = message.replace("\$seller", entityName)
+                        message = message.replace("\$docNo", docNo)
+                        message = message.replace("\$orderDate", orderDate)
+                        message = message.replace("\$amount", it.toString())
+                        message = message.replace("\$balance", bal.toString())
+                        new Thread(new Runnable() {
+                            @Override
+                            void run() {
+                                try {
+                                    String response = sendSMS(mobileNumber, message, new Constants().SALE_INVOICE_SMS, smsTemplate.get("senderId").toString())
+                                    if (response) {
+                                        JSONObject responseObject = new JSONObject(response)
+                                        if (!responseObject.get("Status").toString().equalsIgnoreCase("Error")) {
+                                            buildSMSLog(entityId, userId, mobileNumber, response, message, docType, docId, docNo)
+                                        } else {
+                                            log.info("SMS send failed: " + mobileNumber)
+                                        }
                                     }
                                 }
+                                catch (Exception ex) {
+                                    println("sendSMS failed")
+                                    println(ex.stackTrace)
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                println("sendSMS failed")
-                                println(ex.stackTrace)
-                            }
-                        }
-                    }).start()
+                        }).start()
+                    }
                 }
             }
         }
@@ -77,11 +82,15 @@ class SMSService {
     }
 
 
-    def sendSMS(String mobileNumber, String message) {
+    def sendSMS(String mobileNumber, String message, String templateName, String senderId = null) {
         Form form = new Form()
-        form.param("From", new Constants().SMS_SENDER_ID)
-        form.param("To", mobileNumber)
-        form.param("Msg", message)
+        if(senderId == null)
+            senderId = new Constants().SMS_SENDER_ID
+        form.param("from", senderId)
+        form.param("apikey", new Constants().SMS_API_KEY)
+        form.param("to", mobileNumber)
+        form.param("msg", message)
+        form.param("module", "TRANS_SMS")
         println(message)
         String url = new Constants().SMS_URL
         Client client = ClientBuilder.newClient()
@@ -188,6 +197,32 @@ class SMSService {
         }
         catch (Exception ex) {
             System.err.println('Service :SMSService , action :  emailLogDatatable  , Ex:' + ex)
+            return null
+        }
+
+    }
+
+
+    static JSONObject getSMSTemplate(String templateName, String entityId = null) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8088/")
+        try {
+            Response apiResponse = target
+                    .path(new Links().SMS_TEMPLATE)
+                    .queryParam("templateName",templateName)
+                    .queryParam("entityId",entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONObject resultObject = new JSONObject(apiResponse.readEntity(String.class))
+                return resultObject
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SMSService , action :  getSMSTemplate  , Ex:' + ex)
             return null
         }
 

@@ -211,6 +211,7 @@ public class Links
     public static String SMS_LOG_SAVE = APP_CONTEXT_PATH + "entity/smslog";
     public static String SMS_LOG_DATATABLE = APP_CONTEXT_PATH + "entity/smslog/datatable";
     public static String SMS_LOG_BY_ENTITY = APP_CONTEXT_PATH + "entity/smslogbyentity";
+    public static String SMS_TEMPLATE = APP_CONTEXT_PATH + "entity/smslog/template";
 
     //Account Register
     public static String ACCOUNT_REGISTER_SHOW = APP_CONTEXT_PATH + "entity/accountregister";

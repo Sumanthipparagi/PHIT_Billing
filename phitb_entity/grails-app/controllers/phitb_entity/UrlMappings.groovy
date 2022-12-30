@@ -422,6 +422,8 @@ class UrlMappings
                 action = [GET: 'getAllByEntityId']
             }
 
+            "/smslog/template(.$format)?"(controller: 'SMSLog', action: 'getSMSTemplateByName')
+
         }
     }
 }

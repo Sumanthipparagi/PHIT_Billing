@@ -47,13 +47,12 @@ class SMSLogService {
         }
     }
 
-
-    SMSLog get(String id)
+    def get(String id)
     {
         return SMSLog.findById(Long.parseLong(id))
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
+    def dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
@@ -94,7 +93,7 @@ class SMSLogService {
         return jsonObject
     }
 
-    SMSLog save(JSONObject jsonObject)
+    def save(JSONObject jsonObject)
     {
         SMSLog emailLog = new SMSLog()
         emailLog.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
@@ -120,7 +119,7 @@ class SMSLogService {
         }
     }
 
-    SMSLog update(JSONObject jsonObject, String id)
+    def update(JSONObject jsonObject, String id)
     {
         SMSLog emailLog = SMSLog.findById(Long.parseLong(id))
         if (emailLog)
@@ -173,5 +172,23 @@ class SMSLogService {
         {
             throw new BadRequestException()
         }
+    }
+
+    def getTemplate(String templateName, String entityId = null)
+    {
+        if(entityId)
+        {
+            long eid = Long.parseLong(entityId)
+            EntityRegister entityRegister = EntityRegister.findById(eid)
+            if(entityRegister)
+                return SMSTemplate.findByTemplateNameAndEntityRegister(templateName, entityRegister)
+            else
+                return null
+        }
+        else
+        {
+            return SMSTemplate.findByTemplateName(templateName)
+        }
+
     }
 }
