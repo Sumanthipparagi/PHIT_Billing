@@ -24,7 +24,8 @@ class SMSService {
             String customerId = saleInvoice.get("customerId").toString()
             JSONObject entity = new EntityRegisterController().getEnitityById(entityId)
             JSONObject customer = new EntityRegisterController().getEnitityById(customerId)
-            if (entity && customer && customer.has("mobileNumber")) {
+            JSONObject entityConfig = new EntityService().getEntityConfigByEntity(entityId)
+            if (entity && customer && customer.has("mobileNumber") && entityConfig?.get("SEND_SMS")?.saleEntry) {
                 String userId = saleInvoice.get("createdUser")
                 String docType = "SALE_INVOICE"
                 String docId = saleInvoice.get("id")
