@@ -30,23 +30,42 @@ class SMSService {
                 String docId = saleInvoice.get("id")
                 String docNo = saleInvoice.get("invoiceNumber")
                 String orderDate = saleInvoice.get("orderDate")
-                orderDate = orderDate.split("T")[0]
+                orderDate = orderDate.split("T")[0].trim()
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
-                orderDate = sdf.parse(orderDate).format("dd/MMM/yy")
+                orderDate = sdf.parse(orderDate).format("dd/MM/yyyy")
                 String invoiceTotal = saleInvoice.get("invoiceTotal")
                 long it = (long) UtilsService.round(Double.parseDouble(invoiceTotal), 0)
                 String balance = saleInvoice.get("balance")
                 long bal = (long) UtilsService.round(Double.parseDouble(balance), 0)
-                String entityName = entity.get("entityName")
-                String customerName = customer.get("entityName")
+                String entityName = sanitizeStringForSMS(entity.get("entityName").toString())
+                String customerName = sanitizeStringForSMS(customer.get("entityName").toString())
                 String message = "Hello " + customerName + ", " + entityName + " generated an Invoice " + docNo + " dt." + orderDate + " with value " + it + ". CurBal is " + bal + " - Sw by PHARMIT"
                 String mobileNumber = customer.get("mobileNumber")
                 if (mobileNumber.length() > 0) {
-                    String response = sendSMS(mobileNumber, message)
-                    if (response) {
 
-                        buildSMSLog(entityId, userId, mobileNumber, response, message, docType, docId, docNo)
-                    }
+                    new Thread(new Runnable() {
+                        @Override
+                        void run() {
+                            try{
+                                String response = sendSMS(mobileNumber, message)
+                                if (response) {
+                                    JSONObject responseObject = new JSONObject(response)
+                                    if (!responseObject.get("Status").toString().equalsIgnoreCase("Error")) {
+                                        buildSMSLog(entityId, userId, mobileNumber, response, message, docType, docId, docNo)
+                                    }
+                                    else
+                                    {
+                                        log.info("SMS send failed: "+mobileNumber)
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                println("sendSMS failed")
+                                println(ex.stackTrace)
+                            }
+                        }
+                    }).start()
                 }
             }
         }
@@ -59,7 +78,6 @@ class SMSService {
 
 
     def sendSMS(String mobileNumber, String message) {
-
         Form form = new Form()
         form.param("From", new Constants().SMS_SENDER_ID)
         form.param("To", mobileNumber)
@@ -72,7 +90,9 @@ class SMSService {
                 .post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE))
         if (apiResponse.status == 200)
         {
-            return apiResponse.readEntity(String.class)
+            String response = apiResponse.readEntity(String.class)
+            println(response)
+            return response
         }
         else
         {
@@ -171,6 +191,18 @@ class SMSService {
             return null
         }
 
+    }
+
+    String sanitizeStringForSMS(String str)
+    {
+        if(str?.length()>0)
+        {
+            str = str.trim()
+            str = str.replaceAll(">","")
+            str = str.replaceAll("<","")
+            str = str.replaceAll(" +", " ") //replace consecutive spaces with single space
+        }
+        return str
     }
 
 }
