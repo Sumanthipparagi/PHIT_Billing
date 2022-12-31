@@ -863,5 +863,10 @@ class UrlMappings {
 //        sale entry retailer
         "/sale-entry-retailer"(controller: 'saleEntry', action: 'saleEntryRetailer')
 
+
+        //open document
+        "/opendoc"(controller: 'openDocument', action: 'getLink')
+        "/e/$uniqueCode"(controller: 'openDocument', action: 'decodeLink')
+
     }
 }

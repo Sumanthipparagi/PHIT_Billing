@@ -264,4 +264,6 @@ public class Constants
     //SMS Templates
     public static String SALE_INVOICE_SMS = "SALE_INVOICE_SMS";
 
+    public static String SHORT_DOMAIN = "https://pharmit.in/e/";
+
 }

@@ -261,4 +261,85 @@ class UtilsService {
         return result;
     }
 
+    /**
+     * This method returns unique link for provided document type
+     * @param docNo
+     * @param docId
+     * @param entityId
+     * @param docCode
+     * @return Short link with Unique Code
+     */
+    String generateUniqueLink(String entityId, String docCode, String docId, String docNo)
+    {
+        try {
+            //DocCode: SE,SO,SR,PE,PO,PR,R,P,GRN,GTN
+            String uniqueStr = entityId + "|" + docCode + "|" + docId + "|" + docNo
+            String encryptedStr = new Cryptography().encryptText(uniqueStr)
+            if(encryptedStr) {
+                //TODO: generate hash of encryptedStr and store it in DB
+                String hexStr = stringToHex(encryptedStr)
+                String link = new Constants().SHORT_DOMAIN + hexStr
+                return link
+            }
+            else
+                return null
+        }
+        catch (Exception ex)
+        {
+            println(ex.stackTrace)
+            return null
+        }
+    }
+
+    /**
+     * This method decrypts the unique link and give back the document details
+     * @param uniqueCode
+     * @return JSONObject with decrypted values ex: entityId, DocNo, DocId, docCode
+     */
+    JSONObject decryptUniqueLink(String uniqueCode)
+    {
+        try {
+            JSONObject jsonObject = new JSONObject()
+            String decryptedStr = new Cryptography().decryptText(hexToString(uniqueCode))
+            if (decryptedStr) {
+                String[] arr = decryptedStr.split('\\|')
+                for (String ob : arr) {
+                    if (!jsonObject.has("entityId")) {
+                        jsonObject.put("entityId", ob)
+                    } else if (!jsonObject.has("docCode")) {
+                        jsonObject.put("docCode", ob)
+                    } else if (!jsonObject.has("docId")) {
+                        jsonObject.put("docId", ob)
+                    } else if (!jsonObject.has("docNo")) {
+                        jsonObject.put("docNo", ob)
+                    }
+                }
+            }
+            return jsonObject
+        }
+        catch (Exception ex)
+        {
+            println(ex.stackTrace)
+            return null
+        }
+    }
+
+
+    /**
+     * String to Hex Converter
+     * @param input
+     * @return hexadecimal representation of given string
+     */
+    static String stringToHex(String input) {
+        return String.format("%x", new BigInteger(1, input.getBytes()));
+    }
+
+    /**
+     * Hex to String Converter
+     * @param input
+     * @return Plain String representation of given hex string
+     */
+    static String hexToString(String input) {
+        return new String(new BigInteger(input, 16).toByteArray());
+    }
 }
