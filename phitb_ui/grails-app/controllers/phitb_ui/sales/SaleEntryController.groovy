@@ -872,6 +872,387 @@ class SaleEntryController
     }
 
 
+    def saveRetailerSaleEntry() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+        JSONObject saleBillDetails = new JSONObject()
+        JSONArray saleProductDetails = new JSONArray()
+        String entityId = session.getAttribute("entityId").toString()
+        String customerId = params.customer
+        String priorityId = params.priority
+        String seriesId = params.series
+        String duedate = params.duedate
+        String billStatus = params.billStatus
+        String seriesCode = params.seriesCode
+        String drname = params.drname
+        String message = params.message
+        String refNo = params.refNum
+        String privateNote = params.privateNote
+        String publicNote = params.publicNote
+        String rep = params.rep
+        String refDate = params.refDate
+        if (!message) {
+            message = "NA"
+        }
+        long finId = 0
+        long serBillId = 0
+        String financialYear = session.getAttribute("financialYear")
+        def series = new EntityService().getSeriesById(seriesId)
+        if (!billStatus.equalsIgnoreCase("DRAFT")) {
+            def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
+            if (recentSaleBill != null && recentSaleBill.size() != 0) {
+                finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
+                serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+            } else {
+                finId = 1
+                serBillId = Long.parseLong(series.get("saleId").toString())
+            }
+        }
+
+        long totalSqty = 0
+        long totalFqty = 0
+        double totalAmount = 0.00
+        double totalGst = 0.00
+        double totalCgst = 0.00
+        double totalSgst = 0.00
+        double totalIgst = 0.00
+        double totalDiscount = 0.00
+        JSONArray saleData = new JSONArray(params.saleData)
+        boolean tempStocksSavedCheck = true
+      /*  for (JSONObject sale : saleData) {
+            if (sale.has("16")) {
+                String tempStockRowId = sale.get("16")
+                if (tempStockRowId && Long.parseLong(tempStockRowId) > 0) {
+                    tempStocksSavedCheck = true
+                } else {
+                    tempStocksSavedCheck = false
+                }
+            } else {
+                tempStocksSavedCheck = false
+            }
+        }
+
+        //safety check
+        if (!tempStocksSavedCheck) {
+            println("Safety Check Failed! attempted to generate sale invoice, but temp stock was not saved.")
+            response.status == 400
+            return
+        }
+*/
+        for (JSONObject sale : saleData) {
+            String productId = sale.get("1")
+            String batchNumber = sale.get("2")
+            String expDate = sale.get("3")
+            String saleQty = sale.get("4")
+            String freeQty = sale.get("5")
+            String saleRate = sale.get("6")
+            String mrp = sale.get("7")
+            String presQty = sale.get("15")
+            String noOfDays = sale.get("16")
+            String morning = sale.get("17")
+            String afternoon = sale.get("17")
+            String night = sale.get("18")
+            double discount = UtilsService.round(Double.parseDouble(sale.get("8").toString()), 2)
+            String packDesc = sale.get("9")
+            double gst = UtilsService.round(Double.parseDouble(sale.get("10").toString()), 2)
+            double value = UtilsService.round(Double.parseDouble(sale.get("11").toString()), 2)
+            double sgst = UtilsService.round(Double.parseDouble(sale.get("12").toString()), 2)
+            double cgst = UtilsService.round(Double.parseDouble(sale.get("13").toString()), 2)
+            double igst = UtilsService.round(Double.parseDouble(sale.get("14").toString()), 2)
+            totalSqty += Long.parseLong(saleQty)
+            totalFqty += Long.parseLong(freeQty)
+            totalAmount += value
+            totalGst += gst
+            totalSgst += sgst
+            totalCgst += cgst
+            totalIgst += igst
+            totalDiscount += discount
+
+            JSONObject saleProductDetail = new JSONObject()
+            saleProductDetail.put("finId", finId)
+            saleProductDetail.put("billId", 0)
+            saleProductDetail.put("billType", 0)
+            saleProductDetail.put("serBillId", 0)
+            saleProductDetail.put("seriesId", seriesId)
+            saleProductDetail.put("productId", productId)
+            saleProductDetail.put("batchNumber", batchNumber)
+            saleProductDetail.put("expiryDate", expDate)
+            saleProductDetail.put("sqty", saleQty)
+            saleProductDetail.put("freeQty", freeQty)
+            saleProductDetail.put("sqtyReturn", saleQty)
+            saleProductDetail.put("fqtyReturn", freeQty)
+            saleProductDetail.put("repQty", 0)
+            saleProductDetail.put("pRate", 0) //TODO: to be changed
+            saleProductDetail.put("sRate", saleRate)
+            saleProductDetail.put("mrp", mrp)
+            saleProductDetail.put("discount", discount)
+            saleProductDetail.put("gstAmount", gst)
+            saleProductDetail.put("sgstAmount", sgst)
+            saleProductDetail.put("cgstAmount", cgst)
+            saleProductDetail.put("igstAmount", igst)
+
+            saleProductDetail.put("noOfDays",noOfDays)
+            saleProductDetail.put("morning",morning)
+            saleProductDetail.put("afternoon",afternoon)
+            saleProductDetail.put("night",night)
+            saleProductDetail.put("presQty",presQty)
+
+            saleProductDetail.put("gstPercentage", sale.get("21").toString())
+            saleProductDetail.put("sgstPercentage", sale.get("22").toString())
+            saleProductDetail.put("cgstPercentage", sale.get("23").toString())
+            saleProductDetail.put("igstPercentage", sale.get("24").toString())
+            saleProductDetail.put("originalSqty", sale.get("25").toString())
+            saleProductDetail.put("originalFqty", sale.get("26").toString())
+
+
+            saleProductDetail.put("gstId", 0) //TODO: to be changed
+            saleProductDetail.put("amount", value)
+            saleProductDetail.put("reason", "") //TODO: to be changed
+            saleProductDetail.put("fridgeId", 0) //TODO: to be changed
+            saleProductDetail.put("kitName", 0) //TODO: to be changed
+            saleProductDetail.put("saleFinId", "") //TODO: to be changed
+            saleProductDetail.put("redundantBatch", 0) //TODO: to be changed
+            saleProductDetail.put("status", 0)
+            saleProductDetail.put("syncStatus", 0)
+            saleProductDetail.put("financialYear", financialYear)
+            saleProductDetail.put("entityId", entityId)
+            saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            if(sale.has('15')){
+                saleProductDetail.put("replacement",sale.get('15'))
+            }else{
+                saleProductDetail.put("replacement",false)
+            }
+            saleProductDetails.add(saleProductDetail)
+
+            //save to sale transaction log
+            //save to sale transportation details
+
+        }
+        String entryDate = sdf.format(new Date())
+        String orderDate = sdf.format(new Date())
+        //save to sale bill details
+        saleBillDetails.put("serBillId", serBillId)
+        saleBillDetails.put("customerId", customerId)
+        saleBillDetails.put("customerNumber", 0) //TODO: to be changed
+        saleBillDetails.put("finId", finId)
+        saleBillDetails.put("seriesId", seriesId)
+        saleBillDetails.put("priorityId", priorityId)
+        saleBillDetails.put("financialYear", financialYear)
+        saleBillDetails.put("dueDate", duedate)
+        saleBillDetails.put("paymentStatus", 0)
+        saleBillDetails.put("userId", session.getAttribute("userId"))
+        saleBillDetails.put("entryDate", entryDate)
+        saleBillDetails.put("orderDate", orderDate)
+        saleBillDetails.put("dispatchDate", sdf.format(new Date())) //TODO: to be changed
+        saleBillDetails.put("salesmanId", "0") //TODO: to be changed
+        saleBillDetails.put("salesmanComm", "0") //TODO: to be changed
+        saleBillDetails.put("refOrderId", "") //TODO: to be changed this is for sale order conversion
+        saleBillDetails.put("deliveryManId", "0") //TODO: to be changed
+        saleBillDetails.put("accountModeId", "0") //TODO: to be changed
+        saleBillDetails.put("totalSqty", totalSqty)
+        saleBillDetails.put("totalFqty", totalFqty)
+        saleBillDetails.put("totalGst", totalGst)
+        saleBillDetails.put("totalSgst", totalSgst)
+        saleBillDetails.put("totalCgst", totalCgst)
+        saleBillDetails.put("totalIgst", totalIgst)
+        saleBillDetails.put("totalQty", totalSqty + totalFqty)
+        saleBillDetails.put("totalItems", totalSqty + totalFqty)
+        saleBillDetails.put("totalDiscount", totalDiscount)
+        saleBillDetails.put("grossAmount", totalAmount + totalDiscount) //TODO: to be checked once
+        saleBillDetails.put("invoiceTotal", totalAmount) //TODO: adjusted amount
+        saleBillDetails.put("totalAmount", totalAmount)
+        saleBillDetails.put("balance", totalAmount)
+        saleBillDetails.put("invtype", params.invtype)
+        saleBillDetails.put("entityId", entityId)
+        saleBillDetails.put("entityTypeId", session.getAttribute("entityTypeId"))
+        saleBillDetails.put("createdUser", session.getAttribute("userId"))
+        saleBillDetails.put("modifiedUser", session.getAttribute("userId"))
+        saleBillDetails.put("message", message) //TODO: to be changed
+        saleBillDetails.put("gstStatus", "0") //TODO: to be changed
+        saleBillDetails.put("billStatus", billStatus)
+        saleBillDetails.put("lockStatus", 0) //TODO: to be changed
+        saleBillDetails.put("syncStatus", "0") //TODO: to be changed
+        saleBillDetails.put("creditadjAmount", 0) //TODO: to be changed
+        saleBillDetails.put("creditIds", "0") //TODO: to be changed
+        saleBillDetails.put("referralDoctor", "0") //TODO: to be changed
+        saleBillDetails.put("taxable", "1") //TODO: to be changed
+        saleBillDetails.put("cashDiscount", 0) //TODO: to be changed
+        saleBillDetails.put("exempted", 0) //TODO: to be changed
+        saleBillDetails.put("seriesCode", seriesCode)
+        saleBillDetails.put("drname",drname)
+        saleBillDetails.put("uuid", params.uuid)
+        saleBillDetails.put("rep", rep)
+        saleBillDetails.put("refNo", refNo)
+        saleBillDetails.put("publicNote", publicNote)
+        saleBillDetails.put("privateNote", privateNote)
+        if (refDate != '')
+        {
+            saleBillDetails.put("refDate", refDate)
+        }
+        else
+        {
+            saleBillDetails.put("refDate", '')
+        }
+
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("saleInvoice", saleBillDetails)
+        jsonObject.put("saleProducts", saleProductDetails)
+        Response response = new SalesService().saveSaleRetailerInvoice(jsonObject)
+        if (response.status == 200) {
+            JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
+            UUID uuid
+            //update stockbook
+            for (JSONObject sale : saleData)
+            {
+                uuid = UUID.randomUUID()
+                long saleQty =  Long.parseLong(sale.get("4").toString())
+                long saleFreeQty =  Long.parseLong(sale.get("5").toString())
+//                String tempStockRowId = sale.get("15")
+//                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                def stockBook = new InventoryService().getStocksOfProductAndBatch(sale.get("1").toString(),sale.get("2").toString(),
+                        entityId)
+                long remainingQty = Long.parseLong(stockBook.get("remainingQty").toString())
+                long  remainingFreeQty = Long.parseLong(stockBook.get("remainingFreeQty").toString())
+
+                if (saleQty <= remainingQty) {
+                    remainingQty = remainingQty - saleQty
+
+                } else if (saleQty > remainingQty && saleQty <= (remainingQty + remainingFreeQty)) {
+                    remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
+                    remainingQty = 0
+                }
+                if (saleFreeQty <= remainingFreeQty) {
+                    remainingFreeQty = remainingFreeQty - saleFreeQty
+                } else if (saleFreeQty > remainingFreeQty && saleFreeQty <= (remainingQty + remainingFreeQty)) {
+                    remainingQty = remainingQty - (saleFreeQty - remainingFreeQty)
+                    remainingFreeQty = 0
+                }
+                stockBook.put("remainingQty", remainingQty)
+                stockBook.put("remainingFreeQty", remainingFreeQty)
+                stockBook.put("remainingReplQty", stockBook.get("remainingReplQty"))
+                String expDate = stockBook.get("expDate").toString().split("T")[0]
+                String purcDate = stockBook.get("purcDate").toString().split("T")[0]
+                String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
+                expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
+                purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
+                manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
+                stockBook.put("expDate", expDate)
+                stockBook.put("purcDate", purcDate)
+                stockBook.put("manufacturingDate", manufacturingDate)
+                stockBook.put("uuid", uuid)
+                def apiRes = new InventoryService().updateStockBook(stockBook)
+                if (apiRes.status == 200)
+                {
+////                    //clear tempstockbook
+//                    def deleteTemp = new InventoryService().deleteTempStock(tempStockRowId)
+//                    println(deleteTemp)
+                    println("stocks modified!!")
+                }
+            }
+            if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
+            {
+                JSONObject transportObject = new JSONObject();
+                transportObject.put("finId", finId)
+                transportObject.put("billId", saleBillDetail.id)
+                transportObject.put("billType", "SALE_INVOICE")
+                transportObject.put("serBillId", saleBillDetail.serBillId)
+                transportObject.put("series", saleBillDetail.seriesId)
+                transportObject.put("customerId", saleBillDetail.customerId)
+                transportObject.put("transporterId", params.transporter)
+                transportObject.put("lrDate", params.lrDate)
+                transportObject.put("lrNumber", params.lrNumber)
+                transportObject.put("cartonsCount", "")
+                transportObject.put("paid", 0)
+                transportObject.put("toPay", 0)
+                transportObject.put("generalInfo", 0)
+                transportObject.put("selfNo", 0)
+                transportObject.put("ccm", 0)
+                transportObject.put("recievedTemprature", 0)
+                transportObject.put("freightCharge", 0)
+                transportObject.put("vechileId", 0)
+                transportObject.put("deliveryStatus", 0)
+                transportObject.put("dispatchDateTime", 0)
+                transportObject.put("deliveryDateTime", 0)
+                transportObject.put("trackingDetails", 0)
+                transportObject.put("ewaybillId", 0)
+                transportObject.put("genralInfo", 0)
+                transportObject.put("weight", 0)
+                transportObject.put("ewaysupplytype", 0)
+                transportObject.put("ewaysupplysubtype", 0)
+                transportObject.put("ewaydoctype", 0)
+                transportObject.put("consignmentNo", 0)
+                transportObject.put("syncStatus", 0)
+                transportObject.put("financialYear", 0)
+                transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                transportObject.put("entityId", session.getAttribute('entityId'))
+                Response transportation = new SalesService().saveSaleTransportation(transportObject)
+                if (transportation?.status == 200)
+                {
+                    println("Transportation details added")
+                }
+                else
+                {
+                    println("something went wrong!!")
+                }
+            }else {
+                println("Transportation Details not found!")
+            }
+
+            try {
+                if (billStatus.equalsIgnoreCase("ACTIVE")) {
+                    //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                    new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                }
+            }
+            catch (Exception ex) {
+                ex.printStackTrace()
+            }
+
+
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            JSONObject salesEmailConfig
+            if(emailSettings!=null){
+                if(emailSettings?.salesEmailConfig!=null && emailSettings?.salesEmailConfig!=""){
+                    salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                }
+                if(salesEmailConfig?.SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY == "true"){
+                    def entity = new EntityService().getEntityById(params.customer)
+                    if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                    {
+                        for(JSONObject jsonObject1: saleProductDetails){
+                            def product = new ProductService().getProductById(jsonObject1.productId.toString())
+                            jsonObject1.put("product",product)
+                        }
+                        JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
+                        Object mailTemplate = g.render(template:'/templates/bill-template',model:
+                                [saleProductDetails: saleProductDetails,saleBillDetail: saleBillDetail,customer:customer]) as
+                                Object
+                        def email = new EmailService().sendEmail(entity.email.trim(), "Sale Invoice saved", saleBillDetail?.invoiceNumber, saleBillDetail?.invoiceNumber, Constants.SALE_INVOICE, null, true,mailTemplate)
+                        if (email)
+                        {
+                            println("Mail Sent..")
+                        }
+                        else
+                        {
+                            println("Mail not Sent..")
+                        }
+                    }
+                    else{
+                        println("Email not found..")
+                    }
+                }
+            }
+            else{
+                println("Entity Settings not found!!")
+            }
+            JSONObject responseJson = new JSONObject()
+            responseJson.put("series", series)
+            responseJson.put("saleBillDetail", saleBillDetail)
+            respond responseJson, formats: ['json']
+        } else
+            response.status = 400
+    }
+
     def printSaleInvoice()
     {
         try{
@@ -2406,7 +2787,1539 @@ class SaleEntryController
         }
     }
 
+    def printRetailerInvoice()
+    {
+        try{
+            String saleBillId = params.id
+            def checkUser = new EntityService().billDetailsCheckUserType(session.getAttribute('userId').toString())
+            JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
+            if(saleBillDetail.entityId == session.getAttribute('entityId')){
+                def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+                if (saleBillDetail != null)
+                {
+                    JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
+                    JSONObject transportDetails = new SalesService().getSaleTransportationByBill(saleBillId,Constants.SALE_INVOICE)
+                    if (transportDetails != null)
+                    {
+                        JSONObject transporter = new ShipmentService().getTransporterbyId(transportDetails?.transporterId?.toString());
+                        if (transporter != null)
+                        {
+                            transportDetails.put("transporter", transporter)
+                        }
+                    }
+                    JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
+                    JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
+                    println("Entity ID is: " + session.getAttribute("entityId").toString())
+                    JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+                    if (entity == null)
+                    {
+                        println("Entity is null")
+                    }
+                    JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+                    JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
+                    JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
 
+
+                    termsConditions.each {
+                        JSONObject formMaster = new SystemService().getFormById(it.formId.toString())
+                        if (formMaster != null)
+                        {
+                            if (it.formId == formMaster.id)
+                            {
+                                it.put("form", formMaster)
+                            }
+                        }
+                    }
+//            println(termsConditions)
+                    JSONObject groupDetails = new JSONObject()
+                    JSONArray productDetail = new JSONArray()
+                    saleProductDetails.each {
+                        def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                        JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                        for (JSONObject batch : batchArray)
+                        {
+                            if (batch.batchNumber == it.batchNumber)
+                            {
+                                it.put("batch", batch)
+                            }
+                        }
+                        def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                        it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+                        def stocks = new InventoryService().getStocksOfProductAndBatch(it.productId.id.toString(), it.batchNumber.toString(), it.entityId.toString())
+                        it.put("stocks", stocks)
+                        if (settings.size() != 0 && settings?.IPG == Constants.DIVISION_WISE)
+                        {
+                            if (groupDetails.containsKey(it?.productId?.division?.id))
+                            {
+                                productDetail = groupDetails.get(it?.productId?.division?.id) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.productId?.division?.id, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                println(productDetail)
+                                groupDetails.put(it?.productId?.division?.id, productDetail)
+                            }
+                        }
+                        else if (settings.size() != 0 && settings?.IPG == Constants.TAX_WISE)
+                        {
+                            if (groupDetails.containsKey(it?.stocks?.taxId))
+                            {
+                                productDetail = groupDetails.get(it?.stocks?.taxId) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.stocks?.taxId, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                println(productDetail)
+                                groupDetails.put(it?.stocks?.taxId, productDetail)
+                            }
+                        }
+                        else if (settings.size() != 0 && settings?.IPG == Constants.PRODUCT_GROUPING)
+                        {
+                            if (groupDetails.containsKey(it?.productId?.group?.id))
+                            {
+                                productDetail = groupDetails.get(it?.productId?.group?.id) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.productId?.group?.id, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                println(productDetail)
+                                groupDetails.put(it?.productId?.group?.id, productDetail)
+                            }
+                        }
+                        else if (settings.size() != 0 && settings?.IPG == Constants.SCHEDULE)
+                        {
+                            if (groupDetails.containsKey(it?.productId?.schedule?.id))
+                            {
+                                productDetail = groupDetails.get(it?.productId?.schedule?.id) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.productId?.schedule?.id, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                groupDetails.put(it?.productId?.schedule?.id, productDetail)
+                            }
+                        }
+                        else if (settings.size() != 0 && settings?.IPG == Constants.CATEGORY)
+                        {
+                            if (groupDetails.containsKey(it?.productId?.category?.id))
+                            {
+                                productDetail = groupDetails.get(it?.productId?.category?.id) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.productId?.category?.id, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                groupDetails.put(it?.productId?.category?.id, productDetail)
+                            }
+                        }
+                    }
+
+
+                    if (settings.size() != 0 && settings?.IPG == Constants.DIVISION_WISE)
+                    {
+                        for (Object divison : groupDetails.keySet())
+                        {
+                            def divisionDetail = new DivisionController().getDivisionById(divison as String)
+                            JSONArray prodDetails = groupDetails.get(divison) as JSONArray
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                }
+                                divisionDetail.put("sortItem", divisionDetail.get("divisionName"))
+                                divisionDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                divisionDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                divisionDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", divisionDetail)
+                            }
+                        }
+                    }
+                    else if (settings.size() != 0 && settings?.IPG == Constants.TAX_WISE)
+                    {
+                        for (Object tax : groupDetails.keySet())
+                        {
+                            def taxDetail = new TaxController().show(tax as String)
+                            JSONArray prodDetails = groupDetails.get(tax) as JSONArray
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+
+                                }
+
+                                taxDetail.put("sortItem", taxDetail.get("taxName") + " (" + taxDetail.get("taxValue") + "%)")
+//                            taxDetail.remove("divisionName");
+                                taxDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                taxDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                taxDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", taxDetail)
+                            }
+                        }
+                    }
+                    else if (settings.size() != 0 && settings?.IPG == Constants.PRODUCT_GROUPING)
+                    {
+                        for (Object productGrp : groupDetails.keySet())
+                        {
+                            def productGrpDetail = new ProductService().getProductGroupById(productGrp.toString())
+                            JSONArray prodDetails = groupDetails.get(productGrp) as JSONArray
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                }
+
+                                productGrpDetail.put("sortItem", productGrpDetail.get("groupName"))
+//                            taxDetail.remove("divisionName");
+                                productGrpDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                productGrpDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                productGrpDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", productGrpDetail)
+                            }
+                        }
+                    }
+                    else if (settings.size() != 0 && settings?.IPG == Constants.SCHEDULE)
+                    {
+                        for (Object schedule : groupDetails.keySet())
+                        {
+                            def scheduleDetail = new ProductService().getProductSchedulebyId(schedule.toString())
+                            JSONArray prodDetails = groupDetails.get(schedule) as JSONArray
+
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+
+                                }
+
+                                scheduleDetail.put("sortItem", scheduleDetail.get("scheduleCode"))
+                                scheduleDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                scheduleDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                scheduleDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", scheduleDetail)
+
+                            }
+                        }
+                    }
+                    else if (settings.size() != 0 && settings?.IPG == Constants.CATEGORY)
+                    {
+                        for (Object category : groupDetails.keySet())
+                        {
+                            def categoryDetail = new ProductService().getProductCategoryById(category.toString())
+                            JSONArray prodDetails = groupDetails.get(category) as JSONArray
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+
+                                }
+                                categoryDetail.put("sortItem", categoryDetail.get("categoryName"))
+                                categoryDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                categoryDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                categoryDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", categoryDetail)
+                            }
+                        }
+                    }
+
+
+
+                    def totalcgst = UtilsService.round(saleProductDetails.cgstAmount.sum(), 2)
+                    def totalsgst = UtilsService.round(saleProductDetails.sgstAmount.sum(), 2)
+                    def totaligst = UtilsService.round(saleProductDetails.igstAmount.sum(), 2)
+                    def totaldiscount = UtilsService.round(saleProductDetails.discount.sum(), 2)
+                    def totalDiscAmt = 0
+                    def totalBeforeTaxes = 0
+                    HashMap<String, Double> gstGroup = new HashMap<>()
+                    HashMap<String, Double> sgstGroup = new HashMap<>()
+                    HashMap<String, Double> cgstGroup = new HashMap<>()
+                    HashMap<String, Double> igstGroup = new HashMap<>()
+                    for (Object it : saleProductDetails)
+                    {
+                        double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                        double amountBeforeDiscount = it.sqty * it.sRate
+                        totalDiscAmt += amountBeforeDiscount*(it.discount/100)
+                        totalBeforeTaxes += amountBeforeTaxes
+                        if (it.igstPercentage > 0)
+                        {
+                            def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                            if (igstPercentage == null)
+                            {
+                                igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                        }
+                        else
+                        {
+                            def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                            if (gstPercentage == null)
+                            {
+                                gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+
+                            def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                            if (sgstPercentage == null)
+                            {
+                                sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                            def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                            if (cgstPercentage == null)
+                            {
+                                cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                        }
+
+
+                    }
+
+                    def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+
+                    JSONObject irnDetails = null
+                    if (saleBillDetail.has("irnDetails") && saleBillDetail.get("irnDetails") != null)
+                    {
+                        irnDetails = new JSONObject(saleBillDetail.get("irnDetails").toString())
+                    }
+
+
+                    println(groupDetails)
+                    render(view: "/sales/saleEntry/sale-invoice", model: [saleBillDetail    : saleBillDetail,
+                                                                          saleProductDetails: saleProductDetails,
+                                                                          series            : series, entity: entity, customer: customer, city: city,
+                                                                          total             : total, custcity: custcity,
+                                                                          totalDiscAmt:totalDiscAmt,
+                                                                          termsConditions   : termsConditions,
+                                                                          totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                                          totaldiscount     : totaldiscount,
+                                                                          gstGroup          : gstGroup,
+                                                                          sgstGroup         : sgstGroup,
+                                                                          cgstGroup         : cgstGroup,
+                                                                          igstGroup         : igstGroup,
+                                                                          totalBeforeTaxes  : totalBeforeTaxes,
+                                                                          irnDetails        : irnDetails,
+                                                                          transportDetails  : transportDetails,
+                                                                          groupDetails      : groupDetails,
+                                                                          settings          : settings,
+                    ])
+
+                }
+                else
+                {
+
+                    render("No Bill Found")
+                }
+            } else if(checkUser){
+                def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+                if (saleBillDetail != null)
+                {
+                    JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
+                    JSONObject transportDetails = new SalesService().getSaleTransportationByBill(saleBillId,Constants.SALE_INVOICE)
+                    if (transportDetails != null)
+                    {
+                        JSONObject transporter = new ShipmentService().getTransporterbyId(transportDetails?.transporterId?.toString());
+                        if (transporter != null)
+                        {
+                            transportDetails.put("transporter", transporter)
+                        }
+                    }
+                    JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
+                    JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
+                    println("Entity ID is: " + session.getAttribute("entityId").toString())
+                    JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+                    if (entity == null)
+                    {
+                        println("Entity is null")
+                    }
+                    JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+                    JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
+                    JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+
+
+                    termsConditions.each {
+                        JSONObject formMaster = new SystemService().getFormById(it.formId.toString())
+                        if (formMaster != null)
+                        {
+                            if (it.formId == formMaster.id)
+                            {
+                                it.put("form", formMaster)
+                            }
+                        }
+                    }
+//            println(termsConditions)
+                    JSONObject groupDetails = new JSONObject()
+                    JSONArray productDetail = new JSONArray()
+                    saleProductDetails.each {
+                        def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                        JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                        for (JSONObject batch : batchArray)
+                        {
+                            if (batch.batchNumber == it.batchNumber)
+                            {
+                                it.put("batch", batch)
+                            }
+                        }
+                        def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                        it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+                        def stocks = new InventoryService().getStocksOfProductAndBatch(it.productId.id.toString(), it.batchNumber.toString(), it.entityId.toString())
+                        it.put("stocks", stocks)
+                        if (settings.size() != 0 && settings?.IPG == Constants.DIVISION_WISE)
+                        {
+                            if (groupDetails.containsKey(it?.productId?.division?.id))
+                            {
+                                productDetail = groupDetails.get(it?.productId?.division?.id) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.productId?.division?.id, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                println(productDetail)
+                                groupDetails.put(it?.productId?.division?.id, productDetail)
+                            }
+                        }
+                        else if (settings.size() != 0 && settings?.IPG == Constants.TAX_WISE)
+                        {
+                            if (groupDetails.containsKey(it?.stocks?.taxId))
+                            {
+                                productDetail = groupDetails.get(it?.stocks?.taxId) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.stocks?.taxId, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                println(productDetail)
+                                groupDetails.put(it?.stocks?.taxId, productDetail)
+                            }
+                        }
+                        else if (settings.size() != 0 && settings?.IPG == Constants.PRODUCT_GROUPING)
+                        {
+                            if (groupDetails.containsKey(it?.productId?.group?.id))
+                            {
+                                productDetail = groupDetails.get(it?.productId?.group?.id) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.productId?.group?.id, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                println(productDetail)
+                                groupDetails.put(it?.productId?.group?.id, productDetail)
+                            }
+                        }
+                        else if (settings.size() != 0 && settings?.IPG == Constants.SCHEDULE)
+                        {
+                            if (groupDetails.containsKey(it?.productId?.schedule?.id))
+                            {
+                                productDetail = groupDetails.get(it?.productId?.schedule?.id) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.productId?.schedule?.id, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                groupDetails.put(it?.productId?.schedule?.id, productDetail)
+                            }
+                        }
+                        else if (settings.size() != 0 && settings?.IPG == Constants.CATEGORY)
+                        {
+                            if (groupDetails.containsKey(it?.productId?.category?.id))
+                            {
+                                productDetail = groupDetails.get(it?.productId?.category?.id) as JSONArray
+                                productDetail.add(it)
+                                Collections.sort(productDetail, new Comparator<JSONObject>() {
+                                    @Override
+                                    int compare(JSONObject o1, JSONObject o2)
+                                    {
+                                        String val1 = new String()
+                                        String val2 = new String()
+                                        try
+                                        {
+
+                                            if (settings?.IPS == Constants.ALPHABETIC)
+                                            {
+                                                val1 = (String) o1?.productId?.productName
+                                                val2 = (String) o2.productId?.productName
+                                            }
+                                            else if (settings?.IPS == Constants.TAX_WISE)
+                                            {
+                                                val1 = (String) o1?.gstPercentage
+                                                val2 = (String) o2?.gstPercentage
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            //do something
+                                            println("JSON Exception")
+                                        }
+                                        return val1.compareTo(val2);
+                                    }
+                                });
+                                JSONArray sortedJsonArray = new JSONArray();
+                                for (int i = 0; i < productDetail.length(); i++)
+                                {
+                                    sortedJsonArray.put(productDetail.get(i));
+                                }
+                                println(sortedJsonArray)
+                                groupDetails.put(it?.productId?.category?.id, sortedJsonArray)
+                            }
+                            else
+                            {
+                                productDetail = new JSONArray()
+                                productDetail.add(it)
+                                groupDetails.put(it?.productId?.category?.id, productDetail)
+                            }
+                        }
+                    }
+
+
+                    if (settings.size() != 0 && settings?.IPG == Constants.DIVISION_WISE)
+                    {
+                        for (Object divison : groupDetails.keySet())
+                        {
+                            def divisionDetail = new DivisionController().getDivisionById(divison as String)
+                            JSONArray prodDetails = groupDetails.get(divison) as JSONArray
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                }
+                                divisionDetail.put("sortItem", divisionDetail.get("divisionName"))
+                                divisionDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                divisionDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                divisionDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", divisionDetail)
+                            }
+                        }
+                    }
+                    else if (settings.size() != 0 && settings?.IPG == Constants.TAX_WISE)
+                    {
+                        for (Object tax : groupDetails.keySet())
+                        {
+                            def taxDetail = new TaxController().show(tax as String)
+                            JSONArray prodDetails = groupDetails.get(tax) as JSONArray
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+
+                                }
+
+                                taxDetail.put("sortItem", taxDetail.get("taxName") + " (" + taxDetail.get("taxValue") + "%)")
+//                            taxDetail.remove("divisionName");
+                                taxDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                taxDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                taxDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", taxDetail)
+                            }
+                        }
+                    }
+                    else if (settings.size() != 0 && settings?.IPG == Constants.PRODUCT_GROUPING)
+                    {
+                        for (Object productGrp : groupDetails.keySet())
+                        {
+                            def productGrpDetail = new ProductService().getProductGroupById(productGrp.toString())
+                            JSONArray prodDetails = groupDetails.get(productGrp) as JSONArray
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                }
+
+                                productGrpDetail.put("sortItem", productGrpDetail.get("groupName"))
+//                            taxDetail.remove("divisionName");
+                                productGrpDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                productGrpDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                productGrpDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", productGrpDetail)
+                            }
+                        }
+                    }
+                    else if (settings.size() != 0 && settings?.IPG == Constants.SCHEDULE)
+                    {
+                        for (Object schedule : groupDetails.keySet())
+                        {
+                            def scheduleDetail = new ProductService().getProductSchedulebyId(schedule.toString())
+                            JSONArray prodDetails = groupDetails.get(schedule) as JSONArray
+
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+
+                                }
+
+                                scheduleDetail.put("sortItem", scheduleDetail.get("scheduleCode"))
+                                scheduleDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                scheduleDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                scheduleDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", scheduleDetail)
+
+                            }
+                        }
+                    }
+                    else if (settings.size() != 0 && settings?.IPG == Constants.CATEGORY)
+                    {
+                        for (Object category : groupDetails.keySet())
+                        {
+                            def categoryDetail = new ProductService().getProductCategoryById(category.toString())
+                            JSONArray prodDetails = groupDetails.get(category) as JSONArray
+                            HashMap<String, Double> divGstGroup = new HashMap<>()
+                            HashMap<String, Double> divSgstGroup = new HashMap<>()
+                            HashMap<String, Double> divCgstGroup = new HashMap<>()
+                            HashMap<String, Double> divIgstGroup = new HashMap<>()
+                            double amountBeforeTaxes = 0;
+                            double amountAfterTaxes = 0;
+                            for (Object prodDetail : prodDetails)
+                            {
+                                amountBeforeTaxes += prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount
+
+                                amountAfterTaxes += prodDetail.amount
+                                if (prodDetail.igstPercentage > 0)
+                                {
+                                    def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
+                                    if (igstPercentage == null)
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
+                                    }
+                                    else
+                                    {
+                                        divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                }
+                                else
+                                {
+                                    def gstPercentage = divGstGroup.get(prodDetail.gstPercentage.toString())
+                                    if (gstPercentage == null)
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divGstGroup.put(prodDetail.gstPercentage.toString(), gstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+                                    def sgstPercentage = divSgstGroup.get(prodDetail.sgstPercentage.toString())
+                                    if (sgstPercentage == null)
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divSgstGroup.put(prodDetail.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                                    }
+                                    def cgstPercentage = divCgstGroup.get(prodDetail.cgstPercentage.toString())
+                                    if (cgstPercentage == null)
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+                                    else
+                                    {
+                                        divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
+                                    }
+
+
+                                }
+                                categoryDetail.put("sortItem", categoryDetail.get("categoryName"))
+                                categoryDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                                categoryDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                                categoryDetail.put("amountAfterTaxes", amountAfterTaxes)
+                                prodDetail.put("sortDetail", categoryDetail)
+                            }
+                        }
+                    }
+
+
+
+                    def totalcgst = UtilsService.round(saleProductDetails.cgstAmount.sum(), 2)
+                    def totalsgst = UtilsService.round(saleProductDetails.sgstAmount.sum(), 2)
+                    def totaligst = UtilsService.round(saleProductDetails.igstAmount.sum(), 2)
+                    def totaldiscount = UtilsService.round(saleProductDetails.discount.sum(), 2)
+                    def totalDiscAmt = 0
+                    def totalBeforeTaxes = 0
+                    HashMap<String, Double> gstGroup = new HashMap<>()
+                    HashMap<String, Double> sgstGroup = new HashMap<>()
+                    HashMap<String, Double> cgstGroup = new HashMap<>()
+                    HashMap<String, Double> igstGroup = new HashMap<>()
+                    for (Object it : saleProductDetails)
+                    {
+                        double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                        totalDiscAmt += amountBeforeTaxes/100*it.discount
+                        totalBeforeTaxes += amountBeforeTaxes
+                        if (it.igstPercentage > 0)
+                        {
+                            def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                            if (igstPercentage == null)
+                            {
+                                igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                        }
+                        else
+                        {
+                            def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                            if (gstPercentage == null)
+                            {
+                                gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+
+                            def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                            if (sgstPercentage == null)
+                            {
+                                sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                            def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                            if (cgstPercentage == null)
+                            {
+                                cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                        }
+
+
+                    }
+
+                    def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+
+                    JSONObject irnDetails = null
+                    if (saleBillDetail.has("irnDetails") && saleBillDetail.get("irnDetails") != null)
+                    {
+                        irnDetails = new JSONObject(saleBillDetail.get("irnDetails").toString())
+                    }
+
+
+                    println(groupDetails)
+                    render(view: "/sales/saleEntry/sale-invoice", model: [saleBillDetail    : saleBillDetail,
+                                                                          saleProductDetails: saleProductDetails,
+                                                                          series            : series, entity: entity, customer: customer, city: city,
+                                                                          total             : total, custcity: custcity,
+                                                                          totalDiscAmt:totalDiscAmt,
+                                                                          termsConditions   : termsConditions,
+                                                                          totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                                          totaldiscount     : totaldiscount,
+                                                                          gstGroup          : gstGroup,
+                                                                          sgstGroup         : sgstGroup,
+                                                                          cgstGroup         : cgstGroup,
+                                                                          igstGroup         : igstGroup,
+                                                                          totalBeforeTaxes  : totalBeforeTaxes,
+                                                                          irnDetails        : irnDetails,
+                                                                          transportDetails  : transportDetails,
+                                                                          groupDetails      : groupDetails,
+                                                                          settings          : settings,
+                    ])
+
+                }
+                else
+                {
+
+                    render("No Bill Found")
+                }
+            }else{
+                render("No invoice found")
+            }
+        }catch(Exception ex){
+            println(ex)
+//            log.error(ex)
+        }
+    }
 
 
 //    def printSaleInvoice() {

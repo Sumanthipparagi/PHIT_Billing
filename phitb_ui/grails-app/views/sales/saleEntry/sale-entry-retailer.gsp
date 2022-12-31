@@ -79,6 +79,7 @@
                             <div class="col-md-4">
                                 <label>Patient:</label>
                                 <input type="hidden" class="customerId"/>
+                                <span id="patientDetails"></span>
                             </div>
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
@@ -108,8 +109,8 @@
                             </div>
 
                             <div class="col-md-2">
-                                <label for="duedate">Due Date:</label>
-                                <input type="date" class="form-control date" name="duedate" id="duedate"/>
+                                <label for="drname">Dr Name:</label>
+                                <input type="text" class="form-control drname" name="drname" id="drname"/>
                             </div>
 
 
@@ -479,7 +480,8 @@
 <g:include view="controls/sales/batch-detail.gsp"/>
 <g:include view="controls/sales/mass-discount.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
-
+<g:include view="controls/sales/add-patient-modal.gsp"/>
+<g:include view="controls/sales/phone-number.gsp"/>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
@@ -506,23 +508,22 @@
         '<strong>Product</strong>',
         '<strong>Batch</strong>',
         '<strong>Exp Dt</strong>',
-        '<strong>Pres.Qty</strong>',
         '<strong>Sale Qty</strong>',
         '<strong>Free Qty</strong>',
-        '<strong>M</strong>',
-        '<strong>A</strong>',
-        '<strong>N</strong>',
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Disc.(%)</strong>',
         '<strong>Pack</strong>',
         '<strong>GST</strong>',
         '<strong>Value</strong>',
-        '<strong>Dr.Name</strong>',
         'SGST',
         'CGST',
         'IGST',
-        'Rep',
+        'Prev. qty',
+        'No. of days',
+        'M',
+        'A',
+        'N',
         'id'];
 
     var batchHeaderRow = [
@@ -622,7 +623,11 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
-                {type: 'checkbox', checkedTemplate: true, uncheckedTemplate: false},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}, //GST Percentage
                 {type: 'text', readOnly: true}, //SGST Percentage
@@ -630,13 +635,13 @@
                 {type: 'text', readOnly: true}, //IGST Percentage
                 {type: 'text', readOnly: true},//originalSqty
                 {type: 'text', readOnly: true} //originalFqty
-                <g:if test="${customer != null}">
+              /*  <g:if test="${customer != null}">
                 , {type: 'text', readOnly: true}, //draft sqty
                 {type: 'text', readOnly: true}, //draft fqty
                 {type: 'text', readOnly: true} //saved draft product id
-                </g:if>
+                </g:if>*/
             ],
-            hiddenColumns: true,
+        /*    hiddenColumns: true,
             hiddenColumns: {
                 <g:if test="${customer != null}">
                 columns: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
@@ -645,7 +650,7 @@
                 // columns: [15, 16, 17, 18, 19, 20, 21]
                 columns: [16, 17, 18, 19, 20, 21, 22]
                 </g:else>
-            },
+            },*/
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -728,7 +733,8 @@
                     var id = hot.getDataAtCell(row, 16);
                     if (e.keyCode === 13)
                         deleteTempStockRow(id, row);
-                } else if (selection === 14 || selection === 15 || selection === 16) {
+                }
+                else if (selection === 19) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         //   var typ = hot.getCellMeta(row,15).type;
@@ -737,104 +743,113 @@
                         }*/
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty > 0 || hot.getDataAtCell(row, 15) === true) {
-                            var tmpStockId = hot.getDataAtCell(row, 16);
-                            if (tmpStockId == null) {
-                                var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
-                                var dt = hot.getDataAtRow(row);
-                                dt.push(batchId);
-                                var json = JSON.stringify(dt);
-                                var type = 'POST';
-                                var url = '/tempstockbook';
-                                var draftEdit = false;
-                                <g:if test="${customer != null}">
-                                draftEdit = true;
-                                </g:if>
-                                var beforeSendSwal;
-                                $.ajax({
-                                    type: type,
-                                    url: url,
-                                    dataType: 'json',
-                                    beforeSend: function () {
-                                        beforeSendSwal = Swal.fire({
-                                            // title: "Loading",
-                                            html:
-                                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                                            showDenyButton: false,
-                                            showCancelButton: false,
-                                            showConfirmButton: false,
-                                            allowOutsideClick: false,
-                                            background: 'transparent'
+                        if (sqty && sqty > 0) {
+                            // var tmpStockId = hot.getDataAtCell(row, 16);
+                            %{--if (tmpStockId == null) {--}%
+                            %{--    var batchId = hot.getCellMeta(row, 2)?.batchId; //batch--}%
+                            %{--    var dt = hot.getDataAtRow(row);--}%
+                            %{--    dt.push(batchId);--}%
+                            %{--    var json = JSON.stringify(dt);--}%
+                            %{--    var type = 'POST';--}%
+                            %{--    var url = '/tempstockbook';--}%
+                            %{--    var draftEdit = false;--}%
+                            %{--    <g:if test="${customer != null}">--}%
+                            %{--    draftEdit = true;--}%
+                            %{--    </g:if>--}%
+                            %{--    var beforeSendSwal;--}%
+                            %{--    $.ajax({--}%
+                            %{--        type: type,--}%
+                            %{--        url: url,--}%
+                            %{--        dataType: 'json',--}%
+                            %{--        beforeSend: function () {--}%
+                            %{--            beforeSendSwal = Swal.fire({--}%
+                            %{--                // title: "Loading",--}%
+                            %{--                html:--}%
+                            %{--                    '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',--}%
+                            %{--                showDenyButton: false,--}%
+                            %{--                showCancelButton: false,--}%
+                            %{--                showConfirmButton: false,--}%
+                            %{--                allowOutsideClick: false,--}%
+                            %{--                background: 'transparent'--}%
 
-                                        });
-                                        // document.addEventListener('keypress', function (e) {
-                                        //     if (e.keyCode === 13 || e.which === 13) {
-                                        //         e.preventDefault();
-                                        //         return false;
-                                        //     }
-                                        // });
-                                        // hot.deselectCell()
-                                    },
-                                    data: {
-                                        rowData: json,
-                                        uuid: self.crypto.randomUUID(),
-                                        draftEdit: draftEdit
-                                    },
-                                    success: function (data) {
-                                        beforeSendSwal.close();
-                                        console.log("Data saved");
-                                        /* if(draftEdit){
-                                             if(data?.temp_stock){
-                                                 Swal.fire({
-                                                     icon: 'error',
-                                                     title: 'Please delete temp stock',
-                                                     text: 'Please delete temp stock for this product',
-                                                     // footer: '<a href="">Why do I have this issue?</a>'
-                                                 });
-                                                deleteTempStockRow(null, row)
-                                             }
-                                         }*/
-                                        batchHot.updateSettings({
-                                            data: []
-                                        });
-                                        var id = hot.getDataAtCell(row, 16);
-                                        hot.setDataAtCell(row, 16, data.id);
-                                        for (var i = 0; i < 16; i++) {
-                                            hot.setCellMeta(row, i, 'readOnly', true);
-                                        }
-                                        %{--                                    <g:if test="${settings?.ALLOW_SAME_BATCH!="YES" && settings!=null}">--}%
-                                        if (id !== data.id) {
-                                            mainTableRow = row + 1;
-                                            hot.alter('insert_row');
-                                            hot.selectCell(mainTableRow, 1);
-                                            hot.render();
-                                            calculateTotalAmt();
-                                        }
-                                        %{--                                        </g:if>--}%
-                                        hot.render();
+                            %{--            });--}%
+                            %{--            // document.addEventListener('keypress', function (e) {--}%
+                            %{--            //     if (e.keyCode === 13 || e.which === 13) {--}%
+                            %{--            //         e.preventDefault();--}%
+                            %{--            //         return false;--}%
+                            %{--            //     }--}%
+                            %{--            // });--}%
+                            %{--            // hot.deselectCell()--}%
+                            %{--        },--}%
+                            %{--        data: {--}%
+                            %{--            rowData: json,--}%
+                            %{--            uuid: self.crypto.randomUUID(),--}%
+                            %{--            draftEdit: draftEdit--}%
+                            %{--        },--}%
+                            %{--        success: function (data) {--}%
+                            %{--            beforeSendSwal.close();--}%
+                            %{--            console.log("Data saved");--}%
+                            %{--            /* if(draftEdit){--}%
+                            %{--                 if(data?.temp_stock){--}%
+                            %{--                     Swal.fire({--}%
+                            %{--                         icon: 'error',--}%
+                            %{--                         title: 'Please delete temp stock',--}%
+                            %{--                         text: 'Please delete temp stock for this product',--}%
+                            %{--                         // footer: '<a href="">Why do I have this issue?</a>'--}%
+                            %{--                     });--}%
+                            %{--                    deleteTempStockRow(null, row)--}%
+                            %{--                 }--}%
+                            %{--             }*/--}%
+                            %{--            batchHot.updateSettings({--}%
+                            %{--                data: []--}%
+                            %{--            });--}%
+                            %{--            var id = hot.getDataAtCell(row, 16);--}%
+                            %{--            hot.setDataAtCell(row, 16, data.id);--}%
+                            %{--            for (var i = 0; i < 16; i++) {--}%
+                            %{--                hot.setCellMeta(row, i, 'readOnly', true);--}%
+                            %{--            }--}%
+                            %{--            --}%%{--                                    <g:if test="${settings?.ALLOW_SAME_BATCH!="YES" && settings!=null}">--}%
+                            %{--            if (id !== data.id) {--}%
+                            %{--                mainTableRow = row + 1;--}%
+                            %{--                hot.alter('insert_row');--}%
+                            %{--                hot.selectCell(mainTableRow, 1);--}%
+                            %{--                hot.render();--}%
+                            %{--                calculateTotalAmt();--}%
+                            %{--            }--}%
+                            %{--            --}%%{--                                        </g:if>--}%
+                            %{--            hot.render();--}%
 
-                                    },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-                                        beforeSendSwal.close();
-                                        console.log("Failed");
-                                        if (jqXHR.status === 400){
-                                            if(draftEdit)
-                                                alert("Please delete temp stock of this product and try again!");
-                                            else
-                                                alert("Unable to save the row, please delete it and add again.");
-                                        }
-                                        else if (jqXHR.status === 404) {
-                                            batchSelection(batchId, mainTableRow, false);
-                                            alert("Requested quantity not available in stocks.");
-                                        }
-                                    }
-                                });
-                            } else {
-                                mainTableRow = row + 1;
-                                hot.alter('insert_row');
-                                hot.selectCell(mainTableRow, 1);
-                                hot.render();
+                            %{--        },--}%
+                            %{--        error: function (jqXHR, textStatus, errorThrown) {--}%
+                            %{--            beforeSendSwal.close();--}%
+                            %{--            console.log("Failed");--}%
+                            %{--            if (jqXHR.status === 400){--}%
+                            %{--                if(draftEdit)--}%
+                            %{--                    alert("Please delete temp stock of this product and try again!");--}%
+                            %{--                else--}%
+                            %{--                    alert("Unable to save the row, please delete it and add again.");--}%
+                            %{--            }--}%
+                            %{--            else if (jqXHR.status === 404) {--}%
+                            %{--                batchSelection(batchId, mainTableRow, false);--}%
+                            %{--                alert("Requested quantity not available in stocks.");--}%
+                            %{--            }--}%
+                            %{--        }--}%
+                            %{--    });--}%
+                            %{--} else {--}%
+                            %{--    mainTableRow = row + 1;--}%
+                            %{--    hot.alter('insert_row');--}%
+                            %{--    hot.selectCell(mainTableRow, 1);--}%
+                            %{--    hot.render();--}%
+                            %{--}--}%
+
+                            for (var j = 0; j < 19; j++) {
+                                hot.setCellMeta(row, j, 'readOnly', true);
+                                // hot.setCellMeta(row,j,'disableVisualSelection', true)
                             }
+                            mainTableRow = row + 1;
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 0);
+                            hot.render();
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
 
@@ -842,7 +857,7 @@
 
                     }
                 } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 || selection > 6
-                    && selection <= 15) {
+                    && selection <= 25) {
                     if (e.keyCode === 13 || e.keyCode === 9 || e.keyCode === 37 || e.keyCode === 39 || e.type === "click") {
                         var discount = 0;
                         if (selection === 6) {
@@ -890,6 +905,12 @@
                         } else {
                             discount = hot.getDataAtCell(row, 8);
                         }
+
+                        if(selection === 15 || selection === 16 || selection === 17 || selection === 18 || selection
+                            === 19){
+                            this.selectCell(row, selection + 1);
+                        }
+
                         var allowEntry = false;
                         var pid = hot.getDataAtCell(row, 1);
                         var batch = hot.getDataAtCell(row, 2);
@@ -1024,6 +1045,7 @@
             }
         });
 
+
         stateId = $('#customerSelect option:selected').attr('data-state');
         $('#customerSelect').change(function () {
             stateId = $('#customerSelect option:selected').attr('data-state');
@@ -1151,6 +1173,12 @@
                         hot.setDataAtCell(mainTableRow, 7, rowData[6]);
                         hot.setDataAtCell(mainTableRow, 8, 0);
                         hot.setDataAtCell(mainTableRow, 9, rowData[7]);
+                        hot.setDataAtCell(mainTableRow, 15, 0);
+                        hot.setDataAtCell(mainTableRow, 16, 0);
+                        hot.setDataAtCell(mainTableRow, 17, 0);
+                        hot.setDataAtCell(mainTableRow, 18, 0);
+                        hot.setDataAtCell(mainTableRow, 19, 0);
+
                         gst = rowData[8];
                         if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
                             sgst = rowData[9];
@@ -1162,12 +1190,12 @@
                             cgst = 0;
                         }
                         hot.selectCell(mainTableRow, 4);
-                        hot.setDataAtCell(mainTableRow, 17, gst);
-                        hot.setDataAtCell(mainTableRow, 18, sgst);
-                        hot.setDataAtCell(mainTableRow, 19, cgst);
-                        hot.setDataAtCell(mainTableRow, 20, igst);
-                        hot.setDataAtCell(mainTableRow, 21, rowData[2]);
-                        hot.setDataAtCell(mainTableRow, 22, rowData[3]);
+                        hot.setDataAtCell(mainTableRow, 21, gst);
+                        hot.setDataAtCell(mainTableRow, 22, sgst);
+                        hot.setDataAtCell(mainTableRow, 23, cgst);
+                        hot.setDataAtCell(mainTableRow, 24, igst);
+                        hot.setDataAtCell(mainTableRow, 25, rowData[2]);
+                        hot.setDataAtCell(mainTableRow, 26, rowData[3]);
                         remainingQty = rowData[2];
                         remainingFQty = rowData[3];
                         $("#saleTable").focus();
@@ -1522,12 +1550,13 @@
             allowOutsideClick: false
         });
 
-        var customer = $("#customerSelect").val();
+        var customer = $(".customerId").val();
         var publicNote = $("#publicNote").val();
         var privateNote = $("#privateNote").val();
         var refNum = $("#refNum").val();
         var refDate = $("#refDate").val();
         var rep = $("#repSelect").val();
+        var drname = $('.drname').val();
         if (refDate !== '') {
             refDate = moment(refDate).format("DD/MM/YYYY");
         } else {
@@ -1567,14 +1596,8 @@
         }
         var saleData = JSON.stringify(hot.getSourceData());
         var url = "";
-        <g:if test="${customer!= null && params.type!="CLONE"}">
-        url = "/edit-sale-entry?id=" + '${saleBillDetail.id}';
-        console.log("edit sale entry");
-        </g:if>
-        <g:else>
-        url = "/sale-entry";
+        url = "/savesaleRetailerEntry";
         console.log("save sale entry");
-        </g:else>
         Swal.fire({
             title: 'Do you want to save the changes?',
             showDenyButton: true,
@@ -1602,6 +1625,7 @@
                         lrDate: lrDate,
                         refNum: refNum,
                         refDate: refDate,
+                        drname: drname,
                         transporter: transporter,
                         publicNote: publicNote,
                         privateNote: privateNote,
@@ -2327,40 +2351,82 @@
 
     });
 
+
     $(document).on('click', '#phoneNumber', function (e) {
         var phoneNumber = $('.phoneNumber').val();
-      if(phoneNumber.length < 10 || phoneNumber.length > 10){
-          Swal.fire({
-              icon: 'error',
-              title: 'Enter valid number',
-              text: 'Phone number must be of 10 digits',
-          });
-          return;
-      }
+        if(phoneNumber.length < 10 || phoneNumber.length > 10){
+            Swal.fire({
+                icon: 'error',
+                title: 'Enter valid number',
+                text: 'Phone number must be of 10 digits',
+            });
+            return;
+        }
         $.ajax({
             type: "GET",
-            url: '/update-mass-discount',
+            url: '/check-phone-exists',
             dataType: 'json',
             data:{
-                data:JSON.stringify(idArray),
-                discount: $('.discount').val()
+                phoneNumber:phoneNumber,
             },
             success: function (data) {
-                $('#massDiscountModal').modal('hide');
-                loadDraftProducts()
+                console.log(data);
+                if(data.status === false){
+                    alert("Phone Number already exists")
+                    $('#addPatientModal').modal('hide');
+                    var html= '<p>'+data.obj.phoneNumber+'</p>';
+                    $('#patientDetails').html(html);
+                    $('.customerId').val(data.obj.id);
+                    $('#phoneNumberModal').modal('hide')
+                }else{
+                    alert("Phone Number Not exists.");
+                    $('#phoneNumberModal').modal('hide');
+                    $('#addPatientModal').modal('show');
+                }
             },
             error:function (data) {
-                Swal.fire(
-                    'Oops',
-                    'Something went wrong!',
-                    'error'
-                )
+
             }
         });
     });
+
+    $("#patientRegistrationForm").submit(function (event) {
+        //disable the default form submission
+        event.preventDefault();
+        //grab all form data
+        var formData = new FormData(this);
+        console.log(formData);
+        $.ajax({
+            url: '/patient-register',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                Swal.fire("Success!", "Patient added Successfully", "success");
+                $('#addPatientModal').modal('hide');
+                var html= '<p>'+data.phoneNumber+'</p>';
+                $('#patientDetails').html(html);
+                $('.customerId').val(data.id);
+            },
+            error: function () {
+                Swal.fire("Error!", "Something went wrong", "error");
+
+            }
+        });
+    });
+
+
+    /* $(document).on('keydown', function ( e ) {
+         // You may replace `m` with whatever key you want
+         if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'b') ) {
+             if($('#phoneNumberModal').hasClass('show')!==true){
+                 $("#addbatchModal").modal('show');
+             }
+         }
+     });*/
 </script>
-<g:include view="controls/sales/add-patient-modal.gsp"/>
-<g:include view="controls/sales/phone-number.gsp"/>
+
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("sales-menu");

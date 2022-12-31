@@ -48,6 +48,7 @@ class EntityRegisterService {
     }
 
 
+
     EntityRegister get(String id)
     {
         return EntityRegister.findById(Long.parseLong(id))
@@ -493,6 +494,83 @@ class EntityRegisterService {
     }
 
 
+    def registerPatientDetails(JSONObject jsonObject){
+        EntityRegister entityRegister2 = EntityRegister.findByPhoneNumber(jsonObject.get('phoneNumber').toString())
+        if(entityRegister2){
+            throw new BadRequestException()
+        }
+        EntityRegister entityRegister = new EntityRegister()
+        //req details
+        entityRegister.entityName = jsonObject.get('entityName').toString()
+        entityRegister.phoneNumber = jsonObject.get('phoneNumber').toString()
+        entityRegister.age = Long.parseLong(jsonObject.get('age').toString())
+        entityRegister.gender = jsonObject.get('gender').toString()
+        entityRegister.addressLine1 = jsonObject.get('address').toString()
+        entityRegister.addressLine2 =''
+        entityRegister.drConsultation = jsonObject.get('drConsultation').toString()
+        entityRegister.bankId = 0
+        entityRegister.accountNo = "NA"
+        entityRegister.upiId = "NA"
+        entityRegister.noOfCrDays = 0
+        entityRegister.openingBalance = 0
+        entityRegister.currentBalance = 0
+        entityRegister.discount = 0
+        entityRegister.bankCommision = 0
+        entityRegister.transportTypeId = Long.parseLong("0")
+        entityRegister.defaultCharge = 0
+        entityRegister.careTaker = 0
+        entityRegister.contact = 0
+        entityRegister.terms = 0
+        entityRegister.salesman = 0
+        entityRegister.manager = 0
+        entityRegister.routeId = 0
+        entityRegister.status = 0
+        entityRegister.hqAreaId = 0;
+        entityRegister.syncStatus = 0
+        entityRegister.accountId = "0"
+        entityRegister.aadharId = "0"
+        entityRegister.companyCode ="0"
+        entityRegister.faxNumber = "0"
+        entityRegister.repName = "0"
+        entityRegister.repPhoneNumber = "0"
+        entityRegister.zoneId = 0
+        entityRegister.contactDob = "0"
+        entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
+        entityRegister.parentEntityType = Long.parseLong(jsonObject.get("parentEntityType").toString())
+        entityRegister.countryId = 0
+        entityRegister.stateId = 0
+        entityRegister.cityId = 0
+        entityRegister.pinCode = "0"
+        entityRegister.mobileNumber = jsonObject.get('phoneNumber').toString()
+        entityRegister.email = "0"
+        entityRegister.contactName = "0"
+        entityRegister.priorityId = 0
+        entityRegister.pan = "0"
+        entityRegister.gstn = "0"
+        entityRegister.usdNumber = "0"
+        entityRegister.corpId = 0
+        entityRegister.drugLicence1 ="0"
+        entityRegister.drugLicence2 = "0"
+        entityRegister.foodLicence1 = "0"
+        entityRegister.drugLicenceValidity = "0"
+        entityRegister.foodLicenceValidity = "0"
+        entityRegister.salesBalanceLimit = 0
+        entityRegister.website = "0"
+        entityRegister.noOfCrDays = 0
+        entityRegister.noOfGraceDays = 0
+        entityRegister.calculateOn = 0
+        EntityTypeMaster entityTypeMaster = EntityTypeMaster.findByName('CUSTOMER')
+        entityRegister.setEntityType(entityTypeMaster)
+        EntityRegister entityRegister1 = entityRegister.save(flush:true)
+        if(entityRegister1){
+            return  entityRegister1
+        }else{
+            throw new BadRequestException()
+        }
+
+    }
 
 }
 

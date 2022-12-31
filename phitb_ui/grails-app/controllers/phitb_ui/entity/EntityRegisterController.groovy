@@ -558,4 +558,36 @@ class EntityRegisterController {
             println(ex)
         }
     }
+
+    def checkExistingPhone(){
+        String entityId = session.getAttribute('entityId').toString()
+        def existingPhone = new EntityService().checkPhoneNumber(params.phoneNumber,entityId)
+        JSONObject jsonObject = new JSONObject()
+        if(existingPhone!=null){
+            JSONObject entityObj = new JSONObject(existingPhone.readEntity(String.class))
+            if(existingPhone?.status == 200){
+                jsonObject.put('status',false)
+                jsonObject.put('obj', entityObj)
+                respond jsonObject, formats: ['json'], status: 200
+            }else{
+                jsonObject.put('status',true)
+                respond jsonObject, formats: ['json'], status: 200
+            }
+        }else{
+            response.status = 400
+        }
+    }
+
+    def registerPatient(){
+        try{
+            JSONObject jsonObject = new JSONObject(params)
+            def entityService = new EntityService().savePatientDetails(jsonObject)
+            if(entityService?.status == 200){
+                JSONObject jsonObject1 = new JSONObject(entityService.readEntity(String.class))
+                respond jsonObject1, formats: ['json'], status: 200
+            }
+        }catch(Exception ex){
+            println(ex)
+        }
+    }
 }

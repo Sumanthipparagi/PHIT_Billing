@@ -7,7 +7,7 @@
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="schemeTitle"></h4>
                 </div>
-                <form action="" id="form_validation" method="post" role="form" class="patientRegistrationForm"
+                <form  id="patientRegistrationForm" method="post" role="form" class="patientRegistrationForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
@@ -15,7 +15,7 @@
                                 <label for="name">
                                     Name
                                 </label>
-                                <input type="text" id="name" class="form-control name" name="name"
+                                <input type="text" id="name" class="form-control name" name="entityName"
                                        placeholder="Name"
                                        />
                             </div>
@@ -43,30 +43,30 @@
                                 <label for="address">
                                     Address
                                 </label>
-                                <input type="text" id="address" class="form-control address" name="address"
-                                       placeholder="Address"
-                                       />
+                                <input type="text" id="address" class="form-control address" name="address" placeholder="Address"/>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="phno">
                                      Mobile Number
                                 </label>
-                                <input type="tel" id="phno" class="phno" name="phno" minlength="10"
-                                       pattern="[789][0-9]{9}" required/>
+                                <input type="tel" id="phno" class="form-control phno" name="phoneNumber"
+                                       pattern="[789][0-9]{9}"
+                                       placeholder="Mobile Number"/>
                             </div>
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="address">
+                                <label for="drConsultation">
                                     Dr Consultation
                                 </label>
-                                <input type="text" id="address" class="form-control address" name="address"
-                                       placeholder="Address"
+                                <input type="text" id="drConsultation" class="form-control drConsultation" name="drConsultation"
+                                       placeholder="Dr Consultation"
                                 />
                             </div>
 
-                            <input type="hidden" class="entityType" name="entityTypeId">
-                            <input type="hidden" name="createdUser" value="1">
-                            <input type="hidden" name="modifiedUser" value="1">
+                            <input type="hidden" class="parentEntityType" name="parentEntityType"  value="${session.getAttribute('entityTypeId')}">
+                            <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                            <input type="hidden" name="modifiedUser"  value="${session.getAttribute('userId')}">
+                            <input type="hidden" name="parentEntity"  value="${session.getAttribute('entityId')}">
                             <input type="hidden" name="status" value="1">
                             <input type="hidden" name="syncStatus" value="1">
                         </div>
@@ -77,7 +77,7 @@
                         <input name="type" class="type" value="add" type="hidden"/>
                         <button type="submit" class="btn btn-default btn-round waves-effect" name="submituser"><font
                                 style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font></font></button>
-                        <button type="button" class="btn btn-danger btn-simple btn-round waves-effect" data-dismiss="modal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CLOSE</font></font></button>
+                       %{-- <button type="button" class="btn btn-danger btn-simple btn-round waves-effect" data-dismiss="modal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CLOSE</font></font></button>--}%
                     </div>
                 </form>
             </div>

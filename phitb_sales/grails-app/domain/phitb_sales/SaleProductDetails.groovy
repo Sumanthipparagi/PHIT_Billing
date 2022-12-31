@@ -51,6 +51,14 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
 
     String uuid
 
+//    retailer
+
+    Long noOfDays
+    Long morning
+    Long afternoon
+    Long night
+    Long presqty
+
     static constraints = {
         uuid unique: true
         sqty min: 0D
@@ -59,6 +67,11 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
         originalSqty min: 0D
         originalFqty min: 0D
         replacement nullable:true
+        noOfDays    nullable:true
+        morning nullable:true
+        afternoon nullable:true
+        night nullable:true
+        presqty nullable:true
     }
 
     boolean isUpdatable

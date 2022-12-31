@@ -862,6 +862,10 @@ class UrlMappings {
 
 //        sale entry retailer
         "/sale-entry-retailer"(controller: 'saleEntry', action: 'saleEntryRetailer')
+        "/check-phone-exists"(controller: 'entityRegister', action: 'checkExistingPhone')
+        "/savesaleRetailerEntry"(controller: 'saleEntry', action: 'saveRetailerSaleEntry')
+        "/printRetailerEntry"(controller: 'saleEntry', action: 'printRetailerInvoice')
+        "/patient-register"(controller: 'entityRegister', action: 'registerPatient')
 
     }
 }

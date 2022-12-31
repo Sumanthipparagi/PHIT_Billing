@@ -634,6 +634,7 @@ class UrlMappings {
             }
             "/stockadjustmentdetails/datatable(.$format)?"(controller: 'stockAdjustmentDetails') { action = [GET: 'dataTable'] }
 
+            "/save-retailer-entry"(controller: 'saleBillDetails', action: 'saveRetailerInvoice')
 
         }
     }

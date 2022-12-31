@@ -121,6 +121,30 @@ class SalesService {
     }
 
 
+    /*
+   contains both sale bill and products
+    */
+
+    def saveSaleRetailerInvoice(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SAVE_RETAILER_SALE_ENTRY)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+        }
+
+    }
+
+
     def getSaleBillByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)

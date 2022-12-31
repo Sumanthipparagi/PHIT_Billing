@@ -406,6 +406,9 @@ class UrlMappings
 
             //Entity Domain type
             "/entity-domain-type(.$format)"(controller: 'entitySetting'){action = [POST: 'saveEntityDomainType', GET: 'getEntityDomainTypes']}
+
+            "/check-phone-exists"(controller: 'entityRegister', action: 'checkPhoneNumberExists')
+            "/registerPatient"(controller: 'entityRegister', action: 'registerPatient')
         }
     }
 }

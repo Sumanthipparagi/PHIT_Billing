@@ -8,8 +8,9 @@ import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
-class EntityRegisterController {
-	static responseFormats = ['json', 'xml']
+class EntityRegisterController
+{
+    static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", parentEntitiesDatatable: "GET"]
 
     EntityRegisterService entityRegisterService
@@ -20,12 +21,15 @@ class EntityRegisterController {
      * @param limit
      * @return list of entity register
      */
-    def index() {
+    def index()
+    {
 
-        try {
+        try
+        {
             respond entityRegisterService.getAll(params.limit, params.offset, params.query)
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -35,11 +39,14 @@ class EntityRegisterController {
      * @param id
      * @return get requested entity register
      */
-    def show() {
-        try {
+    def show()
+    {
+        try
+        {
             String id = params.id
-            println("Requested Entity ID: "+ id)
-            if (id) {
+            println("Requested Entity ID: " + id)
+            if (id)
+            {
                 respond entityRegisterService.get(id)
             }
         }
@@ -53,7 +60,8 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -63,10 +71,13 @@ class EntityRegisterController {
      * @param id
      * @return get requested customerGroup register
      */
-    def getAllByEntityTypeId() {
-        try {
-            if (params.id) {
-                respond entityRegisterService.getAllByEntityType(params.limit, params.offset,  Long.parseLong(params.id))
+    def getAllByEntityTypeId()
+    {
+        try
+        {
+            if (params.id)
+            {
+                respond entityRegisterService.getAllByEntityType(params.limit, params.offset, Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
@@ -79,11 +90,11 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-
 
 
     /**
@@ -91,8 +102,10 @@ class EntityRegisterController {
      * @param entity register
      * @return saved entity register
      */
-    def save() {
-        try {
+    def save()
+    {
+        try
+        {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             respond entityRegisterService.save(jsonObject)
         }
@@ -106,7 +119,8 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -117,11 +131,13 @@ class EntityRegisterController {
      * @param entity register
      * @return updated entity register
      */
-    def update() {
-        try {
+    def update()
+    {
+        try
+        {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond entityRegisterService.update(jsonObject,id)
+            respond entityRegisterService.update(jsonObject, id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -133,7 +149,8 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -143,8 +160,10 @@ class EntityRegisterController {
      * @param id
      * @return returns status code 200
      */
-    def delete() {
-        try {
+    def delete()
+    {
+        try
+        {
             String id = params.id
             entityRegisterService.delete(id)
             response.status = 200
@@ -159,7 +178,8 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -168,8 +188,10 @@ class EntityRegisterController {
      * Gets all bank register in datatables format
      * @return list of bank register
      */
-    def dataTable() {
-        try {
+    def dataTable()
+    {
+        try
+        {
             String start = params.start
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
@@ -186,14 +208,16 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
 
     def parentEntitiesDatatable()
     {
-        try {
+        try
+        {
             String start = params.start
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
@@ -210,7 +234,8 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
 
@@ -221,11 +246,14 @@ class EntityRegisterController {
      * @param id
      * @return get requested entity register by affiliates
      */
-    def getByAffiliateId() {
-        try {
+    def getByAffiliateId()
+    {
+        try
+        {
             String id = params.id
-            if (id) {
-                println("Getting Affiliates: "+id)
+            if (id)
+            {
+                println("Getting Affiliates: " + id)
                 long affiliateId = Long.parseLong(id)
                 respond entityRegisterService.getAllByAffiliateId(affiliateId)
             }
@@ -240,11 +268,11 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.stackTrace)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.stackTrace)
         }
     }
-
 
 
     /**
@@ -252,10 +280,13 @@ class EntityRegisterController {
      * @param id
      * @return get requested entity register by parent entity
      */
-    def getByParentEntity() {
-        try {
+    def getByParentEntity()
+    {
+        try
+        {
             String id = params.id
-            if (id) {
+            if (id)
+            {
                 respond entityRegisterService.getByParentEntity(Long.parseLong(id))
             }
         }
@@ -269,7 +300,8 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -280,7 +312,8 @@ class EntityRegisterController {
      */
     def getParentEntities()
     {
-        try {
+        try
+        {
             String affiliateId = params.affiliateId
             respond entityRegisterService.getParentEntities(affiliateId)
         }
@@ -294,8 +327,34 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def checkPhoneNumberExists()
+    {
+        try{
+            EntityRegister entityRegister = EntityRegister.findByPhoneNumberAndParentEntity(params.phoneNumber,Long.parseLong(params.entityId))
+            if(entityRegister){
+                respond  entityRegister,formats: ['json'], status: 200
+            }else{
+                response.status = 400
+            }
+        }catch(Exception ex){
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+    
+    def registerPatient(){
+        try{
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            respond entityRegisterService.registerPatientDetails(jsonObject)
+        }catch(Exception ex){
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }
+

@@ -2738,4 +2738,43 @@ class EntityService {
             }
         }
     }
+
+
+    def checkPhoneNumber(String phoneNumber, String entityId){
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().CHECK_EXISTING_PHONE)
+                    .queryParam("phoneNumber", URLEncoder.encode(phoneNumber, "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
+        }
+    }
+
+
+    def savePatientDetails(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().REGISTER_PATIENT)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+
 }

@@ -768,4 +768,42 @@ class SaleBillDetailsController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    /**
+     * Save new Sale Bill Details along with products
+     * @param Sale Bill Details
+     * @return saved Sale Bill Details
+     */
+    def saveRetailerInvoice() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            SaleBillDetails saleBillDetails = saleBillDetailsService.saveSaleRetailerEntry(jsonObject.get("saleInvoice"))
+            if (saleBillDetails) {
+                UUID uuid
+                JSONArray saleProducts = jsonObject.get("saleProducts")
+                for (JSONObject product : saleProducts) {
+                    uuid = UUID.randomUUID()
+                    product.put("uuid", uuid)
+                    product.put("billId", saleBillDetails.id)
+                    product.put("billType", 0) //0 Sale, 1 Purchase
+                    product.put("serBillId", saleBillDetails.serBillId)
+                    saleProductDetailsService.saveRetailerProducts(product)
+                    println("product saved")
+                }
+            }
+            respond saleBillDetails
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

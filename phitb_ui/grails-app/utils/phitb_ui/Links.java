@@ -863,4 +863,13 @@ public class Links
 //    Update mass Discount
     public static String UPDATE_MASS_DISCOUNT = APP_CONTEXT_PATH +"sales/updatemassdiscount";
 
+//    Retailer
+
+    public static String CHECK_EXISTING_PHONE = APP_CONTEXT_PATH +"entity/check-phone-exists";
+
+    public static String SAVE_RETAILER_SALE_ENTRY = APP_CONTEXT_PATH+"sales/save-retailer-entry";
+
+    public static String REGISTER_PATIENT = APP_CONTEXT_PATH+"entity/registerPatient";
+
+
 }
