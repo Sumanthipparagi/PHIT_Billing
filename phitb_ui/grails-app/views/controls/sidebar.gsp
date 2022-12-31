@@ -428,7 +428,12 @@
                                 <li><a href="/sale-order-entry/my-orders">My Orders</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
+                                <g:if test="${session.getAttribute('role')!='RETAILER'}">
                                 <li><a href="/sale-entry">Sale Entry</a></li>
+                                </g:if>
+                                <g:else>
+                                    <li><a href="/sale-entry-retailer">Sale Entry Retailer</a></li>
+                                </g:else>
                                 <li><a href="/sale-bill-list">My Invoices</a></li>
 
                             </g:if>

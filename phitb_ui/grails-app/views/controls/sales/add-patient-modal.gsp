@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="schemeTitle"></h4>
+                    <h4 class="schemeTitle">Patient Registration</h4>
                 </div>
                 <form  id="patientRegistrationForm" method="post" role="form" class="patientRegistrationForm"
                       enctype="multipart/form-data">
@@ -47,10 +47,10 @@
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="phno">
+                                <label for="phone">
                                      Mobile Number
                                 </label>
-                                <input type="tel" id="phno" class="form-control phno" name="phoneNumber"
+                                <input type="tel" id="phone" class="form-control" name="phoneNumber"
                                        pattern="[789][0-9]{9}"
                                        placeholder="Mobile Number"/>
                             </div>

@@ -2372,16 +2372,17 @@
             success: function (data) {
                 console.log(data);
                 if(data.status === false){
-                    alert("Phone Number already exists")
                     $('#addPatientModal').modal('hide');
                     var html= '<p>'+data.obj.phoneNumber+'</p>';
                     $('#patientDetails').html(html);
                     $('.customerId').val(data.obj.id);
                     $('#phoneNumberModal').modal('hide')
                 }else{
-                    alert("Phone Number Not exists.");
+                    // alert("Phone Number Not exists.");
                     $('#phoneNumberModal').modal('hide');
                     $('#addPatientModal').modal('show');
+                    $('#phone').val(phoneNumber);
+                    $('#phone').prop("readonly", true);
                 }
             },
             error:function (data) {
