@@ -1854,7 +1854,7 @@
             %{--            </g:if>--}%
             %{--            <g:else>--}%
             window.open(
-                'sale-entry/print-invoice?id=' + saleBillId,
+                '/printRetailerEntry?id=' + saleBillId,
                 '_blank'
             );
             %{--            </g:else>--}%

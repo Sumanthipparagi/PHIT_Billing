@@ -503,7 +503,11 @@ class EntityRegisterService {
         //req details
         entityRegister.entityName = jsonObject.get('entityName').toString()
         entityRegister.phoneNumber = jsonObject.get('phoneNumber').toString()
-        entityRegister.age = Long.parseLong(jsonObject.get('age').toString())
+        if(jsonObject.get('age').toString()){
+            entityRegister.age = Long.parseLong(jsonObject.get('age').toString())
+        }else{
+            entityRegister.age = 0
+        }
         entityRegister.gender = jsonObject.get('gender').toString()
         entityRegister.addressLine1 = jsonObject.get('address').toString()
         entityRegister.addressLine2 =''

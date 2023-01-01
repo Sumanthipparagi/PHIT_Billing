@@ -866,6 +866,7 @@ class UrlMappings {
         "/savesaleRetailerEntry"(controller: 'saleEntry', action: 'saveRetailerSaleEntry')
         "/printRetailerEntry"(controller: 'saleEntry', action: 'printRetailerInvoice')
         "/patient-register"(controller: 'entityRegister', action: 'registerPatient')
+        "/retailer-bill-list"(controller: 'salebillDetails', action: 'retailerBillDetails')
 
     }
 }

@@ -3528,7 +3528,7 @@ class SaleEntryController
 
 
                     println(groupDetails)
-                    render(view: "/sales/saleEntry/sale-invoice", model: [saleBillDetail    : saleBillDetail,
+                    render(view: "/sales/saleEntry/retailer-invoice", model: [saleBillDetail    : saleBillDetail,
                                                                           saleProductDetails: saleProductDetails,
                                                                           series            : series, entity: entity, customer: customer, city: city,
                                                                           total             : total, custcity: custcity,

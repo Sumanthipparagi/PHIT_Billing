@@ -463,7 +463,11 @@ class SalebillDetailsController {
             }
 
         }
+    }
 
+
+    def retailerBillDetails(){
+        render(view: '/sales/saleEntry/retailer-bill-list')
     }
 
 }
