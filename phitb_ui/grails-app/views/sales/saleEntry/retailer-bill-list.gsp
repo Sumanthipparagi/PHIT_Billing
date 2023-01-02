@@ -237,7 +237,7 @@
 
                         }
                         var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id
-                            + '" href="/sale-return/print-invoice?id=' + json.data[i].id +
+                            + '" href="/printRetailerEntry?id=' + json.data[i].id +
                             '"><i class="fa fa-print"></i></a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
@@ -290,7 +290,7 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/sale-return/cancel-invoice?id=' + id;
+                var url = '/sale-entry/cancel-invoice?id=' + id;
                 var beforeSendSwal
                 $.ajax({
                     type: "GET",
