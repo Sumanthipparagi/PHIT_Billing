@@ -565,6 +565,9 @@
 
     $(document).ready(function () {
         $('#phoneNumberModal').modal({backdrop: 'static', keyboard: false}, 'show');
+        setTimeout(function(){
+            document.getElementById("phono").focus();
+        }, 6000);
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${saleTransportDetail?.lrDate}').format('YYYY-MM-DD'));
@@ -716,7 +719,8 @@
                 return cellPrp;
             }
         });
-        hot.selectCell(0, 1);
+        hot.deselectCell()
+        // hot.selectCell(0, 1);
         hot.updateSettings({
             beforeKeyDown(e) {
                 var sRate = 0;
@@ -2377,10 +2381,11 @@
                     $('#patientDetails').html(html);
                     $('.customerId').val(data.obj.id);
                     $('#phoneNumberModal').modal('hide')
+                    hot.selectCell(0, 1);
                 }else{
                     // alert("Phone Number Not exists.");
                     $('#phoneNumberModal').modal('hide');
-                    $('#addPatientModal').modal('show');
+                    $('#addPatientModal').modal({backdrop: 'static', keyboard: false}, 'show');
                     $('#phone').val(phoneNumber);
                     $('#phone').prop("readonly", true);
                 }
@@ -2409,6 +2414,8 @@
                 var html= '<p>'+data.phoneNumber+'</p>';
                 $('#patientDetails').html(html);
                 $('.customerId').val(data.id);
+                hot.selectCell(0, 1);
+
             },
             error: function () {
                 Swal.fire("Error!", "Something went wrong", "error");
@@ -2418,14 +2425,20 @@
     });
 
 
-    /* $(document).on('keydown', function ( e ) {
+     $(document).on('keydown', function ( e ) {
          // You may replace `m` with whatever key you want
-         if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'b') ) {
-             if($('#phoneNumberModal').hasClass('show')!==true){
-                 $("#addbatchModal").modal('show');
+         if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'm') ) {
+             if($('#addPatientModal').hasClass('show')!==true){
+                 $("#phoneNumberModal").modal('show');
              }
          }
-     });*/
+
+         // if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'm') ) {
+         //     if($('#phoneNumberModal').hasClass('show')!==true){
+         //         $("#phoneNumberModal").modal('show');
+         //     }
+         // }
+     });
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
