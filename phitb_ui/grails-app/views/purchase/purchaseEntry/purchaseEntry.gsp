@@ -220,7 +220,8 @@
 
         <div class="row clearfix">
             <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+C</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+C</strong>,
+                Reset Table: <strong>Ctrl+Alt+R</strong>, Batch Register: <strong>Ctrl+B</strong>
                 </p>
             </div>
 
@@ -589,6 +590,8 @@
 
 <g:include view="controls/sales/batch-detail.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
+
+<g:include view="controls/product/add-batch-register.gsp"/>
 
 
 <!-- Jquery Core Js -->
@@ -2434,6 +2437,75 @@ function loadProducts(series) {
         this.value = parseFloat(this.value);
     }
 
+    $(document).on('keydown', function ( e ) {
+        // You may replace `m` with whatever key you want
+        if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'b') ) {
+            $('#addbatchModal').modal('show')
+        }
+
+    });
+
+    $('.manfDate').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
+
+    $('.expiryDate').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
+
+    $(".batchForm").submit(function (event) {
+
+        //disable the default form submission
+        event.preventDefault();
+        var entityTypeId = $("#entityId").find(':selected').attr("data-type");
+        $(".entityType").val(entityTypeId);
+
+        //grab all form data
+        var formData = new FormData(this);
+        console.log(formData);
+        var url = '';
+        var type = '';
+        url = '/batch-register';
+        type = 'POST';
+        var beforeSendSwal;
+        console.log(type);
+        console.log(formData)
+        $.ajax({
+            url: url,
+            type: type,
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                beforeSendSwal = Swal.fire({
+                    // title: "Loading",
+                    html:
+                        '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    background:'transparent'
+                });
+            },
+            success: function () {
+                Swal.fire("Success!", "Batch Register Submitted Successfully", "success");
+                $('#addbatchModal').modal('hide');
+            },
+            error: function () {
+                Swal.fire("Error!", "Something went wrong", "error");
+
+            }
+        });
+    });
 
 </script>
 

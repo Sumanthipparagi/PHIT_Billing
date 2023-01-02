@@ -358,7 +358,8 @@
 
         <div class="row clearfix">
             <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>,
+                Reset Table: <strong>Ctrl+Alt+R</strong>, Register Patient: <strong>Ctrl+M</strong>
                 </p>
             </div>
 
@@ -407,8 +408,8 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            <button id="saveDraftBtn" onclick="saveSaleInvoice('DRAFT')"
-                                    class="btn btn-primary">Save Draft</button>
+%{--                            <button id="saveDraftBtn" onclick="saveSaleInvoice('DRAFT')"--}%
+%{--                                    class="btn btn-primary">Save Draft</button>--}%
                             <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')"
                                     class="btn btn-primary">Save</button>
                             %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
@@ -2433,12 +2434,11 @@
              }
          }
 
-         // if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'm') ) {
-         //     if($('#phoneNumberModal').hasClass('show')!==true){
-         //         $("#phoneNumberModal").modal('show');
-         //     }
-         // }
+         if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'i') ) {
+             document.getElementById("phono").focus();
+         }
      });
+
 </script>
 
 <g:include view="controls/footer-content.gsp"/>

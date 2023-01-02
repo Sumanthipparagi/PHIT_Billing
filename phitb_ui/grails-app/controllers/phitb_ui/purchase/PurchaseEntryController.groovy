@@ -20,6 +20,7 @@ import phitb_ui.entity.TaxController
 import phitb_ui.entity.UserRegisterController
 import phitb_ui.inventory.StockBookController
 import phitb_ui.product.DivisionController
+import phitb_ui.product.ProductCategoryController
 import phitb_ui.product.ProductController
 import phitb_ui.system.AccountModeController
 
@@ -70,9 +71,14 @@ class PurchaseEntryController {
         def series = new SeriesController().getByEntity(entityId)
         def taxRegister = new EntityService().getTaxesByEntity(entityId)
         Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
+        ArrayList<String> productlist = new ProductService().getProductByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+        ArrayList<String> productcatList = new ProductCategoryController().getByEntity() as ArrayList<String>
+
         render(view: '/purchase/purchaseEntry/purchaseEntry', model: [divisions   : divisions, customers: customers,
                                                                       priorityList: priorityList, series: series,
-                                                                      taxRegister:taxRegister,transporter:transporter])
+                                                                      taxRegister:taxRegister,transporter:transporter,
+                                                                      productlist:productlist,productcatList:productcatList
+        ])
     }
 
 
