@@ -321,6 +321,7 @@
     var customers = [];
     var readOnly = false;
     var scheme = null;
+    var stateId = null;
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -652,6 +653,10 @@
             }
         });
 
+        stateId = $('#customerSelect option:selected').attr('data-state');
+        $('#customerSelect').change(function () {
+            stateId = $('#customerSelect option:selected').attr('data-state');
+        });
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -724,9 +729,19 @@
                         hot.setDataAtCell(mainTableRow, 8, 0);
                         hot.setDataAtCell(mainTableRow, 9, rowData[7]);
                         gst = rowData[8];
-                        sgst = rowData[9];
+                       /* sgst = rowData[9];
                         cgst = rowData[10];
-                        igst = rowData[11];
+                        igst = rowData[11];*/
+
+                        if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                            sgst = rowData[9];
+                            cgst = rowData[10];
+                            igst = 0
+                        } else {
+                            igst = rowData[11];
+                            sgst = 0;
+                            cgst = 0;
+                        }
                         hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 16, gst);
                         hot.setDataAtCell(mainTableRow, 17, sgst);
