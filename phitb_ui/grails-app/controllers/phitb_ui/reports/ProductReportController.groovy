@@ -450,6 +450,18 @@ class ProductReportController {
                                 }
                             }
 
+                            for (Object sc : openingSampleConversions) {
+                                if (sc.billStatus == "ACTIVE") {
+                                    for (Object prd : sc.products) {
+                                        if (!prd.deleted && prd.productId == batch.product.id && prd.batchNumber == batch.batchNumber) {
+                                            openingQty -= prd.get("sqty")
+                                            openingFreeQty -= prd.get("freeQty")
+                                        }
+                                    }
+                                }
+                            }
+
+
                             openingBalance.put("openingQty", openingQty)
                             openingBalance.put("openingFreeQty", openingFreeQty)
                             openingBalance.put("openingStockQty", openingStockQty)
@@ -615,6 +627,28 @@ class ProductReportController {
                                 }
                             }
 
+                            for (Object sc : sampleConversions) {
+                                if (sc.billStatus == "ACTIVE") {
+                                    for (Object prd : gtn.products) {
+                                        if (!prd.deleted && prd.productId == batch.product.id && prd.batchNumber == batch.batchNumber) {
+                                            JSONObject jsonObject = new JSONObject()
+                                            jsonObject.put("docId", sc.id)
+                                            jsonObject.put("docNo", sc.invoiceNumber)
+                                            jsonObject.put("docDate", convertDate(sc.orderDate))
+                                            jsonObject.put("expDate", prd.expiryDate)
+                                            jsonObject.put("productId", prd.productId)
+                                            jsonObject.put("docType", "Sample Conversion")
+                                            JSONObject entity = new EntityService().getEntityById(sc.customerId.toString())
+                                            jsonObject.put("entityName", entity.entityName)
+                                            jsonObject.put("incomingQty", "") //purchase
+                                            jsonObject.put("incomingSchemeQty", "")
+                                            jsonObject.put("outgoingQty", prd.sqty) //sale
+                                            jsonObject.put("outgoingSchemeQty", prd.freeQty)
+                                            jsonArray.add(jsonObject)
+                                        }
+                                    }
+                                }
+                            }
                             docs.put(batch.batchNumber, jsonArray)
                         }
 

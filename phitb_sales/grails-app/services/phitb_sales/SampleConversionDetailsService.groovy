@@ -305,24 +305,24 @@ class SampleConversionDetailsService {
             cal.set(Calendar.MILLISECOND, 999)
             toDate = cal.getTime()
 
-            ArrayList<SampleConversionDetails> conversionDetails = SampleConversionDetails.findAllByEntityIdAndDateCreatedBetween(entityId, fromDate, toDate)
+            ArrayList<SampleConversion> sampleConversions = SampleConversion.findAllByEntityIdAndDateCreatedBetween(entityId, fromDate, toDate)
 
-            for (SampleConversionDetails conversionDetail : conversionDetails) {
-                JSONObject conversionDetail1 = new JSONObject((conversionDetail as JSON).toString())
-                def sampleConversionDetailProducts = SampleConversionDetails.findAllByBillId(conversionDetail.id)
+            for (SampleConversion sampleConversion : sampleConversions) {
+                JSONObject sampleConversion1 = new JSONObject((sampleConversion as JSON).toString())
+                def sampleConversionDetailProducts = SampleConversionDetails.findAllByBillId(sampleConversion.id)
                 if (sampleConversionDetailProducts) {
                     JSONArray prdt =  new  JSONArray((sampleConversionDetailProducts as JSON).toString())
-                    conversionDetail1.put("products", prdt)
+                    sampleConversion1.put("products", prdt)
                 }
-                finalBills.add(conversionDetail1)
+                finalBills.add(sampleConversion1)
             }
 
             return finalBills
         }
         catch (Exception ex)
         {
-            log.error("getSampleConversionDetailsByDateRangeAndEntityId" + ex)
-            println("getSampleConversionDetailsByDateRangeAndEntityId" + ex)
+            log.error("getSampleConversionDetailsByDateRangeAndEntityId: " + ex.stackTrace)
+            println("getSampleConversionDetailsByDateRangeAndEntityId: " + ex.stackTrace)
             return null
         }
     }

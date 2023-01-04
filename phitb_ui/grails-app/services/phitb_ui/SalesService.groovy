@@ -2206,7 +2206,8 @@ contains both deliveryChallan and products
 
     def getSampleConversionByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+       // WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083/")
         try {
             Response apiResponse = target
                     .path(new Links().SAMPLE_CONVERSION)
