@@ -824,6 +824,8 @@ public class Links
     public static String SAMPLE_CONVERSION_LOGS_DATATABLE = APP_CONTEXT_PATH + "sales/sampleconversionlogs/datatable";
 
 
+    public static String SAMPLE_CONVERSION = APP_CONTEXT_PATH + "sales/sampleconversiondetailsbydaterange";
+
     //    Sample invoicing
     public static String SAMPLE_INVOICE_SAVE = APP_CONTEXT_PATH + "sales//sampleconversion/save-invoice";
     public static String SAMPLE_INVOICE_RECENT = APP_CONTEXT_PATH + "sales/sampleconversion/getrecent";

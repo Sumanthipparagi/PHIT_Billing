@@ -2204,4 +2204,26 @@ contains both deliveryChallan and products
 
     }
 
+    def getSampleConversionByDateRange(String dateRange, String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().SAMPLE_CONVERSION)
+                    .queryParam("dateRange", dateRange)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getSampleConversionByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSampleConversionByDateRange  , Ex:' + ex)
+        }
+
+    }
 }

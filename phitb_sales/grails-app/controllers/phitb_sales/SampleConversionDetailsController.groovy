@@ -10,7 +10,8 @@ import phitb_sales.Exception.BadRequestException
 
 class SampleConversionDetailsController {
     static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", saveList: "POST"]
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT",
+                             delete: "DELETE", dataTable: "GET", saveList: "POST", getSampleConversion: "GET"]
 
     SampleConversionDetailsService sampleConversionDetailsService
     /**
@@ -325,6 +326,38 @@ class SampleConversionDetailsController {
         {
             log.error(controllerName+":"+ex)
             println(controllerName+":"+ex)
+        }
+    }
+
+
+    /**
+     * Get Sample Conversion details within specified daterange
+     * @return Sample Conversion list
+     */
+    def getSampleConversion()
+    {
+        try
+        {
+            String entityId = params.entityId
+            String dateRange = params.dateRange
+            if (entityId)
+            {
+                respond sampleConversionDetailsService.getSampleConversionDetailsByDateRangeAndEntityId(dateRange, Long.parseLong(entityId))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
 

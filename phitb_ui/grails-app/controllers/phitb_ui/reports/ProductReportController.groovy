@@ -353,7 +353,6 @@ class ProductReportController {
 
                         //Read Incoming
                         JSONArray openingPurchaseBills = new PurchaseService().getPurchaseBillByDateRange(openingDateRange, entityId)
-                        JSONArray openingPurchaseOrders = new PurchaseService().getPurchaseOrderByDateRange(openingDateRange, entityId)
                         JSONArray openingSaleReturns = new SalesService().getSaleReturnByDateRange(openingDateRange, entityId)
 
                         //Read Outgoing
@@ -361,6 +360,9 @@ class ProductReportController {
                         JSONArray openingSaleOrders = new SalesService().getSaleOrderByDateRange(openingDateRange, entityId)
                         JSONArray openingPurchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(openingDateRange, entityId)
                         JSONArray openingGtns = new SalesService().getGTNByDateRange(openingDateRange, entityId)
+
+                        //Inter doc stock transfer
+                        JSONArray openingSampleConversions = new SalesService().getSampleConversionByDateRange(openingDateRange, entityId)
 
                         //TODO: Read stock adjustments
 
@@ -385,17 +387,6 @@ class ProductReportController {
                             for (Object pb : openingPurchaseBills) {
                                 if (pb.billStatus == "ACTIVE") {
                                     for (Object prd : pb.products) {
-                                        if (!prd.deleted && prd.productId == batch.product.id && prd.batchNumber == batch.batchNumber) {
-                                            openingQty += prd.get("sqty")
-                                            openingFreeQty += prd.get("freeQty")
-                                        }
-                                    }
-                                }
-                            }
-
-                            for (Object po : openingPurchaseOrders) {
-                                if (po.billStatus == "ACTIVE") {
-                                    for (Object prd : po.products) {
                                         if (!prd.deleted && prd.productId == batch.product.id && prd.batchNumber == batch.batchNumber) {
                                             openingQty += prd.get("sqty")
                                             openingFreeQty += prd.get("freeQty")
@@ -467,7 +458,6 @@ class ProductReportController {
 
                         //Read Incoming
                         JSONArray purchaseBills = new PurchaseService().getPurchaseBillByDateRange(dateRange, entityId)
-                        JSONArray purchaseOrders = new PurchaseService().getPurchaseOrderByDateRange(dateRange, entityId)
                         JSONArray saleReturns = new SalesService().getSaleReturnByDateRange(dateRange, entityId)
 
                         //Read Outgoing
@@ -475,6 +465,10 @@ class ProductReportController {
                         JSONArray saleOrders = new SalesService().getSaleOrderByDateRange(dateRange, entityId)
                         JSONArray purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(dateRange, entityId)
                         JSONArray gtns = new SalesService().getGTNByDateRange(dateRange, entityId)
+
+                        //Inter doc stock transfer
+                        JSONArray sampleConversions = new SalesService().getSampleConversionByDateRange(dateRange, entityId)
+
 
                         JSONObject docs = new JSONObject()
 
@@ -494,29 +488,6 @@ class ProductReportController {
                                             jsonObject.put("productId", prd.productId)
                                             jsonObject.put("docType", "Purchase Invoice")
                                             JSONObject entity = new EntityService().getEntityById(pb.supplierId.toString())
-                                            jsonObject.put("entityName", entity.entityName)
-                                            jsonObject.put("incomingQty", prd.sqty) //purchase
-                                            jsonObject.put("incomingSchemeQty", prd.freeQty)
-                                            jsonObject.put("outgoingQty", "") //sale
-                                            jsonObject.put("outgoingSchemeQty", "")
-                                            jsonArray.add(jsonObject)
-                                        }
-                                    }
-                                }
-                            }
-
-                            for (Object po : purchaseOrders) {
-                                if (po.billStatus == "ACTIVE") {
-                                    for (Object prd : po.products) {
-                                        if (!prd.deleted && prd.productId == batch.product.id && prd.batchNumber == batch.batchNumber) {
-                                            JSONObject jsonObject = new JSONObject()
-                                            jsonObject.put("docId", po.id)
-                                            jsonObject.put("docNo", po.invoiceNumber)
-                                            jsonObject.put("docDate", convertDate(po.billingDate))
-                                            jsonObject.put("expDate", prd.expiryDate)
-                                            jsonObject.put("productId", prd.productId)
-                                            jsonObject.put("docType", "Purchase Order")
-                                            JSONObject entity = new EntityService().getEntityById(po.supplierId.toString())
                                             jsonObject.put("entityName", entity.entityName)
                                             jsonObject.put("incomingQty", prd.sqty) //purchase
                                             jsonObject.put("incomingSchemeQty", prd.freeQty)

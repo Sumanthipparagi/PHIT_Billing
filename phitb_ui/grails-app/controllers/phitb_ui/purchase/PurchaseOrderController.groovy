@@ -260,8 +260,10 @@ class PurchaseOrderController
         if (resp.status == 200)
         {
             def purchaseOrderDetail = new JSONObject(resp.readEntity(String.class))
+
+            //stockbook updated commented out, as it is not required while adding PO
             //update stockbook
-            for (JSONObject purchase : purchaseData)
+            /*for (JSONObject purchase : purchaseData)
             {
                 UUID uuid
                 //check if selected product and batch exists for the entity, if so update data, else add new
@@ -345,7 +347,7 @@ class PurchaseOrderController
                     stockBook.put("uuid", UUID.randomUUID())
                     new InventoryService().stockBookSave(stockBook)
                 }
-            }
+            }*/
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("purchaseOrderDetail", purchaseOrderDetail)
@@ -601,8 +603,9 @@ class PurchaseOrderController
         JSONObject jsonObject = new PurchaseService().cancelPurchaseOrder(id, entityId, financialYear)
         if (jsonObject)
         {
+            //Do not update stocks
             //adjust stocks
-            JSONArray productDetails = jsonObject.get("products")
+           /* JSONArray productDetails = jsonObject.get("products")
             if (productDetails)
             {
                 for (JSONObject productDetail : productDetails)
@@ -617,7 +620,7 @@ class PurchaseOrderController
                     new InventoryService().updateStockBook(stockBook)
                 }
             }
-
+*/
             respond jsonObject, formats: ['json']
         }
         else

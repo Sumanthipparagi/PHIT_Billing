@@ -200,8 +200,11 @@ class UrlMappings {
                 action = [GET: 'getSaleProductDetailsbyProductId']
             }
 
-            "/sampleconversiondetailsbillandbatch(.$format)?"(controller: 'saleProductDetails', action:
+            "/sampleconversiondetailsbillandbatch(.$format)?"(controller: 'sampleConversionDetails', action:
                     'getSampleConversionDetailsbyProductId')
+
+            "/sampleconversiondetailsbydaterange(.$format)?"(controller: 'sampleConversionDetails', action:
+                    'getSampleConversion')
 
 
 //            Sample Conversion Logs
