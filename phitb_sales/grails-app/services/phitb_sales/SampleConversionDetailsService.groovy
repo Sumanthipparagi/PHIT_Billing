@@ -326,5 +326,4 @@ class SampleConversionDetailsService {
             return null
         }
     }
-
 }

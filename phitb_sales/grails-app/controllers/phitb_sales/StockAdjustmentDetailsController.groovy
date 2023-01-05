@@ -9,7 +9,8 @@ import phitb_sales.Exception.BadRequestException
 
 class StockAdjustmentDetailsController {
 	static responseFormats = ['json', 'xml']
-    static allowedMethods = [index    : "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index    : "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE",
+                             dataTable: "GET", getByDateRange: "GET"]
     StockAdjustmentDetailsService stockAdjustmentDetailsService
     def index() {
 
@@ -68,6 +69,36 @@ class StockAdjustmentDetailsController {
             response.status = 400
         }
         catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
+     * Get Stock Adjustment details by daterange and entity
+     * @return
+     */
+    def getByDateRange() {
+
+        try {
+            String entityId = params.entityId
+            String dateRange = params.dateRange
+            if (entityId) {
+                respond stockAdjustmentDetailsService.getByDateRange(dateRange, Long.parseLong(entityId))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }

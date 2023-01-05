@@ -332,7 +332,7 @@ class SampleConversionDetailsController {
 
     /**
      * Get Sample Conversion details within specified daterange
-     * @return Sample Conversion list
+     * @return Sample Conversion Invoice list
      */
     def getSampleConversion()
     {

@@ -212,7 +212,9 @@ class UrlMappings {
                 action = [GET: 'index', POST: 'save']
             }
             "/sampleconversionlogs/datatable(.$format)?"(controller: 'sampleConversion') { action = [GET: 'dataTable'] }
-
+            "/sampleconversionlogs/get(.$format)?"(controller: 'sampleConversionLogs') {
+                action = [GET: 'getSampleConversionLog']
+            }
 
             //Sale Product Details
             "/saleproductdetails(.$format)?"(controller: 'saleProductDetails') {
@@ -636,6 +638,7 @@ class UrlMappings {
                 action = [GET: 'index', POST: 'save']
             }
             "/stockadjustmentdetails/datatable(.$format)?"(controller: 'stockAdjustmentDetails') { action = [GET: 'dataTable'] }
+            "/stockadjustmentdetails/get(.$format)?"(controller: 'stockAdjustmentDetails') { action = [GET: 'getByDateRange'] }
 
 
         }

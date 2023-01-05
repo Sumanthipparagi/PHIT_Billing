@@ -2206,8 +2206,8 @@ contains both deliveryChallan and products
 
     def getSampleConversionByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient()
-       // WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083/")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8083/")
         try {
             Response apiResponse = target
                     .path(new Links().SAMPLE_CONVERSION)
@@ -2224,6 +2224,54 @@ contains both deliveryChallan and products
         catch (Exception ex) {
             System.err.println('Service :salesService , action :  getSampleConversionByDateRange  , Ex:' + ex)
             log.error('Service :salesService , action :  getSampleConversionByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+    def getSampleConversionLogByDateRange(String dateRange, String entityId) {
+        Client client = ClientBuilder.newClient()
+         WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8083/")
+        try {
+            Response apiResponse = target
+                    .path(new Links().SAMPLE_CONVERSION_LOGS_GET)
+                    .queryParam("dateRange", dateRange)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getSampleConversionLogByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSampleConversionLogByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+    def getStockAdjustmentByDateRange(String dateRange, String entityId) {
+        Client client = ClientBuilder.newClient()
+         WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8083/")
+        try {
+            Response apiResponse = target
+                    .path(new Links().STOCK_ADJUSTMENT_GET)
+                    .queryParam("dateRange", dateRange)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getStockAdjustmentByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getStockAdjustmentByDateRange  , Ex:' + ex)
         }
 
     }

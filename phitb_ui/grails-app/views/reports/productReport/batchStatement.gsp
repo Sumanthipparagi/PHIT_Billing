@@ -20,6 +20,7 @@
     <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
 
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
 
     <style>
 
@@ -50,10 +51,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Product Statement</h2>
+                    <h2>Batchwise Statement</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Product Statement</li>
+                        <li class="breadcrumb-item active">Batchwise Statement</li>
                     </ul>
                 </div>
 
@@ -156,6 +157,7 @@
 <asset:javascript src="/themeassets/plugins/jQuery.print/jQuery.print.min.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 %{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.umd.min.js"/>--}%
 %{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.plugin.autotable.js"/>--}%
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>--}%
@@ -170,11 +172,12 @@
         }
     });
 
-    $("#productSelect").on("change", function () {
+    $("#productSelect").select2();
+    /*$("#productSelect").on("change", function () {
         var prdName = $("#productSelect option:selected").text();
         $("#productName").text(prdName);
     });
-
+*/
     function getReport() {
         var loading = Swal.fire({
             title: "Getting reports, Please wait!",
@@ -192,20 +195,24 @@
             type: "GET",
             contentType: false,
             processData: false,
-            success: function (data) {
+            success: function (response) {
+                var data = response.docs;
+                var openingBalance = response.openingBalance;
                 var content = "";
                 var grandTotal = 0.00;
                 var mainTableHeader = "<table class='table-bordered table-sm' style='width: 100%;color: #212529;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
                     "<tr><th data-f-bold='true' colspan='10'>Closing Stock Batchwise Report for <span id='productName'></span>, Date: " + dateRange + "</th></tr>" +
-                    "<tr><th colspan='5'></th><th colspan='2'>Receipts</th><th colspan='2'>Issues</th></tr>" +
+                    "<tr><th colspan='5'></th><th colspan='2'>Incoming</th><th colspan='2'>Outgoing</th></tr>" +
                     "<tr><th data-f-bold='true'>Doc No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Exp Date</th><th data-f-bold='true'>Doc Type</th><th data-f-bold='true'>Party</th>" +
                     "<th data-f-bold='true'>Qty</th><th data-f-bold='true'>Sch. Qty</th><th data-f-bold='true'>Qty</th><th data-f-bold='true'>Sch. Qty</th></tr></thead><tbody>";
                 var incomingQtyFullTot = 0;
                 var incomingSchQtyFullTot = 0;
                 var outgoingQtyFullTot = 0;
                 var outgoingSchQtyFullTot = 0;
+                var totalClosingStock = 0;
+                var totalFreeClosingStock = 0;
                 $.each(data, function (key, batch) {
                     var batchName = "<tr><td colspan='9'><h6>" + key + "</h6></td></tr>";
                     var incomingQtyTot = 0;
@@ -213,37 +220,55 @@
                     var outgoingQtyTot = 0;
                     var outgoingSchQtyTot = 0;
                     content += batchName
+                    var ob = openingBalance[key];
+                    var closingQty = ob.openingQty;
+                    var closingFreeQty = ob.openingFreeQty;
+
+                    content += "<tr><td colspan='9' class='text-right' data-f-bold='true'><strong>Opening Stock</strong> - Qty: "+ob.openingQty+", Free Qty: "+ob.openingFreeQty+"</td></tr>";
                     $.each(batch, function (k, batch) {
-                        content += "<tr><td>" + batch.docNo + "</td><td>" + dateFormat(batch.docDate) + "</td><td>" + batch.expDate + "</td><td>" + batch.docType + "</td><td>" + batch.entityName + "</td><td>" + batch.incomingQty + "</td><td>" + batch.incomingSchemeQty + "</td><td>" + batch.outgoingQty + "</td><td>" + batch.outgoingSchemeQty + "</td></tr>";
+                        content += "<tr><td>" + batch.docNo + "</td><td>" + dateFormat(batch.docDate) + "</td><td>" + batch.expDate + "</td><td>" + batch.docType + "</td><td style='width: 20%;'>" + batch.entityName + "</td><td>" + batch.incomingQty + "</td><td>" + batch.incomingSchemeQty + "</td><td>" + batch.outgoingQty + "</td><td>" + batch.outgoingSchemeQty + "</td></tr>";
                         if(batch.incomingQty === "")
                             incomingQtyTot += 0;
-                        else
+                        else {
                             incomingQtyTot += batch.incomingQty;
+                            closingQty += batch.incomingQty
+                        }
 
                         if(batch.incomingSchemeQty === "")
                             incomingSchQtyTot += 0;
-                        else
+                        else {
                             incomingSchQtyTot += batch.incomingSchemeQty;
+                            closingFreeQty += batch.incomingSchemeQty
+                        }
 
 
                         if(batch.outgoingQty === "")
                             outgoingQtyTot += 0;
-                        else
+                        else {
                             outgoingQtyTot += batch.outgoingQty;
+                            closingQty -= batch.outgoingQty
+                        }
 
                         if(batch.outgoingSchemeQty === "")
                             outgoingSchQtyTot += 0;
-                        else
+                        else {
                             outgoingSchQtyTot += batch.outgoingSchemeQty;
+                            closingFreeQty -= batch.outgoingSchemeQty
+                        }
                     });
 
-                    content += "<tr><td colspan='5' data-f-bold='true'>Closing Stock Batchwise: </td><td data-f-bold='true'>" + incomingQtyTot + "</td><td data-f-bold='true'>" + incomingSchQtyTot + "</td><td data-f-bold='true'>" + outgoingQtyTot + "</td><td data-f-bold='true'>" + outgoingSchQtyTot + "</td></tr>"
+                    content += "<tr><td colspan='5' data-f-bold='true'>Batchwise Total: </td><td data-f-bold='true'>" + incomingQtyTot + "</td><td data-f-bold='true'>" + incomingSchQtyTot + "</td><td data-f-bold='true'>" + outgoingQtyTot + "</td><td data-f-bold='true'>" + outgoingSchQtyTot + "</td></tr>";
+                    content += "<tr><td class='text-right' colspan='9' data-f-bold='true'><strong>Batchwise Closing Stock</strong> - Qty: "+closingQty+", Free Qty: "+closingFreeQty+"</td></tr>";
                     incomingQtyFullTot += incomingQtyTot;
                     incomingSchQtyFullTot += incomingSchQtyTot;
                     outgoingQtyFullTot += outgoingQtyTot;
                     outgoingSchQtyFullTot += outgoingSchQtyTot;
+
+                    totalClosingStock += closingQty
+                    totalFreeClosingStock += closingFreeQty;
                 });
-                content += "<tr><td colspan='5' data-f-bold='true'>Total Closing Stock: </td><td data-f-bold='true'>" + incomingQtyFullTot + "</td><td data-f-bold='true'>" + incomingSchQtyFullTot + "</td><td data-f-bold='true'>" + outgoingQtyFullTot + "</td><td data-f-bold='true'>" + outgoingSchQtyFullTot + "</td></tr>"
+                content += "<tr><td colspan='5' data-f-bold='true'>Total: </td><td data-f-bold='true'>" + incomingQtyFullTot + "</td><td data-f-bold='true'>" + incomingSchQtyFullTot + "</td><td data-f-bold='true'>" + outgoingQtyFullTot + "</td><td data-f-bold='true'>" + outgoingSchQtyFullTot + "</td></tr>";
+                content += "<tr><td class='text-right' colspan='9' data-f-bold='true'><strong>Total Closing Stock</strong> - Qty: "+totalClosingStock+", Free Qty: "+totalFreeClosingStock+"</td></tr>";
 
                 var mainTableFooter = "</tbody></table>";
 
@@ -265,7 +290,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'customerwise-sales-report.xlsx',
+            name: 'batch-statement-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }

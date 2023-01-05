@@ -535,6 +535,7 @@ public class Links
     // stock adjustment Details
     public static String STOCK_ADJUSTMENT_SAVE = APP_CONTEXT_PATH + "sales/stockadjustmentdetails";
     public static String STOCK_ADJUSTMENT_DATATABLE = APP_CONTEXT_PATH + "sales/stockadjustmentdetails/datatable";
+    public static String STOCK_ADJUSTMENT_GET = APP_CONTEXT_PATH + "sales/stockadjustmentdetails/get";
 
     //Sale Return
     public static String SALE_RETURN_SHOW = APP_CONTEXT_PATH + "sales/salereturn";
@@ -822,6 +823,7 @@ public class Links
     //    Sample Conversion logs
     public static String SAMPLE_CONVERSION_LOGS = APP_CONTEXT_PATH + "sales/sampleconversionlogs";
     public static String SAMPLE_CONVERSION_LOGS_DATATABLE = APP_CONTEXT_PATH + "sales/sampleconversionlogs/datatable";
+    public static String SAMPLE_CONVERSION_LOGS_GET = APP_CONTEXT_PATH + "sales/sampleconversionlogs/get";
 
 
     public static String SAMPLE_CONVERSION = APP_CONTEXT_PATH + "sales/sampleconversiondetailsbydaterange";

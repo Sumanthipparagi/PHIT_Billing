@@ -350,7 +350,7 @@ class ProductReportController {
                         cal.add(Calendar.DAY_OF_MONTH, -1)
                         String openingBalanceEndDate = cal.getTime().format("dd/MM/yyyy")
                         String openingDateRange = finYearStartDate + " - " +openingBalanceEndDate
-
+                        JSONObject finalReport = new JSONObject()
                         //Read Incoming
                         JSONArray openingPurchaseBills = new PurchaseService().getPurchaseBillByDateRange(openingDateRange, entityId)
                         JSONArray openingSaleReturns = new SalesService().getSaleReturnByDateRange(openingDateRange, entityId)
@@ -360,11 +360,11 @@ class ProductReportController {
                         JSONArray openingSaleOrders = new SalesService().getSaleOrderByDateRange(openingDateRange, entityId)
                         JSONArray openingPurchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(openingDateRange, entityId)
                         JSONArray openingGtns = new SalesService().getGTNByDateRange(openingDateRange, entityId)
+                        JSONArray openingSampleConversionInvoice = new SalesService().getSampleConversionByDateRange(openingDateRange, entityId)
 
                         //Inter doc stock transfer
-                        JSONArray openingSampleConversions = new SalesService().getSampleConversionByDateRange(openingDateRange, entityId)
-
-                        //TODO: Read stock adjustments
+                        JSONArray openingSampleConversionLogs = new SalesService().getSampleConversionLogByDateRange(openingDateRange, entityId)
+                        JSONArray openingStockAdjustments = new SalesService().getStockAdjustmentByDateRange(openingDateRange, entityId)
 
 
                         JSONObject openingBalances = new JSONObject<>()
@@ -373,7 +373,7 @@ class ProductReportController {
                             long openingStockQty = 0
                             long openingQty = 0
                             long openingFreeQty = 0
-                            JSONObject inventory = new InventoryService().getStocksOfProductAndBatch(productId, batch.batchNumber, entityId)
+                           /* JSONObject inventory = new InventoryService().getStocksOfProductAndBatch(productId, batch.batchNumber, entityId)
                             if(inventory)
                             {
                                 openingStockQty = inventory.get("openingStockQty")
@@ -382,7 +382,7 @@ class ProductReportController {
                             {
                                 response.status = 400
                                 return
-                            }
+                            }*/
 
                             for (Object pb : openingPurchaseBills) {
                                 if (pb.billStatus == "ACTIVE") {
@@ -450,7 +450,7 @@ class ProductReportController {
                                 }
                             }
 
-                            for (Object sc : openingSampleConversions) {
+                            for (Object sc : openingSampleConversionInvoice) {
                                 if (sc.billStatus == "ACTIVE") {
                                     for (Object prd : sc.products) {
                                         if (!prd.deleted && prd.productId == batch.product.id && prd.batchNumber == batch.batchNumber) {
@@ -461,12 +461,33 @@ class ProductReportController {
                                 }
                             }
 
+                            for (Object scl : openingSampleConversionLogs) {
+                                if (scl.saleableProductId == batch.product.id && scl.saleableBatch == batch.batchNumber) {
+                                    openingQty -= scl.get("sampleQty")
+                                    openingFreeQty -= 0
+                                }
+                                else  if (scl.sampleProductId == batch.product.id && scl.sampleBatch == batch.batchNumber)
+                                {
+                                    openingQty += scl.get("sampleQty")
+                                    openingFreeQty += 0
+                                }
+                            }
+
+                            for (Object sa : openingStockAdjustments) {
+                                if(sa.productId == batch.product.id && sa.batchNumber == batch.batchNumber)
+                                {
+                                    openingQty += sa.get("sqty")
+                                    openingFreeQty += sa.get("fqty")
+                                }
+                            }
 
                             openingBalance.put("openingQty", openingQty)
                             openingBalance.put("openingFreeQty", openingFreeQty)
                             openingBalance.put("openingStockQty", openingStockQty)
                             openingBalances.put(batch.batchNumber, openingBalance)
                         }
+
+                        finalReport.put("openingBalance", openingBalances)
 
                         //Read Incoming
                         JSONArray purchaseBills = new PurchaseService().getPurchaseBillByDateRange(dateRange, entityId)
@@ -477,9 +498,11 @@ class ProductReportController {
                         JSONArray saleOrders = new SalesService().getSaleOrderByDateRange(dateRange, entityId)
                         JSONArray purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(dateRange, entityId)
                         JSONArray gtns = new SalesService().getGTNByDateRange(dateRange, entityId)
+                        JSONArray sampleConversionInvoice = new SalesService().getSampleConversionByDateRange(dateRange, entityId)
 
                         //Inter doc stock transfer
-                        JSONArray sampleConversions = new SalesService().getSampleConversionByDateRange(dateRange, entityId)
+                        JSONArray sampleConversionLogs = new SalesService().getSampleConversionLogByDateRange(dateRange, entityId)
+                        JSONArray stockAdjustments = new SalesService().getStockAdjustmentByDateRange(dateRange, entityId)
 
 
                         JSONObject docs = new JSONObject()
@@ -627,9 +650,9 @@ class ProductReportController {
                                 }
                             }
 
-                            for (Object sc : sampleConversions) {
+                            for (Object sc : sampleConversionInvoice) {
                                 if (sc.billStatus == "ACTIVE") {
-                                    for (Object prd : gtn.products) {
+                                    for (Object prd : sc.products) {
                                         if (!prd.deleted && prd.productId == batch.product.id && prd.batchNumber == batch.batchNumber) {
                                             JSONObject jsonObject = new JSONObject()
                                             jsonObject.put("docId", sc.id)
@@ -637,9 +660,9 @@ class ProductReportController {
                                             jsonObject.put("docDate", convertDate(sc.orderDate))
                                             jsonObject.put("expDate", prd.expiryDate)
                                             jsonObject.put("productId", prd.productId)
-                                            jsonObject.put("docType", "Sample Conversion")
-                                            JSONObject entity = new EntityService().getEntityById(sc.customerId.toString())
-                                            jsonObject.put("entityName", entity.entityName)
+                                            jsonObject.put("docType", "Sample Invoice")
+                                            JSONObject user = new EntityService().getUser(sc.customerId.toString())
+                                            jsonObject.put("entityName", user.name)
                                             jsonObject.put("incomingQty", "") //purchase
                                             jsonObject.put("incomingSchemeQty", "")
                                             jsonObject.put("outgoingQty", prd.sqty) //sale
@@ -647,6 +670,75 @@ class ProductReportController {
                                             jsonArray.add(jsonObject)
                                         }
                                     }
+                                }
+                            }
+
+                            for(Object scl : sampleConversionLogs)
+                            {
+                                if (scl.saleableBatch == batch.batchNumber && scl.saleableProductId == batch.product.id) {
+                                    JSONObject jsonObject = new JSONObject()
+                                    jsonObject.put("docId", scl.id)
+                                    jsonObject.put("docNo", "-")
+                                    jsonObject.put("docDate", convertDate(scl.dateCreated))
+                                    jsonObject.put("expDate", "-")
+                                    jsonObject.put("productId", scl.saleableProductId)
+                                    jsonObject.put("docType", "Sample Conversion")
+                                    jsonObject.put("entityName", "-")
+                                    jsonObject.put("incomingQty", "") //purchase
+                                    jsonObject.put("incomingSchemeQty", "")
+                                    jsonObject.put("outgoingQty", scl.sampleQty) //sale
+                                    jsonObject.put("outgoingSchemeQty", 0)
+                                    jsonArray.add(jsonObject)
+                                }
+                                else if (scl.sampleBatch == batch.batchNumber && scl.sampleProductId == batch.product.id) {
+                                    JSONObject jsonObject = new JSONObject()
+                                    jsonObject.put("docId", scl.id)
+                                    jsonObject.put("docNo", "-")
+                                    jsonObject.put("docDate", convertDate(scl.dateCreated))
+                                    jsonObject.put("expDate", "-")
+                                    jsonObject.put("productId", scl.sampleProductId)
+                                    jsonObject.put("docType", "Sample Conversion")
+                                    jsonObject.put("entityName", "-")
+                                    jsonObject.put("incomingQty", scl.sampleQty) //purchase
+                                    jsonObject.put("incomingSchemeQty", 0)
+                                    jsonObject.put("outgoingQty", "") //sale
+                                    jsonObject.put("outgoingSchemeQty", "")
+                                    jsonArray.add(jsonObject)
+                                }
+                            }
+
+                            for (Object sa : stockAdjustments) {
+                                if(sa.productId == batch.product.id && sa.batchNumber == batch.batchNumber)
+                                {
+                                    long sqty = sa.get("sqty")
+                                    long fqty = sa.get("fqty")
+
+                                    JSONObject jsonObject = new JSONObject()
+                                    jsonObject.put("docId", sa.id)
+                                    jsonObject.put("docNo", "-")
+                                    jsonObject.put("docDate", convertDate(sa.dateCreated))
+                                    jsonObject.put("expDate", "-")
+                                    jsonObject.put("productId", sa.productId)
+                                    jsonObject.put("docType", "Stock Adjustment")
+                                    jsonObject.put("entityName", "-")
+                                    if(sqty >= 0) {
+                                        jsonObject.put("incomingQty", Math.abs(sqty))
+                                        jsonObject.put("outgoingQty", "")
+                                    }
+                                    else {
+                                        jsonObject.put("incomingQty", "")
+                                        jsonObject.put("outgoingQty", Math.abs(sqty))
+                                    }
+
+                                    if(fqty >= 0) {
+                                        jsonObject.put("incomingSchemeQty", Math.abs(fqty))
+                                        jsonObject.put("outgoingSchemeQty", "")
+                                    }
+                                    else {
+                                        jsonObject.put("incomingSchemeQty", "")
+                                        jsonObject.put("outgoingSchemeQty", Math.abs(fqty))
+                                    }
+                                    jsonArray.add(jsonObject)
                                 }
                             }
                             docs.put(batch.batchNumber, jsonArray)
@@ -658,7 +750,10 @@ class ProductReportController {
                             JSONArray newArray = sortJsonArray(batch)
                             docs.put(key, newArray)
                         }
-                        respond docs, formats: ['json']
+
+                        finalReport.put("docs", docs)
+
+                        respond finalReport, formats: ['json']
                     } else {
                         response.status = 400
                     }
