@@ -98,20 +98,20 @@
 
                                     <div class="input-group">
                                         <select id="productSelect" type="text" name="productSelect"
-                                                style="border-radius: 6px;margin: 4px;">
+                                                style="height: 100%;">
                                             <option disabled selected>--SELECT--</option>
                                             <g:each in="${products}" var="product">
                                                 <option value="${product.id}">${product.productName}</option>
                                             </g:each>
                                         </select>
-                                        <button class="input-group-btn btn btn-info"
-                                                onclick="getReport()">Get Report</button>
+                                        <button class="input-group-btn btn btn-sm btn-info"
+                                                onclick="getReport()" style="margin: 0 0 0 2px;">Get Report</button>
 
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6  d-flex justify-content-center">
+                            <div class="col-lg-4  d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
 
@@ -157,7 +157,7 @@
 <asset:javascript src="/themeassets/plugins/jQuery.print/jQuery.print.min.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.min.js"/>
 %{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.umd.min.js"/>--}%
 %{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.plugin.autotable.js"/>--}%
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>--}%
