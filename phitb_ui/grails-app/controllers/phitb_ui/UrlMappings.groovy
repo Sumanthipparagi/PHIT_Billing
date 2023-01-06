@@ -821,6 +821,8 @@ class UrlMappings {
 
         "/reports/products/statement"(controller: "productReport", action: "productStatement")
         "/reports/products/getstatement"(controller: "productReport", action: "getProductStatement")
+        "/reports/batches/statement"(controller: "productReport", action: "batchStatement")
+        "/reports/batches/getreport"(controller: "productReport", action: "getBatchStatement")
 
 
         /*<-------------------------------------------Shipments------------------------------------------------->*/
@@ -867,6 +869,11 @@ class UrlMappings {
         "/printRetailerEntry"(controller: 'saleEntry', action: 'printRetailerInvoice')
         "/patient-register"(controller: 'entityRegister', action: 'registerPatient')
         "/retailer-bill-list"(controller: 'salebillDetails', action: 'retailerBillDetails')
+
+
+        //open document
+        "/opendoc"(controller: 'openDocument', action: 'getLink')
+        "/e/$uniqueCode"(controller: 'openDocument', action: 'decodeLink')
 
     }
 }

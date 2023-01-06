@@ -194,6 +194,7 @@ public class Links
     public static String EMAIL_LOG_DATATABLE = APP_CONTEXT_PATH + "entity/emaillog/datatable";
     public static String EMAIL_LOG_BY_ENTITY = APP_CONTEXT_PATH + "entity/emaillog/getbyentityid";
 
+
     //Email Config
     public static String SAVE_EMAIL_CONFIG = APP_CONTEXT_PATH + "entity/saveemailconfig";
 
@@ -201,6 +202,16 @@ public class Links
     public static String ENTITY_CONFIG_SAVE = APP_CONTEXT_PATH + "entity/entityconfig";
     public static String ENTITY_CONFIG_BY_ENTITY = APP_CONTEXT_PATH + "entity/entityconfig/getbyentityid";
 
+
+
+    //SMS Log
+    public static String SMS_LOG_SHOW = APP_CONTEXT_PATH + "entity/smslog";
+    public static String SMS_LOG_UPDATE = APP_CONTEXT_PATH + "entity/smslog/{id}";
+    public static String SMS_LOG_DELETE = APP_CONTEXT_PATH + "entity/smslog/{id}";
+    public static String SMS_LOG_SAVE = APP_CONTEXT_PATH + "entity/smslog";
+    public static String SMS_LOG_DATATABLE = APP_CONTEXT_PATH + "entity/smslog/datatable";
+    public static String SMS_LOG_BY_ENTITY = APP_CONTEXT_PATH + "entity/smslogbyentity";
+    public static String SMS_TEMPLATE = APP_CONTEXT_PATH + "entity/smslog/template";
 
     //Account Register
     public static String ACCOUNT_REGISTER_SHOW = APP_CONTEXT_PATH + "entity/accountregister";
@@ -524,6 +535,7 @@ public class Links
     // stock adjustment Details
     public static String STOCK_ADJUSTMENT_SAVE = APP_CONTEXT_PATH + "sales/stockadjustmentdetails";
     public static String STOCK_ADJUSTMENT_DATATABLE = APP_CONTEXT_PATH + "sales/stockadjustmentdetails/datatable";
+    public static String STOCK_ADJUSTMENT_GET = APP_CONTEXT_PATH + "sales/stockadjustmentdetails/get";
 
     //Sale Return
     public static String SALE_RETURN_SHOW = APP_CONTEXT_PATH + "sales/salereturn";
@@ -811,7 +823,10 @@ public class Links
     //    Sample Conversion logs
     public static String SAMPLE_CONVERSION_LOGS = APP_CONTEXT_PATH + "sales/sampleconversionlogs";
     public static String SAMPLE_CONVERSION_LOGS_DATATABLE = APP_CONTEXT_PATH + "sales/sampleconversionlogs/datatable";
+    public static String SAMPLE_CONVERSION_LOGS_GET = APP_CONTEXT_PATH + "sales/sampleconversionlogs/get";
 
+
+    public static String SAMPLE_CONVERSION = APP_CONTEXT_PATH + "sales/sampleconversiondetailsbydaterange";
 
     //    Sample invoicing
     public static String SAMPLE_INVOICE_SAVE = APP_CONTEXT_PATH + "sales//sampleconversion/save-invoice";

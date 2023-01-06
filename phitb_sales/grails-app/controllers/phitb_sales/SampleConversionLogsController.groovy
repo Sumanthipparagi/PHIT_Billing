@@ -99,4 +99,35 @@ class SampleConversionLogsController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    /**
+     * Get Sample Conversion log within specified daterange
+     * @return Sample Conversion list
+     */
+    def getSampleConversionLog()
+    {
+        try
+        {
+            String entityId = params.entityId
+            String dateRange = params.dateRange
+            if (entityId)
+            {
+                respond sampleConversionLogService.getSampleConversionLogByDateRangeAndEntityId(dateRange, Long.parseLong(entityId))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

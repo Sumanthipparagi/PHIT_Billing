@@ -568,6 +568,7 @@
                                     class="badge badge-success float-right"></span></a>
                                 <ul class="ml-menu">
                                     <li><a href="/reports/products/statement">Statement</a></li>
+                                    <li><a href="/reports/batches/statement">Batchwise Statement</a></li>
                                 </ul>
                             </li>
                         </ul>

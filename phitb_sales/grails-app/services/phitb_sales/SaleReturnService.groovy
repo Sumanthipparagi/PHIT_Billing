@@ -148,8 +148,7 @@ class SaleReturnService {
         cal.set(Calendar.SECOND, 59)
         cal.set(Calendar.MILLISECOND, 999)
         toDate = cal.getTime()
-        return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndDateCreatedLessThan(customerId,Long.parseLong
-                (entityId), financialYear,fromDate)
+        return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndDateCreatedLessThan(customerId,Long.parseLong(entityId), financialYear,fromDate)
     }
 
     JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId)

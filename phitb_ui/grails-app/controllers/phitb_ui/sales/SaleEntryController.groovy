@@ -13,6 +13,7 @@ import phitb_ui.EmailService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
+import phitb_ui.SMSService
 import phitb_ui.SalesService
 import phitb_ui.ShipmentService
 import phitb_ui.SystemService
@@ -820,6 +821,9 @@ class SaleEntryController
                 if (billStatus.equalsIgnoreCase("ACTIVE")) {
                     //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
                     new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+
+                    //Send SMS
+                    new SMSService().sendSaleInvoiceSMS(saleBillDetail)
                 }
             }
             catch (Exception ex) {

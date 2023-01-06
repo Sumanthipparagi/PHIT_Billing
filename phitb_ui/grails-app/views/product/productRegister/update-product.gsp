@@ -293,16 +293,16 @@
                                                    placeholder="Sale Trade Discount" step="0.25" value="${product.saleTradeDiscount}"
                                                    required/>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
+                                      %{--  <div class="col-lg-6 form-group  form-float">
                                             <label for="saleMarginPercent">
                                                 Sale Margin Percent
                                                 <span class="required-indicator" style="color: red;">*</span>
-                                            </label>
-                                            <input type="text" id="saleMarginPercent" onblur="setTwoNumberDecimal"
+                                            </label>--}%
+                                            <input type="hidden" id="saleMarginPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control saleTradeDiscount" name="saleMarginPercent"
                                                    placeholder="Sale Margin Percent" step="0.25" value="${product.saleMarginPercent}"
                                                    required/>
-                                        </div>
+%{--                                        </div>--}%
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipPRate">
                                                 VIP Purchase Rate

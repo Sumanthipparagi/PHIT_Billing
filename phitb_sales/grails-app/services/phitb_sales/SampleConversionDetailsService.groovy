@@ -1,6 +1,8 @@
 package phitb_sales
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
@@ -283,9 +285,45 @@ class SampleConversionDetailsService {
         }
         catch (Exception ex)
         {
-            log.error("SaleProductDeatilsService" + ex)
-            println("SaleProductDeatilsService" + ex)
+            log.error("getSampleConversionDetailsByBillIdAndBatch" + ex)
+            println("getSampleConversionDetailsByBillIdAndBatch" + ex)
         }
     }
 
+    def getSampleConversionDetailsByDateRangeAndEntityId(String dateRange, long entityId)
+    {
+        try{
+            JSONArray finalBills = new JSONArray()
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+
+            ArrayList<SampleConversion> sampleConversions = SampleConversion.findAllByEntityIdAndDateCreatedBetween(entityId, fromDate, toDate)
+
+            for (SampleConversion sampleConversion : sampleConversions) {
+                JSONObject sampleConversion1 = new JSONObject((sampleConversion as JSON).toString())
+                def sampleConversionDetailProducts = SampleConversionDetails.findAllByBillId(sampleConversion.id)
+                if (sampleConversionDetailProducts) {
+                    JSONArray prdt =  new  JSONArray((sampleConversionDetailProducts as JSON).toString())
+                    sampleConversion1.put("products", prdt)
+                }
+                finalBills.add(sampleConversion1)
+            }
+
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            log.error("getSampleConversionDetailsByDateRangeAndEntityId: " + ex.stackTrace)
+            println("getSampleConversionDetailsByDateRangeAndEntityId: " + ex.stackTrace)
+            return null
+        }
+    }
 }

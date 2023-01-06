@@ -25,8 +25,7 @@ class EmailService {
 
 
     static webUtils = WebUtils.retrieveGrailsWebRequest()
-    boolean sendEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String
-            docType = null, boolean isHtml=false, Object mailTemplate=null){
+    boolean sendEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String docType = null, boolean isHtml=false, Object mailTemplate=null){
         if(!isHtml){
             sendTextEmail( toEmail,  subject,  body,  entityId,  docNo, docType)
         }else
@@ -43,8 +42,7 @@ class EmailService {
      * @param subject
      * @param body
      */
-    boolean sendTextEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String
-            docType = null) {
+    boolean sendTextEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String docType = null) {
         try {
             JSONObject emailSettings = getEmailSettingsByEntity()
             if (emailSettings && emailSettings.get("active")) {
@@ -94,8 +92,7 @@ class EmailService {
     }
 
 
-    boolean sendHtmlEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String
-            docType = null,Object mailTemplate) {
+    boolean sendHtmlEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String docType = null,Object mailTemplate) {
         try {
             JSONObject emailSettings = getEmailSettingsByEntity()
             if (emailSettings && emailSettings.get("active")) {

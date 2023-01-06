@@ -167,4 +167,30 @@ class SampleConversionLogService {
             throw new BadRequestException()
         }
     }
+
+    def getSampleConversionLogByDateRangeAndEntityId(String dateRange, long entityId)
+    {
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+
+            return SampleConversionlog.findAllByEntityIdAndDateCreatedBetween(entityId, fromDate, toDate)
+
+        }
+        catch (Exception ex)
+        {
+            log.error("getSampleConversionLogByDateRangeAndEntityId: " + ex.stackTrace)
+            println("getSampleConversionLogByDateRangeAndEntityId: " + ex.stackTrace)
+            return null
+        }
+    }
+
 }

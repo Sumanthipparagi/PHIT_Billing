@@ -12,6 +12,10 @@ public class Constants
     public static String APP_SHORT_NAME = "PHITB";
 //    public String API_GATEWAY = "http://172.16.17.143:81/";
     public String API_GATEWAY = "http://localhost/";
+   // public String SMS_URL = "https://2factor.in/API/V1/48f6af5c-a0fd-11ec-a4c2-0200cd936042/ADDON_SERVICES/SEND/TSMS";
+    public String SMS_URL = "https://2factor.in/API/R1/";
+    public String SMS_API_KEY = "48f6af5c-a0fd-11ec-a4c2-0200cd936042";
+    public String SMS_SENDER_ID = "PHAERP";
 
 
     public static String ROLE_SALESMAN = "SALESMAN";
@@ -257,10 +261,9 @@ public class Constants
     public static String MAIL_BTN_REPORTS = "MAIL_BTN_REPORTS";
 
 
+    //SMS Templates
+    public static String SALE_INVOICE_SMS = "SALE_INVOICE_SMS";
 
-
-
-
-
+    public static String SHORT_DOMAIN = "https://pharmit.in/e/";
 
 }

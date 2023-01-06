@@ -1,6 +1,7 @@
 package phitb_sales
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 
@@ -84,5 +85,31 @@ class StockAdjustmentDetailsService
             jsonObject.put("data", stockAdjustmentDetails1)
             return jsonObject
         }
+    }
+
+
+    def getByDateRange(String dateRange, long entityId)
+    {
+        try {
+
+            JSONArray finalBills = new JSONArray()
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+
+            return StockAdjustmentDetails.findAllByDateCreatedBetweenAndEntityId(fromDate, toDate, entityId)
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+        }
+
     }
 }
