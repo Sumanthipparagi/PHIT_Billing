@@ -373,16 +373,17 @@ class ProductReportController {
                             long openingStockQty = 0
                             long openingQty = 0
                             long openingFreeQty = 0
-                           /* JSONObject inventory = new InventoryService().getStocksOfProductAndBatch(productId, batch.batchNumber, entityId)
+                            JSONObject inventory = new InventoryService().getStocksOfProductAndBatch(productId, batch.batchNumber, entityId)
                             if(inventory)
                             {
                                 openingStockQty = inventory.get("openingStockQty")
+                                openingQty = openingStockQty
                             }
                             else
                             {
                                 response.status = 400
                                 return
-                            }*/
+                            }
 
                             for (Object pb : openingPurchaseBills) {
                                 if (pb.billStatus == "ACTIVE") {
