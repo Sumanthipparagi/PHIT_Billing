@@ -428,14 +428,17 @@
                                 <li><a href="/sale-order-entry/my-orders">My Orders</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/sale-entry">Sale Entry</a></li>
-                                <li><a href="/sale-bill-list">My Invoices</a></li>
+                                <g:if test="${session.getAttribute('role')=='RETAILER'}">
+                                    <li><a href="/sale-entry-retailer">Sale Entry retailer</a></li>
+                                    <li><a href="/retailer-bill-list">Invoices</a></li>
+                                </g:if>
+                                <g:else>
+                                    <li><a href="/sale-entry">Sale Entry</a></li>
+                                    <li><a href="/sale-bill-list">My Invoices</a></li>
+                                </g:else>
                             </g:if>
 
-                            <g:if test="${session.getAttribute('role')=='RETAILER'}">
-                                <li><a href="/sale-entry-retailer">Sale Entry retailer</a></li>
-                                <li><a href="/retailer-bill-list">Invoices</a></li>
-                            </g:if>
+
 
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_RETURN", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="javascript:void(0);" class="menu-toggle">Sales Return</span> <span
@@ -631,7 +634,8 @@
                         </g:if>
 
                         <g:if test="${UtilsService.isPermitted("VIEW_ENTITY_REGISTER", session.getAttribute("permittedFeatures").toString())}">
-                            <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN || session.getAttribute('role') == Constants.SUPER_USER}">
+                            <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN ||
+                                    session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == 'RETAILER'}">
                                 <li><a href="/entity-register">Entity Register</a></li>
                             </g:if>
                         </g:if>

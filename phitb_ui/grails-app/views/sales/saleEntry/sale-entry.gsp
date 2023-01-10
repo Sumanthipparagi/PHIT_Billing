@@ -445,6 +445,7 @@
             </div>
 
             <div class="modal-body">
+
                 <g:if test="${tempStockArray?.size() > 0}">
                     <div class="table-responsive">
                         <table class="table table-bordered">
