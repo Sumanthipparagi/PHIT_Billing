@@ -75,7 +75,7 @@ class ReceiptDetailService {
             switch (orderColumnId)
             {
                 case '0':
-                    orderColumn = "receiptId"
+                    orderColumn = "id"
                     break;
                 case '1':
                     orderColumn = "accountModeId"

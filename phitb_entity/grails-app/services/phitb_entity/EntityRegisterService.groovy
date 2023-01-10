@@ -495,7 +495,8 @@ class EntityRegisterService {
 
 
     def registerPatientDetails(JSONObject jsonObject){
-        EntityRegister entityRegister2 = EntityRegister.findByPhoneNumber(jsonObject.get('phoneNumber').toString())
+        EntityRegister entityRegister2 = EntityRegister.findByPhoneNumberAndParentEntity(jsonObject.get('phoneNumber')
+                .toString(),Long.parseLong(jsonObject.get('entityId').toString()))
         if(entityRegister2){
             throw new BadRequestException()
         }

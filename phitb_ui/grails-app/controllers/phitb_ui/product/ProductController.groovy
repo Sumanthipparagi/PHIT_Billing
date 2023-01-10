@@ -107,7 +107,7 @@ class ProductController {
         try {
             ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-            ArrayList<String> tax = new EntityService().getTaxesByEntity(session.getAttribute("entityId").toString())
+            ArrayList<String> tax = new EntityService().getTaxesByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
             ArrayList<String> divisions = new ProductService().getDivisionsByEntityId(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> productCategories = new ProductCategoryController().getByEntity() as ArrayList<String>
