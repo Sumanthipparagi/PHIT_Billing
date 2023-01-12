@@ -62,7 +62,7 @@
                         <span>My Sales</span>
 
                         <h3 class="m-b-10">₹<span class="number" id="salesCurrentMonth">0</span></h3>
-                        <small class="text-muted"><span id="salesPreviousMonth"></span></small>
+                        <small class="text-muted"><span id="salesPreviousMonth">-</span></small>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                         <span>Total Sale Return</span>
 
                         <h3 class="m-b-10 number">₹<span class="number" id="salesReturnCurrentMonth">0</span></h3>
-                        <small class="text-muted"><span id="salesReturnPreviousMonth"></span></small>
+                        <small class="text-muted"><span id="salesReturnPreviousMonth">-</span></small>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,9 @@
                     </div>
 
                     <div class="body m-b-10">
-                        <div id="m_area_chart"></div>
+                        <div id="salesChart" style="height: 300px;">
+                            <p id="gettingData">Getting Data...</p>
+                        </div>
                     </div>
 
                 </div>
@@ -141,7 +143,7 @@
 <asset:javascript src="/themeassets/bundles/sparkline.bundle.js"/>
 %{--<asset:javascript src="/themeassets/bundles/doughnut.bundle.js"/>--}%
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
-<asset:javascript src="/themeassets/js/pages/index.js"/>
+%{--<asset:javascript src="/themeassets/js/pages/index.js"/>--}%
 
 <script>
     getStats();
@@ -203,6 +205,43 @@
                }
            }
         });
+
+        $.ajax({
+            url: "dashboard/graph",
+            method: "GET",
+            success: function (data) {
+                MorrisArea(data);
+            }
+        });
+    }
+
+    // Morris-chart
+    function MorrisArea(result) {
+        var dataArr = [];
+        $.each(result, function (index, dt){
+            dataArr.push({'period': ''+dt.month, 'Sales': dt.totalSales})
+        });
+
+        console.log(JSON.stringify(dataArr));
+        Morris.Area({
+            element: 'salesChart',
+            data: dataArr,
+            xkey: 'period',
+            ykeys: ['Sales'],
+            labels: ['Sales'],
+            xLabels: 'month',
+            pointSize: 3,
+            fillOpacity: 0,
+            pointStrokeColors: ['#191f28'],
+            behaveLikeLine: false,
+            gridLineColor: ['#e0e0e0'],
+            lineWidth: 2,
+            hideHover: 'auto',
+            lineColors: ['#191f28'],
+            resize: true
+        });
+
+        $("#gettingData").addClass('hidden');
     }
 </script>
 

@@ -16,6 +16,7 @@ class UrlMappings {
         "/logout"(controller: "auth", action: 'logout')
         "/dashboard"(controller: 'dashboard', action: "index")
         "/dashboard/stats"(controller: 'dashboard', action: "dashboardStats")
+        "/dashboard/graph"(controller: 'dashboard', action: "salesMonthWiseForGraph")
         "/forms"(controller: 'dashboard', action: 'forms')
         "/table"(controller: 'dashboard', action: 'table')
         "/timeline"(controller: 'dashboard', action: 'timeline')

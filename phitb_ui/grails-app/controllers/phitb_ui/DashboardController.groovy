@@ -394,4 +394,53 @@ class DashboardController
                                                           draftPurchaseBillDetails: draftPurchaseBillDetails])
     }
 
+    def salesMonthWiseForGraph()
+    {
+
+        //show last 12 months stats
+        int months = 11
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        //current month stats
+
+        Calendar cal = Calendar.getInstance()
+        JSONArray monthlySales = new JSONArray()
+        for (int i=0; i<=months;i++) {
+            JSONObject jsonObject = new JSONObject()
+            cal.setTime(new Date())
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.HOUR_OF_DAY, 11)
+            if(i > 0)
+            {
+                cal.set(Calendar.MONTH, -i)
+            }
+            cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+            String toDate = sdf.format(cal.getTime())
+            String monthName =  new SimpleDateFormat("YYYY-MM").format(cal.getTime())
+            cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH))
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            String fromDate = sdf.format(cal.getTime())
+
+            String entityId = session.getAttribute("entityId")
+            String userId = session.getAttribute("userId")
+            String financialYear = session.getAttribute("financialYear")
+            jsonObject.put("fromDate", fromDate)
+            jsonObject.put("toDate", toDate)
+            jsonObject.put("entityId", entityId)
+            jsonObject.put("userId", userId)
+            jsonObject.put("financialYear", financialYear)
+            JSONObject sales = new ReportsService().getSalesStats(jsonObject)
+
+            if(sales) {
+                sales.put("month", monthName)
+                monthlySales.add(sales)
+            }
+        }
+
+        respond monthlySales, formats: ['json']
+
+    }
+
 }
