@@ -80,20 +80,6 @@ class UrlMappings {
                 action = [GET: 'getAllByDays']
             }
 
-            //Reason Master
-            "/reasonmaster(.$format)?"(controller: 'reasonMaster') {
-                action = [GET: 'index', POST:
-                        'save']
-            }
-            "/reasonmaster/datatable(.$format)?"(controller: 'reasonMaster') { action = [GET: 'dataTable'] }
-            "/reasonmaster/$id(.$format)?"(controller: 'reasonMaster') {
-                action = [GET: 'show', PUT: 'update', DELETE:
-                        'delete']
-            }
-            "/reasonmasterbydays/$days(.$format)?"(controller: 'reasonMaster') {
-                action = [GET: 'getAllByDays']
-            }
-
             //Sale Bill Details
             "/salebilldetails(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'index', POST:

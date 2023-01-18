@@ -1212,29 +1212,6 @@ contains both sale bill and products
     }
 
 
-    def getReason() {
-        Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
-        try {
-            Response apiResponse = target
-                    .path(new Links().REASON_SHOW)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-            if (apiResponse.status == 200) {
-                JSONArray JSONArray = new JSONArray(apiResponse.readEntity(String.class))
-                return JSONArray
-            } else {
-                return null
-            }
-        }
-        catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
-        }
-
-    }
-
-
     def getSaleBillByCustomer(String custid, String financialYear, String entityId, String dateRange = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

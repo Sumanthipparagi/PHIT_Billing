@@ -2,12 +2,10 @@ package phitb_ui
 
 import com.google.gson.Gson
 import grails.gorm.transactions.Transactional
-import grails.web.servlet.mvc.GrailsHttpSession
 import org.apache.commons.lang.StringUtils
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
-import org.grails.web.util.WebUtils
 
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
@@ -16,7 +14,6 @@ import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.Form
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
-import java.text.SimpleDateFormat
 
 @Transactional
 class InventoryService {
@@ -213,12 +210,15 @@ class InventoryService {
     }
 
 
-    def stocksReturn(JSONObject jsonObject) {
+    def stocksReturn(JSONObject jsonObject, boolean isSale = true) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
+        String url = new Links().STOCK_SALE_RETURN
+        if(!isSale)
+            url = new Links().STOCK_PURCHASE_RETURN
         try {
             Response apiResponse = target
-                    .path(new Links().STOCK_INCREASE)
+                    .path(url)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
@@ -455,7 +455,7 @@ class InventoryService {
     def getStocksIncrease(String batch,String qty, String fqty, String reason) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        String url = new Links().STOCK_INCREASE + "/batch/" + batch + "/qty/"+ qty+"/fQty/"+fqty+"/reason/"+reason
+        String url = new Links().STOCK_SALE_RETURN + "/batch/" + batch + "/qty/"+ qty+"/fQty/"+fqty+"/reason/"+reason
         try {
             Response apiResponse = target
                     .path(url)

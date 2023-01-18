@@ -1,4 +1,4 @@
-package phitb_sales
+package phitb_system
 
 import gorm.logical.delete.LogicalDelete
 

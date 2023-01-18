@@ -107,6 +107,14 @@ public class Links
     public static String DISTRICT_MASTER_DELETE = APP_CONTEXT_PATH + "system/district/{id}";
 
 
+    //    Reason Master
+    public static String REASON_UPDATE = APP_CONTEXT_PATH + "system/reasonmaster/{id}";
+    public static String REASON_DELETE = APP_CONTEXT_PATH + "system/reasonmaster/{id}";
+    public static String REASON_SAVE = APP_CONTEXT_PATH + "system/reasonmaster";
+    public static String REASON_SHOW = APP_CONTEXT_PATH + "system/reasonmaster";
+    public static String REASON_DATATABLE = APP_CONTEXT_PATH + "system/reasonmaster/datatable";
+
+
     /*<-------------------------------------------Facility ------------------------------------------------->*/
 
 
@@ -501,13 +509,6 @@ public class Links
     public static String SALE_SCHEME_SHOW = APP_CONTEXT_PATH + "sales/schemeconfiguration";
     public static String SALE_SCHEME_DATATABLE = APP_CONTEXT_PATH + "sales/schemeconfiguration/datatable";
 
-    //    Reason Master
-    public static String REASON_UPDATE = APP_CONTEXT_PATH + "sales/reasonmaster/{id}";
-    public static String REASON_DELETE = APP_CONTEXT_PATH + "sales/reasonmaster/{id}";
-    public static String REASON_SAVE = APP_CONTEXT_PATH + "sales/reasonmaster";
-    public static String REASON_SHOW = APP_CONTEXT_PATH + "sales/reasonmaster";
-    public static String REASON_DATATABLE = APP_CONTEXT_PATH + "sales/reasonmaster/datatable";
-
 
     public static String SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH = APP_CONTEXT_PATH + "sales/schemeconfiguration/product/$productId/batch/$batchNumber";
 
@@ -630,7 +631,8 @@ public class Links
     public static String STOCK_BOOK_BY_USER = APP_CONTEXT_PATH + "inventory/stockbook/user";
     public static String STOCK_BOOK_BY_BATCH = APP_CONTEXT_PATH + "inventory/stockbook/batch";
     public static String STOCK_BOOK_BY_PROD_BATCH = APP_CONTEXT_PATH + "inventory/stockbook/product/{productId}/batch/{batch}";
-    public static String STOCK_INCREASE = APP_CONTEXT_PATH + "inventory/stockbook/return";
+    public static String STOCK_SALE_RETURN = APP_CONTEXT_PATH + "inventory/stockbook/salereturn";
+    public static String STOCK_PURCHASE_RETURN = APP_CONTEXT_PATH + "inventory/stockbook/purchasereturn";
     public static String STOCK_ACTIVITY_DATERANGE_ENTITY = APP_CONTEXT_PATH + "inventory/stockactivitydaterangeentity";
     public static String STOCK_ACTIVITY_CLOSING = APP_CONTEXT_PATH + "inventory/stockactivity/closing";
 

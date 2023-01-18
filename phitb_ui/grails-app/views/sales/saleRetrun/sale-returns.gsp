@@ -1698,6 +1698,7 @@
                     showCancelButton: false,
                     confirmButtonText: 'Print',
                     denyButtonText: 'New Entry',
+                    allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         printInvoice();

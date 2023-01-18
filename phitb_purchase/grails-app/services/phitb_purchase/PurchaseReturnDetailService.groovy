@@ -289,7 +289,7 @@ class PurchaseReturnDetailService {
             ArrayList<PurchaseReturn> purchaseReturnDetails = PurchaseReturn.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
             for (PurchaseReturn purchaseReturn : purchaseReturnDetails) {
                 JSONObject purchaseRetrun = new JSONObject((purchaseReturn as JSON).toString())
-                def productDetails = PurchaseProductDetail.findAllByBillId(purchaseReturn.id)
+                def productDetails = PurchaseReturnDetail.findAllByBillId(purchaseReturn.id)
                 if (productDetails) {
                     JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
                     purchaseRetrun.put("products", prdt)

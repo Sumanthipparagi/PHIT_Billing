@@ -18,6 +18,12 @@ class BootStrap
         }
 
 
+        ReasonMaster.findOrCreateByReasonNameAndReasonCode("Sale Return", "R").save()
+        ReasonMaster.findOrCreateByReasonNameAndReasonCode("Product Expired", "E").save()
+        ReasonMaster.findOrCreateByReasonNameAndReasonCode("Breakage", "B").save()
+        ReasonMaster.findOrCreateByReasonNameAndReasonCode("Other (No Stock Change)", "O").save()
+        ReasonMaster.findOrCreateByReasonNameAndReasonCode("Other (ADD)", "OA").save()
+        ReasonMaster.findOrCreateByReasonNameAndReasonCode("Purchase Return", "PR").save()
     }
     def destroy = {
     }

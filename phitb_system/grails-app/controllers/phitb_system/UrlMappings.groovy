@@ -100,8 +100,6 @@ class UrlMappings {
             "/district/$id(.$format)?"(controller: 'district') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
 
-
-
             //State Master
             "/state(.$format)?"(controller: 'stateMaster') { action = [GET: 'index', POST: 'save'] }
             "/state/datatable(.$format)?"(controller: 'stateMaster') { action = [GET: 'dataTable'] }
@@ -124,6 +122,21 @@ class UrlMappings {
 
 //            Status
             "/status"(controller: 'status', action: 'index')
+
+            //Reason Master
+            "/reasonmaster(.$format)?"(controller: 'reasonMaster') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/reasonmaster/datatable(.$format)?"(controller: 'reasonMaster') { action = [GET: 'dataTable'] }
+            "/reasonmaster/$id(.$format)?"(controller: 'reasonMaster') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/reasonmasterbydays/$days(.$format)?"(controller: 'reasonMaster') {
+                action = [GET: 'getAllByDays']
+            }
+
 
         }
     }
