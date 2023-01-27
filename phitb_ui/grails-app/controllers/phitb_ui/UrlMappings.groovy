@@ -871,5 +871,8 @@ class UrlMappings {
         "/opendoc"(controller: 'openDocument', action: 'getLink')
         "/e/$uniqueCode"(controller: 'openDocument', action: 'decodeLink')
 
+        //payment collection
+        "/payment-collection"(controller: 'paymentCollection', action: 'index')
+
     }
 }
