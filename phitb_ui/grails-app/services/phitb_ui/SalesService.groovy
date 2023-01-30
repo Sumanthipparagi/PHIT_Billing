@@ -2103,6 +2103,30 @@ contains both deliveryChallan and products
         }
     }
 
+
+    def getSaleBillDetailsByPendingPayment(String financialYear, String entityId) {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("financialYear", financialYear)
+        jsonObject.put("entityId", entityId)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_PENDING_PAYMENT)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                return new JSONArray(apiResponse.readEntity(String.class))
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getSaleBillDetailsByPendingPayment  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleBillDetailsByPendingPayment  , Ex:' + ex)
+        }
+    }
+
     def saveCrDbSettlement(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);

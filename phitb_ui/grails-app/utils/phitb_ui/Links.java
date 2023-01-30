@@ -157,6 +157,14 @@ public class Links
     public static String ENTITY_IRN_DELETE = APP_CONTEXT_PATH + "entity/entityirn/{id}";
     public static String ENTITY_IRN_SHOW_BY_ENTITY = APP_CONTEXT_PATH + "entity//entityirn/entity/";
 
+    //Entity ROUTE
+    public static String ENTITY_ROUTE_SHOW = APP_CONTEXT_PATH + "entity/entityroute";
+    public static String ENTITY_ROUTE_SAVE = APP_CONTEXT_PATH + "entity/entityroute";
+    public static String ENTITY_ROUTE_DATATABLE = APP_CONTEXT_PATH + "entity/entityroute/datatable";
+    public static String ENTITY_ROUTE_UPDATE = APP_CONTEXT_PATH + "entity/entityroute/{id}";
+    public static String ENTITY_ROUTE_DELETE = APP_CONTEXT_PATH + "entity/entityroute/{id}";
+    public static String ENTITY_ROUTE_SHOW_BY_ENTITY = APP_CONTEXT_PATH + "entity//entityroute/entity/";
+
     public static String ENTITY_AUTH = APP_CONTEXT_PATH + "entity/authregister/username";
 
     public static String ENTITY_TYPE_MASTER_SHOW = APP_CONTEXT_PATH + "entity/entitytypemaster";
@@ -481,6 +489,7 @@ public class Links
     public static String SET_PAYMENT_BILL = APP_CONTEXT_PATH + "sales/setpaymentstatus/{id}/type/{type}";
     public static String SALE_BILL_RECENT = APP_CONTEXT_PATH + "sales/salebilldetails/getrecent";
     public static String SALE_BILL_PENDING_IRN = APP_CONTEXT_PATH + "sales/salebilldetails/pendingirn";
+    public static String SALE_BILL_PENDING_PAYMENT = APP_CONTEXT_PATH + "sales/salebilldetails/paymentpending";
     public static String SALE_BILL_CUSTOMER = APP_CONTEXT_PATH + "sales/salebillbycustomer/{custid}";
     public static String SALE_BILL_CUSTOMER_START_DATE = APP_CONTEXT_PATH + "sales/salebillbycustomerstartdate/{custid}";
     public static String SALE_BILL_REPORTS = APP_CONTEXT_PATH + "sales/reports/customerwise";

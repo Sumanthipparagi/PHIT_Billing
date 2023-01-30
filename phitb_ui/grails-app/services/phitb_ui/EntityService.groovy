@@ -2738,4 +2738,91 @@ class EntityService {
             }
         }
     }
+
+
+    //Entity Route
+    def saveEntityRoute(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  saveEntityRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveEntityRoute  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showEntityRoute(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  showEntityIRN  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showEntityIRN  , Ex:' + ex)
+        }
+
+    }
+
+    def putEntityRoute(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service : , action :  putEntityRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putEntityRoute  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteEntityRoute(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  deleteEntityRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteEntityRoute  , Ex:' + ex)
+        }
+
+    }
 }

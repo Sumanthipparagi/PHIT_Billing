@@ -132,6 +132,18 @@ class UrlMappings
                         'delete']
             }
 
+            //Entity Route Register
+            "/entityroute(.$format)?"(controller: 'entityRouteRegister') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/entityroute/entity/$id(.$format)?"(controller: 'entityRouteRegister') {action = [GET: 'getByEntity']}
+            "/entityroute/datatable(.$format)?"(controller: 'entityRouteRegister') {action = [GET: 'dataTable']}
+            "/entityroute/$id(.$format)?"(controller: 'entityRouteRegister') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+
 
             //Entity register
             "/entityregister(.$format)?"(controller: 'entityRegister') {

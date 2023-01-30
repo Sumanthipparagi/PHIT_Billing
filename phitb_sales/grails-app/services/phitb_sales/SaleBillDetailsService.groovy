@@ -668,4 +668,17 @@ class SaleBillDetailsService
             throw new BadRequestException()
         }
     }
+
+    def getPaymentPendingBills(long entityId, String financialYear)
+    {
+        try
+        {
+            return SaleBillDetails.findAllByEntityIdAndBillStatusAndBalanceGreaterThanAndFinancialYear(entityId, "ACTIVE", 0, financialYear)
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+        }
+    }
+
 }

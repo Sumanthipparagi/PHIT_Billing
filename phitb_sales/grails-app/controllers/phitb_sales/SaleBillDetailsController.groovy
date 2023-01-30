@@ -14,7 +14,7 @@ class SaleBillDetailsController {
 
     static allowedMethods = [index    : "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE",
                              dataTable: "GET", updateIRNDetails: "PUT", saveInvoice: "POST", updateInvoice: "PUT",
-                             getByDateRangeAndEntity: "POST", getByPendingIrnAndEntity: "POST"]
+                             getByDateRangeAndEntity: "POST", getByPendingIrnAndEntity: "POST", getPaymentPendingBills: "POST"]
     SaleBillDetailsService saleBillDetailsService
     SaleProductDetailsService saleProductDetailsService
     /**
@@ -753,6 +753,33 @@ class SaleBillDetailsController {
                 JSONArray saleBillDetails = saleBillDetailsService.getByPendingIRNAndEntity(entityId, financialYear)
                 respond saleBillDetails, formats: ['json']
             } else {
+                response.status = 400
+            }
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getPaymentPendingBills()
+    {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String financialYear = jsonObject.get("financialYear")
+            String entityId = jsonObject.get("entityId")
+            if (financialYear && entityId) {
+                JSONArray saleBillDetails = saleBillDetailsService.getPaymentPendingBills(Long.parseLong(entityId), financialYear)
+                respond saleBillDetails, formats: ['json']
+            }
+            else {
                 response.status = 400
             }
         }

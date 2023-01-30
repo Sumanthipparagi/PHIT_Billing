@@ -873,6 +873,7 @@ class UrlMappings {
 
         //payment collection
         "/payment-collection"(controller: 'paymentCollection', action: 'index')
+        "/payment-collection/get-invoices"(controller: 'paymentCollection', action: 'getPendingSaleInvoices')
 
     }
 }

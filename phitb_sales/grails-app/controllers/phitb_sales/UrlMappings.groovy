@@ -89,6 +89,9 @@ class UrlMappings {
                 action = [GET: 'getDraftBillById']
             }
 
+            "/salebilldetails/paymentpending(.$format)?"(controller: 'saleBillDetails', action: 'getPaymentPendingBills')
+
+
             "/salebilldetails/pendingirn(.$format)?"(controller: 'saleBillDetails') {
                 action = [POST: 'getByPendingIrnAndEntity']
             }

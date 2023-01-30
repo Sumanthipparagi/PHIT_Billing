@@ -286,6 +286,9 @@ class EntityRegisterService {
         entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
 
+        if(jsonObject.has("entityRoute"))
+            entityRegister.entityRoute = EntityRouteRegister.findById(Long.parseLong(jsonObject.get("entityRoute").toString()))
+
         entityRegister.save(flush: true)
         if (!entityRegister.hasErrors())
         {
@@ -413,6 +416,10 @@ class EntityRegisterService {
             entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
             entityRegister.parentEntityType = Long.parseLong(jsonObject.get("parentEntityType").toString())
+
+            if(jsonObject.has("entityRoute"))
+                entityRegister.entityRoute = EntityRouteRegister.findById(Long.parseLong(jsonObject.get("entityRoute").toString()))
+
             entityRegister.save(flush: true)
             if (!entityRegister.hasErrors())
             {
