@@ -213,6 +213,14 @@ class UrlMappings {
         "/entity-irn/update/$id"(controller:"entityIRN",action:"update")
         "/entity-irn/delete/$id"(controller: "entityIRN",action:"delete")
 
+        //entity-route
+        "/entity-route"(controller: "entityRoute") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/entity-route/datatable"(controller: "entityRoute", action: "dataTable")
+        "/entity-route/update/$id"(controller:"entityRoute",action:"update")
+        "/entity-route/delete/$id"(controller: "entityRoute",action:"delete")
+
 
         //  Entity Settings
 
