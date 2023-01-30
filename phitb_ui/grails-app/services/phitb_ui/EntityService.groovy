@@ -2873,4 +2873,29 @@ class EntityService {
         }
 
     }
+
+
+    /**
+    Get Entities belongs to users route, by sending user id
+     */
+    def getEntityByUserRoute(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_GET_BY_USER_ROUTE + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            } else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntityByUserRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntityByUserRoute  , Ex:' + ex)
+        }
+
+    }
 }

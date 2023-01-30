@@ -669,11 +669,11 @@ class SaleBillDetailsService
         }
     }
 
-    def getPaymentPendingBills(long entityId, String financialYear)
+    def getPaymentPendingBills(long entityId, String financialYear, Long[] customerId)
     {
         try
         {
-            return SaleBillDetails.findAllByEntityIdAndBillStatusAndBalanceGreaterThanAndFinancialYear(entityId, "ACTIVE", 0, financialYear)
+            return SaleBillDetails.findAllByEntityIdAndBillStatusAndBalanceGreaterThanAndFinancialYearAndCustomerIdInList(entityId, "ACTIVE", 0, financialYear, customerId)
         }
         catch (Exception ex)
         {

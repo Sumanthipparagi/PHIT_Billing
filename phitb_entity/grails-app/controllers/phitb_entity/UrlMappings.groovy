@@ -150,6 +150,7 @@ class UrlMappings
                 action = [GET: 'index', POST:
                         'save']
             }
+
             "/entityregister/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'dataTable']}
             "/entityregister/parententity/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'parentEntitiesDatatable']}
             "/entityregister/$id(.$format)?"(controller: 'entityRegister') {
@@ -163,7 +164,7 @@ class UrlMappings
             }
             "/entityregister/getbyentity/$id"(controller: 'entityRegister',  action: 'getByParentEntity')
             "/entityregister/getparententities"(controller: 'entityRegister',  action: 'getParentEntities')
-
+            "/entityregister/getbyuserroute/$id(.$format)?"(controller: 'entityRegister', action: 'getEntitiesByUserRoute')
 
 
 

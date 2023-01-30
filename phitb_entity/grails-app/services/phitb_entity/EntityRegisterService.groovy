@@ -500,6 +500,21 @@ class EntityRegisterService {
     }
 
 
+    /**
+     * This returns the entity list which can be accessible by the user
+     */
+    def getEntitiesByUserRoute(UserRegister user)
+    {
+        ArrayList<EntityRouteRegister> entityRouteRegisters = user.entityRoute
+        if(entityRouteRegisters?.size() > 0) {
+            ArrayList<EntityRegister> entityRegisters = EntityRegister.findAllByEntityRouteInList(entityRouteRegisters)
+            return entityRegisters
+        }
+        else
+        {
+            return null
+        }
+    }
 
 }
 

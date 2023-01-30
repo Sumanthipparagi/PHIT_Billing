@@ -176,6 +176,7 @@ public class Links
 
     //Entity Register
     public static String ENTITY_REGISTER_SHOW = APP_CONTEXT_PATH + "entity/entityregister";
+    public static String ENTITY_REGISTER_GET_BY_USER_ROUTE = APP_CONTEXT_PATH + "entity/entityregister/getbyuserroute";
     public static String ENTITY_REGISTER_SHOW_BY_ENTITY = APP_CONTEXT_PATH + "entity/entityregister/getbyentity";
     public static String ENTITY_REGISTER_SAVE = APP_CONTEXT_PATH + "entity/entityregister";
     public static String ENTITY_REGISTER_DATATABLE = APP_CONTEXT_PATH + "entity/entityregister/datatable";

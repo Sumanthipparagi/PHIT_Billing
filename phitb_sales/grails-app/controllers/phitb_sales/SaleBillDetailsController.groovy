@@ -775,8 +775,9 @@ class SaleBillDetailsController {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             String financialYear = jsonObject.get("financialYear")
             String entityId = jsonObject.get("entityId")
+            Long[] customerIds = jsonObject.get("customerIds")
             if (financialYear && entityId) {
-                JSONArray saleBillDetails = saleBillDetailsService.getPaymentPendingBills(Long.parseLong(entityId), financialYear)
+                JSONArray saleBillDetails = saleBillDetailsService.getPaymentPendingBills(Long.parseLong(entityId), financialYear, customerIds)
                 respond saleBillDetails, formats: ['json']
             }
             else {
