@@ -160,7 +160,7 @@
 
 <script>
 
-    var entityRoute;
+    var entityRoute1;
     var id = null;
     $(function () {
         entityRoute();
@@ -168,7 +168,7 @@
     });
 
     function entityRoute() {
-        entityRoute = $(".entityRoute").DataTable({
+        entityRoute1 = $(".entityRoute").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -192,8 +192,8 @@
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         console.log(json)
-                        var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            ' class="editbtn btn btn-sm btn-warning" data-toggle="modal" data-target="#addEntityRouteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                        var editbtn = '<button type="button" data-name="'+json.data[i].routeName+'" data-id="' + json.data[i].id +
+                            '" class="editbtn btn btn-sm btn-warning" data-toggle="modal" data-target="#addEntityRouteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -255,7 +255,9 @@
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
+        var name = $(this).data('name');
         $(".entityRouteTitle").text("Update Entity Route?");
+        $(".routeName").val(name);
     });
 
 

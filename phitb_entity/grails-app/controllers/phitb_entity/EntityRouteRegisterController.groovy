@@ -58,7 +58,7 @@ class EntityRouteRegisterController {
     def getByEntity()
     {
         try {
-            String entityId = params.entityId
+            String entityId = params.id
             if (entityId) {
                 respond entityRouteRegisterService.getByEntityRegister(entityId)
             }

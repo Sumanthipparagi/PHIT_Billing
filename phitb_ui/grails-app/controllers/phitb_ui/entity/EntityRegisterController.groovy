@@ -6,6 +6,7 @@ import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.ProductService
+import phitb_ui.SalesService
 import phitb_ui.SystemService
 import phitb_ui.accounts.BankRegisterController
 import phitb_ui.system.CityController
@@ -64,7 +65,7 @@ class EntityRegisterController {
     def addEntity() {
         try {
             ArrayList<String> hqareas = new HQAreasController().getByEntity() as ArrayList<String>
-            ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
+            //ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
             ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
             ArrayList<String> account = new EntityService().getAllAccountByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
             ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>
@@ -72,6 +73,8 @@ class EntityRegisterController {
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+
+            JSONArray routes = new EntityService().getRouteByEntity(session.getAttribute("entityId").toString())
             def priority = new SystemService().getAllPriority()
             ArrayList<String> managerList = []
             userregister.each {
@@ -98,7 +101,7 @@ class EntityRegisterController {
                                                                                salesmanList  : salesmanList,
                                                                                managerList   : managerList,
                                                                                zoneList      : zoneList,
-                                                                               routeregister : routeregister,
+                                                                               routeregister : routes,
                                                                                bank          : bank, parentEntities:parentEntities,
                                                                                priority      : priority, hqareas: hqareas, account: account
             ])
@@ -114,7 +117,7 @@ class EntityRegisterController {
         try {
             JSONObject entity = new EntityService().getEntityById(params.id)
             ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
-            ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
+           // ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
             ArrayList<String> hqareas = new HQAreasController().getByEntity() as ArrayList<String>
             ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
             ArrayList<String> account = new EntityService().getAllAccountByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
@@ -123,6 +126,7 @@ class EntityRegisterController {
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            JSONArray routes = new EntityService().getRouteByEntity(session.getAttribute("entityId").toString())
             def priority = new SystemService().getAllPriority()
             String city = entity.cityId.toString()
             def cityId = new SystemService().getCityById(city.toString())
@@ -153,7 +157,7 @@ class EntityRegisterController {
                                                                                salesmanList : salesmanList,
                                                                                managerList  : managerList,
                                                                                zoneList     : zoneList,
-                                                                               routeregister: routeregister, parentEntities:parentEntities,
+                                                                               routeregister: routes, parentEntities:parentEntities,
                                                                                bank         : bank, entityList: entityList,
                                                                                priority     : priority, hqareas: hqareas,
                                                                                account      : account, cityId: cityId

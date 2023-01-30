@@ -138,7 +138,7 @@ class UserRegisterService {
             }
             if(jsonObject.get("dob").toString()!="")
             {
-                userRegister.dob = sdf.parse(jsonObject.get("anniversaryDate").toString())
+                userRegister.dob = sdf.parse(jsonObject.get("dob").toString())
             }else {
                 userRegister.dob = null
             }
@@ -175,8 +175,7 @@ class UserRegisterService {
 
             if(jsonObject.has("entityRoute"))
             {
-                String routeIds = jsonObject.get("entityRoute")
-                String[] routeIdArr = routeIds.split(",")
+                String[] routeIdArr = jsonObject.get("entityRoute")
                 for (String routeId : routeIdArr) {
                     EntityRouteRegister entityRouteRegister = EntityRouteRegister.findById(Long.parseLong(routeId))
                     if(entityRouteRegister)
@@ -261,7 +260,7 @@ class UserRegisterService {
             }
             if(jsonObject.get("dob").toString()!="")
             {
-                userRegister.dob = sdf.parse(jsonObject.get("anniversaryDate").toString())
+                userRegister.dob = sdf.parse(jsonObject.get("dob").toString())
             }else {
                 userRegister.dob = null
             }
@@ -295,8 +294,7 @@ class UserRegisterService {
 
             if(jsonObject.has("entityRoute"))
             {
-                String routeIds = jsonObject.get("entityRoute")
-                String[] routeIdArr = routeIds.split(",")
+                String[] routeIdArr = jsonObject.get("entityRoute")
                 for (String routeId : routeIdArr) {
                     EntityRouteRegister entityRouteRegister = EntityRouteRegister.findById(Long.parseLong(routeId))
                     if(entityRouteRegister)

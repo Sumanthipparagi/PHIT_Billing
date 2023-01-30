@@ -205,7 +205,7 @@
                     </div>
                 </li>
                 %{--<li class="header">MAIN</li>--}%
-                <li id="dashboard-menu" class="sidemenuitem active open"><a href="dashboard"><i
+                <li id="dashboard-menu" class="sidemenuitem active open"><a href="/dashboard"><i
                         class="zmdi zmdi-home"></i><span>Dashboard</span></a>
                 </li>
                 <g:if test="${session.getAttribute('role') != Constants.SUPER_USER}">

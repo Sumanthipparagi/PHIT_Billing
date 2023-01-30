@@ -21,44 +21,36 @@ import phitb_ui.system.ZoneController
 
 class AuthController {
 
-    def index()
-    {
+    def index() {
         render(view: '/usermanagement/auth/index')
     }
 
-    def login()
-    {
+    def login() {
         String username = params.username
         String password = params.password
-        if(username != null && password != null)
-        {
+        if (username != null && password != null) {
 
             //TODO: Login Log
             String ip = request.getHeader("X-Forwarded-For");
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
-            {
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
                 ip = request.getHeader("Proxy-Client-IP");
             }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
-            {
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
                 ip = request.getHeader("WL-Proxy-Client-IP");
             }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
-            {
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
                 ip = request.getHeader("HTTP_CLIENT_IP");
             }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
-            {
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
                 ip = request.getHeader("HTTP_X_FORWARDED_FOR");
             }
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
-            {
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
                 ip = request.getRemoteAddr();
             }
 
             JSONObject auth = new EntityService().getAuth(username)
 
-            if(auth) {
+            if (auth) {
                 byte[] salt = new AuthService().toByteArray(auth.get("password").toString().split("_")[1])
                 //hash the password sent from client
                 String password1 = new AuthService().toHexString(new AuthService().hash(password.toCharArray(), salt))
@@ -85,84 +77,72 @@ class AuthController {
                     session.setAttribute("permittedFeatures", permittedFeatures)
                     session.setAttribute("features", new EntityService().getFeatureList(permittedFeatures))
                     JSONArray jsonArray = new EntityService().getFinancialYearByEntity(entity?.id?.toString())
-                   /* JSONArray domainType = new EntityService().getEntityDomainType()
-                    session.setAttribute("domainType",domainType[0].domainType)*/
-                    if(jsonArray == null || jsonArray.size()<1)
-                    {
+                    /* JSONArray domainType = new EntityService().getEntityDomainType()
+                     session.setAttribute("domainType",domainType[0].domainType)*/
+                    if (jsonArray == null || jsonArray.size() < 1) {
                         println("Financial year not available")
                         session.invalidate()
                         redirect(uri: "/")
-                    }
-                    else
-                    {
+                    } else {
                         JSONObject jsonObject = jsonArray.last() //TODO: this should be obtained from settings
                         String startYear = jsonObject.get("startDate").toString().split("/")[2]
                         String endYear = jsonObject.get("endDate").toString().split("/")[2]
-                        session.setAttribute("financialYear", startYear+"-"+endYear)
-                        session.setAttribute("startDate",jsonObject.get("startDate").toString())
+                        session.setAttribute("financialYear", startYear + "-" + endYear)
+                        session.setAttribute("startDate", jsonObject.get("startDate").toString())
                         redirect(uri: "/dashboard")
                     }
                 } else {
                     session.setAttribute("loginErrorMessage", "login failed! please check username or password")
                     redirect(uri: "/")
                 }
-            }
-            else
-            {
+            } else {
                 session.setAttribute("loginErrorMessage", "login failed! please check username or password")
                 redirect(uri: "/")
             }
-        }
-        else
-        {
+        } else {
             session.setAttribute("loginErrorMessage", "login failed! please check username or password")
             redirect(uri: "/")
         }
     }
 
-    def logout()
-    {
+    def logout() {
         session.invalidate()
         redirect(uri: "/")
     }
 
-    def updateUser()
-    {
-        try
-        {
-            if(params.id!="")
-            {
+    def updateUser() {
+        try {
+            if (params.id != "") {
                 def user = new EntityService().getUser(params.id)
                 ArrayList<String> statelist = new StateController().show() as ArrayList<String>
                 ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
                 ArrayList<String> citylist = new CityController().show() as ArrayList<String>
                 ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
-                ArrayList <String> genderList = new SystemService().getAllGender()
+                ArrayList<String> genderList = new SystemService().getAllGender()
                 def city = new SystemService().getCityById(user.cityId.toString())
-                ArrayList <String> bank = new AccountsService().getBankRegisterByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
-                ArrayList <String> roles = new RoleController().show() as ArrayList<String>
-                ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
-                ArrayList <String> division  = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString()) as ArrayList<String>
-                ArrayList <String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
-                def  department = new EntityService().getDeparmentByEntityId(session.getAttribute('entityId').toString())
+                ArrayList<String> bank = new AccountsService().getBankRegisterByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
+                ArrayList<String> roles = new RoleController().show() as ArrayList<String>
+                //ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+                ArrayList<String> division = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString()) as ArrayList<String>
+                ArrayList<String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
+                def department = new EntityService().getDeparmentByEntityId(session.getAttribute('entityId').toString())
                 Object entity = new EntityRegisterController().show() as ArrayList<String>
-                render(view: '/usermanagement/auth/updateUser', model: [user: user,statelist:statelist,
-                                                                        countrylist:countrylist,citylist:citylist,
-                                                                       userList:userList,
-                                                                        genderList:genderList,department:department,
-                                                                        bank:bank,roles:roles,account:account,
-                                                                        userregister:userregister,
-                                                                        division:division,entity:entity,city:city])
-            }
-            else
-            {
+                JSONArray routes = new EntityService().getRouteByEntity(session.getAttribute("entityId").toString())
+                render(view: '/usermanagement/auth/updateUser', model: [user        : user, statelist: statelist,
+                                                                        routes      : routes,
+                                                                        countrylist : countrylist, citylist: citylist,
+                                                                        userList    : userList,
+                                                                        genderList  : genderList, department: department,
+                                                                        bank        : bank, roles: roles, account: account,
+                                                                        //userregister: userregister,
+                                                                        division    : division, entity: entity, city: city])
+            } else {
                 redirect(uri: '/')
             }
         }
-        catch (Exception ex)
-        {
-            log.error(controllerName+":"+ex)
-            println(controllerName+":"+ex)
+        catch (Exception ex) {
+            log.error(controllerName + ":" + ex)
+            println(controllerName + ":" + ex)
         }
     }
 }
