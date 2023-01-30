@@ -669,7 +669,7 @@ class SaleBillDetailsService
         }
     }
 
-    def getPaymentPendingBills(long entityId, String financialYear, Long[] customerId)
+    def getPaymentPendingBills(long entityId, String financialYear, ArrayList<Long> customerId)
     {
         try
         {

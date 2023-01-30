@@ -2104,10 +2104,11 @@ contains both deliveryChallan and products
     }
 
 
-    def getSaleBillDetailsByPendingPayment(String financialYear, String entityId) {
+    def getSaleBillDetailsByPendingPayment(String financialYear, String entityId, JSONArray customerIds) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("financialYear", financialYear)
         jsonObject.put("entityId", entityId)
+        jsonObject.put("customerIds", customerIds)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
