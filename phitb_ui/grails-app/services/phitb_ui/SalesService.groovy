@@ -2104,20 +2104,17 @@ contains both deliveryChallan and products
     }
 
 
-    def getSaleBillDetailsByPendingPayment(String financialYear, String entityId, JSONArray customerIds) {
-        JSONObject jsonObject = new JSONObject()
-        jsonObject.put("financialYear", financialYear)
-        jsonObject.put("entityId", entityId)
-        jsonObject.put("customerIds", customerIds)
+    def getSaleBillDetailsByPendingPayment(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_PENDING_PAYMENT)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+                    .get()
             if (apiResponse.status == 200) {
-                return new JSONArray(apiResponse.readEntity(String.class))
+                return new JSONObject(apiResponse.readEntity(String.class))
             } else {
                 return null
             }

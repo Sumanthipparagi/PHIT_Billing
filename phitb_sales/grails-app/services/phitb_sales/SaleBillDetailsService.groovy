@@ -669,11 +669,62 @@ class SaleBillDetailsService
         }
     }
 
-    def getPaymentPendingBills(long entityId, String financialYear, ArrayList<Long> customerId)
+    def getPaymentPendingBills(JSONObject paramsJsonObject, String start, String length)
     {
         try
         {
-            return SaleBillDetails.findAllByEntityIdAndBillStatusAndBalanceGreaterThanAndFinancialYearAndCustomerIdInList(entityId, "ACTIVE", 0, financialYear, customerId)
+            String financialYear = paramsJsonObject.get("financialYear")
+            long entityId = Long.parseLong(paramsJsonObject.get("entityId").toString())
+            String cIds = paramsJsonObject.get("customerIds")
+            ArrayList<String> customerIdsStrings = cIds.split(",")
+            ArrayList<Long> customerIds = new ArrayList<>()
+            for (String str : customerIdsStrings) {
+                customerIds.add(Long.parseLong(str))
+            }
+
+            String searchTerm = paramsJsonObject.get("search[value]")
+            String orderColumnId = paramsJsonObject.get("order[0][column]")
+            String orderDir = paramsJsonObject.get("order[0][dir]")
+            double minBalance = 0
+
+            String orderColumn = "id"
+            switch (orderColumnId)
+            {
+                case '0':
+                    orderColumn = "id"
+                    break;
+                case '1':
+                    orderColumn = "financialYear"
+                    break;
+            }
+            Integer offset = start ? Integer.parseInt(start.toString()) : 0
+            Integer max = length ? Integer.parseInt(length.toString()) : 100
+            def saleBillDetailsCriteria = SaleBillDetails.createCriteria()
+            def saleBillDetailsArrayList = saleBillDetailsCriteria.list(max: max, offset: offset) {
+                or {
+                    if (searchTerm != "")
+                    {
+                        ilike('financialYear', '%' + searchTerm + '%')
+                        ilike('invoiceNumber', '%' + searchTerm + '%')
+                    }
+                }
+                eq('billStatus', "ACTIVE")
+                ge('balance', minBalance)
+                eq('financialYear', financialYear)
+                'in'('customerId', customerIds)
+                eq("entityId", entityId)
+                eq('deleted', false)
+                order(orderColumn, orderDir)
+            }
+            def recordsTotal = saleBillDetailsArrayList.totalCount
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("draw", paramsJsonObject.draw)
+            jsonObject.put("recordsTotal", recordsTotal)
+            jsonObject.put("recordsFiltered", recordsTotal)
+            jsonObject.put("data", saleBillDetailsArrayList)
+            return jsonObject
+
+            //return SaleBillDetails.findAllByEntityIdAndBillStatusAndBalanceGreaterThanAndFinancialYearAndCustomerIdInList(entityId, "ACTIVE", 0, financialYear, customerId)
         }
         catch (Exception ex)
         {

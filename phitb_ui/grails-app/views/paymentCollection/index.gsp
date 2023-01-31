@@ -75,9 +75,9 @@
                     <div class="body">
                         <div class="table-responsive">
                             <table id="paymentCollectionTable"
-                                   class="table table-bordered table-striped table-hover paymentCollectionTable dataTable js-exportable">
+                                   class="table paymentCollectionTable dataTable js-exportable">
                                 <thead>
-                                <tr><th></th></tr>
+                                <tr><th>Invoices</th></tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -90,6 +90,31 @@
 
     </div>
 </section>
+
+<div class="modal fade detailsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span></button>
+
+            </button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+
+            <div class="modal-body">
+                <p class="myModalText">Are you sure?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="dt"
+                        onclick="deleteData();">Yes</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
@@ -112,10 +137,13 @@
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    loadSaleInvoiceTable();
-    function loadSaleInvoiceTable() {
-        var invoiceStatus = $("#invoiceStatus").val();
-        saleInvoiceTable = $(".saleInvoiceTable").DataTable({
+
+    $(document).ready(function() {
+        paymentCollectionTable();
+    });
+
+    function paymentCollectionTable() {
+        var paymentCollectionTable = $(".paymentCollectionTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -128,12 +156,12 @@
             info: true,
             processing: true,
             serverSide: true,
-            //dom: 'lBfrtip',
-            dom: '<"top"<"dt-left-col"l><"dt-center-col"B><"dt-right-col"f>>rt<"bottom"ip><"clear">',
+          //  dom: 'lfrtip',
+           // dom: '<"top"<"dt-left-col"l><"dt-center-col"B><"dt-right-col"f>>rt<"bottom"ip><"clear">',
             oLanguage: {
                 sLengthMenu: "_MENU_",
             },
-            buttons: [
+            /*buttons: [
                 {
                     extend: 'collection',
                     text: 'Export',
@@ -154,131 +182,68 @@
                     dropup: true,
                     className: 'dropdown-toggle btn-sm'
                 }
-            ],
+            ],*/
             language: {
-                searchPlaceholder: "Search Sale Bill"
+                searchPlaceholder: "Search Invoice"
             },
             ajax: {
                 type: 'GET',
-                url: '/sale-bill/datatable',
-                data: {
+                url: '/payment-collection/get-invoices',
+               /* data: {
                     invoiceStatus: invoiceStatus
-                },
+                },*/
                 dataType: 'json',
-
                 dataSrc: function (json) {
-                    console.log(json)
-                    var return_data = [];
+                   var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        var approveInvoice = "";
-                        var cancelInvoice = "";
-                        var editInvoice = "";
-                        var cloneInvoice="";
-                        var irn="";
-                        if (json.data[i].billStatus !== "CANCELLED") {
-                            cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#" style="color: red;"><i class="fa fa-times"></i> Cancel</a>';
-                        } else if (json.data[i].billStatus !== "DRAFT") {
-                            approveInvoice = '';
+                        var badgeContainer = ""
+                        if(json.data.balance === 0)
+                        {
+                            badgeContainer += "<div class=\"badge badge-success ml-2\">PAID</div>"
+                        }
+                        else if(json.data.balance === json.data.invoiceTotal)
+                        {
+                            badgeContainer += "<div class=\"badge badge-danger ml-2\">UNPAID</div>"
+                        }
+                        else
+                        {
+                            badgeContainer += "<div class=\"badge badge-warning ml-2\">PARTIALLY PAID</div>"
                         }
 
-                        if (json.data[i].billStatus!== "DRAFT" && json.data[i].invoiceNumber!==undefined) {
-                            cloneInvoice =
-                                '<a class="dropdown-item" title="Clone"  href="/sale-entry/clone-invoice?saleBillId='
-                                + json.data[i].id + '&type=CLONE" target="_blank"><i class="fa fa-clone"></i> Clone</a>';
-                        }else{
-                            cloneInvoice=""
-                        }
-                        if(json.data[i].receiptLog.length > 0){
-                            cancelInvoice=""
-                        }
-
-
-                        if(json.data[i].irnDetails===undefined){
-
-                            if(json.data[i].billStatus!=="DRAFT" && json.data[i].billStatus!=="CANCELLED"){
-                                irn = '<a class="dropdown-item" title="IRN"  onclick="genrateIRN('+json.data[i].id+')" target="_blank"><i class="fa fa-print"></i> Genrate IRN</a>';
-                            }
-                        }else{
-                            irn='';
-                        }
-
-                        %{--                <g:if test="${session.getAttribute('domainType') == Constants.FURNITURE}">--}%
-                        %{--                        var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';--}%
-                        %{--                        </g:if>--}%
-                        %{--                        <g:else>--}%
-                        var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
-                        %{--                        </g:else>--}%
-                        var invoiceNumber = json.data[i].invoiceNumber;
-                        if (invoiceNumber === undefined) {
-                            if (json.data[i].billStatus === "CANCELLED")
-                                invoiceNumber = "CANCELLED DRAFT";
-                            else
-                                invoiceNumber = "DRAFT";
-                        }
-                        if (json.data[i].billStatus === "DRAFT") {
-                            editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
-                        }
-
-                        <g:if test="${entityConfigs?.REGEN_NEW_DOC?.saleEntry}">
-                        if (json.data[i].billStatus === "CANCELLED") {
-                            editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
-                        }
-                        </g:if>
-                        // if(json.data[i].balance !== json.data[i].totalAmount)
-                        // {
-                        //     cancelInvoice="";
-                        // }
-
-
-                        var actionBtn = "<div class=\"dropdown\">\n" +
-                            "  <button class=\"btn btn-primary btn-simple btn-sm dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
-                            " <i class='fa fa-bars'></i>" +
-                            "  </button>\n" +
-                            "  <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n" +
-                            approveInvoice +
-                            printbtn +
-                            editInvoice +
-                            cloneInvoice +
-                            cancelInvoice +
-                            irn +
-                            "  </div>\n" +
-                            "</div>"
-                        invoiceNumber = "<a href='#' onclick='listItemClicked(" + json.data[i].id + ")'>" + invoiceNumber + "</a>";
-                        var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
+                        var invoiceDetails = "<div class='card'><div class='body'><div class='row'><div class='col-lg-9 col-6'><span class='h5'>#"+json.data[i].invoiceNumber+"</span></div><div class='col-lg-3 col-6'><span class='h5 text-primary pull-right'>₹"+ Number(json.data[i].balance).toFixed(2) + "</span></div>";
+                        invoiceDetails += "<div class='col-lg-6 col-6'><p>Invoice Date: "+ dateFormat(json.data[i].orderDate) + "</p></div>";
+                        invoiceDetails += "<div class='col-lg-6 col-6'><p>Due Date: "+  dateFormat(json.data[i].dueDate)+ "</p></div>";
+                        invoiceDetails += "<div class='col-lg-6 col-6 d-flex align-items-center'><p class='badge'>Invoice Amount: ₹"+Number(json.data[i].invoiceTotal).toFixed(2) +"</p>"+badgeContainer+"</div><div class='col-lg-6 col-6'><p><button type='button' class='btn btn-sm btn-info pull-right viewbtn' onclick='viewBtnClick(this)' data-id='"+json.data[i].id+"'><i class='zmdi zmdi-file'></i> View</button></p></div></div></div>";
                         return_data.push({
-                            'action': actionBtn,
-                            'invNo': invoiceNumber,
-                            'customer': json.data[i]?.customer?.entityName,
-                            'gstAmt': json.data[i].totalGst.toFixed(2),
-                            'grossAmt': grossAmt,
-                            'date': moment(json.data[i].entryDate).format('DD-MM-YYYY  h:mm a'),
-                            'netAmt': json.data[i].invoiceTotal.toFixed(2),
-                            'city': json.data[i]?.customer?.city?.areaName + "<br><small>(" + json.data[i]?.customer?.city?.districtName + ")</small>",
-                            'bill_status': json.data[i].billStatus,
-                            'balance': json.data[i].balance.toFixed(2),
-                            'finYear': json.data[i].financialYear
-
+                            'col': invoiceDetails
                         });
                     }
                     return return_data;
                 }
             },
             columns: [
-                {'data': 'action'},
-                {'data': 'invNo'},
-                {'data': 'customer', 'width': '10%'},
-                {'data': 'date'},
-                {'data': 'gstAmt'},
-                {'data': 'grossAmt'},
-                {'data': 'netAmt'},
-                {'data': 'city'},
-                {'data': 'bill_status'},
-                {'data': 'balance'},
-                {'data': 'finYear'}
+                {'data': 'col'}
             ]
         });
 
-        saleInvoiceTable.buttons().container().appendTo('#saleInvoiceTable_wrapper .col-md-6:eq(0)');
+        //paymentCollectionTable.buttons().container().appendTo('#saleInvoiceTable_wrapper .col-md-6:eq(0)');
+    }
+
+    function dateFormat(dt, time = false)
+    {
+        dt = dt.replace("T", " ").replace("Z", '');
+        var date = new Date(dt);
+        if(time)
+            return moment(date).format('DD/MM/YYYY hh:mm:ss a');
+        else
+            return moment(date).format('DD/MM/YYYY');
+    }
+
+    function viewBtnClick(btn)
+    {
+        alert($(btn).data('id'));
+
+        $(".detailsModal").toggle();
     }
 </script>
 </body>

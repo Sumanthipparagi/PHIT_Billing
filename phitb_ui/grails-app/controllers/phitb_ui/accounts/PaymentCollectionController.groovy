@@ -1,6 +1,7 @@
 package phitb_ui.accounts
 
 import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
 import phitb_ui.SalesService
 
@@ -18,11 +19,17 @@ class PaymentCollectionController {
         String financialYear = session.getAttribute("financialYear").toString()
         JSONArray entities = new EntityService().getEntityByUserRoute(userId)
         if(entities?.size() >0) {
-            JSONArray customerIds = new JSONArray()
+            String customerIds = ""
             for (Object entity : entities) {
-                customerIds.put(entity.id)
+                customerIds += entity.id +","
             }
-            JSONArray saleInvoices = new SalesService().getSaleBillDetailsByPendingPayment(financialYear, entityId, customerIds)
+
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", entityId)
+            jsonObject.put("financialYear", financialYear)
+            jsonObject.put("customerIds", customerIds.toString())
+
+            JSONObject saleInvoices = new SalesService().getSaleBillDetailsByPendingPayment(jsonObject)
             respond saleInvoices, formats: ['json']
         }
         else

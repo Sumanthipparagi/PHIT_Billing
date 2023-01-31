@@ -14,7 +14,7 @@ class SaleBillDetailsController {
 
     static allowedMethods = [index    : "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE",
                              dataTable: "GET", updateIRNDetails: "PUT", saveInvoice: "POST", updateInvoice: "PUT",
-                             getByDateRangeAndEntity: "POST", getByPendingIrnAndEntity: "POST", getPaymentPendingBills: "POST"]
+                             getByDateRangeAndEntity: "POST", getByPendingIrnAndEntity: "POST", getPaymentPendingBills: "GET"]
     SaleBillDetailsService saleBillDetailsService
     SaleProductDetailsService saleProductDetailsService
     /**
@@ -772,12 +772,12 @@ class SaleBillDetailsController {
     def getPaymentPendingBills()
     {
         try {
-            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            String financialYear = jsonObject.get("financialYear")
-            String entityId = jsonObject.get("entityId")
-            ArrayList customerIds = jsonObject.get("customerIds") as ArrayList
-            if (financialYear && entityId) {
-                JSONArray saleBillDetails = saleBillDetailsService.getPaymentPendingBills(Long.parseLong(entityId), financialYear, customerIds)
+            GrailsParameterMap parameterMap = getParams()
+            JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
+            if (parameterMap) {
+                JSONObject saleBillDetails = saleBillDetailsService.getPaymentPendingBills(paramsJsonObject, start, length)
                 respond saleBillDetails, formats: ['json']
             }
             else {

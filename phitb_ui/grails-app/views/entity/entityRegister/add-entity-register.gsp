@@ -692,7 +692,7 @@
                                                         id="entityRoute">
                                                     <option selected disabled>--SELECT--</option>
                                                     <g:each var="route" in="${routeregister}">
-                                                        <option value="${route.id}">${route.routeName}</option>
+                                                        <option value="${route?.id}">${route?.routeName}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -1403,8 +1403,8 @@
                                                 <select class="form-control show-tick entityRoute routeselect" name="entityRoute"
                                                         id="entityRoute">
                                                     <g:each var="route" in="${routeregister}">
-                                                        <option value="${route.id}"
-                                                                <g:if test="${route.id == entity.entityRoute.id}">selected</g:if>>${route.routeName}</option>
+                                                        <option value="${route?.id}"
+                                                                <g:if test="${route?.id == entity?.entityRoute?.id}">selected</g:if>>${route?.routeName}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
