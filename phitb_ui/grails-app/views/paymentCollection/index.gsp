@@ -92,19 +92,158 @@
 </section>
 
 <div class="modal fade detailsModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">&times;</span></button>
-
-            </button>
-                <h4 class="modal-title" id="myModalLabel"></h4>
+                <h4 class="modal-title" id="myModalLabel">Pay Amount</h4>
+                <hr>
             </div>
 
             <div class="modal-body">
-                <p class="myModalText">Are you sure?</p>
+                <div class="row">
+                    <div class="col-6">
+                        <p><strong>Invoice Number: </strong></p>
+                    </div>
+                    <div class="col-6">
+                        <p><span id="invoiceNumber"></span></p>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p><strong>Invoice Amount</strong></p>
+                    </div>
+                    <div class="col-6">
+                        <p><span id="invoiceTotal"></span></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p><strong>Outstanding Amount</strong></p>
+                    </div>
+                    <div class="col-6">
+                        <p><span id="balance" class="text-primary"></span></p>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="amount">Amount: <span style="color: red" class="required-indicator">*</span></label>
+                            <input class="form-control" %{--onblur="amoutFormat(this)" onkeyup="setTwoNumberDecimal(this)"--}% pattern="^\d*(\.\d{0,2})?$" type="number" step="0.01" min="0"
+                                   value="0.00" id="amount" name="amount" required/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="paymentMode">Payment Mode: <span style="color: red"
+                                                                         class="required-indicator">*</span></label>
+                            <select onchange="paymentModeChange()" class="form-control" id="paymentMode" name="paymentMode"
+                                    required>
+                                <g:each in="${paymentModes}" var="pm">
+                                    <option value="${pm.id}">${pm.name}</option>
+                                </g:each>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6" id="paymentMethodContainer">
+                        <div class="form-group">
+                            <label for="paymentMethod">Payment Method: <span style="color: red"
+                                                                             class="required-indicator">*</span></label>
+                            <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                                <g:each in="${accountMode}" var="am">
+                                    <option value="${am.id}">${am.mode}</option>
+                                </g:each>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" id="depositToContainer">
+                        <div class="form-group">
+                            <label for="depositTo">Deposit To: <span style="color: red" class="required-indicator">*</span>
+                            </label>
+                            <select class="form-control" id="depositTo" name="depositTo" required>
+                                <g:each in="${accountRegister}" var="ar">
+                                    <option value="${ar.id}">${ar.accountName}</option>
+                                </g:each>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="payeeBankerContainer">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="payeeBanker">Payee Banker: <span style="color: red"
+                                                                         class="required-indicator">*</span></label>
+                            <select class="form-control" id="payeeBanker" name="payeeBanker" required>
+                                <g:each in="${bank}" var="bk">
+                                    <option value="${bk.id}">${bk.bankName}</option>
+                                </g:each>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row hidden" id="cardNumberContainer">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number:</label>
+                            <input class="form-control" type="number" id="cardNumber" name="cardNumber"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6" id="paymentDateContainer">
+                        <div class="form-group">
+                            <label for="paymentDate">Payment Date: <span style="color: red"
+                                                                         class="required-indicator">*</span></label>
+                            <input class="form-control date" type="date" id="paymentDate" name="paymentDate" required/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" id="instrumentIdContainer">
+                            <label for="instrumentId">Instrument ID:</label>
+                            <input class="form-control" type="text" id="instrumentId" name="instrumentId"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="remarks">Remarks: <small style="font-size: 10px;"><span
+                                    id="remarksCharacters">0</span>/100</small></label>
+                            <textarea rows="2" class="form-control" id="remarks" name="remarks" maxlength="100"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 clearfix">
+                        <div class="pull-right">
+                            <table class="table">
+                                <thead></thead>
+                                <tbody>
+                                <tr><td>Total Due</td><td class="totalDue" id="totalDueOfSelected"
+                                                          style="text-align: left; color: red"></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="modal-footer">
@@ -140,6 +279,21 @@
 
     $(document).ready(function() {
         paymentCollectionTable();
+
+        $('#remarks').on("input", function(){
+            var maxlength = $(this).attr("maxlength");
+            var currentLength = $(this).val().length;
+
+            if( currentLength >= maxlength ){
+                $("#remarksCharacters").addClass("danger");
+                console.log("You have reached the maximum number of characters.");
+            }else{
+                console.log(maxlength - currentLength + " chars left");
+                $("#remarksCharacters").removeClass("danger");
+            }
+            $("#remarksCharacters").text(currentLength);
+            $('#paymentDate').val(new Date().toDateInputValue());
+        });
     });
 
     function paymentCollectionTable() {
@@ -197,11 +351,11 @@
                    var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var badgeContainer = ""
-                        if(json.data.balance === 0)
+                        if(json.data[i].balance === 0)
                         {
                             badgeContainer += "<div class=\"badge badge-success ml-2\">PAID</div>"
                         }
-                        else if(json.data.balance === json.data.invoiceTotal)
+                        else if(json.data[i].balance === json.data[i].invoiceTotal)
                         {
                             badgeContainer += "<div class=\"badge badge-danger ml-2\">UNPAID</div>"
                         }
@@ -213,7 +367,7 @@
                         var invoiceDetails = "<div class='card'><div class='body'><div class='row'><div class='col-lg-9 col-6'><span class='h5'>#"+json.data[i].invoiceNumber+"</span></div><div class='col-lg-3 col-6'><span class='h5 text-primary pull-right'>₹"+ Number(json.data[i].balance).toFixed(2) + "</span></div>";
                         invoiceDetails += "<div class='col-lg-6 col-6'><p>Invoice Date: "+ dateFormat(json.data[i].orderDate) + "</p></div>";
                         invoiceDetails += "<div class='col-lg-6 col-6'><p>Due Date: "+  dateFormat(json.data[i].dueDate)+ "</p></div>";
-                        invoiceDetails += "<div class='col-lg-6 col-6 d-flex align-items-center'><p class='badge'>Invoice Amount: ₹"+Number(json.data[i].invoiceTotal).toFixed(2) +"</p>"+badgeContainer+"</div><div class='col-lg-6 col-6'><p><button type='button' class='btn btn-sm btn-info pull-right viewbtn' onclick='viewBtnClick(this)' data-id='"+json.data[i].id+"'><i class='zmdi zmdi-file'></i> View</button></p></div></div></div>";
+                        invoiceDetails += "<div class='col-lg-6 col-6 d-flex align-items-center'><p class='badge'>Invoice Amount: ₹"+Number(json.data[i].invoiceTotal).toFixed(2) +"</p>"+badgeContainer+"</div><div class='col-lg-6 col-6'><p><button type='button' class='btn btn-sm btn-info pull-right viewbtn' onclick='viewBtnClick(this)' data-id='"+json.data[i].id+"'  data-invoicenumber='"+json.data[i].invoiceNumber+"'  data-invoicetotal='"+json.data[i].invoiceTotal+"'  data-balance='"+json.data[i].balance+"'><i class='zmdi zmdi-file'></i> View</button></p></div></div></div>";
                         return_data.push({
                             'col': invoiceDetails
                         });
@@ -241,10 +395,165 @@
 
     function viewBtnClick(btn)
     {
-        alert($(btn).data('id'));
-
-        $(".detailsModal").toggle();
+        var id = $(btn).data('id');
+        var invoiceNumber = $(btn).data('invoicenumber');
+        var invoiceTotal = $(btn).data('invoicetotal');
+        var balance = $(btn).data('balance');
+        $("#invoiceNumber").text(invoiceNumber);
+        $("#invoiceTotal").text("₹" +invoiceTotal);
+        $("#balance").text("₹" +balance);
+        $(".detailsModal").modal('toggle');
     }
+
+    function paymentModeChange() {
+        var paymentMode = $("#paymentMode :selected").text();
+        if(paymentMode === "CARD")
+        {
+            $("#cardNumberContainer").removeClass("hidden");
+            $("#instrumentIdContainer").addClass("hidden");
+            $("#payeeBankerContainer").addClass("hidden");
+            $("#depositToContainer").removeClass("hidden");
+            $("#paymentMethodContainer").removeClass("hidden");
+
+            $("#paymentDateContainer").removeClass("col-md-6");
+            $("#paymentDateContainer").addClass("col-md-12");
+        }
+        else if(paymentMode === "BANK")
+        {
+            $("#cardNumberContainer").addClass("hidden");
+            $("#instrumentIdContainer").removeClass("hidden");
+            $("#payeeBankerContainer").removeClass("hidden");
+            $("#depositToContainer").removeClass("hidden");
+            $("#paymentMethodContainer").removeClass("hidden");
+
+            $("#paymentDateContainer").removeClass("col-md-12");
+            $("#paymentDateContainer").addClass("col-md-6");
+        }
+        else
+        {
+            //cash
+            $("#cardNumberContainer").addClass("hidden");
+            $("#instrumentIdContainer").addClass("hidden");
+            $("#payeeBankerContainer").addClass("hidden");
+            $("#depositToContainer").addClass("hidden");
+            $("#paymentMethodContainer").addClass("hidden");
+
+            $("#paymentDateContainer").removeClass("col-md-6");
+            $("#paymentDateContainer").addClass("col-md-12");
+
+        }
+    }
+
+    function recordPayment() {
+        var totalDueOfSelected = parseFloat2Decimal($("#totalDueOfSelected").text());
+        if(totalDueOfSelected === 0)
+        {
+            Swal.fire({
+                title: "Invoice settled already!",
+                text: "There is no due for this invoice",
+                showDenyButton: false,
+                showCancelButton: false,
+                showCloseButton: true,
+                showConfirmButton: true
+            });
+            return
+        }
+        var spinner = "<div class=\"col-md-12\">\n" +
+            "                    <div class=\"text-center\">\n" +
+            "                        <div class=\"spinner-border\" role=\"status\">\n" +
+            "                            <span class=\"sr-only\">We are recording payment information please wait!</span>\n" +
+            "                        </div>\n" +
+            "<p>We are recording payment information please wait!</p>\n" +
+            "                    </div>\n" +
+            "                </div>";
+
+        var processingSwal = Swal.fire({
+            title: "Recording Payment..",
+            html: spinner,
+            showDenyButton: false,
+            showCancelButton: false,
+            showCloseButton: false,
+            showConfirmButton: false
+        });
+        var amount = parseFloat2Decimal($("#amount").val());
+        var paymentMode = $("#paymentMode").val();
+        var paymentMethod = $("#paymentMethod").val();
+        var depositTo = $("#depositTo").val();
+        var payeeBanker = $("#payeeBanker").val();
+        var cardNumber = $("#cardNumber").val();
+        var paymentDate = $("#paymentDate").val();
+        var instrumentId = $("#instrumentId").val();
+        var remarks = $("#remarks").val();
+        var saleBillId = $(".saleBillId").val();
+        var saleReturnIds = $("#saleReturnIds").val();
+        var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
+
+        if(paymentDate == null || paymentDate === "")
+        {
+            processingSwal.close();
+
+            Swal.fire({
+                title: "Error",
+                html: "Please select payment date",
+                icon: 'error'
+            });
+            return;
+        }
+
+        if((amount + creditsApplied) >totalDueOfSelected)
+        {
+            processingSwal.close();
+            Swal.fire({
+                title: "Error",
+                html: "Payment amount should be less than Due Amount",
+                icon: 'error'
+            });
+            return;
+        }
+
+
+        $.ajax({
+            url: "/sale-bill/record-payment",
+            method: "POST",
+            data:{
+                amount: amount,
+                paymentMode: paymentMode,
+                paymentMethod: paymentMethod,
+                depositTo: depositTo,
+                payeeBanker: payeeBanker,
+                cardNumber: cardNumber,
+                paymentDate: paymentDate,
+                instrumentId: instrumentId,
+                remarks: remarks,
+                saleBillId: saleBillId,
+                saleReturnIds: saleReturnIds,
+                creditsApplied: creditsApplied
+            },
+            success: function(saleBill)
+            {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Success!",
+                    html: "Payment recorded for this invoice",
+                    icon: 'success'
+                });
+                loadSaleInvoiceTable()
+                listItemClicked(saleBill.id);
+            },
+            error: function (data) {
+                processingSwal.close();
+                var text = "Please try later!";
+                if(data !== undefined)
+                    text = data.responseText;
+                Swal.fire({
+                    title: "Error!",
+                    html: text,
+                    icon: 'error'
+                });
+            }
+        })
+    }
+
 </script>
 </body>
 </html>

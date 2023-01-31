@@ -2,15 +2,35 @@ package phitb_ui.accounts
 
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.AccountsService
 import phitb_ui.EntityService
 import phitb_ui.SalesService
+import phitb_ui.SystemService
 
 /**
  * This controller is for Payment Collection purposes by executive
  */
 class PaymentCollectionController {
 
-    def index() { }
+    def index() {
+        String entityId = session.getAttribute("entityId").toString()
+        ArrayList<JSONObject> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
+        ArrayList<JSONObject> paymentModes = new ArrayList<>()
+        def apiResponse = new SystemService().getPaymentModes()
+        if (apiResponse.status == 200) {
+            paymentModes = new JSONArray(apiResponse.readEntity(String.class))
+            paymentModes = paymentModes.reverse()
+        }
+
+        ArrayList<JSONObject> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
+        ArrayList<JSONObject> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
+
+        render(view: 'index', model: [bank           : bank,
+                                                                accountMode    : accountMode,
+                                                                paymentModes   : paymentModes,
+                                                                accountRegister: accountRegister
+        ])
+    }
 
     def getPendingSaleInvoices()
     {
