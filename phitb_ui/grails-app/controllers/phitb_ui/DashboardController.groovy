@@ -240,7 +240,7 @@ class DashboardController
         JSONObject jsonObject = new JSONObject()
         Calendar cal = Calendar.getInstance()
         cal.setTime(new Date())
-        cal.set(Calendar.HOUR_OF_DAY, 11)
+        cal.set(Calendar.HOUR_OF_DAY, 23)
         cal.set(Calendar.MINUTE, 59)
         cal.set(Calendar.SECOND, 59)
         String toDate = sdf.format(cal.getTime())
@@ -398,22 +398,23 @@ class DashboardController
     {
 
         //show last 12 months stats
-        int months = 11
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         //current month stats
-
         Calendar cal = Calendar.getInstance()
+        cal.set(Calendar.MONTH, -11)
         JSONArray monthlySales = new JSONArray()
-        for (int i=0; i<=months;i++) {
+        for (int i=0; i<=12;i++) {
             JSONObject jsonObject = new JSONObject()
-            cal.setTime(new Date())
+            println("CL Month: "+ cal.get(Calendar.MONTH))
+            println("i: "+ i)
             cal.set(Calendar.MINUTE, 59)
             cal.set(Calendar.SECOND, 59)
-            cal.set(Calendar.HOUR_OF_DAY, 11)
-            if(i > 0)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            if(i != 0)
             {
-                cal.set(Calendar.MONTH, -i)
+                cal.set(Calendar.MONTH, i)
             }
+            println("CL New Month: "+ cal.get(Calendar.MONTH))
             cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
             String toDate = sdf.format(cal.getTime())
             String monthName =  new SimpleDateFormat("YYYY-MM").format(cal.getTime())
