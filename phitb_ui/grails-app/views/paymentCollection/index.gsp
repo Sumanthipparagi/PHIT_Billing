@@ -248,7 +248,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="dt"
-                        onclick="deleteData();">Yes</button>
+                        onclick="recordPayment();">Yes</button>
             </div>
 
         </div>
@@ -366,8 +366,8 @@
 
                         var invoiceDetails = "<div class='card'><div class='body'><div class='row'><div class='col-lg-9 col-6'><span class='h5'>#"+json.data[i].invoiceNumber+"</span></div><div class='col-lg-3 col-6'><span class='h5 text-primary pull-right'>₹"+ Number(json.data[i].balance).toFixed(2) + "</span></div>";
                         invoiceDetails += "<div class='col-lg-6 col-6'><p>Invoice Date: "+ dateFormat(json.data[i].orderDate) + "</p></div>";
-                        invoiceDetails += "<div class='col-lg-6 col-6'><p>Due Date: "+  dateFormat(json.data[i].dueDate)+ "</p></div>";
-                        invoiceDetails += "<div class='col-lg-6 col-6 d-flex align-items-center'><p class='badge'>Invoice Amount: ₹"+Number(json.data[i].invoiceTotal).toFixed(2) +"</p>"+badgeContainer+"</div><div class='col-lg-6 col-6'><p><button type='button' class='btn btn-sm btn-info pull-right viewbtn' onclick='viewBtnClick(this)' data-id='"+json.data[i].id+"'  data-invoicenumber='"+json.data[i].invoiceNumber+"'  data-invoicetotal='"+json.data[i].invoiceTotal+"'  data-balance='"+json.data[i].balance+"'><i class='zmdi zmdi-file'></i> View</button></p></div></div></div>";
+                        invoiceDetails += "<div class='col-lg-6 col-6'><p class='pull-right'>Due Date: "+  dateFormat(json.data[i].dueDate)+ "</p></div>";
+                        invoiceDetails += "<div class='col-lg-12 col-12 d-flex align-items-center'><p class='badge'>Invoice Amount: ₹"+Number(json.data[i].invoiceTotal).toFixed(2) +"</p>"+badgeContainer+"</div><div class='col-lg-12 col-12'><p><button type='button' style='width: 100%;' class='btn btn-sm btn-info btn-round viewbtn' onclick='viewBtnClick(this)' data-id='"+json.data[i].id+"'  data-invoicenumber='"+json.data[i].invoiceNumber+"'  data-invoicetotal='"+json.data[i].invoiceTotal+"'  data-balance='"+json.data[i].balance+"'><i class='zmdi zmdi-file'></i> View</button></p></div></div></div>";
                         return_data.push({
                             'col': invoiceDetails
                         });

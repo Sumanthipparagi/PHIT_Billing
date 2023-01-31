@@ -709,7 +709,7 @@ class SaleBillDetailsService
                     }
                 }
                 eq('billStatus', "ACTIVE")
-                ge('balance', minBalance)
+                gt('balance', minBalance)
                 eq('financialYear', financialYear)
                 'in'('customerId', customerIds)
                 eq("entityId", entityId)
