@@ -891,9 +891,9 @@
     });
 
 </script>
-%{--<g:include view="controls/footer-content.gsp"/>--}%
+<g:include view="controls/footer-content.gsp"/>
 <script>
-    // selectSideMenu("accounts-menu");
+     selectSideMenu("accounts-menu");
 </script>
 </body>
 </html>

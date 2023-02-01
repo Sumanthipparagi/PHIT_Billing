@@ -405,8 +405,6 @@ class DashboardController
         JSONArray monthlySales = new JSONArray()
         for (int i=0; i<=12;i++) {
             JSONObject jsonObject = new JSONObject()
-            println("CL Month: "+ cal.get(Calendar.MONTH))
-            println("i: "+ i)
             cal.set(Calendar.MINUTE, 59)
             cal.set(Calendar.SECOND, 59)
             cal.set(Calendar.HOUR_OF_DAY, 23)
@@ -414,7 +412,6 @@ class DashboardController
             {
                 cal.set(Calendar.MONTH, i)
             }
-            println("CL New Month: "+ cal.get(Calendar.MONTH))
             cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
             String toDate = sdf.format(cal.getTime())
             String monthName =  new SimpleDateFormat("YYYY-MM").format(cal.getTime())
