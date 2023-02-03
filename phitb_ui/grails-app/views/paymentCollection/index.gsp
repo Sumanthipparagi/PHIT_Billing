@@ -229,7 +229,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+              %{--  <div class="row">
                     <div class="col-md-12 clearfix">
                         <div class="pull-right">
                             <table class="table">
@@ -242,7 +242,7 @@
                         </div>
                     </div>
                 </div>
-
+--}%
 
             </div>
 
@@ -552,6 +552,15 @@
                 });
             }
         })
+    }
+
+    function parseFloat2Decimal(num)
+    {
+        if(!isNaN(num)) {
+            num = Number(num);
+            num = Math.round(num * 1e2) / 1e2;
+            return num;
+        }
     }
 
 </script>
