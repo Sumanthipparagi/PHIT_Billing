@@ -71,6 +71,8 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     String drConsultation
     String gender
 
+    EntityRouteRegister entityRoute
+
     Date dateCreated
     Date lastUpdated
 
@@ -90,6 +92,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
         salesman nullable:true
         hqAreaId nullable:true
         website nullable:true
+        entityRoute nullable: true
         age nullable: true
         drConsultation nullable: true
         gender nullable: true

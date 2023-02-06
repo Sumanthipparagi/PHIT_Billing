@@ -132,12 +132,25 @@ class UrlMappings
                         'delete']
             }
 
+            //Entity Route Register
+            "/entityroute(.$format)?"(controller: 'entityRouteRegister') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/entityroute/entity/$id(.$format)?"(controller: 'entityRouteRegister') {action = [GET: 'getByEntity']}
+            "/entityroute/datatable(.$format)?"(controller: 'entityRouteRegister') {action = [GET: 'dataTable']}
+            "/entityroute/$id(.$format)?"(controller: 'entityRouteRegister') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+
 
             //Entity register
             "/entityregister(.$format)?"(controller: 'entityRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
+
             "/entityregister/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'dataTable']}
             "/entityregister/parententity/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'parentEntitiesDatatable']}
             "/entityregister/$id(.$format)?"(controller: 'entityRegister') {
@@ -151,7 +164,7 @@ class UrlMappings
             }
             "/entityregister/getbyentity/$id"(controller: 'entityRegister',  action: 'getByParentEntity')
             "/entityregister/getparententities"(controller: 'entityRegister',  action: 'getParentEntities')
-
+            "/entityregister/getbyuserroute/$id(.$format)?"(controller: 'entityRegister', action: 'getEntitiesByUserRoute')
 
 
 

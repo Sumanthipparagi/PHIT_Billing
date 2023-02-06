@@ -287,6 +287,9 @@ class EntityRegisterService {
         entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
 
+        if(jsonObject.has("entityRoute"))
+            entityRegister.entityRoute = EntityRouteRegister.findById(Long.parseLong(jsonObject.get("entityRoute").toString()))
+
         entityRegister.save(flush: true)
         if (!entityRegister.hasErrors())
         {
@@ -414,6 +417,10 @@ class EntityRegisterService {
             entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
             entityRegister.parentEntityType = Long.parseLong(jsonObject.get("parentEntityType").toString())
+
+            if(jsonObject.has("entityRoute"))
+                entityRegister.entityRoute = EntityRouteRegister.findById(Long.parseLong(jsonObject.get("entityRoute").toString()))
+
             entityRegister.save(flush: true)
             if (!entityRegister.hasErrors())
             {
@@ -494,6 +501,21 @@ class EntityRegisterService {
     }
 
 
+    /**
+     * This returns the entity list which can be accessible by the user
+     */
+    def getEntitiesByUserRoute(UserRegister user)
+    {
+        ArrayList<EntityRouteRegister> entityRouteRegisters = user.entityRoute
+        if(entityRouteRegisters?.size() > 0) {
+            ArrayList<EntityRegister> entityRegisters = EntityRegister.findAllByEntityRouteInList(entityRouteRegisters)
+            return entityRegisters
+        }
+        else
+        {
+            return null
+        }
+    }
     def registerPatientDetails(JSONObject jsonObject){
         EntityRegister entityRegister2 = EntityRegister.findByPhoneNumberAndParentEntity(jsonObject.get('phoneNumber')
                 .toString(),Long.parseLong(jsonObject.get('entityId').toString()))

@@ -20,6 +20,7 @@ class ProductReportController {
     ReportsService reportsService
     static SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
     static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+    static SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy/MM/dd")
 
     def productStatement() {
         render(view: '/reports/productReport/productStatement')
@@ -373,16 +374,17 @@ class ProductReportController {
                             long openingStockQty = 0
                             long openingQty = 0
                             long openingFreeQty = 0
-                           /* JSONObject inventory = new InventoryService().getStocksOfProductAndBatch(productId, batch.batchNumber, entityId)
+                            JSONObject inventory = new InventoryService().getStocksOfProductAndBatch(productId, batch.batchNumber, entityId)
                             if(inventory)
                             {
                                 openingStockQty = inventory.get("openingStockQty")
+                                openingQty = openingStockQty
                             }
                             else
                             {
                                 response.status = 400
                                 return
-                            }*/
+                            }
 
                             for (Object pb : openingPurchaseBills) {
                                 if (pb.billStatus == "ACTIVE") {
@@ -519,7 +521,7 @@ class ProductReportController {
                                             jsonObject.put("docId", pb.id)
                                             jsonObject.put("docNo", pb.invoiceNumber)
                                             jsonObject.put("docDate", convertDate(pb.billingDate))
-                                            jsonObject.put("expDate", prd.expiryDate)
+                                            jsonObject.put("expDate", convertDate(prd.expiryDate, true))
                                             jsonObject.put("productId", prd.productId)
                                             jsonObject.put("docType", "Purchase Invoice")
                                             JSONObject entity = new EntityService().getEntityById(pb.supplierId.toString())
@@ -542,7 +544,7 @@ class ProductReportController {
                                             jsonObject.put("docId", sr.id)
                                             jsonObject.put("docNo", sr.invoiceNumber)
                                             jsonObject.put("docDate", convertDate(sr.entryDate))
-                                            jsonObject.put("expDate", prd.expiryDate)
+                                            jsonObject.put("expDate", convertDate(prd.expiryDate,true))
                                             jsonObject.put("productId", prd.productId)
                                             jsonObject.put("docType", "Sale Return")
                                             JSONObject entity = new EntityService().getEntityById(sr.customerId.toString())
@@ -566,7 +568,7 @@ class ProductReportController {
                                             jsonObject.put("docId", sb.id)
                                             jsonObject.put("docNo", sb.invoiceNumber)
                                             jsonObject.put("docDate", convertDate(sb.orderDate))
-                                            jsonObject.put("expDate", prd.expiryDate)
+                                            jsonObject.put("expDate", convertDate(prd.expiryDate, true))
                                             jsonObject.put("productId", prd.productId)
                                             jsonObject.put("docType", "Sale Invoice")
                                             JSONObject entity = new EntityService().getEntityById(sb.customerId.toString())
@@ -589,7 +591,7 @@ class ProductReportController {
                                             jsonObject.put("docId", so.id)
                                             jsonObject.put("docNo", so.invoiceNumber)
                                             jsonObject.put("docDate", convertDate(so.entryDate))
-                                            jsonObject.put("expDate", prd.expiryDate)
+                                            jsonObject.put("expDate", convertDate(prd.expiryDate,true))
                                             jsonObject.put("productId", prd.productId)
                                             jsonObject.put("docType", "Sale Order")
                                             JSONObject entity = new EntityService().getEntityById(so.customerId.toString())
@@ -612,7 +614,7 @@ class ProductReportController {
                                             jsonObject.put("docId", pr.id)
                                             jsonObject.put("docNo", pr.invoiceNumber)
                                             jsonObject.put("docDate", convertDate(pr.entryDate))
-                                            jsonObject.put("expDate", prd.expiryDate)
+                                            jsonObject.put("expDate", convertDate(prd.expiryDate,true))
                                             jsonObject.put("productId", prd.productId)
                                             jsonObject.put("docType", "Purchase Return")
                                             JSONObject entity = new EntityService().getEntityById(pr.supplierId.toString())
@@ -635,7 +637,7 @@ class ProductReportController {
                                             jsonObject.put("docId", gtn.id)
                                             jsonObject.put("docNo", gtn.invoiceNumber)
                                             jsonObject.put("docDate", convertDate(gtn.orderDate))
-                                            jsonObject.put("expDate", prd.expiryDate)
+                                            jsonObject.put("expDate", convertDate(prd.expiryDate,true))
                                             jsonObject.put("productId", prd.productId)
                                             jsonObject.put("docType", "GTN")
                                             JSONObject entity = new EntityService().getEntityById(gtn.customerId.toString())
@@ -658,7 +660,7 @@ class ProductReportController {
                                             jsonObject.put("docId", sc.id)
                                             jsonObject.put("docNo", sc.invoiceNumber)
                                             jsonObject.put("docDate", convertDate(sc.orderDate))
-                                            jsonObject.put("expDate", prd.expiryDate)
+                                            jsonObject.put("expDate", convertDate(prd.expiryDate,true))
                                             jsonObject.put("productId", prd.productId)
                                             jsonObject.put("docType", "Sample Invoice")
                                             JSONObject user = new EntityService().getUser(sc.customerId.toString())
@@ -791,21 +793,33 @@ class ProductReportController {
         return new JSONArray(jsons);
     }
 
-    static convertDate(String date) {
+    static convertDate(String date, Boolean isExpiry = false) {
         try {
 
             if (date.contains("T")) {
                 date = date.replaceAll("T", " ")
                 date = date.replaceAll("Z", "")
-                return dateFormat2.parse(date).format("dd/MM/yyyy hh:mm:ss")
+                if(!isExpiry)
+                    return dateFormat2.parse(date).format("dd/MM/yyyy hh:mm:ss")
+                else
+                    return dateFormat2.parse(date).format("MMM-yyyy")
             }
             else if(date.contains("-"))
             {
                 date = date.replaceAll("-", "/")
-                return date
+                if(!isExpiry) {
+                    return date
+                }
+                else
+                {
+                    return dateFormat3.parse(date).format("MMM-yyyy")
+                }
             }
             else {
-                return dateFormat1.parse(date).format("dd/MM/yyyy hh:mm:ss")
+                if(!isExpiry)
+                    return dateFormat1.parse(date).format("dd/MM/yyyy hh:mm:ss")
+                else
+                    return dateFormat1.parse(date).format("MMM-yyyy")
             }
         }
         catch (Exception ex) {

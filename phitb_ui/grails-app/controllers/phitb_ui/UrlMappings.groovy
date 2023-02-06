@@ -16,6 +16,7 @@ class UrlMappings {
         "/logout"(controller: "auth", action: 'logout')
         "/dashboard"(controller: 'dashboard', action: "index")
         "/dashboard/stats"(controller: 'dashboard', action: "dashboardStats")
+        "/dashboard/graph"(controller: 'dashboard', action: "salesMonthWiseForGraph")
         "/forms"(controller: 'dashboard', action: 'forms')
         "/table"(controller: 'dashboard', action: 'table')
         "/timeline"(controller: 'dashboard', action: 'timeline')
@@ -211,6 +212,14 @@ class UrlMappings {
         "/entity-irn/datatable"(controller: "entityIRN", action: "dataTable")
         "/entity-irn/update/$id"(controller:"entityIRN",action:"update")
         "/entity-irn/delete/$id"(controller: "entityIRN",action:"delete")
+
+        //entity-route
+        "/entity-route"(controller: "entityRoute") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/entity-route/datatable"(controller: "entityRoute", action: "dataTable")
+        "/entity-route/update/$id"(controller:"entityRoute",action:"update")
+        "/entity-route/delete/$id"(controller: "entityRoute",action:"delete")
 
 
         //  Entity Settings
@@ -874,6 +883,10 @@ class UrlMappings {
         //open document
         "/opendoc"(controller: 'openDocument', action: 'getLink')
         "/e/$uniqueCode"(controller: 'openDocument', action: 'decodeLink')
+
+        //payment collection
+        "/payment-collection"(controller: 'paymentCollection', action: 'index')
+        "/payment-collection/get-invoices"(controller: 'paymentCollection', action: 'getPendingSaleInvoices')
 
     }
 }

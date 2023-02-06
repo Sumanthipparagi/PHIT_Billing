@@ -516,6 +516,18 @@
                                                 </select>
                                             </div>
 
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="entityRoute">
+                                                    Route
+                                                </label>
+                                                <select multiple="multiple" class="form-control show-tick entityRoute routeSelect" name="entityRoute"
+                                                        id="entityRoute">
+                                                    <g:each var="route" in="${routes}">
+                                                        <option value="${route.id}">${route.routeName}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+
                                             %{--                                           <div class="col-lg-6 form-group  form-float">--}%
                                             %{--                                               <label for="zoneId">--}%
                                             %{--                                                   Zone--}%
@@ -597,6 +609,7 @@
 <script>
 
     $(function () {
+        $('.routeSelect').select2();
         $('.anniversaryDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
             clearButton: true,

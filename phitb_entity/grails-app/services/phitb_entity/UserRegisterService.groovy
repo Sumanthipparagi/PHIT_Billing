@@ -138,7 +138,7 @@ class UserRegisterService {
             }
             if(jsonObject.get("dob").toString()!="")
             {
-                userRegister.dob = sdf.parse(jsonObject.get("anniversaryDate").toString())
+                userRegister.dob = sdf.parse(jsonObject.get("dob").toString())
             }else {
                 userRegister.dob = null
             }
@@ -172,6 +172,19 @@ class UserRegisterService {
             userRegister.entity = entityRegister
             userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+
+            if(jsonObject.has("entityRoute"))
+            {
+                String[] routeIdArr = jsonObject.get("entityRoute")
+                for (String routeId : routeIdArr) {
+                    EntityRouteRegister entityRouteRegister = EntityRouteRegister.findById(Long.parseLong(routeId))
+                    if(entityRouteRegister)
+                    {
+                        userRegister.addToEntityRoute(entityRouteRegister)
+                    }
+                }
+            }
+
             userRegister.save(flush: true)
             if (!userRegister.hasErrors()) {
                 AuthRegister authRegister = new AuthRegister()
@@ -247,7 +260,7 @@ class UserRegisterService {
             }
             if(jsonObject.get("dob").toString()!="")
             {
-                userRegister.dob = sdf.parse(jsonObject.get("anniversaryDate").toString())
+                userRegister.dob = sdf.parse(jsonObject.get("dob").toString())
             }else {
                 userRegister.dob = null
             }
@@ -278,6 +291,19 @@ class UserRegisterService {
             userRegister.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id.toString()))
             userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+
+            if(jsonObject.has("entityRoute"))
+            {
+                String[] routeIdArr = jsonObject.get("entityRoute")
+                for (String routeId : routeIdArr) {
+                    EntityRouteRegister entityRouteRegister = EntityRouteRegister.findById(Long.parseLong(routeId))
+                    if(entityRouteRegister)
+                    {
+                        userRegister.addToEntityRoute(entityRouteRegister)
+                    }
+                }
+            }
+
             userRegister.save(flush: true)
             if (!userRegister.hasErrors()) {
                 AuthRegister authRegister = AuthRegister.findByUser(userRegister)

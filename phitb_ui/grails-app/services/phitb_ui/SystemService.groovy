@@ -1535,4 +1535,27 @@ class SystemService
 
     }
 
+
+    def getReason() {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().REASON_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray JSONArray = new JSONArray(apiResponse.readEntity(String.class))
+                return JSONArray
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :systemService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :systemService , action :  getEntity  , Ex:' + ex)
+        }
+
+    }
+
 }

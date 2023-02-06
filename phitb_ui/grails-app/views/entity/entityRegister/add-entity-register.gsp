@@ -150,7 +150,7 @@
                                                 <label for="gstn">
                                                     GSTIN
                                                 </label>
-                                                <input type="text" id="gstn" class="form-control gstn"
+                                                <input maxlength="15" type="text" id="gstn" class="form-control gstn"
                                                        name="gstn" placeholder="GSTIN"/>
                                             </div>
 
@@ -685,13 +685,14 @@
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
-                                                <label for="routeId">
+                                                <label for="entityRoute">
                                                     Route
                                                 </label>
-                                                <select class="form-control show-tick routeId" name="routeId"
-                                                        id="routeId">
+                                                <select class="form-control show-tick entityRoute routeselect" name="entityRoute"
+                                                        id="entityRoute">
+                                                    <option selected disabled>--SELECT--</option>
                                                     <g:each var="route" in="${routeregister}">
-                                                        <option value="${route.id}">${route.routeName}</option>
+                                                        <option value="${route?.id}">${route?.routeName}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -831,7 +832,7 @@
                                                 <label for="gstn">
                                                     GSTIN
                                                 </label>
-                                                <input type="text" id="gstn" class="form-control gstn"
+                                                <input maxlength="15" type="text" id="gstn" class="form-control gstn"
                                                        name="gstn" placeholder="GSTIN" value="${entity.gstn}"/>
                                             </div>
 
@@ -1396,14 +1397,14 @@
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
-                                                <label for="routeId">
+                                                <label for="entityRoute">
                                                     Route
                                                 </label>
-                                                <select class="form-control show-tick routeId" name="routeId"
-                                                        id="routeId">
+                                                <select class="form-control show-tick entityRoute routeselect" name="entityRoute"
+                                                        id="entityRoute">
                                                     <g:each var="route" in="${routeregister}">
-                                                        <option value="${route.id}"
-                                                                <g:if test="${route.id == entity.routeId}">selected</g:if>>${route.routeName}</option>
+                                                        <option value="${route?.id}"
+                                                                <g:if test="${route?.id == entity?.entityRoute?.id}">selected</g:if>>${route?.routeName}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -1506,6 +1507,7 @@
 <script>
 
     $(function () {
+        $('.routeselect').select2();
         //Datetimepicker plugin
         $('.contactDob').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',

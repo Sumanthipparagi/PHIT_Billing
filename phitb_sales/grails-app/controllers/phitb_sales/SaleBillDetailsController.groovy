@@ -14,7 +14,7 @@ class SaleBillDetailsController {
 
     static allowedMethods = [index    : "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE",
                              dataTable: "GET", updateIRNDetails: "PUT", saveInvoice: "POST", updateInvoice: "PUT",
-                             getByDateRangeAndEntity: "POST", getByPendingIrnAndEntity: "POST"]
+                             getByDateRangeAndEntity: "POST", getByPendingIrnAndEntity: "POST", getPaymentPendingBills: "GET"]
     SaleBillDetailsService saleBillDetailsService
     SaleProductDetailsService saleProductDetailsService
     /**
@@ -753,6 +753,34 @@ class SaleBillDetailsController {
                 JSONArray saleBillDetails = saleBillDetailsService.getByPendingIRNAndEntity(entityId, financialYear)
                 respond saleBillDetails, formats: ['json']
             } else {
+                response.status = 400
+            }
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getPaymentPendingBills()
+    {
+        try {
+            GrailsParameterMap parameterMap = getParams()
+            JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
+            if (parameterMap) {
+                JSONObject saleBillDetails = saleBillDetailsService.getPaymentPendingBills(paramsJsonObject, start, length)
+                respond saleBillDetails, formats: ['json']
+            }
+            else {
                 response.status = 400
             }
         }

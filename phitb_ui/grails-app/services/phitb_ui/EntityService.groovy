@@ -227,6 +227,16 @@ class EntityService {
             }
         }
 
+        if(jsonObject.has("entityRoute"))
+        {
+            JSONArray rIds = new JSONArray()
+            def routeIds = jsonObject.get("entityRoute")
+            for (Object rt : routeIds) {
+                rIds.put(rt)
+            }
+            jsonObject.put("entityRoute", rIds)
+        }
+
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -313,6 +323,17 @@ class EntityService {
     }
 
     def putUser(JSONObject jsonObject) {
+
+        if(jsonObject.has("entityRoute"))
+        {
+            JSONArray rIds = new JSONArray()
+            def routeIds = jsonObject.get("entityRoute")
+            for (Object rt : routeIds) {
+                rIds.put(rt)
+            }
+            jsonObject.put("entityRoute", rIds)
+        }
+
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -2777,4 +2798,143 @@ class EntityService {
     }
 
 
+
+
+    //Entity Route
+    def saveEntityRoute(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  saveEntityRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveEntityRoute  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showEntityRoute(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  showEntityIRN  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showEntityIRN  , Ex:' + ex)
+        }
+
+    }
+
+    def putEntityRoute(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service : , action :  putEntityRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putEntityRoute  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteEntityRoute(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  deleteEntityRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteEntityRoute  , Ex:' + ex)
+        }
+
+    }
+
+    JSONArray getRouteByEntity(String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_ROUTE_SHOW_BY_ENTITY + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getRouteByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getRouteByEntity  , Ex:' + ex)
+            return null
+        }
+
+    }
+
+
+    /**
+    Get Entities belongs to users route, by sending user id
+     */
+    def getEntityByUserRoute(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_GET_BY_USER_ROUTE + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            } else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntityByUserRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntityByUserRoute  , Ex:' + ex)
+        }
+
+    }
 }

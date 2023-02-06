@@ -34,7 +34,7 @@ class PurchaseReturnController
         ArrayList<String> supplier = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
-        def reason = new SalesService().getReason()
+        JSONArray allReasons = new SystemService().getReason()
         def taxRegister = new EntityService().getTaxesByEntity(entityId)
         ArrayList<String> salesmanList = []
         users.each {
@@ -42,10 +42,17 @@ class PurchaseReturnController
                 salesmanList.add(it)
             }
         }
+        JSONArray reasons = new JSONArray()
+        for (Object reason : allReasons) {
+            if(reason.reasonCode != "R" && reason.reasonCode != "OA")
+            {
+                reasons.add(reason)
+            }
+        }
         render(view: '/purchase/purchaseReturn/purchase-return', model: [supplier: supplier,
                                                                          divisions: divisions, series:series,
                                                                          salesmanList: salesmanList,
-                                                                         priorityList:priorityList, reason: reason,
+                                                                         priorityList:priorityList, reason: reasons,
                                                                          taxRegister:taxRegister])
     }
 
@@ -398,7 +405,7 @@ class PurchaseReturnController
         Response response = new PurchaseService().savePurchaseRetrun(jsonObject)
         if (response.status == 200) {
             for (JSONObject stock : stockArray) {
-                def stocks = new InventoryService().stocksReturn(stock)
+                def stocks = new InventoryService().stocksReturn(stock, false)
                 if (stocks.status == 200) {
                     println("Stocks Updated!")
                 } else {

@@ -1236,29 +1236,6 @@ contains both sale bill and products
     }
 
 
-    def getReason() {
-        Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
-        try {
-            Response apiResponse = target
-                    .path(new Links().REASON_SHOW)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-            if (apiResponse.status == 200) {
-                JSONArray JSONArray = new JSONArray(apiResponse.readEntity(String.class))
-                return JSONArray
-            } else {
-                return null
-            }
-        }
-        catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
-        }
-
-    }
-
-
     def getSaleBillByCustomer(String custid, String financialYear, String entityId, String dateRange = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -2147,6 +2124,28 @@ contains both deliveryChallan and products
         catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getSaleBillDetailsByPendingIRN  , Ex:' + ex)
             log.error('Service :SalesService , action :  getSaleBillDetailsByPendingIRN  , Ex:' + ex)
+        }
+    }
+
+
+    def getSaleBillDetailsByPendingPayment(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_PENDING_PAYMENT)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                return new JSONObject(apiResponse.readEntity(String.class))
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getSaleBillDetailsByPendingPayment  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleBillDetailsByPendingPayment  , Ex:' + ex)
         }
     }
 

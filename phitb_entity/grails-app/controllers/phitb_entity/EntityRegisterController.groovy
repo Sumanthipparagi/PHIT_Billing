@@ -346,12 +346,44 @@ class EntityRegisterController
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-    
+
     def registerPatient(){
         try{
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             respond entityRegisterService.registerPatientDetails(jsonObject)
         }catch(Exception ex){
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get entities
+     * @return
+     */
+    def getEntitiesByUserRoute()
+    {
+        try {
+            String userId = params.id
+            if(userId) {
+                UserRegister user = UserRegister.findById(Long.parseLong(userId))
+                respond entityRegisterService.getEntitiesByUserRoute(user)
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }

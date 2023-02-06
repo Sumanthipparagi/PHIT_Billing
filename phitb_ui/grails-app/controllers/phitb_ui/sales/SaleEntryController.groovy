@@ -736,37 +736,6 @@ class SaleEntryController
                 String tempStockRowId = sale.get("16")
                 //clear tempstockbook but do not update stockbook
                 new InventoryService().deleteTempStock(tempStockRowId, false)
-
-
-                /* def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-                 stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
-                 stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
-                 stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
-                 String expDate = stockBook.get("expDate").toString().split("T")[0]
-                 String purcDate = stockBook.get("purcDate").toString().split("T")[0]
-                 String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
-                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
-                 expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
-                 purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
-                 manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
-                 stockBook.put("expDate", expDate)
-                 stockBook.put("purcDate", purcDate)
-                 stockBook.put("manufacturingDate", manufacturingDate)
-                 stockBook.put("uuid", UUID.randomUUID())
-                 def apiRes = new InventoryService().updateStockBook(stockBook)
-                 if (apiRes.status == 200) {
-                     //clear tempstockbook
-                     new InventoryService().deleteTempStock(tempStockRowId, false)
-                     try {
-                         if (billStatus.equalsIgnoreCase("ACTIVE")) {
-                             //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                             new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
-                         }
-                     }
-                     catch (Exception ex) {
-                         ex.printStackTrace()
-                     }
-                 }*/
             }
             if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
             {

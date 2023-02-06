@@ -67,31 +67,6 @@
                                 <li><a href="collapse.html">Collapse</a></li>
                             </ul>
                         </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <h6>Sample Pages</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="image-gallery.html">Image Gallery</a></li>
-                                <li><a href="profile.html">Profile</a></li>
-                                <li><a href="timeline.html">Timeline</a></li>
-                                <li><a href="pricing.html">Pricing</a></li>
-                                <li><a href="invoices.html">Invoices</a></li>
-                                <li><a href="faqs.html">FAQs</a></li>
-                                <li><a href="search-results.html">Search Results</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <h6>About</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="http://thememakker.com/about/" target="_blank">About</a></li>
-                                <li><a href="http://thememakker.com/contact/" target="_blank">Contact Us</a></li>
-                                <li><a href="http://thememakker.com/admin-templates/"
-                                       target="_blank">Admin Templates</a></li>
-                                <li><a href="http://thememakker.com/services/" target="_blank">Services</a></li>
-                                <li><a href="http://thememakker.com/portfolio/" target="_blank">Portfolio</a></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -100,15 +75,13 @@
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12">
                 <div class="social">
-                    <a class="icon" href="https://www.facebook.com/thememakkerteam" target="_blank"><i
+                    <a class="icon" href="#" target="_blank"><i
                             class="zmdi zmdi-facebook"></i></a>
-                    <a class="icon" href="https://www.behance.net/thememakker" target="_blank"><i
+                    <a class="icon" href="#" target="_blank"><i
                             class="zmdi zmdi-behance"></i></a>
                     <a class="icon" href="javascript:void(0);"><i class="zmdi zmdi-twitter"></i></a>
                     <a class="icon" href="javascript:void(0);"><i class="zmdi zmdi-linkedin"></i></a>
 
-                    %{--                    <p>Coded by WrapTheme<br> Designed by <a href="http://thememakker.com/"--}%
-                    %{--                                                             target="_blank">thememakker.com</a></p>--}%
                 </div>
             </div>
         </div>
@@ -198,53 +171,6 @@
                     </div>
                 </div>
 
-                %{--<div class="card">
-                    <div class="header">
-                        <h2><strong>General</strong> Settings</h2>
-                    </div>
-
-                    <div class="body">
-                        <ul class="setting-list list-unstyled m-b-0">
-                            <li>
-                                <div class="checkbox">
-                                    <input id="checkbox1" type="checkbox">
-                                    <label for="checkbox1">Report Panel Usage</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <input id="checkbox2" type="checkbox" checked="">
-                                    <label for="checkbox2">Email Redirect</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <input id="checkbox3" type="checkbox">
-                                    <label for="checkbox3">Notifications</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <input id="checkbox4" type="checkbox">
-                                    <label for="checkbox4">Auto Updates</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <input id="checkbox5" type="checkbox" checked="">
-                                    <label for="checkbox5">Offline</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox m-b-0">
-                                    <input id="checkbox6" type="checkbox">
-                                    <label for="checkbox6">Location Permission</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
---}%
                 <div class="card">
                     <div class="header">
                         <h2><strong>Left</strong> Menu</h2>
@@ -257,110 +183,7 @@
             </div>
 
 
-            %{--<div class="tab-pane slideLeft" id="activity">
-                <div class="card activities">
-                    <div class="header">
-                        <h2><strong>Recent</strong> Activity Feed</h2>
-                    </div>
 
-                    <div class="body">
-                        <div class="streamline b-accent">
-                            <div class="sl-item">
-                                <div class="sl-content">
-                                    <div class="text-muted">Just now</div>
-
-                                    <p>Finished task <a href="" class="text-info">#features 4</a>.</p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-info">
-                                <div class="sl-content">
-                                    <div class="text-muted">10:30</div>
-
-                                    <p><a href="">@Jessi</a> retwit your post</p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-primary">
-                                <div class="sl-content">
-                                    <div class="text-muted">12:30</div>
-
-                                    <p>Call to customer <a href="" class="text-info">Jacob</a> and discuss the detail.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-warning">
-                                <div class="sl-content">
-                                    <div class="text-muted">1 days ago</div>
-
-                                    <p><a href="" class="text-info">Jessi</a> commented your post.</p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-primary">
-                                <div class="sl-content">
-                                    <div class="text-muted">2 days ago</div>
-
-                                    <p>Call to customer <a href="" class="text-info">Jacob</a> and discuss the detail.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-primary">
-                                <div class="sl-content">
-                                    <div class="text-muted">3 days ago</div>
-
-                                    <p>Call to customer <a href="" class="text-info">Jacob</a> and discuss the detail.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-warning">
-                                <div class="sl-content">
-                                    <div class="text-muted">4 Week ago</div>
-
-                                    <p><a href="" class="text-info">Jessi</a> commented your post.</p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-warning">
-                                <div class="sl-content">
-                                    <div class="text-muted">5 days ago</div>
-
-                                    <p><a href="" class="text-info">Jessi</a> commented your post.</p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-primary">
-                                <div class="sl-content">
-                                    <div class="text-muted">5 Week ago</div>
-
-                                    <p>Call to customer <a href="" class="text-info">Jacob</a> and discuss the detail.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-primary">
-                                <div class="sl-content">
-                                    <div class="text-muted">3 Week ago</div>
-
-                                    <p>Call to customer <a href="" class="text-info">Jacob</a> and discuss the detail.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="sl-item b-warning">
-                                <div class="sl-content">
-                                    <div class="text-muted">1 Month ago</div>
-
-                                    <p><a href="" class="text-info">Jessi</a> commented your post.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>--}%
         </div>
     </div>
 
@@ -369,11 +192,6 @@
             <ul class="list">
                 <li>
                     <div class="user-info m-b-20">
-                        %{-- <div class="image">
-                             <a href="/user/update-details/${session.getAttribute("userId")}"><img
-                                     src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" alt="User">
-                             </a>
-                         </div>--}%
 
                         <div class="detail">
                         <h6><a href="/user/update-details/${session.getAttribute('userId')}">${session.getAttribute("userName")}</a></h6>
@@ -387,7 +205,7 @@
                     </div>
                 </li>
                 %{--<li class="header">MAIN</li>--}%
-                <li id="dashboard-menu" class="sidemenuitem active open"><a href="dashboard"><i
+                <li id="dashboard-menu" class="sidemenuitem active open"><a href="/dashboard"><i
                         class="zmdi zmdi-home"></i><span>Dashboard</span></a>
                 </li>
                 <g:if test="${session.getAttribute('role') != Constants.SUPER_USER}">
@@ -637,6 +455,7 @@
                             <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN ||
                                     session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == 'RETAILER'}">
                                 <li><a href="/entity-register">Entity Register</a></li>
+                                <li><a href="/entity-route">Routes</a></li>
                             </g:if>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_USER_REGISTER", session.getAttribute("permittedFeatures").toString())}">
