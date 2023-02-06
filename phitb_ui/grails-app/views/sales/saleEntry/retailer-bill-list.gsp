@@ -291,7 +291,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 var url = '/sale-entry/cancel-invoice?id=' + id;
-                var beforeSendSwal
+                var beforeSendSwal;
                 $.ajax({
                     type: "GET",
                     url: url,
