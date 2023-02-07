@@ -3,9 +3,12 @@ package phitb_ui.accounts
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
+import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.SalesService
 import phitb_ui.SystemService
+
+import java.text.SimpleDateFormat
 
 /**
  * This controller is for Payment Collection purposes by executive
@@ -25,10 +28,10 @@ class PaymentCollectionController {
         ArrayList<JSONObject> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
         ArrayList<JSONObject> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
 
-        render(view: 'index', model: [bank           : bank,
-                                                                accountMode    : accountMode,
-                                                                paymentModes   : paymentModes,
-                                                                accountRegister: accountRegister
+        render(view: 'index', model: [bank  : bank,
+                                      accountMode    : accountMode,
+                                      paymentModes   : paymentModes,
+                                      accountRegister: accountRegister
         ])
     }
 
@@ -57,4 +60,46 @@ class PaymentCollectionController {
             response.status = 400
         }
     }
+
+
+    def dataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute('entityId'))
+            jsonObject.put("userId", session.getAttribute('userId'))
+            def apiResponse = new AccountsService().showPaymentCollection(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if (responseObject) {
+                    JSONArray jsonArray = responseObject.data
+                    responseObject.put("data", jsonArray)
+                }
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def paymentCollectionLogs(){
+        render(view:"/paymentCollection/paymentCollectionLogs")
+    }
+
+    def paymentCollectionChangeStatus(){
+        try{
+            def changeStatus = new AccountsService().changeStatusPaymentCollection(params.id,params.status)
+            if(changeStatus){
+                respond changeStatus,formats: ['json'],status: 200
+            }
+        }
+        catch (Exception ex){
+            println(controllerName+" "+ex)
+        }
+    }
+
 }

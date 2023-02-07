@@ -229,20 +229,21 @@
                     </div>
                 </div>
 
-              %{--  <div class="row">
+                <div class="row">
                     <div class="col-md-12 clearfix">
                         <div class="pull-right">
                             <table class="table">
                                 <thead></thead>
                                 <tbody>
                                 <tr><td>Total Due</td><td class="totalDue" id="totalDueOfSelected"
-                                                          style="text-align: left; color: red"></tr>
+                                                          style="text-align: left; color: red"></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
---}%
+
+                <input type="hidden" name="saleBillId" id="saleBillId"/>
 
             </div>
 
@@ -402,6 +403,8 @@
         $("#invoiceNumber").text(invoiceNumber);
         $("#invoiceTotal").text("₹" +invoiceTotal);
         $("#balance").text("₹" +balance);
+        $("#totalDueOfSelected").text(balance);
+        $("#saleBillId").val(id);
         $(".detailsModal").modal('toggle');
     }
 
@@ -484,7 +487,7 @@
         var paymentDate = $("#paymentDate").val();
         var instrumentId = $("#instrumentId").val();
         var remarks = $("#remarks").val();
-        var saleBillId = $(".saleBillId").val();
+        var saleBillId = $("#saleBillId").val();
         var saleReturnIds = $("#saleReturnIds").val();
         var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
 

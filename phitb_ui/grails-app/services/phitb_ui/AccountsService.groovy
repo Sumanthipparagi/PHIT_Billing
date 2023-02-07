@@ -1472,6 +1472,70 @@ class AccountsService
             System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
             log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
         }
+    }
+
+    def savePaymentCollectionLog(JSONObject jsonObject){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SAVE_PAYMENT_COLLECTION)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+        }catch(Exception ex){
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showPaymentCollection(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_COLLECTION_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  showPaymentCollection  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  showPaymentCollection  , Ex:' + ex)
+        }
 
     }
+
+    def changeStatusPaymentCollection(String id, String status) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_COLLECTION_CHANGE_STATUS)
+                    .queryParam("id", id)
+                    .queryParam("status", status)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :accountsService , action :  changeStatusPaymentCollection  , Ex:' + ex)
+            log.error('Service :accountsService , action :  changeStatusPaymentCollection  , Ex:' + ex)
+        }
+
+    }
+
 }

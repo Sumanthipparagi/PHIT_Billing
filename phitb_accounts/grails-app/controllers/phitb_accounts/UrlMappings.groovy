@@ -138,6 +138,15 @@ class UrlMappings {
             "/reports/outstanding(.$format)?"(controller: 'reports') { action = [GET: 'outstanding'] }
 
             "/status"(controller: 'status', action: 'index')
+
+
+//            Payment Collection log
+            "/payment-collection/save(.$format)?"(controller: 'paymentCollectionLog') { action = [POST: 'save'] }
+            "/payment-collection/datatable(.$format)?"(controller: 'paymentCollectionLog') { action = [GET: 'dataTable'] }
+            "/payment-collection/change-status(.$format)?"(controller: 'paymentCollectionLog') { action = [GET: 'changePaymentCollectionStatus'] }
+
+
+
         }
     }
 }

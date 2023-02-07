@@ -265,8 +265,8 @@ class SalebillDetailsController {
                 def invs = new AccountsService().updateSaleBalance(invObject)
                 if (invs?.status == 200) {
                     println("Invoice Updated")
-
                     JSONObject billLog = new JSONObject()
+                    JSONObject paymentCollectionLog = new JSONObject()
                     billLog.put("billId", saleBill.id)
                     billLog.put("billType", "INVS")
                     billLog.put("amountPaid", amount)
@@ -278,6 +278,24 @@ class SalebillDetailsController {
                     if (billLogResponse?.status == 200) {
                         println("Bill Log Saved!")
                     }
+                    paymentCollectionLog.put("collectedAmount", amount)
+                    paymentCollectionLog.put("balance", saleBill.balance-amount)
+                    paymentCollectionLog.put("invoiceAmount", saleBill.invoiceTotal)
+                    paymentCollectionLog.put("documentNumber", saleBill.invoiceNumber)
+                    paymentCollectionLog.put("receiptId", receiptId)
+                    paymentCollectionLog.put("instrumentId", instrumentId)
+                    paymentCollectionLog.put("userId", session.getAttribute('userId'))
+                    paymentCollectionLog.put("entityId", session.getAttribute('entityId'))
+                    paymentCollectionLog.put("entityTypeId", session.getAttribute('entityTypeId'))
+                    paymentCollectionLog.put("entityTypeId", session.getAttribute('entityTypeId'))
+                    paymentCollectionLog.put("status", "ACTIVE")
+                    paymentCollectionLog.put("createdUser", session.getAttribute('userId'))
+                    paymentCollectionLog.put("modifiedUser", session.getAttribute('userId'))
+                    def paymentCollectionLogResp = new AccountsService().savePaymentCollectionLog(paymentCollectionLog)
+                    if (paymentCollectionLogResp?.status == 200) {
+                        println("Payment collection Log Saved!")
+                    }
+
                 }
             }
         }

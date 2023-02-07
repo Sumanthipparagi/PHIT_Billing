@@ -887,6 +887,9 @@ class UrlMappings {
         //payment collection
         "/payment-collection"(controller: 'paymentCollection', action: 'index')
         "/payment-collection/get-invoices"(controller: 'paymentCollection', action: 'getPendingSaleInvoices')
+        "/payment-collection/logs"(controller: 'paymentCollection', action: 'paymentCollectionLogs')
+        "/payment-collection/getlogs"(controller: 'paymentCollection', action: 'dataTable')
+        "/payment-collection/change-status"(controller: 'paymentCollection',action: 'paymentCollectionChangeStatus')
 
     }
 }
