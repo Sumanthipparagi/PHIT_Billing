@@ -17,6 +17,7 @@ class PaymentCollectionLog implements LogicalDelete<PaymentCollectionLog>
     String status //ACTIVE,CANCELLED, APPROVED
     Date approvedDate
     String reason
+    String currentLocation
 
     Date dateCreated
     Date lastUpdated

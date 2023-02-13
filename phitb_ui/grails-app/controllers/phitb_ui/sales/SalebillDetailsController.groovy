@@ -294,6 +294,7 @@ class SalebillDetailsController {
                         paymentCollectionLog.put("status", "ACTIVE")
                         paymentCollectionLog.put("createdUser", session.getAttribute('userId'))
                         paymentCollectionLog.put("modifiedUser", session.getAttribute('userId'))
+                        paymentCollectionLog.put("currentLocation", params.currentLocation)
                         def paymentCollectionLogResp = new AccountsService().savePaymentCollectionLog(paymentCollectionLog)
                         if (paymentCollectionLogResp?.status == 200) {
                             println("Payment collection Log Saved!")

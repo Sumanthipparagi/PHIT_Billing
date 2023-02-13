@@ -23,6 +23,7 @@ class PaymentCollectionLogService {
         paymentCollection.status = jsonObject.get("status").toString()
         paymentCollection.receiptId = Long.parseLong(jsonObject.get("receiptId").toString())
         paymentCollection.instrumentId = jsonObject.get("instrumentId").toString()
+        paymentCollection.currentLocation = jsonObject.get("currentLocation").toString()
         paymentCollection.userId = Long.parseLong(jsonObject.get("userId").toString())
         paymentCollection.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         paymentCollection.entityTypeId = Long.parseLong(jsonObject.get("entityId").toString())

@@ -229,12 +229,25 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label for="currentLocation">Current Location:</label>
+                            <input  class="form-control" onclick="getLocation()" id="currentLocation"
+                                    name="currentLocation" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label for="remarks">Remarks: <small style="font-size: 10px;"><span
                                     id="remarksCharacters">0</span>/100</small></label>
                             <textarea rows="2" class="form-control" id="remarks" name="remarks" maxlength="100"></textarea>
                         </div>
                     </div>
                 </div>
+
+
+
 
                 <div class="row">
                     <div class="col-md-12 clearfix">
@@ -287,6 +300,7 @@
 
     $(document).ready(function() {
         paymentCollectionTable();
+
 
         $('#remarks').on("input", function(){
             var maxlength = $(this).attr("maxlength");
@@ -498,6 +512,7 @@
         var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
         var type = "PAYMENT_COLLECTION";
         var chequeNumber = $("#chequeNumber").val();
+        var currentLocation = $('#currentLocation').val();
 
         if(paymentDate == null || paymentDate === "")
         {
@@ -506,6 +521,16 @@
             Swal.fire({
                 title: "Error",
                 html: "Please select payment date",
+                icon: 'error'
+            });
+            return;
+        }
+
+        if(currentLocation === ""){
+            processingSwal.close();
+            Swal.fire({
+                title: "Error",
+                html: "Please select current location",
                 icon: 'error'
             });
             return;
@@ -540,6 +565,7 @@
                 saleBillId: saleBillId,
                 saleReturnIds: saleReturnIds,
                 creditsApplied: creditsApplied,
+                currentLocation: currentLocation,
                 type:type
             },
             success: function(data)
@@ -576,6 +602,41 @@
             return num;
         }
     }
+
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition,showError);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+        // x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+        // alert(position.coords.longitude+","+position.coords.latitude)
+        var cord = position.coords.latitude+","+position.coords.longitude
+        document.getElementById("currentLocation").value = cord;
+
+    }
+
+    function showError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation."
+                break;
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable."
+                break;
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out."
+                break;
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred."
+                break;
+        }
+    }
+
 
 </script>
 </body>

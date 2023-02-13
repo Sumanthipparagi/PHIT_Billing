@@ -138,6 +138,7 @@
                                     <th>Reason</th>
                                     <th>Appr Dt</th>
                                     <th>-</th>
+                                    <th>Location</th>
                                     <th style="display: none;">pcId</th>
                                 </tr>
                                 </thead>
@@ -160,7 +161,8 @@
                     <div class="col-lg-4">
                         <div class="float-left">
                             <button type="button" class="btn btn-primary" onclick="selectAll()">Select All</button>
-                            <button type="button" class="btn btn-primary">Action (Approve,Return,Cancel)</button>
+                            <button type="button" class="btn btn-primary" onclick="updateBulkStatusModal()">Action (Approve,Return,
+                            Cancel)</button>
                         </div>
                     </div>
 
@@ -197,7 +199,7 @@
             </div>
 
             <div class="modal-body">
-\                <label for="sortStatus">Status</label>
+               <label for="selectAllStatus">Status</label>
                 <div class="form-group">
                     <select id="selectAllStatus" class="form-control" style="border-radius: 0;">
                         <option value="ALL">ALL</option>
@@ -211,7 +213,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="dt"
-                        onclick="deleteData();">Yes</button>
+                        onclick="updateBulkStatus();">Yes</button>
             </div>
 
         </div>
@@ -375,6 +377,8 @@
                             'invoiceAmount': Number(json.data[i].invoiceAmount).toFixed(2),
                             'collectedAmount': Number(json.data[i].collectedAmount).toFixed(2),
                             'reason': reason,
+                            'location':'<a class="btn btn-primary" href="#!" data-cord="' +
+                            json.data[i].currentLocation +'" onclick="locationWindow(this)" style="background-color: #007bff;">View</a>\n',
                             'balance':  Number(json.data[i].balance).toFixed(2),
                             'bank': json?.data[i]?.bank?.bankName !== undefined ? json?.data[i]?.bank?.bankName : "",
                             'approvedDt': json?.data[i]?.approvedDate !== undefined ?
@@ -400,11 +404,12 @@
                 {'data': 'reason', 'width': '5%'},
                 {'data': 'approvedDt', 'width': '5%'},
                 {'data': 'action', 'width': '5%'},
+                {'data': 'location', 'width': '5%'},
                 {'data': 'id', 'width': '5%'}
             ],
 
             columnDefs: [
-                { targets: [ 13 ],
+                { targets: [ 14 ],
                     className: "hide_column"
                 }
             ]
@@ -520,6 +525,7 @@
 
 
     function approveAllPaymentCollection(){
+
         var tbl = $('.paymentCollectionTable tbody tr').map(function (idxRow, ele) {
             //
             // start building the retVal object
@@ -544,7 +550,6 @@
             return retVal;
         }).get();
         var pcData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
-        console.log(pcData)
         Swal.fire({
             title: "Are you sure you want to finalize ?",
             showDenyButton: true,
@@ -553,7 +558,7 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                // var url = '/payment-collection/finalize-approve';
+                var url = '/payment-collection/finalize-approve';
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -578,16 +583,90 @@
                     }
                 });
             } else if (result.isDenied) {
-
             }
         });
 
     }
-
+    function updateBulkStatusModal(){
+        var checked = $(".statusCheck:checked").length;
+        if(checked === 0){
+            Swal.fire("Please select payments")
+        }else{
+            $(".selectAllModal").modal('toggle');
+        }
+    }
 
     function updateBulkStatus(){
-        $(".detailsModal").modal('toggle');
+        var tbl = $('.paymentCollectionTable tbody tr').map(function (idxRow, ele) {
+            //
+            // start building the retVal object
+            //
+            var retVal = {id: ++idxRow};
+            //
+            // for each cell
+            //
+            var $td = $(ele).find('td').map(function (idxCell, ele) {
+                var input = $(ele).find(':input');
+                //
+                // if cell contains an input or select....
+                //
+                if (input.length === 1) {
+                    var attr = $('.paymentCollectionTable thead tr th').eq(idxCell).text();
+                    retVal[attr] = input.val();
+                } else {
+                    var attr = $('.paymentCollectionTable thead tr th').eq(idxCell).text();
+                    retVal[attr] = $(ele).text();
+                }
+            });
+            return retVal;
+        }).get();
+        var pcData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
+        console.log(pcData);
+        var bulkStatus = $('#selectAllStatus').val();
+        Swal.fire({
+            title: "Are you sure you want perform this operation ?",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = '/payment-collection/bulk-approve';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    dataType: 'json',
+                    data:{
+                        pcData:pcData,
+                        bulkStatus:bulkStatus
+                    },
+                    success: function (data) {
+                        Swal.fire(
+                            'Success!',
+                            'Payment Collection finalized!',
+                            'success'
+                        );
+                        paymentCollectionLogTable();
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'Unable to perform operation, try later.',
+                            'danger'
+                        );
+                    }
+                });
+            } else if (result.isDenied) {}
+    });
     }
+
+    function locationWindow(data) {
+      var cord =  $(data).attr("data-cord");
+      window.open('https://www.google.com/maps?q='+cord, 'location',
+            'height=1550,width=1450,top=100,left=500,scrollbars=0');
+    }
+
+
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
