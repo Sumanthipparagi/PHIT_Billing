@@ -105,7 +105,7 @@
                                         <option value="ACTIVE">Active</option>
                                         <option value="APPROVED">Approved</option>
                                         <option value="RETURNED">Returned</option>
-                                        <option value="CANECLLED">Cancel</option>
+                                        <option value="CANCELLED">Cancel</option>
                                     </select>
                                 </div>
                             </div>
@@ -160,9 +160,10 @@
                     <div class="row">
                     <div class="col-lg-4">
                         <div class="float-left">
-                            <button type="button" class="btn btn-primary" onclick="selectAll()">Select All</button>
-                            <button type="button" class="btn btn-primary" onclick="updateBulkStatusModal()">Action (Approve,Return,
-                            Cancel)</button>
+                            <button type="button" class="btn btn-primary" onclick="deselectAll()" style="padding: 6px
+                            22px;">Deselect All</button>
+                            <button type="button" class="btn btn-primary" onclick="selectAll()" style="padding: 6px 22px;">Select All</button>
+                            <button type="button" class="btn btn-primary" onclick="updateBulkStatusModal()" style="padding: 6px 22px;">Action(Approve, Return, Cancel)</button>
                         </div>
                     </div>
 
@@ -202,11 +203,9 @@
                <label for="selectAllStatus">Status</label>
                 <div class="form-group">
                     <select id="selectAllStatus" class="form-control" style="border-radius: 0;">
-                        <option value="ALL">ALL</option>
-                        <option value="ACTIVE">Active</option>
                         <option value="APPROVED">Approved</option>
                         <option value="RETURNED">Returned</option>
-                        <option value="CANECLLED">Cancel</option>
+                        <option value="CANCELLED">Cancel</option>
                     </select>
                 </div>
             </div>
@@ -275,6 +274,9 @@
                 emptyTable: "Use above filters get payment details"
             }
         } );
+
+        document.body.style.zoom = "100%"
+
     });
 
     function paymentCollectionLogTable() {
@@ -312,9 +314,10 @@
                 },
                 {
                     'extend': 'print',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
+                    exportOptions: { columns: [2,3,4,5,6,7,8,9,10,11,12] }
                 }
             ],
+            lengthMenu: [100,200,300,400,500,1000],
             ajax: {
                 type: 'GET',
                 url: '/payment-collection/getlogs',
@@ -363,7 +366,7 @@
                                 '  <option value="Cancel">Cancel</option>\n' +
                                 '</select>';
 
-                            reason+='<input type="text" id="reason" name="reason">';
+                            reason+='<input type="text" id="reason" name="reason" maxlength="20">';
                             checkbox+='<input type="checkbox" id="statusCheck" name="statusCheck" class="statusCheck" value="true">\n'
                         }
 
@@ -498,11 +501,14 @@
     function selectAll() {
         var x = document.getElementsByName("statusCheck");
         for (var i = 0; i < x.length; i++) {
-            if (document.getElementsByName("statusCheck")[i].checked) {
-                document.getElementsByName("statusCheck")[i].checked = false;
-            } else {
                 document.getElementsByName("statusCheck")[i].checked = true;
-            }
+        }
+    }
+
+    function deselectAll() {
+        var x = document.getElementsByName("statusCheck");
+        for (var i = 0; i < x.length; i++) {
+            document.getElementsByName("statusCheck")[i].checked = false;
         }
     }
     /* custom button event print */
@@ -631,7 +637,7 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/payment-collection/bulk-approve';
+                var url = '/payment-collection/bulk-update';
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -647,6 +653,8 @@
                             'success'
                         );
                         paymentCollectionLogTable();
+                        $(".selectAllModal").modal('hide');
+
                     },
                     error: function () {
                         Swal.fire(

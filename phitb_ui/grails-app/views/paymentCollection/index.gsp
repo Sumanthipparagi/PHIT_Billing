@@ -229,9 +229,10 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="currentLocation">Current Location:</label>
+                            <label for="currentLocation">Current
+                            Location:<small>(Click below load location)</small></label>
                             <input  class="form-control" onclick="getLocation()" id="currentLocation"
-                                    name="currentLocation" readonly />
+                                    name="currentLocation" readonly placeholder="Click here for location" />
                         </div>
                     </div>
                 </div>
@@ -577,7 +578,7 @@
                     icon: 'success'
                 });
                 paymentCollectionTable();
-                $(".detailsModal").modal('hide');
+                location.reload();
 
             },
             error: function (data) {

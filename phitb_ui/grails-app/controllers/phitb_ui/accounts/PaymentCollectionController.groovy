@@ -1,5 +1,6 @@
 package phitb_ui.accounts
 
+import netscape.javascript.JSObject
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
@@ -139,13 +140,98 @@ class PaymentCollectionController {
         try{
             JSONArray jsonArray = new JSONArray(params.pcData)
             def updatePaymentCollections = new AccountsService().approveAllPaymentCollection(jsonArray)
-            if(updatePaymentCollections){
-                respond updatePaymentCollections,formats: ['json'], status:200;
+            def saleBillResponse
+            if(updatePaymentCollections.size()!=0 && updatePaymentCollections){
+                for(JSONObject pc: updatePaymentCollections){
+                    if(pc.status=="CANCELLED" || pc.status == "RETURNED"){
+                      def cancelReceipt = new AccountsService().cancelReceiptPayments(pc.receiptId.toString())
+                        JSONArray billDetailLogs = cancelReceipt.get("billDetailLogs") as JSONArray
+                        if (billDetailLogs)
+                        {
+                            for (JSONObject billDetailLog : billDetailLogs)
+                            {
+                                billDetailLog.put("status","CANCELLED")
+                                billDetailLog.put('paidNow',billDetailLog.amountPaid)
+                                billDetailLog.put('id',billDetailLog.billId)
+                                println(billDetailLog.transId)
+                                if(billDetailLog.billType == "INVS")
+                                {
+                                    def salebillDetails = new SalesService().getSaleBillDetailsById(billDetailLog.billId.toString())
+                                    if(salebillDetails!=null){
+                                        if(salebillDetails.balance!= 0){
+                                            saleBillResponse = new AccountsService().updateSaleBalance(billDetailLog)
+                                            if(saleBillResponse?.status==200)
+                                            {
+                                                println("Sale balance updated successfully!")
+                                            }
+                                        }
+                                        else{
+                                            return
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                respond updatePaymentCollections,formats: ['json'],status: 200
             }
         }
         catch (Exception ex){
             println(controllerName+" "+ex)
         }
     }
+
+    def updateBulkPaymentCollection(){
+        try{
+            JSONArray jsonArray = new JSONArray(params.pcData)
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("pcData",jsonArray)
+            jsonObject.put("status",params.bulkStatus)
+            def updatePaymentCollections = new AccountsService().updatePaymentColletionBulkUpdate(jsonObject)
+            def saleBillResponse
+            if(updatePaymentCollections.size()!=0 && updatePaymentCollections){
+                for(JSONObject pc: updatePaymentCollections){
+                    if(pc.check!=""){
+                        if(params.bulkStatus=="CANCELLED" || params.bulkStatus == "RETURNED"){
+                            def cancelReceipt = new AccountsService().cancelReceiptPayments(pc.receiptId.toString())
+                            JSONArray billDetailLogs = cancelReceipt.get("billDetailLogs") as JSONArray
+                            if (billDetailLogs)
+                            {
+                                for (JSONObject billDetailLog : billDetailLogs)
+                                {
+                                    billDetailLog.put("status","CANCELLED")
+                                    billDetailLog.put('paidNow',billDetailLog.amountPaid)
+                                    billDetailLog.put('id',billDetailLog.billId)
+                                    println(billDetailLog.transId)
+                                    if(billDetailLog.billType == "INVS")
+                                    {
+                                        def salebillDetails = new SalesService().getSaleBillDetailsById(billDetailLog.billId.toString())
+                                        if(salebillDetails!=null){
+                                            if(salebillDetails.balance!= 0){
+                                                saleBillResponse = new AccountsService().updateSaleBalance(billDetailLog)
+                                                if(saleBillResponse?.status==200)
+                                                {
+                                                    println("Sale balance updated successfully!")
+                                                }
+                                            }
+                                            else{
+                                                return
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                respond updatePaymentCollections,formats: ['json'],status: 200
+            }
+        }
+        catch (Exception ex){
+            println(controllerName+" "+ex)
+        }
+    }
+
 
 }

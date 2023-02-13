@@ -117,7 +117,50 @@ class PaymentCollectionLogController {
         }
     }
 
-    def cancelReceipt(String id, String status){
 
+    /**
+     * Gets all general ledger in datatables format
+     * @return list of general ledger
+     */
+    def cancelReceipt() {
+        try {
+            String id = params.id
+            respond receiptDetailService.cancelReceipt(id)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+
+    def updateBulkPaymentStatus() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            respond paymentCollectionLogService.updateBulkPayemtCollection(jsonObject)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
     }
 }

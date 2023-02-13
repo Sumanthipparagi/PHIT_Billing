@@ -1328,7 +1328,7 @@ class AccountsService
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
@@ -1578,6 +1578,52 @@ class AccountsService
         catch (Exception ex) {
             System.err.println('Service :accountsService , action :  changeStatusPaymentCollection  , Ex:' + ex)
             log.error('Service :accountsService , action :  changeStatusPaymentCollection  , Ex:' + ex)
+        }
+    }
+
+
+    def cancelReceiptPayments(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_COLLECTION_CANCEL_RECEIPT)
+                    .queryParam("id", id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :AccountsService , action :  cancelReceipt  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  cancelReceipt  , Ex:' + ex)
+        }
+    }
+
+    def updatePaymentColletionBulkUpdate(JSONObject jsonObject){
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_COLLECTION_BULK_UPDATE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray1 = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray1
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :AccountsService , action :  cancelReceipt  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  cancelReceipt  , Ex:' + ex)
         }
     }
 

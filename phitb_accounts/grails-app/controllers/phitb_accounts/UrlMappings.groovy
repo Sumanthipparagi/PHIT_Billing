@@ -145,6 +145,8 @@ class UrlMappings {
             "/payment-collection/datatable(.$format)?"(controller: 'paymentCollectionLog') { action = [GET: 'dataTable'] }
             "/payment-collection/change-status(.$format)?"(controller: 'paymentCollectionLog') { action = [GET: 'changePaymentCollectionStatus'] }
             "/payment-collection/approve-all(.$format)?"(controller: 'paymentCollectionLog', action: 'approveAllPaymentCollectionStatus')
+            "/payment-collection/cancel-receipt"(controller: 'paymentCollectionLog', action: 'cancelReceipt')
+            "/payment-collection/update-bulk-payments"(controller: 'paymentCollectionLog',action: 'updateBulkPaymentStatus')
 
 
 

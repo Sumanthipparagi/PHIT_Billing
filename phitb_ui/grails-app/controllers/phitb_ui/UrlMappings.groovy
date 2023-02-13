@@ -891,6 +891,7 @@ class UrlMappings {
         "/payment-collection/getlogs"(controller: 'paymentCollection', action: 'dataTable')
         "/payment-collection/change-status"(controller: 'paymentCollection',action: 'paymentCollectionChangeStatus')
         "/payment-collection/finalize-approve"(controller: 'paymentCollection', action: 'approveAllPaymentCollection')
+        "/payment-collection/bulk-update"(controller: 'paymentCollection',action: 'updateBulkPaymentCollection')
 
     }
 }

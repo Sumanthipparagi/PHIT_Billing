@@ -101,6 +101,7 @@ class PaymentCollectionLogService {
     }
 
     def approveAllPayemtCollection(JSONArray jsonArray){
+        JSONArray paymentArray = new JSONArray()
        for(JSONObject jsonObject1 : jsonArray){
            if(jsonObject1.Status!=''){
                PaymentCollectionLog paymentCollectionLog = PaymentCollectionLog.findById(Long.parseLong(jsonObject1.pcId.toString()))
@@ -112,13 +113,40 @@ class PaymentCollectionLogService {
                    paymentCollectionLog.status = 'RETURNED'
                    paymentCollectionLog.reason = jsonObject1.Reason
                }else if(jsonObject1.Status == 'Cancel'){
-                   paymentCollectionLog.status = 'CANECLLED'
+                   paymentCollectionLog.status = 'CANCELLED'
                    paymentCollectionLog.reason = jsonObject1.Reason
                }
                paymentCollectionLog.save(flush:true)
+               paymentArray.add(paymentCollectionLog)
            }
        }
-        return jsonArray
+        return paymentArray
+    }
+
+    def updateBulkPayemtCollection(JSONObject jsonObject){
+        JSONArray paymentArray = new JSONArray()
+        for(JSONObject jsonObject1 : jsonObject.get('pcData')){
+            if(jsonObject1.check!=""){
+                if(jsonObject1.Status!=''){
+                    PaymentCollectionLog paymentCollectionLog = PaymentCollectionLog.findById(Long.parseLong(jsonObject1.pcId.toString()))
+                    if(jsonObject.status == 'APPROVED')
+                    {
+                        paymentCollectionLog.status = "APPROVED"
+                        paymentCollectionLog.approvedDate = new Date()
+                        paymentCollectionLog.reason = jsonObject1.Reason
+                    }else if (jsonObject.status == 'RETURNED'){
+                        paymentCollectionLog.status = 'RETURNED'
+                        paymentCollectionLog.reason = jsonObject1.Reason
+                    }else if(jsonObject.status == 'CANCELLED'){
+                        paymentCollectionLog.status = 'CANCELLED'
+                        paymentCollectionLog.reason = jsonObject1.Reason
+                    }
+                    paymentCollectionLog.save(flush:true)
+                    paymentArray.add(paymentCollectionLog)
+                }
+            }
+        }
+        return paymentArray
     }
 
 }
