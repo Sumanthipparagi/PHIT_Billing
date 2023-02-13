@@ -1,9 +1,9 @@
 package phitb_accounts
 
 
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -11,6 +11,7 @@ import phitb_accounts.Exception.ResourceNotFoundException
 class PaymentCollectionLogController {
 	static responseFormats = ['json', 'xml']
     PaymentCollectionLogService paymentCollectionLogService
+    ReceiptDetailService receiptDetailService
 
     /**
      * Save new payment collection
@@ -89,5 +90,34 @@ class PaymentCollectionLogController {
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
+    }
+
+
+    /**
+     * Gets all general ledger in datatables format
+     * @return list of general ledger
+     */
+    def approveAllPaymentCollectionStatus() {
+        try {
+            JSONArray jsonArray = JSON.parse(request.reader.text) as JSONArray
+            respond paymentCollectionLogService.approveAllPayemtCollection(jsonArray)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def cancelReceipt(String id, String status){
+
     }
 }

@@ -230,6 +230,7 @@ class SalebillDetailsController {
         String paymentDate = params.paymentDate
         String instrumentId = params.instrumentId
         String remarks = params.remarks
+        String chequeNumber = params.chequeNumber
 
         JSONObject receipt = new JSONObject()
         receipt.put("date", sdf2.format(new Date()))
@@ -251,6 +252,7 @@ class SalebillDetailsController {
         receipt.put("modifiedUser", session.getAttribute("userId"))
         receipt.put("createdUser", session.getAttribute("userId"))
         receipt.put("cardNumber", cardNumber)
+        receipt.put("chequeNumber", chequeNumber)
         def receiptResponse = new AccountsService().saveReceipt(receipt, financialYear)
         if (receiptResponse.status == 200) {
             JSONObject savedReceipt = new JSONObject(receiptResponse.readEntity(String.class))
@@ -278,24 +280,25 @@ class SalebillDetailsController {
                     if (billLogResponse?.status == 200) {
                         println("Bill Log Saved!")
                     }
-                    paymentCollectionLog.put("collectedAmount", amount)
-                    paymentCollectionLog.put("balance", saleBill.balance-amount)
-                    paymentCollectionLog.put("invoiceAmount", saleBill.invoiceTotal)
-                    paymentCollectionLog.put("documentNumber", saleBill.invoiceNumber)
-                    paymentCollectionLog.put("receiptId", receiptId)
-                    paymentCollectionLog.put("instrumentId", instrumentId)
-                    paymentCollectionLog.put("userId", session.getAttribute('userId'))
-                    paymentCollectionLog.put("entityId", session.getAttribute('entityId'))
-                    paymentCollectionLog.put("entityTypeId", session.getAttribute('entityTypeId'))
-                    paymentCollectionLog.put("entityTypeId", session.getAttribute('entityTypeId'))
-                    paymentCollectionLog.put("status", "ACTIVE")
-                    paymentCollectionLog.put("createdUser", session.getAttribute('userId'))
-                    paymentCollectionLog.put("modifiedUser", session.getAttribute('userId'))
-                    def paymentCollectionLogResp = new AccountsService().savePaymentCollectionLog(paymentCollectionLog)
-                    if (paymentCollectionLogResp?.status == 200) {
-                        println("Payment collection Log Saved!")
+                    if(params.type!=null){
+                        paymentCollectionLog.put("collectedAmount", amount)
+                        paymentCollectionLog.put("balance", saleBill.balance-amount)
+                        paymentCollectionLog.put("invoiceAmount", saleBill.invoiceTotal)
+                        paymentCollectionLog.put("documentNumber", saleBill.invoiceNumber)
+                        paymentCollectionLog.put("receiptId", receiptId)
+                        paymentCollectionLog.put("instrumentId", instrumentId)
+                        paymentCollectionLog.put("userId", session.getAttribute('userId'))
+                        paymentCollectionLog.put("entityId", session.getAttribute('entityId'))
+                        paymentCollectionLog.put("entityTypeId", session.getAttribute('entityTypeId'))
+                        paymentCollectionLog.put("entityTypeId", session.getAttribute('entityTypeId'))
+                        paymentCollectionLog.put("status", "ACTIVE")
+                        paymentCollectionLog.put("createdUser", session.getAttribute('userId'))
+                        paymentCollectionLog.put("modifiedUser", session.getAttribute('userId'))
+                        def paymentCollectionLogResp = new AccountsService().savePaymentCollectionLog(paymentCollectionLog)
+                        if (paymentCollectionLogResp?.status == 200) {
+                            println("Payment collection Log Saved!")
+                        }
                     }
-
                 }
             }
         }

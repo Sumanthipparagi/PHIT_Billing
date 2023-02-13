@@ -137,6 +137,14 @@ class ReceiptDetailService {
         {
             receiptDetail.cardNumber = null
         }
+        if(!jsonObject.isNull("instrumentId"))
+        {
+            receiptDetail.instrumentId = jsonObject.get("instrumentId").toString()
+        }
+        else
+        {
+            receiptDetail.instrumentId = null
+        }
         receiptDetail.paymentDate = sdf.parse(jsonObject.get("paymentDate").toString())
         receiptDetail.transId = "1"
         receiptDetail.employeeReceived = Long.parseLong("1")
@@ -353,6 +361,33 @@ class ReceiptDetailService {
         {
             ex.printStackTrace()
             throw new BadRequestException()
+        }
+    }
+
+    def cancelReceipt(String id){
+        ReceiptDetail receiptDetail = ReceiptDetail.findById(Long.parseLong(id))
+        JSONObject jsonObject = new JSONObject()
+        if (receiptDetail)
+        {
+                ArrayList<BillDetailLog> billDetailLogs = BillDetailLog.findAllByReceiptId(receiptDetail.id.toString())
+                for (BillDetailLog billDetailLog : billDetailLogs)
+                {
+                    billDetailLog.status = 0
+                    billDetailLog.receiptStatus = "CANCELLED"
+                    billDetailLog.isUpdatable = true
+                    billDetailLog.save(flush: true)
+                }
+                receiptDetail.approvedStatus = "CANCELLED"
+                receiptDetail.cancelledDate = new Date()
+                receiptDetail.isUpdatable = true
+                receiptDetail.save(flush: true)
+               jsonObject.put('receiptDetail',receiptDetail)
+               jsonObject.put('billDetailLogs',billDetailLogs)
+              return jsonObject
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
         }
     }
 }

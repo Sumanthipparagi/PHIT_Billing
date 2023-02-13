@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Receipts</title>
+    <title>:: PharmIt :: Payment collection logs</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -19,7 +19,8 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
     <style>
 
     /*    div.dataTables_scrollBody table tbody  td {*/
@@ -42,6 +43,14 @@
     /*    padding: 0px;*/
     /*}*/
 
+    table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td {
+        padding: 10px;
+    }
+
+    .hide_column{
+        display: none;
+    }
+
     </style>
 
 </head>
@@ -60,10 +69,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Receipt </h2>
+                    <h2>Payment Collection Logs </h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Receipt</li>
+                        <li class="breadcrumb-item active">Payment Collection Logs</li>
                     </ul>
                 </div>
                 %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
@@ -74,42 +83,62 @@
                 %{--                        </span>--}%
                 %{--                    </div>--}%
                 %{--                </div>--}%
+
+
             </div>
         </div>
         <!-- Basic Examples -->
         <div class="row clearfix">
             <div class="col-lg-12">
                 <div class="card">
-                    %{--                    <div class="header">--}%
-                    %{--                        <h2><strong>Basic</strong> Examples </h2>--}%
-                    %{--                        <ul class="header-dropdown">--}%
-                    %{--                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>--}%
-                    %{--                                <ul class="dropdown-menu slideUp">--}%
-                    %{--                                    <li><a href="javascript:void(0);">Action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Another action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Something else</a></li>--}%
-                    %{--                                </ul>--}%
-                    %{--                            </li>--}%
-                    %{--                            <li class="remove">--}%
-                    %{--                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>--}%
-                    %{--                            </li>--}%
-                    %{--                        </ul>--}%
-                    %{--                    </div>--}%
-                    %{--                    <div class="header">--}%
-                    %{--                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"--}%
-                    %{--                                data-target="#adddayEndModal"><font style="vertical-align: inherit;"><font--}%
-                    %{--                                style="vertical-align: inherit;">Add Day End</font></font></button>--}%
-                    %{--                    </div>--}%
-                    <div class="body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover customerGroupTable dayEndTable">
+                    <div class="body" >
+                        <div class="row">
+                            <div class="col-lg-7">
+                            </div>
+
+
+                            <div class="col-lg-2">
+                                <label for="sortStatus">Status</label>
+                                <div class="form-group">
+                                    <select id="sortStatus" class="form-control" style="border-radius: 0;">
+                                        <option value="ALL">ALL</option>
+                                        <option value="ACTIVE">Active</option>
+                                        <option value="APPROVED">Approved</option>
+                                        <option value="RETURNED">Returned</option>
+                                        <option value="CANECLLED">Cancel</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Date Range:</label>
+                                    <div class="input-group">
+                                        <input id="dateRange" class="dateRange" type="text" name="dateRange" style="border-radius: 6px;margin: 4px;" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1">
+                                <button type="button" class="btn btn-success mt-4" onclick="paymentCollectionLogTable()">VIEW</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="font-size: 13px;">
+                            <table class="table table-bordered table-striped table-hover paymentCollectionTable">
                                 <thead>
                                 <tr>
-                                    <th style="width: 20%">Document Number</th>
-                                    <th style="width: 20%">Invoice Amount</th>
-                                    <th style="width: 20%">Collected Amount</th>
-                                    <th style="width: 20%">balance</th>
-                                    <th style="width: 20%">Action</th>
+                                    <th><span style="display: none;">check</span></th>
+                                    <th>Status</th>
+                                    <th>Entity</th>
+                                    <th>TranNo.</th>
+                                    <th>Receipt Id</th>
+                                    <th>Chq No</th>
+                                    <th>Bank</th>
+                                    <th>Inv Amt</th>
+                                    <th>Collected Amount</th>
+                                    <th>Balance</th>
+                                    <th>Reason</th>
+                                    <th>Appr Dt</th>
+                                    <th>-</th>
+                                    <th style="display: none;">pcId</th>
                                 </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
@@ -125,7 +154,29 @@
                                 </tbody>
                             </table>
                         </div>
+                    <br>
+
+                    <div class="row">
+                    <div class="col-lg-4">
+                        <div class="float-left">
+                            <button type="button" class="btn btn-primary" onclick="selectAll()">Select All</button>
+                            <button type="button" class="btn btn-primary">Action (Approve,Return,Cancel)</button>
+                        </div>
                     </div>
+
+                    <div class="col-lg-8">
+                        <div class="float-right">
+
+                            <button type="button" class="btn btn-warning reset" style="padding: 4px 22px;">RESET
+                            </button>
+                            <button type="button" onclick="approveAllPaymentCollection()" class="btn btn-success"
+                                    style="padding: 4px 22px;">FINALIZE & APPROVE</button>
+%{--                            <button type="button" id="btnPrint" class="btn btn-primary" style="padding: 4px 22px;">PRINT</button>--}%
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -133,10 +184,39 @@
     </div>
 </section>
 
+<div class="modal fade selectAllModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
 
-<g:include view="controls/entity/add-day-end.gsp"/>
-<g:include view="controls/delete-modal.gsp"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span></button>
 
+            </button>
+                <h4 class="modal-title">Bulk status</h4>
+            </div>
+
+            <div class="modal-body">
+\                <label for="sortStatus">Status</label>
+                <div class="form-group">
+                    <select id="selectAllStatus" class="form-control" style="border-radius: 0;">
+                        <option value="ALL">ALL</option>
+                        <option value="ACTIVE">Active</option>
+                        <option value="APPROVED">Approved</option>
+                        <option value="RETURNED">Returned</option>
+                        <option value="CANECLLED">Cancel</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="dt"
+                        onclick="deleteData();">Yes</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
@@ -157,18 +237,52 @@
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/icons/all.js"/>
-
+<asset:javascript src="/themeassets/plugins/jQuery.print/jQuery.print.min.js"/>
+<asset:javascript src="/themeassets/plugins/daterangepicker/moment.min.js"/>
+<asset:javascript src="/themeassets/plugins/daterangepicker/daterangepicker.js"/>
 <script>
 
-    var dayendtable;
+    $('.dateRange').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear'
+        },
+    });
+    $('.dateRange').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        // paymentCollectionLogTable();
+    });
+
+    // paymentCollectionLogTable();
+
+    $('.dateRange').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+        // paymentCollectionLogTable();
+    });
+
+
+    var paymentCollectionTable;
+    var paymentCollectionIds = [];
     var id = null;
     $(function () {
-        paymentCollectionLogTable();
-
+        // paymentCollectionLogTable();
+        $('.theme-black').addClass('menu_sm');
+        // $(".paymentCollectionTable").DataTable();
+        $('.paymentCollectionTable').DataTable( {
+            language: {
+                emptyTable: "Use above filters get payment details"
+            }
+        } );
     });
 
     function paymentCollectionLogTable() {
-        dayendtable = $(".dayEndTable").DataTable({
+        var daterange = $(".dateRange").val();
+        var status = $("#sortStatus").val();
+       /* if(daterange===''){
+            Swal.fire("Please select daterange")
+            return;
+        }*/
+        paymentCollectionTable = $(".paymentCollectionTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -182,25 +296,43 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search "
+                searchPlaceholder: "Search",
             },
+            dom: 'lBfrtip',
+            buttons: [
+                {
+                    'extend': 'excel',
+                    exportOptions: { columns: ':visible:not(:first-child)' }
+                },
+                {
+                    'extend': 'pdf',
+                    exportOptions: { columns: ':visible:not(:first-child)' }
+                },
+                {
+                    'extend': 'print',
+                    exportOptions: { columns: ':visible:not(:first-child)' }
+                }
+            ],
             ajax: {
                 type: 'GET',
                 url: '/payment-collection/getlogs',
                 dataType: 'json',
+                data:{
+                     daterange:daterange,
+                    status:status,
+                },
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var cancel = "";
                         var status = "";
                         var approve = "";
-                        var a ='Approve';
-                        var c ='Cancel';
                         if (json.data[i].status === "ACTIVE") {
                             cancel =
-                                '<a class="btn btn-sm btn-info" title="Cancel" onclick="changeStatus(this)" href="#!" data-status="Cancel" data-id="' + json.data[i].id +'"><i class="fa fa-times"></i></a>';
+                                '<a class="btn btn-sm btn-info" title="Cancel" onclick="changeStatus(this)" href="#!" data-status="Cancel" data-id="' + json.data[i].id +'" style="padding: 2px 7px;"><i class="fa fa-times" style="font-size: 13px;"></i></a>';
                             approve =
-                                '<a class="btn btn-sm btn-success" title="Approve" onclick="changeStatus(this)" href="#!" data-status="Approve" data-id="' + json.data[i].id +'"><i class="fa fa-check"></i></a>';
+                                '<a class="btn btn-sm btn-success" title="Approve" onclick="changeStatus(this)" href="#!" data-status="Approve" data-id="' + json.data[i].id +'" style="padding: 2px 7px;"><i class="fa fa-check" style="font-size: 13px;"></i></a>';
                         }
                         else
                         {
@@ -209,109 +341,84 @@
                             status = json.data[i].status
                         }
 
+                        var dropdown ='';
+                        var reason ='';
+                        var checkbox ='';
+                        if(json.data[i].status === "APPROVED" || json.data[i].status === "CANCELLED"|| json.data[i].status === 'RETURNED'){
+                            dropdown+="";
+                            checkbox+="";
+                            if(json?.data[i]?.reason!== undefined){
+                                reason+=json?.data[i]?.reason
+                            }else{
+                                reason+='';
+                            }
+
+                        }else{
+                            dropdown+='<select name="status" class="status">\n' +
+                                '  <option value="Active">Active</option>\n' +
+                                '  <option value="Approve">Approve</option>\n' +
+                                '  <option value="Return">Return</option>\n' +
+                                '  <option value="Cancel">Cancel</option>\n' +
+                                '</select>';
+
+                            reason+='<input type="text" id="reason" name="reason">';
+                            checkbox+='<input type="checkbox" id="statusCheck" name="statusCheck" class="statusCheck" value="true">\n'
+                        }
 
                         return_data.push({
+                            'checkbox': checkbox,
+                            'dropdown': dropdown,
+                            'entityId': '<div style="white-space: initial">'+json.data[i].entityId.entityName+'</div>',
                             'documentNumber': json.data[i].documentNumber,
-                            'invoiceAmount': json.data[i].invoiceAmount,
-                            'collectedAmount': json.data[i].collectedAmount,
-                            'balance': json.data[i].balance,
-                            'action': approve+"  "+cancel + status
+                            'chqNo': json.data[i].receipt.chequeNumber,
+                            'receiptId': json.data[i].receipt.receiptId,
+                            'invoiceAmount': Number(json.data[i].invoiceAmount).toFixed(2),
+                            'collectedAmount': Number(json.data[i].collectedAmount).toFixed(2),
+                            'reason': reason,
+                            'balance':  Number(json.data[i].balance).toFixed(2),
+                            'bank': json?.data[i]?.bank?.bankName !== undefined ? json?.data[i]?.bank?.bankName : "",
+                            'approvedDt': json?.data[i]?.approvedDate !== undefined ?
+                                moment(json?.data[i]?.approvedDate).format('DD-MM-YYYY') : "" ,
+                            'action': status,
+                            'id': json.data[i].id
                         });
                     }
                     return return_data;
                 }
             },
             columns: [
-                {'data': 'documentNumber', 'width': '20%'},
-                {'data': 'invoiceAmount', 'width': '20%'},
-                {'data': 'collectedAmount', 'width': '20%'},
-                {'data': 'balance', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'checkbox', 'width': '10%'},
+                {'data': 'dropdown', 'width': '10%'},
+                {'data': 'entityId', 'width': '20%'},
+                {'data': 'documentNumber', 'width': '10%'},
+                {'data': 'receiptId', 'width': '5%'},
+                {'data': 'chqNo', 'width': '5%'},
+                {'data': 'bank', 'width': '5%'},
+                {'data': 'invoiceAmount', 'width': '5%'},
+                {'data': 'collectedAmount', 'width': '5%'},
+                {'data': 'balance', 'width': '5%'},
+                {'data': 'reason', 'width': '5%'},
+                {'data': 'approvedDt', 'width': '5%'},
+                {'data': 'action', 'width': '5%'},
+                {'data': 'id', 'width': '5%'}
+            ],
+
+            columnDefs: [
+                { targets: [ 13 ],
+                    className: "hide_column"
+                }
             ]
         });
     }
 
-    $(".dayEndForm").submit(function (event) {
 
-        //disable the default form submission
-        event.preventDefault();
 
-        //grab all form data
-        var formData = new FormData(this);
-        console.log(formData);
 
-        var url = '';
-        var type = '';
-        if (id) {
-            url = '/day-end-master/update/' + id;
-            type = 'POST'
-        } else {
-            url = '/day-end-master';
-            type = 'POST'
+    $(document).on("click", ".reset", function () {
+        if($(".status").hasClass("disabled")!==true){
+            $('.status').val("Active");
         }
-
-        console.log(type);
-        $.ajax({
-            url: url,
-            type: type,
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function () {
-                swal("Success!", "CCm Submitted Successfully", "success");
-                paymentCollectionLogTable();
-                $('#adddayEndModal').modal('hide');
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-
-            }
-        });
     });
-
-    $(document).on("click", ".addbtn", function () {
-        $(".dayEndTitle").text("Add Day End Master")
-        $(".dayEndForm")[0].reset();
-        id = null
-    });
-
-    $(document).on("click", ".editbtn", function () {
-        id = $(this).data('id');
-        $(".date").val($(this).attr('data-date'));
-        $(".endTime").val($(this).attr('data-endTime'));
-        $(".entity").val($(this).attr('data-entityRegister'));
-        $("#entityTypeId").val($(this).attr('data-entitytype')).change()
-        $(".customerGroupTitle").text("Update Day End");
-    });
-
-    $('.entity').change(function(){
-        var type = $('option:selected', this).attr('data-type');
-        $(".entityType").val(type);
-    });
-
-
-
-    $(document).on("click", ".deletebtn", function () {
-        id = $(this).data('id');
-        $("#myModalLabel").text("Delete Day End?");
-
-    });
-
-    function deleteData() {
-        $.ajax({
-            type: 'POST',
-            url: '/day-end-master/delete/' + id,
-            dataType: 'json',
-            success: function () {
-                $('.deleteModal').modal('hide');
-                paymentCollectionLogTable();
-                swal("Success!", "Day End Deleted Successfully", "success");
-            }, error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
-    }
-
 
 
 
@@ -367,6 +474,120 @@
     }
 
 
+/*
+    $(document).on('change', '.approve', function() {
+        var paymentId  = $(this).data('id');
+        const index = paymentCollectionIds.indexOf(paymentId);
+        if(this.checked) {
+          paymentCollectionIds.push(paymentId);
+          console.log(paymentCollectionIds)
+        }else{
+            if (index > -1) { // only splice array when item is found
+                paymentCollectionIds.splice(index, 1); // 2nd parameter means remove one item only
+            }
+            console.log(paymentCollectionIds)
+        }
+    });
+*/
+
+    function selectAll() {
+        var x = document.getElementsByName("statusCheck");
+        for (var i = 0; i < x.length; i++) {
+            if (document.getElementsByName("statusCheck")[i].checked) {
+                document.getElementsByName("statusCheck")[i].checked = false;
+            } else {
+                document.getElementsByName("statusCheck")[i].checked = true;
+            }
+        }
+    }
+    /* custom button event print */
+    $(document).on('click', '#btnPrint', function(){
+        $("#result").print({
+            globalStyles: true,
+            mediaPrint: false,
+            stylesheet: null,
+            noPrintSelector: ".no-print",
+            iframe: true,
+            append: null,
+            prepend: null,
+            manuallyCopyFormValues: true,
+            deferred: $.Deferred(),
+            timeout: 750,
+            title: null,
+            doctype: '<!doctype html>'
+        });
+    });
+
+
+    function approveAllPaymentCollection(){
+        var tbl = $('.paymentCollectionTable tbody tr').map(function (idxRow, ele) {
+            //
+            // start building the retVal object
+            //
+            var retVal = {id: ++idxRow};
+            //
+            // for each cell
+            //
+            var $td = $(ele).find('td').map(function (idxCell, ele) {
+                var input = $(ele).find(':input');
+                //
+                // if cell contains an input or select....
+                //
+                if (input.length === 1) {
+                    var attr = $('.paymentCollectionTable thead tr th').eq(idxCell).text();
+                    retVal[attr] = input.val();
+                } else {
+                    var attr = $('.paymentCollectionTable thead tr th').eq(idxCell).text();
+                    retVal[attr] = $(ele).text();
+                }
+            });
+            return retVal;
+        }).get();
+        var pcData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
+        console.log(pcData)
+        Swal.fire({
+            title: "Are you sure you want to finalize ?",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // var url = '/payment-collection/finalize-approve';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    dataType: 'json',
+                    data:{
+                        pcData:pcData
+                    },
+                    success: function (data) {
+                        Swal.fire(
+                            'Success!',
+                            'Payment Collection finalized!',
+                            'success'
+                        );
+                        paymentCollectionLogTable();
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'Unable to perform operation, try later.',
+                            'danger'
+                        );
+                    }
+                });
+            } else if (result.isDenied) {
+
+            }
+        });
+
+    }
+
+
+    function updateBulkStatus(){
+        $(".detailsModal").modal('toggle');
+    }
 </script>
 
 <g:include view="controls/footer-content.gsp"/>

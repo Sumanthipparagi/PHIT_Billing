@@ -903,6 +903,7 @@ public class Links
     public static String SAVE_PAYMENT_COLLECTION = APP_CONTEXT_PATH +"accounts/payment-collection/save";
     public static String PAYMENT_COLLECTION_DATATABLE = APP_CONTEXT_PATH +"accounts/payment-collection/datatable";
     public static String PAYMENT_COLLECTION_CHANGE_STATUS = APP_CONTEXT_PATH +"accounts/payment-collection/change-status";
+    public static String PAYMENT_COLLECTION_APPROVE_ALL = APP_CONTEXT_PATH +"accounts/payment-collection/approve-all";
 
 
 

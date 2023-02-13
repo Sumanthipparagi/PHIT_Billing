@@ -185,6 +185,7 @@ public class Constants
     public static String ENTITY_ADMIN = "ENTITY_ADMIN";
     public static String MANAGER = "MANAGER";
     public static String SALESMAN = "SALESMAN";
+    public static String EXECUTIVE = "EXECUTIVE";
 
 
 //    Inv Type

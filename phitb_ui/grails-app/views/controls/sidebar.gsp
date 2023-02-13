@@ -246,7 +246,7 @@
                                 <li><a href="/sale-order-entry/my-orders">My Orders</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
-                                <g:if test="${session.getAttribute('role')=='RETAILER'}">
+                                <g:if test="${session.getAttribute('role').toString()=='RETAILER'}">
                                     <li><a href="/sale-entry-retailer">Sale Entry retailer</a></li>
                                     <li><a href="/retailer-bill-list">Invoices</a></li>
                                 </g:if>
@@ -351,8 +351,24 @@
                                     </ul>
                                 </li>
                             </g:if>
+
+                            <g:if test="${session.getAttribute('role').toString() == Constants.EXECUTIVE}">
+
+                                <li><a href="javascript:void(0);" class="menu-toggle">Payment Collection</span> <span
+                                        class="badge badge-success float-right"></span></a>
+                                    <ul class="ml-menu">
+                                        <li><a href="/payment-collection">Payment Collection</a></li>
+                                        <li><a href="/payment-collection/logs">Logs</a></li>
+                                    </ul>
+                                </li>
+                            </g:if>
                         </ul>
                     </li>
+
+
+
+
+
                     <li id="reports-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
                             class="zmdi zmdi-chart"></i><span>Reports</span> <span
                             class="badge badge-success float-right"></span></a>

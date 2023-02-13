@@ -144,6 +144,7 @@ class UrlMappings {
             "/payment-collection/save(.$format)?"(controller: 'paymentCollectionLog') { action = [POST: 'save'] }
             "/payment-collection/datatable(.$format)?"(controller: 'paymentCollectionLog') { action = [GET: 'dataTable'] }
             "/payment-collection/change-status(.$format)?"(controller: 'paymentCollectionLog') { action = [GET: 'changePaymentCollectionStatus'] }
+            "/payment-collection/approve-all(.$format)?"(controller: 'paymentCollectionLog', action: 'approveAllPaymentCollectionStatus')
 
 
 

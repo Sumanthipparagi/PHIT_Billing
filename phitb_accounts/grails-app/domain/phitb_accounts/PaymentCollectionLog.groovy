@@ -15,6 +15,8 @@ class PaymentCollectionLog implements LogicalDelete<PaymentCollectionLog>
     long entityId
     long entityTypeId
     String status //ACTIVE,CANCELLED, APPROVED
+    Date approvedDate
+    String reason
 
     Date dateCreated
     Date lastUpdated
@@ -23,5 +25,7 @@ class PaymentCollectionLog implements LogicalDelete<PaymentCollectionLog>
     long modifiedUser
 
     static constraints = {
+        approvedDate nullable: true
+        reason nullable:true
     }
 }

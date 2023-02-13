@@ -319,6 +319,29 @@ class AccountsService
 
     }
 
+    def getBankById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+
+            Response apiResponse = target
+                    .path(new Links().BANK_REGISTER_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
     def getWallet()
     {
         Client client = ClientBuilder.newClient();
@@ -1536,6 +1559,26 @@ class AccountsService
             log.error('Service :accountsService , action :  changeStatusPaymentCollection  , Ex:' + ex)
         }
 
+    }
+
+
+    def approveAllPaymentCollection(JSONArray jsonArray){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_COLLECTION_APPROVE_ALL)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonArray.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray1 = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray1
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :accountsService , action :  changeStatusPaymentCollection  , Ex:' + ex)
+            log.error('Service :accountsService , action :  changeStatusPaymentCollection  , Ex:' + ex)
+        }
     }
 
 }

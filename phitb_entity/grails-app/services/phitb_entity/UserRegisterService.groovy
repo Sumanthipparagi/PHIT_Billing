@@ -348,11 +348,13 @@ class UserRegisterService {
 
 
 
-
         void delete(String id) {
         if (id) {
             UserRegister userRegister = UserRegister.findById(Long.parseLong(id))
             if (userRegister) {
+                AuthRegister authRegister = AuthRegister.findByUser(userRegister)
+                authRegister.isUpdatable = true
+                authRegister.delete()
                 userRegister.isUpdatable = true
                 userRegister.delete()
             } else {

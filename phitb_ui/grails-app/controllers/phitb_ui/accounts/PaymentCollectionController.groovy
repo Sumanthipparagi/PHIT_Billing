@@ -64,14 +64,47 @@ class PaymentCollectionController {
 
     def dataTable() {
         try {
+            String fromDate, toDate
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute('entityId'))
             jsonObject.put("userId", session.getAttribute('userId'))
+            if ((params.daterange != null) && (params.daterange != ""))
+            {
+                System.out.println("date=" + params.daterange.toString())
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+                fromDate = params.daterange.split("-")[0]
+                System.out.println("fromdate=" + fromDate.trim())
+                jsonObject.put("fromDate",fromDate.trim())
+                toDate = params.daterange.split("-")[1]
+                jsonObject.put("toDate",toDate.trim())
+                System.out.println("toDate=" + toDate.trim())
+            }
+            else {
+                jsonObject.put("fromDate","")
+                jsonObject.put("toDate","")
+            }
             def apiResponse = new AccountsService().showPaymentCollection(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
                 if (responseObject) {
                     JSONArray jsonArray = responseObject.data
+                    for(JSONObject jsonObject1:jsonArray){
+                        def entity = new EntityService().getEntityById(jsonObject1.entityId.toString())
+                        jsonObject1.put('entityId',entity)
+                        def receiptResponse = new AccountsService().getReciptById(jsonObject1.receiptId.toString())
+                        if(receiptResponse?.status == 200){
+                            JSONObject receiptObj = new JSONObject(receiptResponse.readEntity(String.class))
+                            jsonObject1.put('receipt',receiptObj)
+                            if(receiptObj?.depositTo!=null){
+                                def bank = new AccountsService().getBankById(receiptObj?.depositTo)
+                                if(bank?.status ==200){
+                                    JSONObject bankObj = new JSONObject(bank.readEntity(String.class))
+                                    jsonObject1.put("bank", bankObj)
+                                }
+                            }
+                        }
+
+                    }
                     responseObject.put("data", jsonArray)
                 }
                 respond responseObject, formats: ['json'], status: 200
@@ -95,6 +128,19 @@ class PaymentCollectionController {
             def changeStatus = new AccountsService().changeStatusPaymentCollection(params.id,params.status)
             if(changeStatus){
                 respond changeStatus,formats: ['json'],status: 200
+            }
+        }
+        catch (Exception ex){
+            println(controllerName+" "+ex)
+        }
+    }
+
+    def approveAllPaymentCollection(){
+        try{
+            JSONArray jsonArray = new JSONArray(params.pcData)
+            def updatePaymentCollections = new AccountsService().approveAllPaymentCollection(jsonArray)
+            if(updatePaymentCollections){
+                respond updatePaymentCollections,formats: ['json'], status:200;
             }
         }
         catch (Exception ex){

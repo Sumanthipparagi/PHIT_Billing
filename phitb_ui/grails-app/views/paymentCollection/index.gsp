@@ -151,6 +151,13 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="chequeNumber">Cheque Number:</label>
+                            <input class="form-control" type="number" id="chequeNumber" name="chequeNumber"/>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -469,7 +476,6 @@
             "<p>We are recording payment information please wait!</p>\n" +
             "                    </div>\n" +
             "                </div>";
-
         var processingSwal = Swal.fire({
             title: "Recording Payment..",
             html: spinner,
@@ -490,6 +496,8 @@
         var saleBillId = $("#saleBillId").val();
         var saleReturnIds = $("#saleReturnIds").val();
         var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
+        var type = "PAYMENT_COLLECTION";
+        var chequeNumber = $("#chequeNumber").val();
 
         if(paymentDate == null || paymentDate === "")
         {
@@ -525,14 +533,16 @@
                 depositTo: depositTo,
                 payeeBanker: payeeBanker,
                 cardNumber: cardNumber,
+                chequeNumber: chequeNumber,
                 paymentDate: paymentDate,
                 instrumentId: instrumentId,
                 remarks: remarks,
                 saleBillId: saleBillId,
                 saleReturnIds: saleReturnIds,
-                creditsApplied: creditsApplied
+                creditsApplied: creditsApplied,
+                type:type
             },
-            success: function(saleBill)
+            success: function(data)
             {
                 processingSwal.close();
                 Swal.fire({
@@ -540,8 +550,9 @@
                     html: "Payment recorded for this invoice",
                     icon: 'success'
                 });
-                loadSaleInvoiceTable()
-                listItemClicked(saleBill.id);
+                paymentCollectionTable();
+                $(".detailsModal").modal('hide');
+
             },
             error: function (data) {
                 processingSwal.close();

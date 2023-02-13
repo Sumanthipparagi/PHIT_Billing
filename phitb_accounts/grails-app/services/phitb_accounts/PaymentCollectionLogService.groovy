@@ -1,11 +1,18 @@
 package phitb_accounts
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 
+import java.text.SimpleDateFormat
+
+
 @Transactional
 class PaymentCollectionLogService {
+
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
     PaymentCollectionLog save(JSONObject jsonObject) {
         PaymentCollectionLog paymentCollection = new PaymentCollectionLog()
@@ -33,6 +40,10 @@ class PaymentCollectionLogService {
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
         String entityId = paramsJsonObject.get("entityId")
+        String status = paramsJsonObject.get("status")
+        String fromDate = paramsJsonObject.get("fromDate").toString()
+        String toDate = paramsJsonObject.get("toDate").toString()
+
 
         String orderColumn = "id"
         switch (orderColumnId) {
@@ -50,6 +61,13 @@ class PaymentCollectionLogService {
                 if (searchTerm != "") {
                     ilike('documentNumber', '%' + searchTerm + '%')
                 }
+            }
+            if (fromDate != null && fromDate != '' && toDate != null && toDate != '')
+            {
+                between('dateCreated', sdf.parse(fromDate), sdf.parse(toDate))
+            }
+            if(status != '' && status!="ALL"){
+                eq('status',status)
             }
             eq('entityId', Long.parseLong(entityId))
             eq('deleted', false)
@@ -79,6 +97,27 @@ class PaymentCollectionLogService {
             else
                 throw new BadRequestException()
         }
+    }
+
+    def approveAllPayemtCollection(JSONArray jsonArray){
+       for(JSONObject jsonObject1 : jsonArray){
+           if(jsonObject1.Status!=''){
+               PaymentCollectionLog paymentCollectionLog = PaymentCollectionLog.findById(Long.parseLong(jsonObject1.pcId.toString()))
+               if(jsonObject1.Status == 'Approve'){
+                   paymentCollectionLog.status = "APPROVED"
+                   paymentCollectionLog.approvedDate = new Date()
+                   paymentCollectionLog.reason = jsonObject1.Reason
+               }else if (jsonObject1.Status == 'Return'){
+                   paymentCollectionLog.status = 'RETURNED'
+                   paymentCollectionLog.reason = jsonObject1.Reason
+               }else if(jsonObject1.Status == 'Cancel'){
+                   paymentCollectionLog.status = 'CANECLLED'
+                   paymentCollectionLog.reason = jsonObject1.Reason
+               }
+               paymentCollectionLog.save(flush:true)
+           }
+       }
+        return jsonArray
     }
 
 }
