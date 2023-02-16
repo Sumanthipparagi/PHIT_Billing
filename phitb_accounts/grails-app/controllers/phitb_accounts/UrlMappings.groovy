@@ -147,6 +147,7 @@ class UrlMappings {
             "/payment-collection/approve-all(.$format)?"(controller: 'paymentCollectionLog', action: 'approveAllPaymentCollectionStatus')
             "/payment-collection/cancel-receipt"(controller: 'paymentCollectionLog', action: 'cancelReceipt')
             "/payment-collection/update-bulk-payments"(controller: 'paymentCollectionLog',action: 'updateBulkPaymentStatus')
+            "/payment-collection/receiptId/$receiptId(.$format)?"(controller: 'paymentCollectionLog', action: 'getPaymentLogByReceiptId')
 
 
 

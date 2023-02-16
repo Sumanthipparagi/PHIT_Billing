@@ -1627,4 +1627,26 @@ class AccountsService
         }
     }
 
+    def getPaymentCollectionLogs(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_COLLECTION_RECEIPTID+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray1 = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray1
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :AccountsService , action :  cancelReceipt  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  cancelReceipt  , Ex:' + ex)
+        }
+    }
 }

@@ -143,7 +143,6 @@ class PaymentCollectionLogController {
     }
 
 
-
     def updateBulkPaymentStatus() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
@@ -163,4 +162,21 @@ class PaymentCollectionLogController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    /**
+     * Gets all paymentDetails by receiptId
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of receipt detail
+     */
+    def getPaymentLogByReceiptId() {
+        try {
+            respond paymentCollectionLogService.getPaymentDetailsByReceiptId(params.receiptId)
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

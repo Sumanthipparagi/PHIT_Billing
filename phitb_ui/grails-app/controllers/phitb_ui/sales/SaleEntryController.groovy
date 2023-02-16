@@ -1967,6 +1967,7 @@ class SaleEntryController
 
 
                     println(groupDetails)
+                    JSONArray saleReturnAdjustmentDetails = new SalesService().getSaleReturnAdjustmentDetails(saleBillId, "INVS")
                     render(view: "/sales/saleEntry/sale-invoice", model: [saleBillDetail    : saleBillDetail,
                                                                           saleProductDetails: saleProductDetails,
                                                                           series            : series, entity: entity, customer: customer, city: city,
@@ -1984,6 +1985,7 @@ class SaleEntryController
                                                                           transportDetails  : transportDetails,
                                                                           groupDetails      : groupDetails,
                                                                           settings          : settings,
+                                                                          saleReturnAdjustmentDetails:saleReturnAdjustmentDetails
                     ])
 
                 }
@@ -2726,6 +2728,7 @@ class SaleEntryController
 
 
                     println(groupDetails)
+                    JSONArray saleReturnAdjustmentDetails = new SalesService().getSaleReturnAdjustmentDetails(saleBillId, "INVS")
                     render(view: "/sales/saleEntry/sale-invoice", model: [saleBillDetail    : saleBillDetail,
                                                                           saleProductDetails: saleProductDetails,
                                                                           series            : series, entity: entity, customer: customer, city: city,

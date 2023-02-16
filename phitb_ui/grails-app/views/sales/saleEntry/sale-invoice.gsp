@@ -1,7 +1,8 @@
-<%@ page import="phitb_ui.WordsToNumbersUtil; phitb_ui.Constants" %>
+<%@ page import="phitb_ui.WordsToNumbersUtil; phitb_ui.Constants; java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
 <html>
 
+<% SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy") %>
 <head>
     <title>Tax Invoice</title>
     <style>
@@ -730,9 +731,9 @@
             </table></td>
         </tr>
 
-        <g:if test="${settings.size() != 0  && settings?.IPG!= Constants.NONE}">
             <tr style="border: 1px solid #ffffff;">
-                <td colspan="7" style="border: 0">
+    <g:if test="${settings.size() != 0  && settings?.IPG!= Constants.NONE}">
+        <td colspan="7" style="border: 0">
                     <table class="print" style="margin-top: 2%;width: 100%">
                         <thead>
                         <th>
@@ -765,8 +766,39 @@
 
                     </table>
                 </td>
+    </g:if>
+                <td  style="border: 0;"></td>
+                <td  style="border: 0;"></td>
+                <td  style="border: 0;"></td>
+                <td  style="border: 0;"></td>
+                <td  style="border: 0;"></td>
+                <td  style="border: 0;"></td>
+                <td  style="border: 0;"></td>
+
+                <g:if test="${saleReturnAdjustmentDetails.size()!=0}">
+                <td  colspan="4" style="border: 0;">
+                    <table>
+                        <tr>
+                            <th colspan="4" style="text-align: center;text-transform: uppercase;">Credits Applied</th>
+                        </tr>
+                        <tr>
+                            <th>doc No</th>
+                            <th>Inv.No</th>
+                            <th>Adj. date</th>
+                            <th>Inv. date</th>
+                        </tr>
+                <g:each var="ca" in="${saleReturnAdjustmentDetails}" status="i">
+                        <tr>
+                            <td>${ca?.saleReturnAdjustment?.docNo}</td>
+                            <td>${ca?.saleReturn?.invoiceNumber}</td>
+                            <td id="adjDate${ca?.saleReturnAdjustment?.id}">${ca?.saleReturnAdjustment?.dateCreated}</td>
+                            <td id="srDate${ca?.saleReturn?.id}">${ca?.saleReturn?.dateCreated}</td>
+                        </tr>
+                </g:each>
+                    </table>
+                </td>
+                </g:if>
             </tr>
-        </g:if>
         </tbody>
         <tfoot style="border: 1px solid #ffffff">
         <tr style="border: 1px solid #ffffff">
@@ -866,51 +898,61 @@
         $("#poDate2").text();
         </g:else>
 
-        //
-        // var rowCount = $('.extended tr').length;
-        // var row = rowCount - 2;
-        //
-        // var userDetails = $('#userDetails').prop('outerHTML');
-        // var prodHeaders="";
-        // var prodDetails="";
-        // $(".extended tr th").each(function(){
-        //     prodHeaders += $(this).prop('outerHTML');
-        // });
-        // $(".extended").each(function(){
-        //     prodDetails += $(this).prop('outerHTML');
-        // });
-        // var array = [];
-        // var headers = [];
-        // $('.extended th').each(function(index, item) {
-        //     headers[index] = $(item).html()
-        // });
-        //
-        // $('.extended tr').has('td').each(function() {
-        //     var arrayItem = {};
-        //     $('td', $(this)).each(function(index, item) {
-        //         arrayItem[headers[index].replace(/\s+/g, '').replace(/[\W_]/g, "_")] = $(item).html();
-        //     });
-        //     array.push(arrayItem);
-        // });
-        // var data = array.slice(5);
-        // var pdetails="";
-        // for (var i = 0; i < data.length; i++)
-        // {
-        //     pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
-        // }
-        // var prodTableHeaders =
-        //     '<table style="width:1308px;table-layout: auto;" class="extended">'+prodHeaders;
-        // if(row > 5)
-        // {
-        //     document.getElementById("breakPage").style.pageBreakAfter = "always";
-        //     $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
-        //     $("#prodDetails tr").slice(-data.length).remove();
-        // }
+
+<g:each var="ca" in="${saleReturnAdjustmentDetails}" status="i">
+        $("#adjDate${ca?.saleReturnAdjustment?.id}").text(" " +
+            moment('${ca?.saleReturnAdjustment?.dateCreated}').format('DD-MM-YYYY'));
+
+        $("#srDate${ca?.saleReturn?.id}").text(" " +
+            moment('${ca?.saleReturnAdjustment?.dateCreated}').format('DD-MM-YYYY'));
+
+        </g:each>
+
+    //
+    // var rowCount = $('.extended tr').length;
+    // var row = rowCount - 2;
+    //
+    // var userDetails = $('#userDetails').prop('outerHTML');
+    // var prodHeaders="";
+    // var prodDetails="";
+    // $(".extended tr th").each(function(){
+    //     prodHeaders += $(this).prop('outerHTML');
+    // });
+    // $(".extended").each(function(){
+    //     prodDetails += $(this).prop('outerHTML');
+    // });
+    // var array = [];
+    // var headers = [];
+    // $('.extended th').each(function(index, item) {
+    //     headers[index] = $(item).html()
+    // });
+    //
+    // $('.extended tr').has('td').each(function() {
+    //     var arrayItem = {};
+    //     $('td', $(this)).each(function(index, item) {
+    //         arrayItem[headers[index].replace(/\s+/g, '').replace(/[\W_]/g, "_")] = $(item).html();
+    //     });
+    //     array.push(arrayItem);
+    // });
+    // var data = array.slice(5);
+    // var pdetails="";
+    // for (var i = 0; i < data.length; i++)
+    // {
+    //     pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
+    // }
+    // var prodTableHeaders =
+    //     '<table style="width:1308px;table-layout: auto;" class="extended">'+prodHeaders;
+    // if(row > 5)
+    // {
+    //     document.getElementById("breakPage").style.pageBreakAfter = "always";
+    //     $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
+    //     $("#prodDetails tr").slice(-data.length).remove();
+    // }
 
 
-    };
+};
 
-    var qrText = '${saleBillDetail.invoiceNumber}';
+var qrText = '${saleBillDetail.invoiceNumber}';
     <g:if test="${irnDetails != null}">
     qrText = '${irnDetails.SignedQRCode}';
     </g:if>
@@ -922,7 +964,7 @@
         render: "canvas",
         size: 160,
         // code color or image element
-        fill: '#000',
+        fill: '#000000',
         // background color or image element, null for transparent background
         background: null,
         // corner radius relative to module width: 0.0 .. 0.5
@@ -943,7 +985,7 @@
         mPosY: 0.5,
         label: qrText,
         fontname: 'sans',
-        fontcolor: '#000',
+        fontcolor: '#000000',
         image: null,
         text: qrText
     });

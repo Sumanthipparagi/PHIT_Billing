@@ -519,10 +519,13 @@ class ReciptDetailController {
         JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
         JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
         JSONArray reciptloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
+        JSONArray paymentLogArray = new AccountsService().getPaymentCollectionLogs(params.id)
         render(view: '/accounts/recipt/recipt-temp', model: [customer          : customer, receipt: recipt,
                                                              entity            : entity, reciptloginvArray: reciptloginvArray,
                                                              reciptlogcrntArray: reciptlogcrntArray,
-                                                             reciptloggtnArray :reciptloggtnArray])
+                                                             reciptloggtnArray :reciptloggtnArray,
+                                                             paymentLogArray:paymentLogArray
+        ])
     }
 
 

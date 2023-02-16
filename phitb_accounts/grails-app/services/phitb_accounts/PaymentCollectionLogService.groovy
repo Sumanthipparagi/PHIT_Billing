@@ -45,12 +45,11 @@ class PaymentCollectionLogService {
         String fromDate = paramsJsonObject.get("fromDate").toString()
         String toDate = paramsJsonObject.get("toDate").toString()
 
-
         String orderColumn = "id"
         switch (orderColumnId) {
             case '0':
                 orderColumn = "id"
-                break
+                break;
         }
 
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
@@ -147,6 +146,13 @@ class PaymentCollectionLogService {
             }
         }
         return paymentArray
+    }
+
+    def getPaymentDetailsByReceiptId(String receiptId){
+       ArrayList<PaymentCollectionLog> paymentCollectionLog = PaymentCollectionLog.findAllByReceiptId(Long.parseLong
+               (receiptId))
+        return paymentCollectionLog
+
     }
 
 }

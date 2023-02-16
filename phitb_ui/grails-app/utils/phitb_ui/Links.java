@@ -905,7 +905,9 @@ public class Links
     public static String PAYMENT_COLLECTION_CHANGE_STATUS = APP_CONTEXT_PATH +"accounts/payment-collection/change-status";
     public static String PAYMENT_COLLECTION_APPROVE_ALL = APP_CONTEXT_PATH +"accounts/payment-collection/approve-all";
     public static String PAYMENT_COLLECTION_CANCEL_RECEIPT = APP_CONTEXT_PATH +"accounts/payment-collection/cancel-receipt";
-    public static String PAYMENT_COLLECTION_BULK_UPDATE = APP_CONTEXT_PATH +"accounts//payment-collection/update-bulk-payments";
+    public static String PAYMENT_COLLECTION_BULK_UPDATE = APP_CONTEXT_PATH +"accounts/payment-collection/update-bulk-payments";
+
+    public static String PAYMENT_COLLECTION_RECEIPTID = APP_CONTEXT_PATH +"accounts/payment-collection/receiptId";
 
 
 
