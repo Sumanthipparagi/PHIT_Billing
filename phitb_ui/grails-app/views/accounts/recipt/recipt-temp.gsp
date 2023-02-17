@@ -240,7 +240,8 @@
         %>
         <td colspan="4"><b>${UtilsService.round(inv+gtn-crnt, 2)}</b><br>
         <g:if test="${paymentLogArray.size()!=0}">
-            <p>There is a due of ${UtilsService.round(inv+gtn-Double.parseDouble(paymentLogArray.collectedAmount.sum().toString()), 2)}</p>
+            <p>Balance:
+                ${UtilsService.round(Double.parseDouble(paymentLogArray.balance.sum().toString()), 2)}</p>
         </g:if>
 
     </td>
