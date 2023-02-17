@@ -33,6 +33,7 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
     String cardNumber
     Date cancelledDate
     String instrumentId
+    boolean isPayment
 
     Date dateCreated
     Date lastUpdated
