@@ -145,6 +145,14 @@ class ReceiptDetailService {
         {
             receiptDetail.instrumentId = null
         }
+        if(!jsonObject.isNull("isPayment"))
+        {
+            receiptDetail.isPayment = jsonObject.get("isPayment").toString()
+        }
+        else
+        {
+            receiptDetail.isPayment = false
+        }
         receiptDetail.paymentDate = sdf.parse(jsonObject.get("paymentDate").toString())
         receiptDetail.transId = "1"
         receiptDetail.employeeReceived = Long.parseLong("1")
