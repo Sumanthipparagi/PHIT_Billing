@@ -15,15 +15,24 @@ class SubAccountTypeMasterService {
      * @param limit
      * @return list of Sub Account Types
      */
-    def getAll(String limit, String offset, String query) {
+    def getAll(String limit, String offset, String query, String entityId = null) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
-        if (!query)
-            return SubAccountTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        if (!query) {
+            if (entityId != null)
+                return SubAccountTypeMaster.findAllByEntityId(Long.parseLong(entityId), [sort: 'id', max: l, offset: o, order: 'desc'])
+            else
+                return SubAccountTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
         else
-            return SubAccountTypeMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+        {
+            if (entityId != null)
+                return SubAccountTypeMaster.findAllByNameIlikeAndEntityId("%" + query + "%", Long.parseLong(entityId),[sort: 'id', max: l, offset: o, order: 'desc'])
+            else
+                return SubAccountTypeMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+        }
     }
 
     /**

@@ -25,7 +25,7 @@ class AccountModeMasterService
      * @param limit
      * @return list of account modes
      */
-    def getAll(String limit, String offset, String query)
+    def getAll(String limit, String offset, String query, String entityId = null)
     {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -33,11 +33,17 @@ class AccountModeMasterService
 
         if (!query)
         {
-            return AccountModeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            if(entityId != null)
+                return AccountModeMaster.findAllByEntityId(Long.parseLong(entityId), [sort: 'id', max: l, offset: o, order: 'desc'])
+            else
+                return AccountModeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         }
         else
         {
-            return AccountModeMaster.findAllByModeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            if(entityId != null)
+                return AccountModeMaster.findAllByModeIlikeAndEntityId("%" + query + "%",Long.parseLong(entityId), [sort: 'id', max: l, offset: o, order: 'desc'])
+            else
+                return AccountModeMaster.findAllByModeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
         }
     }
 

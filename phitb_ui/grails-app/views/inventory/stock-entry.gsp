@@ -271,8 +271,10 @@
                             '" data-entityType="' + json.data[i].entityTypeId + '"' +
                             '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addstockModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
-                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
+                       /* var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                     */
+                        var deletebtn = '';
                         return_data.push({
                             'id': json.data[i].id,
                             'product': json.data[i].product.productName,

@@ -125,60 +125,88 @@
                                 <label for="gstOnMrpSales">
                                     GST on MRP Sales
                                 </label>
-                                <input type="text" id="gstOnMrpSales" class="form-control gstOnMrpSales"
+                                <select name="gstOnMrpSales" id="gstOnMrpSales" class="form-control gstOnMrpSales" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                                %{--<input type="text" id="gstOnMrpSales" class="form-control gstOnMrpSales"
                                        name="gstOnMrpSales"
                                        placeholder="GST on MRP Sales"
-                                       required/>
+                                       required/>--}%
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="gstOnSchemeValueSales">
                                     GST on Scheme Value Sales
                                 </label>
-                                <input type="text" id="gstOnSchemeValueSales" class="form-control gstOnSchemeValueSales"
+                                <select name="gstOnSchemeValueSales" id="gstOnSchemeValueSales" class="form-control gstOnSchemeValueSales" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                               %{-- <input type="text" id="gstOnSchemeValueSales" class="form-control gstOnSchemeValueSales"
                                        name="gstOnSchemeValueSales"
                                        placeholder="GST on Scheme Value Sales"
-                                       required/>
+                                       required/>--}%
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="gstOnMrpPur">
                                     GST on MRP Pur
                                 </label>
-                                <input type="text" id="gstOnMrpPur" class="form-control gstOnMrpPur"
+                                <select name="gstOnMrpPur" id="gstOnMrpPur" class="form-control gstOnMrpPur" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+
+                               %{-- <input type="text" id="gstOnMrpPur" class="form-control gstOnMrpPur"
                                        name="gstOnMrpPur"
                                        placeholder="GST on MRP Pur"
-                                       required/>
+                                       required/>--}%
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="gstOnSchemeValuePur">
                                     GST on Scheme Value Pur
                                 </label>
-                                <input type="text" id="gstOnSchemeValuePur" class="form-control gstOnSchemeValuePur"
+
+                                <select name="gstOnSchemeValuePur" id="gstOnSchemeValuePur" class="form-control gstOnSchemeValuePur" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+
+                              %{--  <input type="text" id="gstOnSchemeValuePur" class="form-control gstOnSchemeValuePur"
                                        name="gstOnSchemeValuePur"
                                        placeholder="GST on Scheme Value Pur"
-                                       required/>
+                                       required/>--}%
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="gstDiscountSales">
-                                    GST Discount Sales
+                                    GST on Discount Sales
                                 </label>
-                                <input type="text" id="gstDiscountSales" class="form-control gstDiscountSales"
+                                <select name="gstDiscountSales" id="gstDiscountSales" class="form-control gstDiscountSales" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                              %{--  <input type="text" id="gstDiscountSales" class="form-control gstDiscountSales"
                                        name="gstDiscountSales"
                                        placeholder="GST Discount Sales"
-                                       required/>
+                                       required/>--}%
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="gstDiscountPur">
-                                    GST Discount Pur
+                                    GST on Discount Pur
                                 </label>
-                                <input type="text" id="gstDiscountPur" class="form-control gstDiscountPur"
+
+                                <select name="gstDiscountPur" id="gstDiscountPur" class="form-control gstDiscountPur" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                                %{--<input type="text" id="gstDiscountPur" class="form-control gstDiscountPur"
                                        name="gstDiscountPur"
                                        placeholder="GST Discount Pur"
-                                       required/>
+                                       required/>--}%
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">

@@ -21,7 +21,8 @@ class AccountTypeMasterController {
     def index() {
 
         try {
-            respond accountTypeMasterService.getAll(params.limit, params.offset, params.query)
+            String entityId = params.entityId
+            respond accountTypeMasterService.getAll(params.limit, params.offset, params.query, entityId)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

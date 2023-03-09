@@ -156,7 +156,8 @@ class AccountModeController
     {
         try
         {
-            def apiResponse = new SystemService().getAccountmodes()
+            String entityId = session.getAttribute("entityId")
+            def apiResponse = new SystemService().getAccountmodes(entityId)
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));

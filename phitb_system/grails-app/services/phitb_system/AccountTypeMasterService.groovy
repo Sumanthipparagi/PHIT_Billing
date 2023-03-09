@@ -15,15 +15,23 @@ class AccountTypeMasterService {
      * @param limit
      * @return list of account types
      */
-    def getAll(String limit, String offset, String query) {
+    def getAll(String limit, String offset, String query, String entityId = null) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
-        if (!query)
-            return AccountTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        else
-            return AccountTypeMaster.findAllByAccountTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+        if (!query) {
+            if(entityId != null)
+                return AccountTypeMaster.findAllByEntityId(Long.parseLong(entityId), [sort: 'id', max: l, offset: o, order: 'desc'])
+            else
+                return AccountTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        } else {
+            if(entityId != null)
+                return AccountTypeMaster.findAllByAccountTypeIlikeAndEntityId("%" + query + "%", Long.parseLong(entityId), [sort: 'id', max: l, offset: o, order: 'desc'])
+            else
+                return AccountTypeMaster.findAllByAccountTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+
+        }
     }
 
     /**
