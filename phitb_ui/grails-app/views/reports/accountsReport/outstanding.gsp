@@ -238,8 +238,8 @@
                                 "<td>" + bill.financialYear + "</td>" +
                                 "<td>" + bill.transactionType + "</td>" +
                                 "<td>" + bill.transactionNumber + "</td>" +
-                                "<td>" + dateFormat(bill.transactionDate) + "</td>" +
-                                "<td>" + dateFormat(bill.dueDate) + "</td>" +
+                                "<td>" + dateFormat(bill.transactionDate, "transdate") + "</td>" +
+                                "<td>" + dateFormat(bill.dueDate, "duedate") + "</td>" +
                                 "<td>" + formatNumber(bill.balance.toFixed(2)) + "</td>" +
                                 "<td>" + formatNumber(bill.due.toFixed(2)) + "</td>" +
                                 "<td>" + formatNumber(Number(td.toFixed(2))) + "</td>" +
@@ -299,10 +299,10 @@
           });
       });*/
 
-    function dateFormat(dt)
+    function dateFormat(dt, type)
     {
         dt = dt.replace("T", " ").replace("Z", '');
-        var date = new Date(dt);
+        var date = moment(dt, "DD/MM/YYYY HH:mm:ss").toDate()
         //return moment(date).format('DD/MM/YYYY hh:mm:ss a');
         return moment(date).format('DD/MM/YYYY');
     }
