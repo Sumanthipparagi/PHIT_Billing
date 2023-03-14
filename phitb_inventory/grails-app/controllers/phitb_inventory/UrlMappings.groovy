@@ -63,6 +63,7 @@ class UrlMappings {
 
             "/status"(controller: 'status', action: 'index')
 
+            "/reports/expiry(.$format)?"(controller: 'reports') { action = [POST: 'expiryReport'] }
         }
     }
 }

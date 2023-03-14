@@ -705,4 +705,37 @@ class InventoryService {
         }
     }
 
+
+    def getExpiryReport(String fromDate, String toDate,long entityId)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("fromDate", fromDate)
+            jsonObject.put("toDate", toDate)
+            jsonObject.put("entityId", entityId)
+            Response apiResponse = target
+                    .path(new Links().STOCK_EXPIRY_REPORT)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jSONArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jSONArray
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : InventoryService , action :  getExpiryReport  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getExpiryReport  , Ex:' + ex)
+        }
+
+    }
+
 }

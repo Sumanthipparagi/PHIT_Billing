@@ -645,6 +645,7 @@ public class Links
     public static String STOCK_PURCHASE_RETURN = APP_CONTEXT_PATH + "inventory/stockbook/purchasereturn";
     public static String STOCK_ACTIVITY_DATERANGE_ENTITY = APP_CONTEXT_PATH + "inventory/stockactivitydaterangeentity";
     public static String STOCK_ACTIVITY_CLOSING = APP_CONTEXT_PATH + "inventory/stockactivity/closing";
+    public static String STOCK_EXPIRY_REPORT = APP_CONTEXT_PATH + "inventory/reports/expiry";
 
 
     //Temp Stock Book

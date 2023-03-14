@@ -13,6 +13,8 @@ import phitb_ui.SalesService
 import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 
+import java.text.SimpleDateFormat
+
 class InventoryReportController {
 
     def index() {
@@ -273,6 +275,34 @@ class InventoryReportController {
             respond inventoryStatements, formats: ['json']
         }
         catch (Exception ex) {
+            System.out.print(ex)
+        }
+    }
+
+    def expiryReport()
+    {
+        String entityId = session.getAttribute("entityId")
+        JSONObject loggedInEntity = new EntityService().getEntityById(entityId)
+        ArrayList entities = new ArrayList()
+        //entities = new EntityRegisterController().getByAffiliates(entityId) as ArrayList
+        entities[0] = loggedInEntity
+        render(view: '/reports/inventoryReport/expiry', model: [entities: entities])
+    }
+
+    def generateExpiryReport()
+    {
+        try {
+            long entityId = Long.parseLong(session.getAttribute("entityId").toString())
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
+            //String fromDate = sdf.format(new Date())
+            //String toDate = sdf.format(new Date())
+            String fromDate = "14/03/2021 00:00:00"
+            String toDate = "14/03/2029 00:00:00"
+            JSONArray jsonArray = new InventoryService().getExpiryReport(fromDate, toDate, entityId)
+            respond jsonArray, formats: ['json']
+        }
+        catch (Exception ex)
+        {
             System.out.print(ex)
         }
     }
