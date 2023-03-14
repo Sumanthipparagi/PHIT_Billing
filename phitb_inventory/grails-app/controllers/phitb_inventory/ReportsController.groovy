@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 
 class ReportsController {
 	static responseFormats = ['json', 'xml']
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 	
     def inventoryReport() {
         JSONObject jsonObject = new JSONObject(request.reader.text)

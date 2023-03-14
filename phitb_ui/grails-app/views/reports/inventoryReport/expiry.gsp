@@ -76,9 +76,12 @@
                             <div class="col-md-9">
                                 <div class="form-group">
                                     <div class="input-group inlineblock">
-                                        <label for="dateRange">Date Range:</label>
-                                        <input id="dateRange" class="dateRange" type="text" name="dateRange"
-                                               style="border-radius: 6px;margin: 4px;"/>
+                                        <label for="dateFrom">From:</label>
+                                        <input type="month" id="dateFrom" name="dateFrom">
+                                        <label for="dateTo">To:</label>
+                                        <input type="month" id="dateTo" name="dateTo">
+                                      %{--  <input id="dateRange" class="dateRange" type="text" name="dateRange"
+                                               style="border-radius: 6px;margin: 4px;"/>--}%
 
 
                                         <button class="input-group-btn btn btn-info btn-sm"
@@ -169,18 +172,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 <script>
     var dueOnDate = "";
-    $('.dateRange').daterangepicker({
+  /*  $('.dateRange').daterangepicker({
         locale: {
-            format: "DD/MM/YYYY"
+            format: "MMM/YYYY"
         },
-        maxDate: moment()
+        "showDropdowns": true
     }).on('apply.daterangepicker', function (ev, picker) {
-        dueOnDate = moment(picker.endDate).format('DD/MM/YYYY');
-    });
+        dueOnDate = moment(picker.endDate).format('MMM/YYYY');
+    });*/
 
     $("#entitySelect").select2();
 
     function getReport() {
+
+        var dateFrom = $('#dateFrom').val();
+        var dateTo = $('#dateTo').val();
+
+        if(dateFrom === null || dateFrom === "" || dateTo === null || dateTo === "")
+        {
+            alert("Select Month!");
+            return;
+        }
+
         var entitySelect = $("#entitySelect").val();
         var loading = Swal.fire({
             title: "Getting reports, Please wait!",
@@ -191,13 +204,13 @@
             allowOutsideClick: false,
             closeOnClickOutside: false
         });
-        var dateRange = $('.dateRange').val();
         $.ajax({
-            url: "/reports/inventory/getstatement?dateRange=" + dateRange+"&entityId="+entitySelect,
+            url: "/reports/inventory/getexpiry?dateFrom=" + dateFrom+"&entityId="+entitySelect+"&dateTo="+dateTo,
             type: "GET",
             contentType: false,
             processData: false,
             success: function (data) {
+                loading.close();
                 var content = "";
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
@@ -228,7 +241,7 @@
                 });
                 var mainTableFooter = "</tbody></table>";
                 $("#result").html(mainTableHeader + content + mainTableFooter);
-                loading.close();
+
             },
             error: function () {
                 loading.close();

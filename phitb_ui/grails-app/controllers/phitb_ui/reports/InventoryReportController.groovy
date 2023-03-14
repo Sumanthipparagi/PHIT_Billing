@@ -284,7 +284,6 @@ class InventoryReportController {
         String entityId = session.getAttribute("entityId")
         JSONObject loggedInEntity = new EntityService().getEntityById(entityId)
         ArrayList entities = new ArrayList()
-        //entities = new EntityRegisterController().getByAffiliates(entityId) as ArrayList
         entities[0] = loggedInEntity
         render(view: '/reports/inventoryReport/expiry', model: [entities: entities])
     }
@@ -292,13 +291,32 @@ class InventoryReportController {
     def generateExpiryReport()
     {
         try {
+            String dateFrom = params.dateFrom
+            String dateTo = params.dateTo
             long entityId = Long.parseLong(session.getAttribute("entityId").toString())
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
-            //String fromDate = sdf.format(new Date())
-            //String toDate = sdf.format(new Date())
-            String fromDate = "14/03/2021 00:00:00"
-            String toDate = "14/03/2029 00:00:00"
-            JSONArray jsonArray = new InventoryService().getExpiryReport(fromDate, toDate, entityId)
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM")
+            Date fromDate = sdf.parse(dateFrom)
+            Date toDate = sdf.parse(dateTo)
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fromDate)
+            calendar.set(Calendar.DAY_OF_MONTH, 1)
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            String fromDateStr = calendar.getTime().format("dd/MM/yyyy HH:mm:ss")
+            calendar.setTime(toDate)
+            int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+            calendar.set(Calendar.DAY_OF_MONTH, maxDay)
+            calendar.set(Calendar.HOUR_OF_DAY, 23)
+            calendar.set(Calendar.MINUTE, 59)
+            calendar.set(Calendar.SECOND, 59)
+            String toDateStr = calendar.getTime().format("dd/MM/yyyy HH:mm:ss")
+
+            JSONArray jsonArray = new JSONArray()
+            JSONArray stocks = new InventoryService().getExpiryReport(fromDateStr, toDateStr, entityId)
+            for (Object stock : stocks) {
+
+            }
             respond jsonArray, formats: ['json']
         }
         catch (Exception ex)
