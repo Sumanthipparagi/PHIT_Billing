@@ -213,30 +213,22 @@
                 loading.close();
                 var content = "";
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
-                    "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
-                    "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='10'>Inventory Report, Date: " +
-                    dateRange + "</th></tr>" +
-                    //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
-                    //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<tr><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Packing</th><th data-f-bold='true' colspan='2'>Opening<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Purchase/P.Return<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Sales/S.Return<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Closing<br>Qty &emsp;Amt</th></tr>" +
+                    "<tr><td data-f-bold='true' colspan='6'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
+                    "<tr><td colspan='6'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+                    "<tr><th data-f-bold='true' colspan='6'>Expiry Report, Date From: " +
+                    dateFrom + " | Date Upto: "+dateTo+"</th></tr>" +
+                    "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Batch Number</th><th data-f-bold='true'>Exp Date</th><th data-f-bold='true'>Qty</th><th data-f-bold='true'>Value</th>" +
                     "</thead><tbody>";
                 var stockDetails = "";
                 $.each(data, function (key, value) {
-                    var closingQty = (value?.openingQty - value?.saleQty);
-                    closingQty = closingQty + value?.purchaseQty;
-
-                    var closingAmt = (value?.openingAmt - value?.saleAmt);
-                    closingAmt = closingAmt + value?.purchaseAmt;
-
+                    var qty = value?.remainingQty + value?.remainingFreeQty;
+                    var val = qty * value?.saleRate;
                     stockDetails = "<tr>" +
+                                "<td>" + (key+1) + "</td>" +
                                 "<td>" + value?.productName + "</td>" +
-                                "<td>" + value?.packing + "</td></td>"+
-                                "<td>" + value?.openingQty + "</td><td>"+ value?.openingAmt.toFixed(2) + "</td>"+
-                                "<td>" + value?.purchaseQty + "</td><td>"+ value?.purchaseAmt.toFixed(2) + "</td>"+
-                                "<td>" + value?.saleQty + "</td><td>"+ value?.saleAmt.toFixed(2) + "</td>"+
-                                "<td>" + closingQty + "</td><td>"+ closingAmt.toFixed(2) +
-                        "</td></tr>";
+                                "<td>" + value?.batchNumber + "</td></td>"+
+                                "<td>" + value?.expDate + "</td><td>"+ qty + "</td>"+
+                                "<td>" + val.toFixed(2) + "</td></tr>";
                     content += stockDetails
                 });
                 var mainTableFooter = "</tbody></table>";

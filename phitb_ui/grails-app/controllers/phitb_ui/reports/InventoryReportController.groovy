@@ -314,8 +314,16 @@ class InventoryReportController {
 
             JSONArray jsonArray = new JSONArray()
             JSONArray stocks = new InventoryService().getExpiryReport(fromDateStr, toDateStr, entityId)
-            for (Object stock : stocks) {
+            for (JSONObject stock : stocks) {
+                def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
+                stock.put("productName", batch.product.productName)
 
+                String expDate = stock.get("expDate")
+                expDate = expDate.split("T")[0]
+                expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("MMM-yyyy")
+                stock.put("expDate", expDate)
+
+                jsonArray.add(stock)
             }
             respond jsonArray, formats: ['json']
         }
