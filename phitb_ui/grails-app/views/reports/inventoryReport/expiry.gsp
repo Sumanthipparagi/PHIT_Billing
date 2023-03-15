@@ -18,6 +18,7 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/plugins/fontawesome/css/all.css" rel="stylesheet"/>
 
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
@@ -80,12 +81,11 @@
                                         <input type="month" id="dateFrom" name="dateFrom">
                                         <label for="dateTo">To:</label>
                                         <input type="month" id="dateTo" name="dateTo">
-                                      %{--  <input id="dateRange" class="dateRange" type="text" name="dateRange"
-                                               style="border-radius: 6px;margin: 4px;"/>--}%
-
-
                                         <button class="input-group-btn btn btn-info btn-sm"
+                                                data-toggle="modal" data-target="#myModal" ><i class="fa fa-filter"></i> </button>
+                                        <button class="input-group-btn btn btn-success btn-sm"
                                                 onclick="getReport()">Get Report</button>
+
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                                     <div class="input-group inlineblock">
                                         <label>Export:</label>
                                         <button class="input-group-btn btn btn-info btn-sm" id="btnExport"><i
-                                                class="fa fa-file-excel-o"></i> Excel</button>
+                                                class="fa fa-file-excel"></i> Excel</button>
                                         <button class="input-group-btn btn btn-danger btn-sm" id="btnPrint"><i
                                                 class="fa fa-print"></i> Print</button>
                                     </div>
@@ -292,6 +292,7 @@
 
 
 </script>
+<g:include view="controls/reports/expiry-filter.gsp"/>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("reports-menu");
