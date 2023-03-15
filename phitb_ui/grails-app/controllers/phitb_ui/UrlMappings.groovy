@@ -460,6 +460,7 @@ class UrlMappings {
             action = [GET: "index", POST: "save"]
         }
         "/product-group/datatable"(controller: "productGroup", action: "dataTable")
+        "/product-group/getbyentity"(controller: "productGroup", action: "respondByEntity")
         "/product-group/update/$id"(controller:"productGroup",action:"update")
         "/product-group/delete/$id"(controller: "productGroup",action:"delete")
 

@@ -544,6 +544,9 @@
                             <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_SCHEDULE", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/product-schedule">Product Schedule</a></li>
                             </g:if>
+                            <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_GROUP", session.getAttribute("permittedFeatures").toString())}">
+                                <li><a href="/product-group">Product Group</a></li>
+                            </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_COMPOSITION", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/product-composition">Product Composition</a></li>
                             </g:if>

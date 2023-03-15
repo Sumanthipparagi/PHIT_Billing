@@ -194,7 +194,13 @@ class ProductGroupController {
         }
     }
 
-    def getByEntity()
+    def respondByEntity()
+    {
+        ArrayList<String> arrayList = getByEntity()
+        respond arrayList, formats: ['json']
+    }
+
+    ArrayList<String> getByEntity()
     {
         try
         {
@@ -214,7 +220,7 @@ class ProductGroupController {
         {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
+            return []
         }
     }
 

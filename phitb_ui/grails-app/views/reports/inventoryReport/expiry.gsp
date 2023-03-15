@@ -171,7 +171,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 <script>
-    var dueOnDate = "";
+    var filterType = "";
   /*  $('.dateRange').daterangepicker({
         locale: {
             format: "MMM/YYYY"
@@ -204,8 +204,49 @@
             allowOutsideClick: false,
             closeOnClickOutside: false
         });
+        var url = "/reports/inventory/getexpiry?dateFrom=" + dateFrom+"&entityId="+entitySelect+"&dateTo="+dateTo;
+        var ids = null;
+        switch (filterType)
+        {
+            case "ALL":
+                break;
+            case "PRODUCT":
+
+                var checkboxes = document.getElementsByName("products");
+                // Loop through the radio buttons
+                for (var i = 0; i < checkboxes.length; i++) {
+                    // Check if the current radio button is checked
+                    if (checkboxes[i].checked) {
+                        if(ids === null)
+                            ids = checkboxes[i].value + ",";
+                        else
+                            ids += checkboxes[i].value + ",";
+                    }
+                }
+                url += "&productids="+ids;
+                break;
+            case "SUPPLIER":
+                break;
+            case "GROUP":
+                var checkboxes = document.getElementsByName("groups");
+                // Loop through the radio buttons
+                for (var i = 0; i < checkboxes.length; i++) {
+                    // Check if the current radio button is checked
+                    if (checkboxes[i].checked) {
+                        if(ids === null)
+                            ids = checkboxes[i].value + ",";
+                        else
+                            ids += checkboxes[i].value + ",";
+                    }
+                }
+                url += "&groupids="+ids;
+                break;
+            case "COMPANY":
+                break;
+        }
+
         $.ajax({
-            url: "/reports/inventory/getexpiry?dateFrom=" + dateFrom+"&entityId="+entitySelect+"&dateTo="+dateTo,
+            url:url,
             type: "GET",
             contentType: false,
             processData: false,

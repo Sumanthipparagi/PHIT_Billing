@@ -36,8 +36,7 @@ class InventoryReportController {
             JSONArray products = new ProductService().getProductByEntity(entityId)
             for (Object product : products) {
                 def apiResponse = new ProductService().getBatchesOfProduct(product.id.toString())
-                if(apiResponse.status == 200)
-                {
+                if (apiResponse.status == 200) {
                     JSONArray jsonArray = JSON.parse(apiResponse.readEntity(String.class)) as JSONArray
                     ArrayList<String> batchNumbers = new ArrayList<>()
                     for (Object js : jsonArray) {
@@ -55,7 +54,7 @@ class InventoryReportController {
             //get sale invoice and sales return
             JSONArray saleInvoices = new SalesService().getSaleBillByDateRange(dateRange, entityId)
             JSONArray saleReturns = new SalesService().getSaleReturnByDateRange(dateRange, entityId)
-           //get purchase invoice and purchase return
+            //get purchase invoice and purchase return
             JSONArray purchaseInvoices = new PurchaseService().getPurchaseBillByDateRange(dateRange, entityId)
             JSONArray purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(dateRange, entityId)
 
@@ -228,25 +227,19 @@ class InventoryReportController {
                 long saleQty = 0
                 double saleAmt = 0
                 InventoryStatement inventoryStatement = null
-                if(productList.containsKey(productId))
-                {
+                if (productList.containsKey(productId)) {
                     inventoryStatement = productList.get(productId)
                     def btchs = productBatches.values()
-                    if(btchs.contains(stocksActivity.batch))
-                    {
+                    if (btchs.contains(stocksActivity.batch)) {
                         openingQty = (stocksActivity.remainingQty + stocksActivity.remainingSchemeQty)
                         openingAmt = (UtilsService.round((stocksActivity.saleRate * stocksActivity.remainingQty), 2))
-                    }
-                    else
-                    {
+                    } else {
                         openingQty = inventoryStatement.openingQty + (stocksActivity.remainingQty + stocksActivity.remainingSchemeQty)
                         openingAmt = inventoryStatement.openingAmt + (UtilsService.round((stocksActivity.saleRate * stocksActivity.remainingQty), 2))
                     }
                     inventoryStatement.openingQty = openingQty
-                    inventoryStatement.openingAmt = UtilsService.round(openingAmt,2)
-                }
-                else
-                {
+                    inventoryStatement.openingAmt = UtilsService.round(openingAmt, 2)
+                } else {
                     JSONObject productDetail = new ProductService().getProductById(productId.toString())
                     openingQty = stocksActivity.remainingQty + stocksActivity.remainingSchemeQty
                     openingAmt = UtilsService.round((stocksActivity.saleRate * stocksActivity.remainingQty), 2)
@@ -279,8 +272,7 @@ class InventoryReportController {
         }
     }
 
-    def expiryReport()
-    {
+    def expiryReport() {
         String entityId = session.getAttribute("entityId")
         JSONObject loggedInEntity = new EntityService().getEntityById(entityId)
         ArrayList entities = new ArrayList()
@@ -288,11 +280,12 @@ class InventoryReportController {
         render(view: '/reports/inventoryReport/expiry', model: [entities: entities])
     }
 
-    def generateExpiryReport()
-    {
+    def generateExpiryReport() {
         try {
             String dateFrom = params.dateFrom
             String dateTo = params.dateTo
+            String productids = params.productids
+            String groupids = params.groupids
             long entityId = Long.parseLong(session.getAttribute("entityId").toString())
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM")
             Date fromDate = sdf.parse(dateFrom)
@@ -315,20 +308,39 @@ class InventoryReportController {
             JSONArray jsonArray = new JSONArray()
             JSONArray stocks = new InventoryService().getExpiryReport(fromDateStr, toDateStr, entityId)
             for (JSONObject stock : stocks) {
-                def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
-                stock.put("productName", batch.product.productName)
 
                 String expDate = stock.get("expDate")
                 expDate = expDate.split("T")[0]
                 expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("MMM-yyyy")
                 stock.put("expDate", expDate)
 
-                jsonArray.add(stock)
+                if (productids != null && productids != "null") {
+                    String[] productIds = productids.split(",")
+                    if (productIds.contains(stock.productId.toString())) {
+                        def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
+                        stock.put("productName", batch.product.productName)
+                        jsonArray.add(stock)
+                    }
+                }
+                else if(groupids != null && groupids != "null")
+                {
+                    String[] groupIds = groupids.split(",")
+                    def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
+                    if(groupIds.contains(batch?.product?.group?.id?.toString()))
+                    {
+                        stock.put("productName", batch.product.productName)
+                        jsonArray.add(stock)
+                    }
+                }
+                else {
+                    def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
+                    stock.put("productName", batch.product.productName)
+                    jsonArray.add(stock)
+                }
             }
             respond jsonArray, formats: ['json']
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.out.print(ex)
         }
     }

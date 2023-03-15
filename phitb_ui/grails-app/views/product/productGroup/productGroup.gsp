@@ -104,8 +104,8 @@
                                 <tr>
                                     <th style="width: 20%">Group Name</th>
                                     <th style="width: 20%">Group Description</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+                                   %{-- <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
