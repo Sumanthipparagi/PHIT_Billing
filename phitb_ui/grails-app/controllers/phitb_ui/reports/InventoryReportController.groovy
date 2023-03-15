@@ -273,11 +273,7 @@ class InventoryReportController {
     }
 
     def expiryReport() {
-        String entityId = session.getAttribute("entityId")
-        JSONObject loggedInEntity = new EntityService().getEntityById(entityId)
-        ArrayList entities = new ArrayList()
-        entities[0] = loggedInEntity
-        render(view: '/reports/inventoryReport/expiry', model: [entities: entities])
+        render(view: '/reports/inventoryReport/expiry')
     }
 
     def generateExpiryReport() {
