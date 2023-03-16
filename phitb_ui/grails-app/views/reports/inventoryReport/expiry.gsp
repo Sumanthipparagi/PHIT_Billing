@@ -225,8 +225,6 @@
                 }
                 url += "&productids="+ids;
                 break;
-            case "SUPPLIER":
-                break;
             case "GROUP":
                 var checkboxes = document.getElementsByName("groups");
                 // Loop through the radio buttons
@@ -241,7 +239,33 @@
                 }
                 url += "&groupids="+ids;
                 break;
+            case "SUPPLIER":
+                var checkboxes = document.getElementsByName("company");
+                // Loop through the radio buttons
+                for (var i = 0; i < checkboxes.length; i++) {
+                    // Check if the current radio button is checked
+                    if (checkboxes[i].checked) {
+                        if(ids === null)
+                            ids = checkboxes[i].value + ",";
+                        else
+                            ids += checkboxes[i].value + ",";
+                    }
+                }
+                url += "&supplierids="+ids;
+                break;
             case "COMPANY":
+                var checkboxes = document.getElementsByName("company");
+                // Loop through the radio buttons
+                for (var i = 0; i < checkboxes.length; i++) {
+                    // Check if the current radio button is checked
+                    if (checkboxes[i].checked) {
+                        if(ids === null)
+                            ids = checkboxes[i].value + ",";
+                        else
+                            ids += checkboxes[i].value + ",";
+                    }
+                }
+                url += "&companyids="+ids;
                 break;
         }
 
@@ -261,16 +285,23 @@
                     "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Batch Number</th><th data-f-bold='true'>Exp Date</th><th data-f-bold='true'>Qty</th><th data-f-bold='true'>Value</th>" +
                     "</thead><tbody>";
                 var stockDetails = "";
-                $.each(data, function (key, value) {
-                    var qty = value?.remainingQty + value?.remainingFreeQty;
-                    var val = qty * value?.saleRate;
-                    stockDetails = "<tr>" +
-                                "<td>" + (key+1) + "</td>" +
+                var i = 0;
+                $.each(data, function (key, vl) {
+                    if(key !== "ALL") {
+                        content += "<tr><td data-f-bold='true' colspan='6'><strong>" + key + "</strong></td></tr>";
+                    }
+                        $.each(vl, function (key, value) {
+                            i += 1;
+                            var qty = value?.remainingQty + value?.remainingFreeQty;
+                            var val = qty * value?.saleRate;
+                            stockDetails = "<tr>" +
+                                "<td>" + i + "</td>" +
                                 "<td>" + value?.productName + "</td>" +
-                                "<td>" + value?.batchNumber + "</td></td>"+
-                                "<td>" + value?.expDate + "</td><td>"+ qty + "</td>"+
+                                "<td>" + value?.batchNumber + "</td></td>" +
+                                "<td>" + value?.expDate + "</td><td>" + qty + "</td>" +
                                 "<td>" + val.toFixed(2) + "</td></tr>";
-                    content += stockDetails
+                            content += stockDetails
+                        });
                 });
                 var mainTableFooter = "</tbody></table>";
                 $("#result").html(mainTableHeader + content + mainTableFooter);

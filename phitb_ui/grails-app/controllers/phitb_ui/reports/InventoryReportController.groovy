@@ -282,6 +282,8 @@ class InventoryReportController {
             String dateTo = params.dateTo
             String productids = params.productids
             String groupids = params.groupids
+            String supplierids = params.supplierids
+            String companyids = params.companyids
             long entityId = Long.parseLong(session.getAttribute("entityId").toString())
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM")
             Date fromDate = sdf.parse(dateFrom)
@@ -300,8 +302,7 @@ class InventoryReportController {
             calendar.set(Calendar.MINUTE, 59)
             calendar.set(Calendar.SECOND, 59)
             String toDateStr = calendar.getTime().format("dd/MM/yyyy HH:mm:ss")
-
-            JSONArray jsonArray = new JSONArray()
+            JSONObject groupedObject = new JSONObject()
             JSONArray stocks = new InventoryService().getExpiryReport(fromDateStr, toDateStr, entityId)
             for (JSONObject stock : stocks) {
 
@@ -315,7 +316,19 @@ class InventoryReportController {
                     if (productIds.contains(stock.productId.toString())) {
                         def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
                         stock.put("productName", batch.product.productName)
-                        jsonArray.add(stock)
+
+                        if(groupedObject.containsKey(batch.product.productName))
+                        {
+                            JSONArray productWiseArray = groupedObject.get(batch.product.productName)
+                            productWiseArray.add(stock)
+                            groupedObject.put(batch.product.productName, productWiseArray)
+                        }
+                        else
+                        {
+                            JSONArray productWiseArray = new JSONArray()
+                            productWiseArray.add(stock)
+                            groupedObject.put(batch.product.productName, productWiseArray)
+                        }
                     }
                 }
                 else if(groupids != null && groupids != "null")
@@ -325,16 +338,85 @@ class InventoryReportController {
                     if(groupIds.contains(batch?.product?.group?.id?.toString()))
                     {
                         stock.put("productName", batch.product.productName)
-                        jsonArray.add(stock)
+
+                        def productGroup = new ProductService().getProductGroupById(batch?.product?.group?.id?.toString())
+                        if(groupedObject.containsKey(productGroup.groupName))
+                        {
+                            JSONArray groupWiseArray = groupedObject.get(productGroup.groupName)
+                            groupWiseArray.add(stock)
+                            groupedObject.put(productGroup.groupName, groupWiseArray)
+                        }
+                        else
+                        {
+                            JSONArray groupWiseArray = new JSONArray()
+                            groupWiseArray.add(stock)
+                            groupedObject.put(productGroup.groupName, groupWiseArray)
+                        }
+                    }
+                }
+                else if(companyids != null && companyids != "null")
+                {
+                    def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
+                    String[] companyIds = companyids.split(",")
+                    if(companyIds.contains(batch?.product?.mktCompanyId?.toString()))
+                    {
+                        stock.put("productName", batch.product.productName)
+                        def entity = new EntityService().getEntityById(batch?.product?.mktCompanyId?.toString())
+                        if(groupedObject.containsKey(entity.entityName))
+                        {
+                            JSONArray companyWiseArray = groupedObject.get(entity.entityName)
+                            companyWiseArray.add(stock)
+                            groupedObject.put(entity.entityName, companyWiseArray)
+                        }
+                        else
+                        {
+                            JSONArray companyWiseArray = new JSONArray()
+                            companyWiseArray.add(stock)
+                            groupedObject.put(entity.entityName, companyWiseArray)
+                        }
+                    }
+                }
+                else if(supplierids != null && supplierids != "null")
+                {
+                    String[] supplierIds = supplierids.split(",")
+                    if(supplierIds.contains(stock?.supplierId?.toString()))
+                    {
+                        def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
+                        stock.put("productName", batch.product.productName)
+                        def entity = new EntityService().getEntityById(stock?.supplierId?.toString())
+                        if(groupedObject.containsKey(entity.entityName))
+                        {
+                            JSONArray supplierWiseArray = groupedObject.get(entity.entityName)
+                            supplierWiseArray.add(stock)
+                            groupedObject.put(entity.entityName, supplierWiseArray)
+                        }
+                        else
+                        {
+                            JSONArray supplierWiseArray = new JSONArray()
+                            supplierWiseArray.add(stock)
+                            groupedObject.put(entity.entityName, supplierWiseArray)
+                        }
                     }
                 }
                 else {
                     def batch = new ProductService().getByBatchAndProductId(stock.batchNumber, stock.productId.toString())
                     stock.put("productName", batch.product.productName)
-                    jsonArray.add(stock)
+                    if(groupedObject.containsKey("ALL"))
+                    {
+                        JSONArray allArray = groupedObject.get("ALL")
+                        allArray.add(stock)
+                        groupedObject.put("ALL", allArray)
+                    }
+                    else
+                    {
+                        JSONArray allArray = new JSONArray()
+                        allArray.add(stock)
+                        groupedObject.put("ALL", allArray)
+                    }
                 }
             }
-            respond jsonArray, formats: ['json']
+            //respond jsonArray, formats: ['json']
+            respond groupedObject, formats: ['json']
         }
         catch (Exception ex) {
             System.out.print(ex)

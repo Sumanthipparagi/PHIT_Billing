@@ -48,7 +48,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
@@ -94,15 +94,27 @@
                         break;
                     case "option2":
                         //company wise
-                        url = "";
-                        filterType = "COMPANY";
-                        document.getElementById("filterContent").innerHTML = "";
-                        break;
                     case "option3":
                         //Supplier wise
-                        url = "";
+                        url = "/entity-register/getbyaffiliates/${session.getAttribute("entityId")}";
                         filterType = "SUPPLIER";
                         document.getElementById("filterContent").innerHTML = "";
+                        $.ajax({
+                            url: url,
+                            type: "GET",
+                            success: function (data) {
+                                var content = "<ul style=\"list-style-type: none;\">";
+                                $.each(data, function(index, value){
+                                    content += "<li><input type=\"checkbox\" id=\"item"+index+"\" name=\"company\" value=\""+value.id+"\">  <label for=\"item"+index+"\">"+value.entityName+"</label></li>"
+                                })
+
+                                content += "</ul>";
+                                $("#filterContent").append(content);
+                            },
+                            error: function (data) {
+
+                            }
+                        })
                         break;
                     case "option4":
                         //Group wise
