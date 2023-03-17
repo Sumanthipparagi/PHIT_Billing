@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="product">
-                                    Product
+                                    Product <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <select class="form-control show-tick product" style="width: 100%" name="product"
                                         id="product">
@@ -26,7 +26,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="batchNumber">
-                                    Batch Number
+                                    Batch Number <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="text" id="batchNumber" class="form-control batchNumber" name="batchNumber"
                                        placeholder="Batch Number"
@@ -36,7 +36,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="manfDate">
-                                    Manfacture Date
+                                    Manufacture Date <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="text" id="manfDate" class="form-control manfDate" name="manfDate"
                                        placeholder="Manfacture Date"
@@ -45,7 +45,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="expiryDate">
-                                   Expiry Date
+                                   Expiry Date <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="text" id="expiryDate" class="form-control expiryDate" name="expiryDate"
                                        placeholder="Expiry Date"
@@ -55,7 +55,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="purchaseRate">
-                                    Purchase Rate
+                                    Purchase Rate <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="text" id="purchaseRate" class="form-control purchaseRate"
                                        name="purchaseRate"
@@ -66,7 +66,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="saleRate">
-                                    Sale Rate
+                                    Sale Rate <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="text" id="saleRate" class="form-control saleRate" name="saleRate"
                                        placeholder="Sale Rate" pattern="^\d*(\.\d{0,2})?$"
@@ -76,7 +76,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="ptr">
-                                    PTR
+                                    PTR <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="text" id="ptr" class="form-control ptr" name="ptr"
                                        placeholder="Sale Rate"
@@ -86,7 +86,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="mrp">
-                                    MRP
+                                    MRP <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="text" id="mrp" class="form-control mrp" name="mrp"
                                        placeholder="MRP"
@@ -95,7 +95,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="qty">
-                                    Quantity
+                                    Quantity <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="number" id="qty" class="form-control qty" name="qty"
                                        placeholder="Quantity"
@@ -104,7 +104,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="box">
-                                    Box
+                                    Box <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="number" id="box" class="form-control box" name="box"
                                        placeholder="Box"
@@ -114,7 +114,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="caseWt">
-                                    Case Wt
+                                    Case Wt <small class="required-indicator" style="color: red;">*</small>
                                 </label>
                                 <input type="text" id="caseWt" class="form-control caseWt" name="caseWt"
                                        placeholder="Case Wt"
@@ -124,9 +124,9 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="productCat">
-                                    Product Category
+                                    Product Category <small class="required-indicator" style="color: red;">*</small>
                                 </label>
-                                <select class="form-control show-tick productCat" name="productCat" id="productCat">
+                                <select class="form-control show-tick productCat" name="productCat" id="productCat" required>
                                     <g:each var="pc" in="${productcatList}">
                                         <option value="${pc.id}">${pc.categoryName}</option>
                                     </g:each>
