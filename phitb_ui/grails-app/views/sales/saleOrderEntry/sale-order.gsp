@@ -106,7 +106,7 @@
                                     <g:each in="${customers}" var="cs">
 
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                            <option data-state="${cs.stateId}" value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
@@ -823,7 +823,42 @@
         $('#duedate').prop("readonly", false);
         $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
         $('#duedate').prop("readonly", true);
+        calculateTaxes();
     }
+
+    function calculateTaxes() {
+        var data = hot.getData();
+        for (var row = 0; row < data.length; row++) {
+            var sgstAmount = Number(hot.getDataAtCell(row, 12));
+            var cgstAmount = Number(hot.getDataAtCell(row, 13));
+            var igstAmount = Number(hot.getDataAtCell(row, 14));
+            var gstPercentage = hot.getDataAtCell(row, 17);
+            var sgstPercentage = hot.getDataAtCell(row, 18);
+            var cgstPercentage = hot.getDataAtCell(row, 19);
+            if (stateId === '${session.getAttribute('stateId')}') {
+                if (igstAmount !== 0) {
+                    hot.setDataAtCell(row, 12, Number(igstAmount / 2).toFixed(2)); //SGST
+                    hot.setDataAtCell(row, 13, Number(igstAmount / 2).toFixed(2)); //CGST
+                    hot.setDataAtCell(row, 14, 0); //IGST
+
+                    hot.setDataAtCell(row, 18, sgstPercentage);
+                    hot.setDataAtCell(row, 19, cgstPercentage);
+                    hot.setDataAtCell(row, 20, 0);
+                }
+            } else {
+                if (sgstAmount !== 0 && cgstAmount !== 0) {
+                    hot.setDataAtCell(row, 12, 0); //SGST
+                    hot.setDataAtCell(row, 13, 0); //CGST
+                    hot.setDataAtCell(row, 14, (sgstAmount + cgstAmount).toFixed(2)); //IGST
+
+                    hot.setDataAtCell(row, 18, 0);
+                    hot.setDataAtCell(row, 19, 0);
+                    hot.setDataAtCell(row, 20, sgstPercentage + cgstPercentage);
+                }
+            }
+        }
+    }
+
 
     function calculateTotalAmt() {
         totalAmt = 0;

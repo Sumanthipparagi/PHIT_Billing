@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sale Invoice</title>
+    <title>Sale Order</title>
 
     <script type="text/javascript">
         %{--function generateBarCode() {--}%

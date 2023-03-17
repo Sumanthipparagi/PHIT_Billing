@@ -1780,8 +1780,7 @@ contains both sale bill and products
 
     def convertToSaleEntry(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083/")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().SALE_ORDER_TO_SALE_ENTRY)
