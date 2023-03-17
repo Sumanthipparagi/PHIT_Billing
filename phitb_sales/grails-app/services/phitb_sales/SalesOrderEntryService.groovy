@@ -382,6 +382,7 @@ class SalesOrderEntryService
                 saleBillDetails.accountModeId = salesOrderEntry.accountModeId
                 saleBillDetails.priorityId = salesOrderEntry.priorityId
                 saleBillDetails.entryDate = new Date()
+                saleBillDetails.orderDate = new Date()
                 saleBillDetails.customerId = salesOrderEntry.customerId
                 saleBillDetails.customerNumber = Long.parseLong("0")
                 saleBillDetails.salesmanId = salesOrderEntry.salesmanId
@@ -483,7 +484,7 @@ class SalesOrderEntryService
                                 saleProductDetails.sgstAmount = saleOrderProductDetail.sgstAmount
                                 saleProductDetails.cgstAmount = saleOrderProductDetail.cgstAmount
                                 saleProductDetails.igstAmount = saleOrderProductDetail.igstAmount
-                                saleProductDetails.amount = saleOrderProductDetail.sgstAmount
+                                saleProductDetails.amount = saleOrderProductDetail.amount
                                 saleProductDetails.reason = saleOrderProductDetail.reason
                                 saleProductDetails.fridgeId = saleOrderProductDetail.fridgeId
                                 saleProductDetails.kitName = saleOrderProductDetail.kitName

@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="PharmIT">
 
-    <title>:: PharmIt ::  Expiry Statement</title>
+    <title>:: PharmIt ::  Price List</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -54,18 +54,18 @@
                     <h2>Expiry Statement</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Expiry Statement</li>
+                        <li class="breadcrumb-item active">Price List</li>
                     </ul>
                 </div>
 
-%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
-%{--                    <div class="input-group m-b-0">--}%
-%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
-%{--                        <span class="input-group-addon">--}%
-%{--                            <i class="zmdi zmdi-search"></i>--}%
-%{--                        </span>--}%
-%{--                    </div>--}%
-%{--                </div>--}%
+                %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+                %{--                    <div class="input-group m-b-0">--}%
+                %{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+                %{--                        <span class="input-group-addon">--}%
+                %{--                            <i class="zmdi zmdi-search"></i>--}%
+                %{--                        </span>--}%
+                %{--                    </div>--}%
+                %{--                </div>--}%
             </div>
         </div>
 
@@ -90,18 +90,18 @@
                                 </div>
                             </div>
 
-                        %{--    <div class="col-md-2 d-flex justify-content-center">
-                                <div class="form-group">
-                                    <div class="input-group inlineblock">
-                                        <label for="entitySelect">Entity:</label>
-                                        <select name="entity" id="entitySelect">
-                                            <g:each in="${entities}" var="en">
-                                                <option value="${en.id}">${en.entityName}</option>
-                                            </g:each>
-                                        </select>
+                            %{--    <div class="col-md-2 d-flex justify-content-center">
+                                    <div class="form-group">
+                                        <div class="input-group inlineblock">
+                                            <label for="entitySelect">Entity:</label>
+                                            <select name="entity" id="entitySelect">
+                                                <g:each in="${entities}" var="en">
+                                                    <option value="${en.id}">${en.entityName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>--}%
+                                </div>--}%
 
                             <div class="col-md-3 d-flex justify-content-center">
                                 <div class="form-group">
@@ -115,16 +115,16 @@
                                 </div>
                             </div>
 
-                          %{--  <div class="col-lg-6">
-                            <div class="form-group">
-                            <label for="entitySelect">Entity:</label>
-                            <select name="entity" id="entitySelect">
-                                <g:each in="${entities}" var="en">
-                                    <option value="${en.id}">${en.entityName}</option>
-                                </g:each>
-                            </select>
-                            </div>
-                            </div>--}%
+                            %{--  <div class="col-lg-6">
+                              <div class="form-group">
+                              <label for="entitySelect">Entity:</label>
+                              <select name="entity" id="entitySelect">
+                                  <g:each in="${entities}" var="en">
+                                      <option value="${en.id}">${en.entityName}</option>
+                                  </g:each>
+                              </select>
+                              </div>
+                              </div>--}%
 
                         </div>
                     </div>
@@ -172,14 +172,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 <script>
     var filterType = "";
-  /*  $('.dateRange').daterangepicker({
-        locale: {
-            format: "MMM/YYYY"
-        },
-        "showDropdowns": true
-    }).on('apply.daterangepicker', function (ev, picker) {
-        dueOnDate = moment(picker.endDate).format('MMM/YYYY');
-    });*/
+    /*  $('.dateRange').daterangepicker({
+          locale: {
+              format: "MMM/YYYY"
+          },
+          "showDropdowns": true
+      }).on('apply.daterangepicker', function (ev, picker) {
+          dueOnDate = moment(picker.endDate).format('MMM/YYYY');
+      });*/
 
     $("#entitySelect").select2();
 
@@ -290,18 +290,18 @@
                     if(key !== "ALL") {
                         content += "<tr><td data-f-bold='true' colspan='6'><strong>" + key + "</strong></td></tr>";
                     }
-                        $.each(vl, function (key, value) {
-                            i += 1;
-                            var qty = value?.remainingQty + value?.remainingFreeQty;
-                            var val = qty * value?.saleRate;
-                            stockDetails = "<tr>" +
-                                "<td>" + i + "</td>" +
-                                "<td>" + value?.productName + "</td>" +
-                                "<td>" + value?.batchNumber + "</td></td>" +
-                                "<td>" + value?.expDate + "</td><td>" + qty + "</td>" +
-                                "<td>" + val.toFixed(2) + "</td></tr>";
-                            content += stockDetails
-                        });
+                    $.each(vl, function (key, value) {
+                        i += 1;
+                        var qty = value?.remainingQty + value?.remainingFreeQty;
+                        var val = qty * value?.saleRate;
+                        stockDetails = "<tr>" +
+                            "<td>" + i + "</td>" +
+                            "<td>" + value?.productName + "</td>" +
+                            "<td>" + value?.batchNumber + "</td></td>" +
+                            "<td>" + value?.expDate + "</td><td>" + qty + "</td>" +
+                            "<td>" + val.toFixed(2) + "</td></tr>";
+                        content += stockDetails
+                    });
                 });
                 var mainTableFooter = "</tbody></table>";
                 $("#result").html(mainTableHeader + content + mainTableFooter);
