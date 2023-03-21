@@ -62,11 +62,11 @@
                     <div class="body bg-dark profile-header">
                         <div class="row">
                             <div class="col-lg-10 col-md-12">
-                                <img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" class="user_pic rounded img-raised" alt="User">
+                                <img width="180px" height="180px" src="${assetPath(src: '/themeassets/images/logo.svg')}" class="user_pic rounded img-raised" alt="User">
                                 <div class="detail">
                                     <div class="u_name">
                                         <h4><strong>${user.userName}</strong></h4>
-                                        <span>${user.email}</span>
+                                        <span>${user.name}</span>
                                     </div>
                                     <div id="m_area_chart"></div>
                                 </div>
@@ -80,9 +80,8 @@
                         </div>
                     </div>
                     <ul class="nav nav-tabs profile_tab">
-                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#overview">Overview</a></li>
-%{--                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedule">Schedule</a></li>--}%
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#usersettings">Settings</a></li>
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#overview">User details</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#usersettings">Password</a></li>
                     </ul>
                 </div>
                 <div class="tab-content">
@@ -616,11 +615,11 @@
                     <div role="tabpanel" class="tab-pane" id="usersettings">
                         <div class="card">
                             <div class="header">
-                                <h2><strong>Security</strong> Settings</h2>
+                               %{-- <h2><strong>Security</strong> Settings</h2>--}%
                             </div>
 
 
-<g:if test="${session.getAttribute('userId').toString() == params.id.toString()}">
+                            <g:if test="${session.getAttribute('userId').toString() == params.id.toString() || session.getAttribute('role') == Constants.ENTITY_ADMIN || session.getAttribute('role') == Constants.SUPER_USER}">
 
     <form action="/user/update-password" method="post" id="updatePassword">
                             <div class="body">

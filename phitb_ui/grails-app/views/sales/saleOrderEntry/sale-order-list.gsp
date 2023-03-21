@@ -224,32 +224,39 @@
                     console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+
+                        var invoiceNumber = json.data[i].invoiceNumber;
+                        if (invoiceNumber === undefined)
+                            invoiceNumber = "";
+
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var clonetoSaleEntry = "";
                         var editInvoice = "";
-                        if (json.data[i].billStatus !== "CANCELLED" && json.data[i].billStatus !== "CONVERTED") {
+                        if (json.data[i].billStatus === "DRAFT")
+                        {
+                            cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
+                            editInvoice = '<a class="btn btn-sm btn-warning"  href="/sale-order-entry?id=' +
+                                json.data[i].id + '"><i class="fa fa-edit"></i></a>';
+                            invoiceNumber = "DRAFT";
+                        }
+                        else if(json.data[i].billStatus === "CANCELLED" || json.data[i].billStatus !== "CONVERTED")
+                        {
+                            //only print option
+                        }
+                        else
+                        {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                             clonetoSaleEntry =
                                 '<a class="btn btn-sm btn-success" title="Convert To Sale Entry" onclick="cloneToSaleEntry(' +
                                 json.data[i].id +', ' + json.data[i].seriesId +')" href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i>\n</a>';
-                        }
-                        else if(json.data[i].returnStatus!== "DRAFT")
-                        {
-                            approveInvoice =  '';
 
                         }
+
                         var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id
                             + '" href="/sale-order-entry/print-order?id=' + json.data[i].id +
                             '"><i class="fa fa-print"></i></a>';
-                        var invoiceNumber = json.data[i].invoiceNumber;
-                        if (invoiceNumber === undefined)
-                            invoiceNumber = "";
-                        if(json.data[i].returnStatus=== "DRAFT")
-                        {
-                            editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
-                                json.data[i].id + '"><i class="fa fa-edit"></i></a>';
-                        }
+
                         var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
                         return_data.push({
                             'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice+" "+clonetoSaleEntry,
