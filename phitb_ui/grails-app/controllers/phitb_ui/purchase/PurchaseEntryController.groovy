@@ -431,7 +431,7 @@ class PurchaseEntryController {
                             stockBook.put("taxId", taxId)
                         }
                         stockBook.put("manufacturingDate", manfDate)
-                        stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
+                        stockBook.put("openingStockQty", "0") //opening stock should be zero, as we are adding new stock via purchase entry
                         stockBook.put("uuid", UUID.randomUUID())
                         new InventoryService().stockBookSave(stockBook)
                     }

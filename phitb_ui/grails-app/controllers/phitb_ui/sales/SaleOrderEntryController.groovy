@@ -32,16 +32,16 @@ class SaleOrderEntryController {
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         String id = params.id
-        JSONObject saleOrder = null
-        JSONArray saleOrderProducts = null
+      /*  JSONObject saleOrder = null
         if(id)
         {
             saleOrder = new SalesService().getSaleOrderDetailsById(id)
-            saleOrderProducts = new SalesService().getSaleProductDetailsByOrder(saleOrder.id.toString())
+            JSONArray saleOrderProducts = new SalesService().getSaleProductDetailsByOrder(saleOrder.id.toString())
+            saleOrder.put("products", saleOrderProducts)
 
-        }
+        }*/
         render(view: '/sales/saleOrderEntry/sale-order',model: [divisions:divisions,customers:customers,
-                                                                saleOrder: saleOrder, saleOrderProducts: saleOrderProducts,
+                                                                /*saleOrder: saleOrder,*/
                                                                 priorityList:priorityList,series:series])
     }
 

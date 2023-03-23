@@ -530,6 +530,7 @@ class ProductReportController {
                                             jsonObject.put("incomingSchemeQty", prd.freeQty)
                                             jsonObject.put("outgoingQty", "") //sale
                                             jsonObject.put("outgoingSchemeQty", "")
+                                            jsonObject.put("dateCreated", prd.dateCreated)
                                             jsonArray.add(jsonObject)
                                         }
                                     }
@@ -553,6 +554,7 @@ class ProductReportController {
                                             jsonObject.put("incomingSchemeQty", prd.freeQty)
                                             jsonObject.put("outgoingQty", "") //sale
                                             jsonObject.put("outgoingSchemeQty", "")
+                                            jsonObject.put("dateCreated", prd.dateCreated)
                                             jsonArray.add(jsonObject)
                                         }
                                     }
@@ -577,6 +579,7 @@ class ProductReportController {
                                             jsonObject.put("incomingSchemeQty", "")
                                             jsonObject.put("outgoingQty", prd.sqty) //sale
                                             jsonObject.put("outgoingSchemeQty", prd.freeQty)
+                                            jsonObject.put("dateCreated", prd.dateCreated)
                                             jsonArray.add(jsonObject)
                                         }
                                     }
@@ -600,6 +603,7 @@ class ProductReportController {
                                             jsonObject.put("incomingSchemeQty", "")
                                             jsonObject.put("outgoingQty", prd.sqty) //sale
                                             jsonObject.put("outgoingSchemeQty", prd.freeQty)
+                                            jsonObject.put("dateCreated", prd.dateCreated)
                                             jsonArray.add(jsonObject)
                                         }
                                     }
@@ -623,6 +627,7 @@ class ProductReportController {
                                             jsonObject.put("incomingSchemeQty", "")
                                             jsonObject.put("outgoingQty", prd.sqty) //sale
                                             jsonObject.put("outgoingSchemeQty", prd.freeQty)
+                                            jsonObject.put("dateCreated", prd.dateCreated)
                                             jsonArray.add(jsonObject)
                                         }
                                     }
@@ -646,6 +651,7 @@ class ProductReportController {
                                             jsonObject.put("incomingSchemeQty", "")
                                             jsonObject.put("outgoingQty", prd.sqty) //sale
                                             jsonObject.put("outgoingSchemeQty", prd.freeQty)
+                                            jsonObject.put("dateCreated", prd.dateCreated)
                                             jsonArray.add(jsonObject)
                                         }
                                     }
@@ -669,6 +675,7 @@ class ProductReportController {
                                             jsonObject.put("incomingSchemeQty", "")
                                             jsonObject.put("outgoingQty", prd.sqty) //sale
                                             jsonObject.put("outgoingSchemeQty", prd.freeQty)
+                                            jsonObject.put("dateCreated", prd.dateCreated)
                                             jsonArray.add(jsonObject)
                                         }
                                     }
@@ -690,6 +697,7 @@ class ProductReportController {
                                     jsonObject.put("incomingSchemeQty", "")
                                     jsonObject.put("outgoingQty", scl.sampleQty) //sale
                                     jsonObject.put("outgoingSchemeQty", 0)
+                                    jsonObject.put("dateCreated", prd.dateCreated)
                                     jsonArray.add(jsonObject)
                                 }
                                 else if (scl.sampleBatch == batch.batchNumber && scl.sampleProductId == batch.product.id) {
@@ -705,6 +713,7 @@ class ProductReportController {
                                     jsonObject.put("incomingSchemeQty", 0)
                                     jsonObject.put("outgoingQty", "") //sale
                                     jsonObject.put("outgoingSchemeQty", "")
+                                    jsonObject.put("dateCreated", prd.dateCreated)
                                     jsonArray.add(jsonObject)
                                 }
                             }
@@ -723,6 +732,7 @@ class ProductReportController {
                                     jsonObject.put("productId", sa.productId)
                                     jsonObject.put("docType", "Stock Adjustment")
                                     jsonObject.put("entityName", "-")
+                                    jsonObject.put("dateCreated", prd.dateCreated)
                                     if(sqty >= 0) {
                                         jsonObject.put("incomingQty", Math.abs(sqty))
                                         jsonObject.put("outgoingQty", "")
@@ -743,15 +753,36 @@ class ProductReportController {
                                     jsonArray.add(jsonObject)
                                 }
                             }
+                            //sort based on date created
+                            Collections.sort(jsonArray, new Comparator<JSONObject>() {
+                                private String KEY_NAME = "dateCreated";
+                                @Override
+                                public int compare(JSONObject a, JSONObject b) {
+                                    Date valA = null
+                                    Date valB = null
+                                    try {
+                                        valA = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(a.get(KEY_NAME).toString());
+                                        valB = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(b.get(KEY_NAME).toString());
+                                    }
+                                    catch (Exception e) {
+                                        //do something
+                                    }
+                                    return valA.compareTo(valB);
+                                }
+                            });
+
+
                             docs.put(batch.batchNumber, jsonArray)
+
+
                         }
 
                         //sort based on date
-                        for (Object key : docs.keySet()) {
+                      /*  for (Object key : docs.keySet()) {
                             JSONArray batch = docs.get(key)
                             JSONArray newArray = sortJsonArray(batch)
                             docs.put(key, newArray)
-                        }
+                        }*/
 
                         finalReport.put("docs", docs)
 
@@ -774,7 +805,7 @@ class ProductReportController {
     }
 
 
-    public static JSONArray sortJsonArray(JSONArray array) {
+   /* public static JSONArray sortJsonArray(JSONArray array) {
         List<JSONObject> jsons = new ArrayList<JSONObject>()
         for (int i = 0; i < array.length(); i++) {
             jsons.add(array.getJSONObject(i))
@@ -791,7 +822,7 @@ class ProductReportController {
             }
         });
         return new JSONArray(jsons);
-    }
+    }*/
 
     static convertDate(String date, Boolean isExpiry = false) {
         try {
