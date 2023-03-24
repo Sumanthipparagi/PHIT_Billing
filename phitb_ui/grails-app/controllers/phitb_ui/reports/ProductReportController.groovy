@@ -455,9 +455,9 @@ class ProductReportController {
                             for (Object sc : openingSampleConversionInvoice) {
                                 if (sc.billStatus == "ACTIVE") {
                                     for (Object prd : sc.products) {
-                                        if (!prd.deleted && prd.productId == batch.product.id && prd.batchNumber == batch.batchNumber) {
-                                            openingQty -= prd.get("sqty")
-                                            openingFreeQty -= prd.get("freeQty")
+                                        if (prd && !prd?.deleted && prd?.productId == batch.product.id && prd?.batchNumber == batch.batchNumber) {
+                                            openingQty -= prd?.get("sqty")
+                                            openingFreeQty -= prd?.get("freeQty")
                                         }
                                     }
                                 }
@@ -697,7 +697,7 @@ class ProductReportController {
                                     jsonObject.put("incomingSchemeQty", "")
                                     jsonObject.put("outgoingQty", scl.sampleQty) //sale
                                     jsonObject.put("outgoingSchemeQty", 0)
-                                    jsonObject.put("dateCreated", prd.dateCreated)
+                                    jsonObject.put("dateCreated", scl.dateCreated)
                                     jsonArray.add(jsonObject)
                                 }
                                 else if (scl.sampleBatch == batch.batchNumber && scl.sampleProductId == batch.product.id) {
@@ -713,7 +713,7 @@ class ProductReportController {
                                     jsonObject.put("incomingSchemeQty", 0)
                                     jsonObject.put("outgoingQty", "") //sale
                                     jsonObject.put("outgoingSchemeQty", "")
-                                    jsonObject.put("dateCreated", prd.dateCreated)
+                                    jsonObject.put("dateCreated", scl.dateCreated)
                                     jsonArray.add(jsonObject)
                                 }
                             }
@@ -732,7 +732,7 @@ class ProductReportController {
                                     jsonObject.put("productId", sa.productId)
                                     jsonObject.put("docType", "Stock Adjustment")
                                     jsonObject.put("entityName", "-")
-                                    jsonObject.put("dateCreated", prd.dateCreated)
+                                    jsonObject.put("dateCreated", sa.dateCreated)
                                     if(sqty >= 0) {
                                         jsonObject.put("incomingQty", Math.abs(sqty))
                                         jsonObject.put("outgoingQty", "")
@@ -767,7 +767,11 @@ class ProductReportController {
                                     catch (Exception e) {
                                         //do something
                                     }
-                                    return valA.compareTo(valB);
+                                    if(valA != null && valB != null) {
+                                        return valA.compareTo(valB);
+                                    }
+                                    else
+                                        return 0
                                 }
                             });
 
@@ -798,7 +802,7 @@ class ProductReportController {
             }
         }
         catch (Exception ex) {
-            println(ex.stackTrace)
+            ex.printStackTrace()
             response.status = 400
         }
 
