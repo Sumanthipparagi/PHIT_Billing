@@ -263,15 +263,15 @@
                 </td>
                 <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
                     <b>${customer.entityName}</b><br>
-                    <sub>${customer.addressLine1}${customer.addressLine2}
+                    <sub>${customer.shippingAddress}
                     </sub>
-                    <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
-                        <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
-                                                          target="_blank">${customer?.phoneNumber}</a>
+                    <g:if test="${customer?.shippingPhone && customer?.shippingPhone != ''}">
+                        <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.shippingPhone}"
+                                                          target="_blank">${customer?.shippingPhone}</a>
                         </li>
                     </g:if>
-                    <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
-                        <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
+                    <g:if test="${customer?.shippingPinCode && customer?.shippingPinCode != ''}">
+                        <li><b class="tab">Pincode</b>:&nbsp;${customer?.shippingPinCode}
                         </li>
                     </g:if>
                 </td>

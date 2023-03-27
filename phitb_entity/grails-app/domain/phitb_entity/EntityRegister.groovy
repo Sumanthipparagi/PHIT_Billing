@@ -65,6 +65,9 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     String website
     long createdUser
     long modifiedUser
+    String shippingAddress
+    String shippingPhone
+    String shippingPinCode
 
     //for retailer
     Long age
@@ -96,6 +99,9 @@ class EntityRegister implements LogicalDelete<EntityRegister>
         age nullable: true
         drConsultation nullable: true
         gender nullable: true
+        shippingAddress nullable: true, maxSize: 500
+        shippingPhone nullable: true
+        shippingPinCode nullable: true
     }
 
     boolean isUpdatable

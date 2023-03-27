@@ -290,6 +290,15 @@ class EntityRegisterService {
         if(jsonObject.has("entityRoute"))
             entityRegister.entityRoute = EntityRouteRegister.findById(Long.parseLong(jsonObject.get("entityRoute").toString()))
 
+        if(jsonObject.has("shippingAddress"))
+            entityRegister.shippingAddress = jsonObject.get("shippingAddress")
+
+        if(jsonObject.has("shippingPinCode"))
+            entityRegister.shippingPinCode = jsonObject.get("shippingPinCode")
+
+        if(jsonObject.has("shippingPhone"))
+            entityRegister.shippingPhone = jsonObject.get("shippingPhone")
+
         entityRegister.save(flush: true)
         if (!entityRegister.hasErrors())
         {
@@ -420,6 +429,15 @@ class EntityRegisterService {
 
             if(jsonObject.has("entityRoute"))
                 entityRegister.entityRoute = EntityRouteRegister.findById(Long.parseLong(jsonObject.get("entityRoute").toString()))
+
+            if(jsonObject.has("shippingAddress"))
+                entityRegister.shippingAddress = jsonObject.get("shippingAddress")
+
+            if(jsonObject.has("shippingPinCode"))
+                entityRegister.shippingPinCode = jsonObject.get("shippingPinCode")
+
+            if(jsonObject.has("shippingPhone"))
+                entityRegister.shippingPhone = jsonObject.get("shippingPhone")
 
             entityRegister.save(flush: true)
             if (!entityRegister.hasErrors())

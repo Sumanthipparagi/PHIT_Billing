@@ -85,7 +85,7 @@
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option data-state="${cs.stateId}" value="${cs.id}"
                                                     data-address="${cs.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + " , " + cs.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + cs?.city?.stateName + ", " + cs?.city?.districtName + "-" + cs?.city?.pincode}"
-                                                    data-gstin="${cs.gstn}"
+                                                    data-gstin="${cs.gstn}" data-shippingaddress="${cs.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', "")}"
                                                     <g:if
                                                             test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
                                         </g:if>
@@ -1707,6 +1707,7 @@
     function customerSelectChanged() {
         var customerId = $("#customerSelect").val();
         var address = $('#customerSelect option:selected').attr('data-address');
+        var shippingAddress = $('#customerSelect option:selected').attr('data-shippingaddress');
         var gstin = $('#customerSelect option:selected').attr('data-gstin');
         var noOfCrDays = 0;
         if (customers.length > 0) {
@@ -1724,7 +1725,7 @@
             }
             if (customerId != null && customerId != '') {
                 $('#address').html('Customer Address: ' +
-                    '  <span style="font-size: 12px">' + address + '</span><br>GSTIN: ' + gstin + '')
+                    '  <span style="font-size: 12px">' + address + '</span><br>GSTIN: ' + gstin + '<br>Shipping Address: '+shippingAddress)
             } else {
                 $('#address').html('')
             }

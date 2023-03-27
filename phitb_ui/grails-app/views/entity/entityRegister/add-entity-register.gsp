@@ -139,7 +139,7 @@
                                             </div>
 
                                             <div class="col-md-6 form-group  form-float">
-                                                <label for="addressLine1">
+                                                <label for="addressLine2">
                                                     Address Line 2
                                                 </label>
                                                 <input type="text" id="addressLine2" class="form-control addressLine2"
@@ -217,6 +217,33 @@
                                                 </select>
                                                 <input type="hidden" name="countryId"/>
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group  form-float">
+                                                <label for="shippingAddress">
+                                                    Shipping Address
+                                                </label>
+                                                <input maxlength="500" type="text" id="shippingAddress" class="form-control shippingAddress"
+                                                       name="shippingAddress" placeholder="Enter Shipping Address"
+                                                       />
+                                            </div>
+                                            <div class="col-md-6 form-group  form-float">
+                                                <label for="shippingPinCode">
+                                                    Shipping PIN Code
+                                                </label>
+                                                <input maxlength="20" type="text" id="shippingPinCode" class="form-control shippingPinCode"
+                                                       name="shippingPinCode" placeholder="Enter Shipping PIN code"
+                                                       />
+                                            </div>
+                                            <div class="col-md-6 form-group  form-float">
+                                                <label for="shippingPhone">
+                                                    Shipping Phone
+                                                </label>
+                                                <input maxlength="20" type="text" id="shippingPhone" class="form-control shippingPhone"
+                                                       name="shippingPhone" placeholder="Enter Shipping Phone"
+                                                       />
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -827,7 +854,6 @@
                                                        name="addressLine2" placeholder="Address Line 2"
                                                        value="${entity.addressLine2}"/>
                                             </div>
-
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="gstn">
                                                     GSTIN
@@ -903,6 +929,33 @@
                                                 </select>
                                                 <input type="hidden" name="countryId" value="${entity.countryId}"/>
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group  form-float">
+                                                <label for="shippingAddress">
+                                                    Shipping Address
+                                                </label>
+                                                <input maxlength="500" type="text" id="shippingAddress" class="form-control shippingAddress"
+                                                       name="shippingAddress" placeholder="Enter Shipping Address"
+                                                       value="${entity.shippingAddress}"/>
+                                            </div>
+                                            <div class="col-md-6 form-group  form-float">
+                                                <label for="shippingPinCode">
+                                                    Shipping PIN Code
+                                                </label>
+                                                <input maxlength="20" type="text" id="shippingPinCode" class="form-control shippingPinCode"
+                                                       name="shippingPinCode" placeholder="Enter Shipping PIN code"
+                                                       value="${entity.shippingPinCode}"/>
+                                            </div>
+                                            <div class="col-md-6 form-group  form-float">
+                                                <label for="shippingPhone">
+                                                    Shipping Phone
+                                                </label>
+                                                <input maxlength="20" type="text" id="shippingPhone" class="form-control shippingPhone"
+                                                       name="shippingPhone" placeholder="Enter Shipping Phone"
+                                                       value="${entity.shippingPhone}"/>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
