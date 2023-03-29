@@ -324,8 +324,10 @@
       });*/
 
     function dateFormat(dt) {
-        const moment1 = moment(dt, 'DD/MM/YYYY hh:mm:ss')
-        return moment1.format('DD/MM/YYYY');
+        //const moment1 = moment(dt, 'DD/MM/YYYY hh:mm:ss')
+        dt = dt.replace("T", " ").replace("Z", '');
+        var date = moment(dt, 'DD/MM/YYYY HH:mm:ss');
+        return date.format('DD/MM/YYYY');
 
     }
 

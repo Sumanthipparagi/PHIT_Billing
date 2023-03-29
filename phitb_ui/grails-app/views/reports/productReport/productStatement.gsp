@@ -243,7 +243,8 @@
 
     function dateFormat(dt)
     {
-        var date = new Date(dt);
+        dt = dt.replace("T", " ").replace("Z", '');
+        var date = moment(dt, 'DD/MM/YYYY HH:mm:ss');
         return moment(date).format('DD/MM/YYYY hh:mm:ss a');
 
     }

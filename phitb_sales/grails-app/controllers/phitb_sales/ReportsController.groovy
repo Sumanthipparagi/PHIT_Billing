@@ -158,14 +158,14 @@ class ReportsController {
                 customerJson.put("cityId", cityJson)
                 customerJson.put("salebill", saleBillJson)
                 saleBillJson.put("customer", customerJson)
-                if (customerBills.containsKey(saleBillJson.customer.cityId.id)) {
+                if (customerBills.containsKey(saleBillJson?.customer?.cityId?.id)) {
                     bills = customerBills.get(saleBillJson.customer.cityId.id) as JSONArray
                     bills.add(saleBillJson)
                     customerBills.put(saleBillJson.customer.cityId.id, bills)
                 } else {
                     bills = new JSONArray()
                     bills.add(saleBillJson)
-                    customerBills.put(saleBillJson.customer.cityId.id, bills)
+                    customerBills.put(saleBillJson?.customer?.cityId?.id, bills)
                 }
 //                }
                 custIds.add(customerJson.id)
@@ -200,8 +200,7 @@ class ReportsController {
             JSONObject customerBills = new JSONObject()
             JSONArray bills = new JSONArray()
             ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails
-                    .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqual(Long.parseLong
-                            (entityId), financialYear, fromDate, toDate, "DRAFT", [sort: sort, order: 'desc'])
+                    .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqual(Long.parseLong (entityId), financialYear, fromDate, toDate, "DRAFT", [sort: sort, order: 'desc'])
 
             for (SaleBillDetails saleBillDetail : saleBillDetails) {
                 def saleBillJson = new JSONObject((saleBillDetail as JSON).toString())

@@ -178,7 +178,6 @@
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log(data);
                 var content = "";
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
@@ -214,10 +213,11 @@
                                 customerTotalDue -= totalDue;
                             }
                             var days;
+                            console.log(bill.balance + ": " + bill.transactionNumber);
                             if(Number(bill.balance.toFixed(2)) === 0)
                             {days = 0;}
                             else
-                            { days = moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days')}
+                            {days = moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days')}
                             // alert($('#paidInvoice').val())
                             var td;
                             if(bill.docType!=="INVS")
