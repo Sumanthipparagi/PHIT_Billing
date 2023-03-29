@@ -23,6 +23,10 @@ class SaleReturnAdjustmentDetails implements Serializable, LogicalDelete<SaleRet
 
     static constraints = {
         cancelledDate nullable: true
+        totalAmount scale:2
+        adjAmount scale:2
+        balanceBefore scale:2
+        currentBalance scale:2
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

@@ -50,6 +50,14 @@ class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
         cancelledDate nullable:true
         uuid unique: true
         dueDate nullable: true
+        totalSqty scale:2
+        totalFqty scale:2
+        totalGst scale:2
+        totalCgst scale:2
+        totalSgst scale:2
+        totalIgst scale:2
+        totalAmount scale:2
+        totalDiscount scale:2
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

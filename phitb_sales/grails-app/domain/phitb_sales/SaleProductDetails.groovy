@@ -72,6 +72,26 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
         afternoon nullable:true
         night nullable:true
         presqty nullable:true
+
+        sqty scale: 2
+        freeQty scale: 2
+        repQty scale: 2
+        pRate scale: 2
+        sRate scale: 2
+        mrp scale: 2
+        discount scale: 2
+        gstId scale: 2
+        gstAmount scale: 2
+        sgstAmount scale: 2
+        cgstAmount scale: 2
+        igstAmount scale: 2
+        amount scale: 2
+        gstPercentage scale: 2
+        sgstPercentage scale: 2
+        cgstPercentage scale: 2
+        igstPercentage scale: 2
+        originalSqty scale: 2
+        originalFqty scale: 2
     }
 
     boolean isUpdatable

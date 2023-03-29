@@ -87,6 +87,20 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
         rep nullable: true
         drname nullable: true
         retailer nullable: true
+        balance scale: 2
+        totalAmount scale: 2
+        totalCgst scale: 2
+        totalSgst scale: 2
+        totalIgst scale: 2
+        grossAmount scale: 2
+        invoiceTotal scale: 2
+        totalGst scale: 2
+        totalSqty scale: 2
+        totalFqty scale: 2
+        totalItems scale: 2
+        totalQty scale: 2
+        totalDiscount scale: 2
+        totalAmount scale: 2
     }
 
     static mapping = {
