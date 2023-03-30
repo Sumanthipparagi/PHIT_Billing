@@ -2230,10 +2230,17 @@ class SaleReturnController {
     def printSaleReturnAdjustment() {
         JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
         String saleBillId = params.saleBillId
+        long said = Long.parseLong(params.said)
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
         JSONArray saleReturnAdjustmentDetails = new SalesService().getSaleReturnAdjustmentDetails(saleBillId, "INVS")
-        JSONObject saleReturnAdjustment = saleReturnAdjustmentDetails[0].saleReturnAdjustment
+        JSONObject saleReturnAdjustment = null
+        for (Object saleReturnAdjustmentDetail : saleReturnAdjustmentDetails) {
+            if(saleReturnAdjustmentDetail.saleReturnAdjustment.id == said)
+            {
+                saleReturnAdjustment = saleReturnAdjustmentDetail.saleReturnAdjustment
+            }
+        }
         render(view: "/sales/saleRetrun/print-sale-return-adjustment", model: [saleReturnAdjustmentDetails: saleReturnAdjustmentDetails,
                                                                                saleBillDetail             : saleBillDetail,
                                                                                customer                   : customer,

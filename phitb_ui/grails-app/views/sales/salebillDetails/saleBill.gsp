@@ -671,7 +671,7 @@
                     }
 
                     var date = moment(value.dateCreated.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-                    tableContent2 += "<tr "+rowStyle+"><td>"+(++index)+"</td><td>"+value.saleReturnAdjustment.docNo+"</td><td>"+date+"</td><td>"+value.adjAmount.toFixed(2)+"</td><td>"+cancelCreditsButton+" <a href='#' class='btn btn-sm btn-info printCredits' data-custid="+invoice.customerId+" data-id="+invoice.id+"><i class='fa fa-print'></i></a></td></tr>";
+                    tableContent2 += "<tr "+rowStyle+"><td>"+(++index)+"</td><td>"+value.saleReturnAdjustment.docNo+"</td><td>"+date+"</td><td>"+value.adjAmount.toFixed(2)+"</td><td>"+cancelCreditsButton+" <a href='#' class='btn btn-sm btn-info printCredits' data-said="+value.saleReturnAdjustment.id+" data-id="+invoice.id+"><i class='fa fa-print'></i></a></td></tr>";
                 });
                 creditsAdjustmentTable.append(tableContent2);
 
@@ -923,15 +923,15 @@
     }
 
     $(document).on("click", ".printCredits", function () {
-        var custId =  $(this).data('custid');
+        var said =  $(this).data('said');
         var id =  $(this).data('id');
         $("#printabel").remove();
-        creditsPrint(custId, id)
+        creditsPrint(said, id)
     });
-    function creditsPrint(custId,id) {
+    function creditsPrint(said, id) {
         $("<iframe id='printabel'>")
             .hide()
-            .attr("src", "/sale-return/sale-return-adjustment/print/"+id)
+            .attr("src", "/sale-return/sale-return-adjustment/print/"+id+"?said="+said)
             .appendTo("body");
     }
 

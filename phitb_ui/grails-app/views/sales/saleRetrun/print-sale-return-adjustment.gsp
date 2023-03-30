@@ -110,15 +110,8 @@
             </ul>
         </td>
         <td style="width: 20%;vertical-align:top;">
-            <input id="text" type="hidden" value="PharmIT" style="Width:20%" onblur='generateBarCode();'/>
-            <img id='barcode'
-                 src="https://api.qrserver.com/v1/create-qr-code/?data=${saleReturnAdjustment.docNo}&amp;size=100x100"
-                 alt=""
-                 title="PhramIT"
-                 style="display: block;
-                 margin-left: auto;
-                 margin-right: auto;
-                 width: 25%;"/>
+            <qrcode:image height="100" width="100" text="${saleReturnAdjustment.docNo}" />
+
         </td>
     </tr>
     <tr><td colspan="4"
@@ -142,7 +135,7 @@
     <tr>
         <td><strong>TOTAL</strong></td>
         <td colspan="2"><strong>${String.format("%.2f", saleReturnAdjustmentDetails.adjAmount.sum())}</strong></td>
-        <g:if test="${saleReturnAdjustment.cancelledDate}">
+        <g:if test="${saleReturnAdjustment?.has("cancelledDate") && saleReturnAdjustment?.cancelledDate != null}">
             <div id="watermark" class="print-watermark">CANCELLED</div>
         </g:if>
     </tr>
