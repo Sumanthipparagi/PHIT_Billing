@@ -26,10 +26,10 @@ class SchemeConfiguration implements Serializable, LogicalDelete<SchemeConfigura
     long slab3Status
     Date slabValidityFrom
     Date slabValidityTo
-    Double specialRate
+    double specialRate
     Date specialRateValidFrom
     Date specialRateValidTo
-    Double specialDiscount
+    double specialDiscount
     Date specialDiscountValidFrom
     Date specialDiscountValidTo
     String schemeStatus
@@ -54,6 +54,8 @@ class SchemeConfiguration implements Serializable, LogicalDelete<SchemeConfigura
         specialDiscountValidTo nullable: true
         slabValidityTo nullable: true
         slabValidityFrom nullable: true
+        specialRate scale: 2
+        specialDiscount scale: 2
     }
 
     boolean isUpdatable

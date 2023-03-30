@@ -24,6 +24,9 @@ class CreditJvTransactionDetail implements LogicalDelete<CreditJvTransactionDeta
     Date lastUpdated
     
     static constraints = {
+        amount scale:2
+        balance scale:2
+        dbAdjAmount scale:2
     }
 
     boolean isUpdatable

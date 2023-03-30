@@ -52,11 +52,25 @@ class SampleConversionDetails implements Serializable, LogicalDelete<SampleConve
 
     static constraints = {
         uuid unique: true
-        sqty min: 0D
-        freeQty min: 0D
-        repQty min: 0D
-        originalSqty min: 0D
-        originalFqty min: 0D
+        sqty min: 0D, scale:2
+        freeQty min: 0D, scale:2
+        repQty min: 0D, scale:2
+        originalSqty min: 0D, scale:2
+        originalFqty min: 0D, scale:2
+        pRate scale:2
+        sRate scale:2
+        mrp scale:2
+        discount scale:2
+        gstId scale:2
+        gstAmount scale:2
+        sgstAmount scale:2
+        cgstAmount scale:2
+        igstAmount scale:2
+        amount scale:2
+        gstPercentage scale:2
+        sgstPercentage scale:2
+        cgstPercentage scale:2
+        igstPercentage scale:2
     }
 
     boolean isUpdatable

@@ -60,6 +60,21 @@ class PurchaseReturn implements LogicalDelete<PurchaseReturn>
         refNo nullable: true
         refDate nullable: true
         uuid nullable: true, unique: true
+
+        maxDnAmount scale:2
+        gross scale:2
+        taxable scale:2
+        totalGst scale:2
+        totalCgst scale:2
+        totalSgst scale:2
+        totalIgst scale:2
+        exempted scale:2
+        cashDiscount scale:2
+        totalAmount scale:2
+        totalDiscount scale:2
+        balance scale:2
+        dbAdjAmount scale:2
+        adjAmount scale:2
     }
     static mapping = {
         debitIds  sqlType: 'longText'

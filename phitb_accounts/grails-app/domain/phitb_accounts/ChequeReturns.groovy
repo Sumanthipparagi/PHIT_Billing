@@ -22,6 +22,8 @@ class ChequeReturns implements LogicalDelete<ChequeReturns> {
     Date lastUpdated
 
     static constraints = {
+        bankPenaltyCharges scale:2
+        officePenaltyCharges scale:2
     }
 
     boolean isUpdatable

@@ -47,6 +47,11 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
         originalSqty min: 0L
         originalFqty min: 0L
         replacement nullable:true
+
+        purchaseRate scale:2
+        saleRate scale:2
+        mrp scale:2
+        discount scale:2
     }
 
     boolean isUpdatable

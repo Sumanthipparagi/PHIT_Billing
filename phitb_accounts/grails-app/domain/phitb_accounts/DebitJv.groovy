@@ -30,6 +30,8 @@ class DebitJv implements LogicalDelete<DebitJv> {
 
     static constraints = {
         approvedTime nullable: true
+        amount scale:2
+        crAdjAmount scale:2
     }
     static mapping = {
         remarks sqlType: 'longText'

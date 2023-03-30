@@ -12,9 +12,9 @@ class StockAdjustmentDetails implements Serializable, LogicalDelete<StockAdjustm
     long priority
     long sqty
     long fqty
-    Double pRate
-    Double sRate
-    Double gst
+    double pRate
+    double sRate
+    double gst
     long taxId
     double mrp
     long previousSQty
@@ -34,6 +34,10 @@ class StockAdjustmentDetails implements Serializable, LogicalDelete<StockAdjustm
         gst nullable: true
         uuid unique: true
         priority nullable: true
+        pRate scale:2
+        sRate scale:2
+        gst scale:2
+        mrp scale:2
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

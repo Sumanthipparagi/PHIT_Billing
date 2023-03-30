@@ -27,6 +27,8 @@ class PurchaseTransactionLog implements LogicalDelete<PurchaseTransactionLog> {
     Date lastUpdated
 
     static constraints = {
+        transferredAmount scale:2
+        balance scale:2
     }
 
     boolean isUpdatable

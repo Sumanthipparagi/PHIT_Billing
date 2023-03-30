@@ -43,7 +43,11 @@ class StockBook implements LogicalDelete<StockBook> {
         remainingFreeQty min: 0L
         remainingReplQty min: 0L
         uuid unique: true
-
+        purchaseRate scale:2
+        saleRate scale:2
+        mrp scale:2
+        purcTradeDiscount scale:2
+        purcProductValue scale:2
         purcDate nullable: true
         manufacturingDate nullable:true
         mergedWith nullable: true

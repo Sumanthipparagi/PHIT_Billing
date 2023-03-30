@@ -48,6 +48,8 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
         approvedStatus nullable: true
         cancelledDate nullable: true
         instrumentId nullable: true
+        amountPaid scale:2
+        commission scale:2
     }
 
     static mapping = {

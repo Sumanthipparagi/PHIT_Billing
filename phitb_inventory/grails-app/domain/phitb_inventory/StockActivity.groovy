@@ -28,6 +28,9 @@ class StockActivity implements LogicalDelete<StockActivity>{
         remainingSchemeQty min: 0L
         prevRemQty min: 0L
         prevSchemeQty min: 0L
+
+        saleRate scale:2
+        prevSaleRate scale:2
     }
 
     boolean isUpdatable

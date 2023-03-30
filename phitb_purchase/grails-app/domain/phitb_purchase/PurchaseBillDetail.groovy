@@ -67,6 +67,24 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
         totalAmount nullable: true
         supplierBillDate nullable: true
         uuid unique: true
+        cashDiscount scale:2
+        productDiscount scale:2
+        adjustedAmount scale:2
+        crDbAmount scale:2
+        payableAmount scale:2
+        gross scale:2
+        taxable scale:2
+        totalGst scale:2
+        totalCgst scale:2
+        totalSgst scale:2
+        totalIgst scale:2
+        netAmount scale:2
+        exempted scale:2
+        totalDiscount scale:2
+        balAmount scale:2
+        totalAmount scale:2
+        addAmount scale:2
+        lessAmount scale:2
     }
 
     boolean isUpdatable

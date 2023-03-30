@@ -31,6 +31,8 @@ class CreditJv implements LogicalDelete<CreditJv> {
 
     static constraints = {
         approvedTime nullable: true
+        amount scale:2
+        dbAdjAmount scale:2
     }
     static mapping = {
         remarks sqlType: 'longText'

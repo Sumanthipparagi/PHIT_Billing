@@ -26,6 +26,7 @@ class SalesTransactionLog implements Serializable, LogicalDelete<SalesTransactio
     Date dateCreated
     Date lastUpdated
     static constraints = {
+        transferedAmount scale:2
     }
 
     boolean isUpdatable

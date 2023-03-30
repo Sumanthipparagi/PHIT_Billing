@@ -70,9 +70,15 @@ class DeliveryChallan implements Serializable, LogicalDelete<DeliveryChallan>
         cancelledDate nullable: true
         orderDate nullable: true
         uuid unique: true
-        totalSqty min: 0D
-        totalFqty min: 0D
-        totalQty min: 0D
+        totalSqty min: 0D, scale: 2
+        totalFqty min: 0D, scale: 2
+        totalQty min: 0D, scale: 2
+        totalItems scale: 2
+        totalDiscount scale: 2
+        totalAmount scale: 2
+        invoiceTotal scale: 2
+        totalGst scale: 2
+        creditadjAmount scale: 2
     }
 
     static mapping = {

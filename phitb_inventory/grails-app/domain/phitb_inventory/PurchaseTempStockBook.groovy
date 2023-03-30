@@ -27,6 +27,9 @@ class PurchaseTempStockBook {
         originalId nullable: true
         entityTypeId nullable: true
         entityId nullable: true
+        purchaseRate scale:2
+        saleRate scale:2
+        mrp scale:2
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

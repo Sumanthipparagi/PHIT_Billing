@@ -12,7 +12,7 @@ class PaymentDetail implements LogicalDelete<PaymentDetail> {
     long paymentModeId
     String transferFrom
     String paymentTo
-    Double amountPaid
+    double amountPaid
     String narration
     String cardNumber
     String paymentDate
@@ -47,6 +47,7 @@ class PaymentDetail implements LogicalDelete<PaymentDetail> {
         approvedStatus nullable: true
         cancelledDate nullable: true
         approvedDate nullable: true
+        amountPaid scale: 2
     }
 
     static mapping = {

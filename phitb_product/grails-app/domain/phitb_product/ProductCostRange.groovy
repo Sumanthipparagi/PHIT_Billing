@@ -19,6 +19,8 @@ class ProductCostRange implements Serializable, LogicalDelete<ProductCostRange> 
     Date lastUpdated
 
     static constraints = {
+        minimumRate scale:2
+        maximumRate scale:2
     }
 
     boolean isUpdatable

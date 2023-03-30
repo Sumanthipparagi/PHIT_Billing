@@ -22,6 +22,9 @@ class GeneralLedger implements LogicalDelete<GeneralLedger> {
     Date lastUpdated
 
     static constraints = {
+        debitAmount scale:2
+        creditAmount scale:2
+        balance scale:2
     }
 
     static mapping = {

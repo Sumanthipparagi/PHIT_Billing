@@ -24,6 +24,8 @@ class CreditDebitDetails implements Serializable, LogicalDelete<CreditDebitDetai
     Date lastUpdated
 
     static constraints = {
+        creditAmt scale:2
+        debitAmt scale:2
     }
 
     boolean isUpdatable

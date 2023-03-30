@@ -28,6 +28,8 @@ class FinanceTransactionLog implements LogicalDelete<FinanceTransactionLog> {
     Date lastUpdated
 
     static constraints = {
+        transferredAmount scale:2
+        balance scale:2
     }
 
     boolean isUpdatable

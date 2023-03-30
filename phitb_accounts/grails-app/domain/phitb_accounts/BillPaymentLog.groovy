@@ -28,6 +28,7 @@ class BillPaymentLog implements LogicalDelete<BillPaymentLog> {
         paymentId nullable:true
         transId nullable: true
         paymentStatus nullable: true
+        amountPaid scale:2
     }
 
     boolean isUpdatable

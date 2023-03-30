@@ -24,6 +24,9 @@ class DebitJvTransactionDetail implements LogicalDelete<DebitJvTransactionDetail
     Date lastUpdated
 
     static constraints = {
+        amount scale:2
+        balance scale:2
+        crAdjAmount scale:2
     }
 
     boolean isUpdatable

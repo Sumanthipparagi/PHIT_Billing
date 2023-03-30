@@ -29,6 +29,10 @@ class BatchRegister implements Serializable, LogicalDelete<BatchRegister> {
 
     static constraints = {
         productCat nullable: true
+        purchaseRate scale:2
+        saleRate scale:2
+        ptr scale:2
+        mrp scale:2
     }
 
     static mapping = {

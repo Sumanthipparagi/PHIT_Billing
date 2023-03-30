@@ -102,6 +102,14 @@ class EntityRegister implements LogicalDelete<EntityRegister>
         shippingAddress nullable: true, maxSize: 500
         shippingPhone nullable: true
         shippingPinCode nullable: true
+        salesBalanceLimit scale:2
+        openingBalance scale:2
+        currentBalance scale:2
+        discount scale:2
+        bankCommision scale:2
+        defaultCharge scale:2
+        salesmanCommission scale:2
+
     }
 
     boolean isUpdatable

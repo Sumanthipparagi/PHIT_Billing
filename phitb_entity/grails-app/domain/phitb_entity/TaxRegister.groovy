@@ -33,6 +33,13 @@ class TaxRegister implements LogicalDelete<TaxRegister>
     Date dateCreated
     Date lastUpdated
     static constraints = {
+        taxValue scale:2
+        salesSgst scale:2
+        salesCgst scale:2
+        purchaseSgst scale:2
+        purchaseCgst scale:2
+        salesIgst scale:2
+        purchaseIgst scale:2
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

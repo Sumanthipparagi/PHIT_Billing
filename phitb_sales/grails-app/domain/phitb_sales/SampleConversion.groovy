@@ -56,7 +56,7 @@ class SampleConversion implements Serializable, LogicalDelete<SampleConversion>
     long entityId
     long createdUser
     long modifiedUser
-    Double adjAmount
+    double adjAmount
     Date cancelledDate
     Date dateCreated
     Date lastUpdated
@@ -67,13 +67,28 @@ class SampleConversion implements Serializable, LogicalDelete<SampleConversion>
         cancelledDate nullable: true
         orderDate nullable: true
         uuid unique: true
-        totalSqty min: 0D
-        totalFqty min: 0D
-        totalQty min: 0D
+        totalSqty min: 0D, scale:2
+        totalFqty min: 0D, scale:2
+        totalQty min: 0D, scale:2
         publicNote nullable: true
         privateNote nullable: true
         refNo nullable:true
         refDate  nullable:true
+        totalItems scale:2
+        totalDiscount scale:2
+        totalAmount scale:2
+        invoiceTotal scale:2
+        totalGst scale:2
+        balance scale:2
+        grossAmount scale:2
+        taxable scale:2
+        cashDiscount scale:2
+        exempted scale:2
+        totalCgst scale:2
+        totalSgst scale:2
+        totalIgst scale:2
+        creditadjAmount scale:2
+        adjAmount scale:2
     }
 
     boolean isUpdatable

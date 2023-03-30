@@ -28,6 +28,7 @@ class RouteRegister implements LogicalDelete<RouteRegister>
     static constraints = {
         salesman nullable: true
         areaManager nullable: true
+        apprExpense scale:2
     }
 
     boolean isUpdatable
