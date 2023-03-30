@@ -112,26 +112,35 @@ class BillDetailLogService
     }
 
     BillDetailLog save(JSONObject jsonObject) {
-        BillDetailLog receiptDetailLog = new BillDetailLog()
-        receiptDetailLog.billId = Long.parseLong(jsonObject.get("billId").toString())
-        receiptDetailLog.billType = jsonObject.get("billType").toString()
-        receiptDetailLog.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
-        receiptDetailLog.paymentRecord = "0"
-        receiptDetailLog.transId = jsonObject.get("transId").toString()
-        receiptDetailLog.approvedBy = Long.parseLong("1")
-        receiptDetailLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
-        receiptDetailLog.receiptId = jsonObject.get("recieptId").toString()
-        receiptDetailLog.receiptStatus = "ACTIVE";
-        receiptDetailLog.financialYear = jsonObject.get("financialYear").toString()
-        receiptDetailLog.status = Long.parseLong("1")
-        receiptDetailLog.syncStatus = Long.parseLong("1")
-        receiptDetailLog.entityTypeId = Long.parseLong("1")
-        receiptDetailLog.entityId = Long.parseLong("1")
-        receiptDetailLog.modifiedUser = Long.parseLong("1")
-        receiptDetailLog.createdUser = Long.parseLong("1")
-        receiptDetailLog.save(flush: true)
-        if (!receiptDetailLog.hasErrors())
-            return receiptDetailLog
+        if(jsonObject.has("recieptId")) {
+            ReceiptDetail receiptDetail = ReceiptDetail.findById(Long.parseLong(jsonObject.get("recieptId").toString()))
+            if(receiptDetail) {
+                BillDetailLog receiptDetailLog = new BillDetailLog()
+                receiptDetailLog.billId = Long.parseLong(jsonObject.get("billId").toString())
+                receiptDetailLog.billType = jsonObject.get("billType").toString()
+                receiptDetailLog.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
+                receiptDetailLog.paymentRecord = "0"
+                receiptDetailLog.transId = jsonObject.get("transId").toString()
+                receiptDetailLog.approvedBy = Long.parseLong("1")
+                receiptDetailLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
+                receiptDetailLog.receiptId = receiptDetail.id
+                receiptDetailLog.receiptStatus = receiptDetail.status
+                receiptDetailLog.financialYear = jsonObject.get("financialYear").toString()
+                receiptDetailLog.status = Long.parseLong("1")
+                receiptDetailLog.syncStatus = Long.parseLong("1")
+                receiptDetailLog.entityTypeId = Long.parseLong("1")
+                receiptDetailLog.entityId = Long.parseLong("1")
+                receiptDetailLog.modifiedUser = Long.parseLong("1")
+                receiptDetailLog.createdUser = Long.parseLong("1")
+                receiptDetailLog.save(flush: true)
+                if (!receiptDetailLog.hasErrors())
+                    return receiptDetailLog
+                else
+                    throw new BadRequestException()
+            }
+            else
+                throw new BadRequestException()
+        }
         else
             throw new BadRequestException()
 

@@ -107,6 +107,7 @@
                                 <tr>
                                     %{--
                                                                    <th style="width: 20%">ID</th>--}%
+                                    <th style="width: 20%">Action</th>
                                     <th style="width: 20%">Recipt Date</th>
                                     <th style="width: 20%">Receipt Id</th>
                                     <th style="width: 20%">Received From</th>
@@ -115,7 +116,7 @@
                                     <th style="width: 20%">Amount paid</th>
                                     <th style="width: 20%">Approved Status</th>
 %{--                                    <th style="width: 20%">Bank</th>--}%
-                                    <th style="width: 20%">Action</th>
+
                                 </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
@@ -218,6 +219,7 @@
                         // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                         //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
+                            'action': editbtn+"  "+cancelInvoice,
                             'id': json.data[i].receiptId,
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
@@ -226,7 +228,7 @@
                             'receivedFrom': json.data[i].receivedFrom.entityName,
                             'depositTo': json.data[i]?.deposit === "NA" ? '' : json.data[i]?.deposit?.accountName,
                             'pd': moment(pd).format('DD/MM/YYYY'),
-                            'action': editbtn+"  "+cancelInvoice
+
                         });
                     }
                     return return_data;
@@ -234,15 +236,16 @@
             },
             columns: [
                 // {'data': 'date', 'width': '20%'},
+                {'data': 'action', 'width': '20%'},
                 {'data': 'date', 'width': '20%'},
                 {'data': 'id', 'width': '20%'},
                 {'data': 'receivedFrom', 'width': '20%'},
                 {'data': 'depositTo', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
                 {'data': 'amountPaid', 'width': '20%'},
-                {'data': 'approvedStatus', 'width': '20%'},
+                {'data': 'approvedStatus', 'width': '20%'}
                 // {'data': 'bank', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+
             ]
         });
     }

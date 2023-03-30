@@ -1352,7 +1352,6 @@ class AccountsService
     def getReceiptDetailsByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-       // WebTarget target = client.target("http://localhost:8089")
         try {
             Response apiResponse = target
                     .path(new Links().RECIPT_DETAIL_BY_DATERANGE)
@@ -1376,7 +1375,6 @@ class AccountsService
     def getReceiptDetailsByDateRangeCustomer(String dateRange, String customerId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        // WebTarget target = client.target("http://localhost:8089")
         try {
             Response apiResponse = target
                     .path(new Links().RECEIPT_BY_DATERANGE_CUSTOMER)
@@ -1401,7 +1399,6 @@ class AccountsService
     def getPaymentDetailsByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        // WebTarget target = client.target("http://localhost:8089")
         try {
             Response apiResponse = target
                     .path(new Links().PAYMENT_DATERANGE)
@@ -1425,7 +1422,6 @@ class AccountsService
     def getPaymentDetailsByDateRangeCustomer(String dateRange, String customerId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        // WebTarget target = client.target("http://localhost:8089")
         try {
             Response apiResponse = target
                     .path(new Links().PAYMENT_DATERANGE_CUSTOMER)

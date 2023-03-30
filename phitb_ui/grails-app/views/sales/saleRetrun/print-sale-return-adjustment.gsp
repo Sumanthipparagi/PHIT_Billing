@@ -142,6 +142,9 @@
     <tr>
         <td><strong>TOTAL</strong></td>
         <td colspan="2"><strong>${String.format("%.2f", saleReturnAdjustmentDetails.adjAmount.sum())}</strong></td>
+        <g:if test="${saleReturnAdjustment.cancelledDate}">
+            <div id="watermark" class="print-watermark">CANCELLED</div>
+        </g:if>
     </tr>
     <tr>
         <td style="border-left: none;border-right: none;">
@@ -156,6 +159,7 @@
             <p>For, ${entity.entityName}</p>
 
             <p>&nbsp;</p>
+
             <p>&nbsp;</p>
 
             <p>Authorised Signatory</p>

@@ -158,7 +158,11 @@ class ReceiptDetailService {
         receiptDetail.employeeReceived = Long.parseLong("1")
         receiptDetail.commission = Double.parseDouble("1")
         receiptDetail.totalNotes = Long.parseLong("1")
-        receiptDetail.chequeNumber = jsonObject.get("chequeNumber").toString()
+        if(jsonObject.has("chequeNumber"))
+            receiptDetail.chequeNumber = jsonObject.get("chequeNumber").toString()
+        else
+            receiptDetail.chequeNumber = ""
+
         if(!jsonObject.isNull("bank"))
         {
             receiptDetail.bank = BankRegister.findById(Long.parseLong(jsonObject.get("bank").toString()))

@@ -241,7 +241,6 @@ class SalebillDetailsController {
         receipt.put("amountPaid", amount)
         receipt.put("narration", remarks)
         receipt.put("paymentDate", sdf.parse(paymentDate).format("dd/MM/yyyy"))
-        receipt.put("chequeNumber", "")
         receipt.put("bank", payeeBanker)
         receipt.put("wallet", 0)
         receipt.put("financialYear", financialYear)
@@ -253,6 +252,7 @@ class SalebillDetailsController {
         receipt.put("createdUser", session.getAttribute("userId"))
         receipt.put("cardNumber", cardNumber)
         receipt.put("chequeNumber", chequeNumber)
+        receipt.put("instrumentId", instrumentId)
         def receiptResponse = new AccountsService().saveReceipt(receipt, financialYear)
         if (receiptResponse.status == 200) {
             JSONObject savedReceipt = new JSONObject(receiptResponse.readEntity(String.class))
@@ -307,8 +307,8 @@ class SalebillDetailsController {
     }
 
     def adjustCredits() {
+        String saleReturnAdjustmentId = params.saleReturnAdjustmentId
         String saleBillId = params.saleBillId
-        double creditsApplied = Double.parseDouble(params.creditsApplied)
         JSONObject saleBill = new SalesService().getSaleBillDetailsById(saleBillId)
 
         if (saleBill.billStatus != "ACTIVE") {
@@ -316,37 +316,62 @@ class SalebillDetailsController {
             return
         }
 
-        String saleReturnIds = params.saleReturnIds
-
-        if (saleReturnIds && saleReturnIds.endsWith(",")) {
-            saleReturnIds = saleReturnIds.substring(0, saleReturnIds.length() - 1);
-        }
-
-        double totalBalance = saleBill.balance
-        if (creditsApplied > totalBalance) {
-            print("Applied credits is greater than balance: " + creditsApplied + " > " + totalBalance)
-            //reject this
-            response.status = 400
-            return
-        }
-
-        if (creditsApplied != 0) {
+        if(saleReturnAdjustmentId)
+        {
             JSONObject invObject = new JSONObject()
             invObject.put("id", saleBill.id)
             invObject.put("userId", session.getAttribute("userId"))
-            invObject.put("status", "NA")
-            invObject.put("creditsApplied", creditsApplied)
-            invObject.put("saleReturnIds", saleReturnIds)
-            invObject.put("docId", saleBill.id) //link invoice with Sale Return Adjustment log
-            invObject.put("docType", "INVS")
+            invObject.put("status", "CANCEL")
+            invObject.put("saleReturnAdjustmentId", saleReturnAdjustmentId)
             def invs = new AccountsService().updateSaleBalanceAndCredit(invObject)
             if (invs?.status == 200) {
                 println("Invoice Updated")
+                respond saleBill, formats: ['json'], status: 200
             } else {
                 println("Error Updating Invoice")
+                response.status = 400
             }
         }
-        respond saleBill, formats: ['json']
+        else {
+            double creditsApplied = Double.parseDouble(params.creditsApplied)
+            String saleReturnIds = params.saleReturnIds
+
+            if (saleReturnIds && saleReturnIds.endsWith(",")) {
+                saleReturnIds = saleReturnIds.substring(0, saleReturnIds.length() - 1);
+            }
+
+            double totalBalance = saleBill.balance
+            if (creditsApplied > totalBalance) {
+                print("Applied credits is greater than balance: " + creditsApplied + " > " + totalBalance)
+                //reject this
+                response.status = 400
+                return
+            }
+
+            if (creditsApplied != 0) {
+                JSONObject invObject = new JSONObject()
+                invObject.put("id", saleBill.id)
+                invObject.put("userId", session.getAttribute("userId"))
+                invObject.put("status", "NA")
+                invObject.put("creditsApplied", creditsApplied)
+                invObject.put("saleReturnIds", saleReturnIds)
+                invObject.put("docId", saleBill.id) //link invoice with Sale Return Adjustment log
+                invObject.put("docType", "INVS")
+                def invs = new AccountsService().updateSaleBalanceAndCredit(invObject)
+                if (invs?.status == 200) {
+                    println("Invoice Updated")
+                    respond saleBill, formats: ['json']
+                } else {
+                    println("Error Updating Invoice")
+                    response.status = 400
+                }
+            }
+            else
+            {
+                respond saleBill, formats: ['json']
+            }
+        }
+
     }
 
     def getSaleBillById() {

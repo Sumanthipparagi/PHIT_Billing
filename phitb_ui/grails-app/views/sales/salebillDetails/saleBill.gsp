@@ -239,13 +239,11 @@
 
             if( currentLength >= maxlength ){
                 $("#remarksCharacters").addClass("danger");
-                console.log("You have reached the maximum number of characters.");
             }else{
-                console.log(maxlength - currentLength + " chars left");
                 $("#remarksCharacters").removeClass("danger");
             }
             $("#remarksCharacters").text(currentLength);
-            $('#paymentDate').val(new Date().toDateInputValue());
+           // $('#paymentDate').val(new Date().toDateInputValue());
         });
     });
 
@@ -661,8 +659,19 @@
                 creditsAdjustmentTable.html("<td colspan=\"5\">No Credit Adjustments for this Invoice</td>");
                 $.each(saleReturnAdjustmentDetails, function (index, value) {
                     creditsAdjustmentTable.html("");
+                    var cancelCreditsButton = "<a href='#' data-id='"+value.saleReturnAdjustment.id+"' class='btn btn-sm btn-danger cancelCredit'><i class='fa fa-times'></i></a>"
+                    if(value.saleReturnAdjustment?.cancelledDate)
+                    {
+                        rowStyle = "style='text-decoration-line: line-through;'";
+                        cancelCreditsButton = "";
+                    }
+                    else
+                    {
+                        rowStyle = "";
+                    }
+
                     var date = moment(value.dateCreated.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-                    tableContent2 += "<tr><td>"+(++index)+"</td><td>"+value.saleReturnAdjustment.docNo+"</td><td>"+date+"</td><td>"+value.adjAmount.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger cancelCredit'><i class='fa fa-times'></i></a> <a href='#' class='btn btn-sm btn-info printCredits' data-custid="+invoice.customerId+" data-id="+invoice.id+"><i class='fa fa-print'></i></a></td></tr>";
+                    tableContent2 += "<tr "+rowStyle+"><td>"+(++index)+"</td><td>"+value.saleReturnAdjustment.docNo+"</td><td>"+date+"</td><td>"+value.adjAmount.toFixed(2)+"</td><td>"+cancelCreditsButton+" <a href='#' class='btn btn-sm btn-info printCredits' data-custid="+invoice.customerId+" data-id="+invoice.id+"><i class='fa fa-print'></i></a></td></tr>";
                 });
                 creditsAdjustmentTable.append(tableContent2);
 
@@ -994,6 +1003,7 @@
     });
 
     $(document).on("click", ".cancelCredit", function () {
+        var saleBillId = $(".saleBillId").val();
         Swal.fire({
             title: 'Revert applied credit?',
             text: "Do you want to revert credits?",
@@ -1004,15 +1014,50 @@
             confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Not Enabled!",
-                    text: "Canceling credits will be enabled soon.",
-                    icon: "warning",
+                var spinner = "<div class=\"col-md-12\">\n" +
+                    "                    <div class=\"text-center\">\n" +
+                    "                        <div class=\"spinner-border\" role=\"status\">\n" +
+                    "                            <span class=\"sr-only\">We are reverting credit adjustment, please wait!</span>\n" +
+                    "                        </div>\n" +
+                    "<p>We are adjusting available credits, please wait!</p>\n" +
+                    "                    </div>\n" +
+                    "                </div>";
+                var processingSwal = Swal.fire({
+                    title: "Reverting credit adjustment..",
+                    html: spinner,
                     showDenyButton: false,
                     showCancelButton: false,
-                    showCloseButton: true,
-                    showConfirmButton: true
+                    showCloseButton: false,
+                    showConfirmButton: false
                 });
+                var id =  $(this).data('id');
+                $.ajax({
+                    url: "sale-bill/adjust-credits",
+                    method: "POST",
+                    data:{
+                        saleBillId: saleBillId,
+                        saleReturnAdjustmentId: id
+                    },
+                    success: function(saleBill)
+                    {
+                        processingSwal.close();
+                        Swal.fire({
+                            title: "Success!",
+                            html: "Credits Adjusted for this invoice",
+                            icon: 'success'
+                        });
+                        listItemClicked(saleBill.id);
+                        loadSaleInvoiceTable();
+                    },
+                    error: function () {
+                        processingSwal.close();
+                        Swal.fire({
+                            title: "Error!",
+                            html: "Please try later!",
+                            icon: 'error'
+                        });
+                    }
+                })
             }
         });
     });

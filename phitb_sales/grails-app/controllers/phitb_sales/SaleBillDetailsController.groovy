@@ -1,6 +1,7 @@
 package phitb_sales
 
 import grails.converters.*
+import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -9,6 +10,7 @@ import phitb_sales.Exception.BadRequestException
 
 import java.text.DecimalFormat
 
+@Transactional
 class SaleBillDetailsController {
     static responseFormats = ['json', 'xml']
 
@@ -342,21 +344,24 @@ class SaleBillDetailsController {
     def adjustCredits()
     {
         JSONObject jsonObject = new JSONObject(request.reader.text)
-        String saleReturnIds = jsonObject.saleReturnIds
         long userId = jsonObject.userId
-        double creditsApplied = 0
-        if (jsonObject.creditsApplied) {
-            creditsApplied = jsonObject.creditsApplied
-        }
 
-        if(creditsApplied == 0)
-        {
-            response.status = 400
-            return
-        }
 
         SaleBillDetails saleBillDetails = SaleBillDetails.findById(jsonObject.id)
+        //status NA is set while settling from my invoice page
         if (jsonObject.status == "NA" || jsonObject.status == null) {
+            String saleReturnIds = jsonObject.saleReturnIds
+            double creditsApplied = 0
+            if (jsonObject.creditsApplied) {
+                creditsApplied = jsonObject.creditsApplied
+            }
+
+            if(creditsApplied == 0)
+            {
+                response.status = 400
+                return
+            }
+
             if (saleBillDetails) {
                 ArrayList<SaleReturn> salesReturn = new ArrayList<>()
                 ArrayList<String> saleRtrnIds = saleReturnIds.split(",")
@@ -452,7 +457,7 @@ class SaleBillDetailsController {
                             saleBillDetails.balance = String.format("%.2f", saleBillDetails.getBalance()) as double
                             saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount()) as double
                         }
-                        SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
+                        SaleBillDetails saleBillDetails1 = saleBillDetails.save()
                         if (saleBillDetails1) {
                             respond saleBillDetails1
                         }
@@ -468,6 +473,74 @@ class SaleBillDetailsController {
         else
         {
             //cancel credits
+            double adjustedAmount = 0
+            String saleReturnIds = ""
+            String saleReturnAdjustmentId = jsonObject.get("saleReturnAdjustmentId")
+            if(saleReturnAdjustmentId) {
+                SaleReturnAdjustment saleReturnAdjustment = SaleReturnAdjustment.findById(Long.parseLong(saleReturnAdjustmentId))
+                if(saleReturnAdjustment && saleReturnAdjustment.cancelledDate == null)
+                {
+                    Date dt = new Date()
+                    saleReturnAdjustment.cancelledDate = dt
+                    saleReturnAdjustment.modifiedUser = userId
+                    saleReturnAdjustment.isUpdatable = true
+                    saleReturnAdjustment.save()
+                    if(!saleReturnAdjustment.hasErrors()) {
+                        ArrayList<SaleReturnAdjustmentDetails> adjustmentDetails = SaleReturnAdjustmentDetails.findAllBySaleReturnAdjustment(saleReturnAdjustment)
+                        for (SaleReturnAdjustmentDetails adjustmentDetail : adjustmentDetails) {
+                            SaleReturn saleReturn = adjustmentDetail.saleReturn
+                            adjustedAmount = adjustmentDetail.adjAmount
+                            saleReturn.balance += adjustedAmount
+                            saleReturn.isUpdatable = true
+                            saleReturn.save()
+                            if(!saleReturn.hasErrors()) {
+                                adjustmentDetail.cancelledDate = dt
+                                adjustmentDetail.isUpdatable = true
+                                adjustmentDetail.save()
+                                saleReturnIds += saleReturn.id + ","
+                            }
+                        }
+
+                        // assume s is the input string
+                        if (saleReturnIds.endsWith(",")) { // check if the string ends with a comma
+                            saleReturnIds = saleReturnIds.substring(0, saleReturnIds.length() - 1); // remove the last character
+                        }
+                        String existingCreditIds = saleBillDetails.creditIds
+                        existingCreditIds.replaceAll(saleReturnIds, "")
+
+                        if (existingCreditIds.endsWith(",")) { // check if the string ends with a comma
+                            existingCreditIds = existingCreditIds.substring(0, existingCreditIds.length() - 1); // remove the last character
+                        }
+
+                        saleBillDetails.creditIds = existingCreditIds
+                        saleBillDetails.balance += adjustedAmount
+                        saleBillDetails.adjAmount -= adjustedAmount
+                        saleBillDetails.isUpdatable = true
+                        saleBillDetails.save()
+                        if(!saleBillDetails.hasErrors())
+                        {
+                            respond saleReturnAdjustment
+                        }
+                        else
+                        {
+                            response.status = 400
+                        }
+
+                    }
+                    else
+                    {
+                        response.status = 400
+                    }
+                }
+                else
+                {
+                    response.status = 400
+                }
+            }
+            else
+            {
+                response.status = 400
+            }
         }
 
     }
