@@ -240,7 +240,11 @@
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                             invoiceNumber = "DRAFT";
                         }
-                        else if(json.data[i].billStatus === "CANCELLED" || json.data[i].billStatus !== "CONVERTED")
+                        else if(json.data[i].billStatus === "CANCELLED")
+                        {
+                            //only print option
+                        }
+                        else if(json.data[i].billStatus === "CONVERTED")
                         {
                             //only print option
                         }
