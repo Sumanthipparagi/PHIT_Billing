@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js " lang="en">
+<html class="no-js" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -51,21 +51,12 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Expiry Statement</h2>
+                    <h2>Price List</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Price List</li>
                     </ul>
                 </div>
-
-                %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
-                %{--                    <div class="input-group m-b-0">--}%
-                %{--                        <input type="text" class="form-control" placeholder="Search...">--}%
-                %{--                        <span class="input-group-addon">--}%
-                %{--                            <i class="zmdi zmdi-search"></i>--}%
-                %{--                        </span>--}%
-                %{--                    </div>--}%
-                %{--                </div>--}%
             </div>
         </div>
 
@@ -77,10 +68,6 @@
                             <div class="col-md-9">
                                 <div class="form-group">
                                     <div class="input-group inlineblock">
-                                        <label for="dateFrom">From:</label>
-                                        <input type="month" id="dateFrom" name="dateFrom">
-                                        <label for="dateTo">To:</label>
-                                        <input type="month" id="dateTo" name="dateTo">
                                         <button class="input-group-btn btn btn-info btn-sm"
                                                 data-toggle="modal" data-target="#myModal" ><i class="fa fa-filter"></i> </button>
                                         <button class="input-group-btn btn btn-success btn-sm"
@@ -89,19 +76,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            %{--    <div class="col-md-2 d-flex justify-content-center">
-                                    <div class="form-group">
-                                        <div class="input-group inlineblock">
-                                            <label for="entitySelect">Entity:</label>
-                                            <select name="entity" id="entitySelect">
-                                                <g:each in="${entities}" var="en">
-                                                    <option value="${en.id}">${en.entityName}</option>
-                                                </g:each>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>--}%
 
                             <div class="col-md-3 d-flex justify-content-center">
                                 <div class="form-group">
@@ -114,18 +88,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            %{--  <div class="col-lg-6">
-                              <div class="form-group">
-                              <label for="entitySelect">Entity:</label>
-                              <select name="entity" id="entitySelect">
-                                  <g:each in="${entities}" var="en">
-                                      <option value="${en.id}">${en.entityName}</option>
-                                  </g:each>
-                              </select>
-                              </div>
-                              </div>--}%
-
                         </div>
                     </div>
 
@@ -161,13 +123,7 @@
 <asset:javascript src="/themeassets/plugins/jQuery.print/jQuery.print.min.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-%{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.umd.min.js"/>--}%
-%{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.plugin.autotable.js"/>--}%
-%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>--}%
-%{--
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.js" integrity="sha512-Bw9Zj8x4giJb3OmlMiMaGbNrFr0ERD2f9jL3en5FmcTXLhkI+fKyXVeyGyxKMIl1RfgcCBDprJJt4JvlglEb3A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
---}%
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 <script>
@@ -184,17 +140,6 @@
     $("#entitySelect").select2();
 
     function getReport() {
-
-        var dateFrom = $('#dateFrom').val();
-        var dateTo = $('#dateTo').val();
-
-        if(dateFrom === null || dateFrom === "" || dateTo === null || dateTo === "")
-        {
-            alert("Select Month!");
-            return;
-        }
-
-        var entitySelect = $("#entitySelect").val();
         var loading = Swal.fire({
             title: "Getting reports, Please wait!",
             html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
@@ -204,26 +149,11 @@
             allowOutsideClick: false,
             closeOnClickOutside: false
         });
-        var url = "/reports/inventory/getexpiry?dateFrom=" + dateFrom+"&entityId="+entitySelect+"&dateTo="+dateTo;
+        var url = "/reports/products/getpricelist";
         var ids = null;
         switch (filterType)
         {
             case "ALL":
-                break;
-            case "PRODUCT":
-
-                var checkboxes = document.getElementsByName("products");
-                // Loop through the radio buttons
-                for (var i = 0; i < checkboxes.length; i++) {
-                    // Check if the current radio button is checked
-                    if (checkboxes[i].checked) {
-                        if(ids === null)
-                            ids = checkboxes[i].value + ",";
-                        else
-                            ids += checkboxes[i].value + ",";
-                    }
-                }
-                url += "&productids="+ids;
                 break;
             case "GROUP":
                 var checkboxes = document.getElementsByName("groups");
@@ -237,21 +167,7 @@
                             ids += checkboxes[i].value + ",";
                     }
                 }
-                url += "&groupids="+ids;
-                break;
-            case "SUPPLIER":
-                var checkboxes = document.getElementsByName("company");
-                // Loop through the radio buttons
-                for (var i = 0; i < checkboxes.length; i++) {
-                    // Check if the current radio button is checked
-                    if (checkboxes[i].checked) {
-                        if(ids === null)
-                            ids = checkboxes[i].value + ",";
-                        else
-                            ids += checkboxes[i].value + ",";
-                    }
-                }
-                url += "&supplierids="+ids;
+                url += "?groupids="+ids;
                 break;
             case "COMPANY":
                 var checkboxes = document.getElementsByName("company");
@@ -265,7 +181,7 @@
                             ids += checkboxes[i].value + ",";
                     }
                 }
-                url += "&companyids="+ids;
+                url += "?companyids="+ids;
                 break;
         }
 
@@ -280,11 +196,10 @@
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='6'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='6'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='6'>Expiry Report, Date From: " +
-                    dateFrom + " | Date Upto: "+dateTo+"</th></tr>" +
-                    "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Batch Number</th><th data-f-bold='true'>Exp Date</th><th data-f-bold='true'>Qty</th><th data-f-bold='true'>Value</th>" +
+                    "<tr><th data-f-bold='true' colspan='6'>Price List</th></tr>" +
+                    "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Packing</th><th data-f-bold='true'>Sale Rate</th><th data-f-bold='true'>Purchase Rate</th><th data-f-bold='true'>MRP</th>" +
                     "</thead><tbody>";
-                var stockDetails = "";
+                var priceDetails = "";
                 var i = 0;
                 $.each(data, function (key, vl) {
                     if(key !== "ALL") {
@@ -292,15 +207,13 @@
                     }
                     $.each(vl, function (key, value) {
                         i += 1;
-                        var qty = value?.remainingQty + value?.remainingFreeQty;
-                        var val = qty * value?.saleRate;
-                        stockDetails = "<tr>" +
+                        priceDetails = "<tr>" +
                             "<td>" + i + "</td>" +
                             "<td>" + value?.productName + "</td>" +
-                            "<td>" + value?.batchNumber + "</td></td>" +
-                            "<td>" + value?.expDate + "</td><td>" + qty + "</td>" +
-                            "<td>" + val.toFixed(2) + "</td></tr>";
-                        content += stockDetails
+                            "<td>" + value?.unitPacking + "</td></td>" +
+                            "<td>" + value?.saleRate + "</td><td>" + value?.purchaseRate + "</td>" +
+                            "<td>" + value?.mrp + "</td></tr>";
+                        content += priceDetails
                     });
                 });
                 var mainTableFooter = "</tbody></table>";
@@ -364,7 +277,7 @@
 
 
 </script>
-<g:include view="controls/reports/expiry-filter.gsp"/>
+<g:include view="controls/reports/pricelist-filter.gsp"/>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("reports-menu");

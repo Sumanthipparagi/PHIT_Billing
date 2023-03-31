@@ -1,5 +1,7 @@
 package phitb_ui.reports
 
+import grails.converters.JSON
+
 //import com.lowagie.text.html.simpleparser.ALink
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -861,5 +863,86 @@ class ProductReportController {
             ex.printStackTrace()
             return date
         }
+    }
+
+    def priceList()
+    {
+        render(view: '/reports/productReport/priceList')
+    }
+
+    def getPriceList()
+    {
+        String entityId = session.getAttribute("entityId")
+        String groupids = params.groupids
+        String companyids = params.companyids
+        JSONObject groupedObject = new JSONObject()
+        JSONArray products = new ProductService().getProductsByEntityId(entityId)
+        for (JSONObject product : products) {
+
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("saleRate", product.saleRate)
+            jsonObject.put("mrp", product.mrp)
+            jsonObject.put("purchaseRate", product.purchaseRate)
+            jsonObject.put("productName", product.productName)
+            jsonObject.put("unitPacking", product.unitPacking)
+
+            if(groupids != null && groupids != "null")
+            {
+                String[] groupIds = groupids.split(",")
+                if(groupIds.contains(product?.group?.id?.toString()))
+                {
+                    def productGroup = new ProductService().getProductGroupById(product?.group?.id?.toString())
+                    if(groupedObject.containsKey(productGroup.groupName))
+                    {
+                        JSONArray array = groupedObject.get(productGroup.groupName)
+                        array.add(jsonObject)
+                        groupedObject.put(productGroup.groupName, array)
+                    }
+                    else
+                    {
+                        JSONArray array = new JSONArray()
+                        array.put(jsonObject)
+                        groupedObject.put(productGroup.groupName, array)
+                    }
+                }
+            }
+            else if(companyids != null && companyids != "null")
+            {
+                String[] companyIds = companyids.split(",")
+                if(companyIds.contains(product?.manufacturerId?.toString()))
+                {
+                    def entity = new EntityService().getEntityById(product?.manufacturerId?.toString())
+                    if(groupedObject.containsKey(entity.entityName))
+                    {
+                        JSONArray array = groupedObject.get(entity.entityName)
+                        array.add(jsonObject)
+                        groupedObject.put(entity.entityName, array)
+                    }
+                    else
+                    {
+                        JSONArray array = new JSONArray()
+                        array.put(jsonObject)
+                        groupedObject.put(entity.entityName, array)
+                    }
+                }
+            }
+            else
+            {
+                if(groupedObject.containsKey("ALL"))
+                {
+                    JSONArray array = groupedObject.get("ALL")
+                    array.add(jsonObject)
+                    groupedObject.put("ALL", array)
+                }
+                else
+                {
+                    JSONArray array = new JSONArray()
+                    array.put(jsonObject)
+                    groupedObject.put("ALL", array)
+                }
+            }
+        }
+
+        respond groupedObject, formats: ['json']
     }
 }

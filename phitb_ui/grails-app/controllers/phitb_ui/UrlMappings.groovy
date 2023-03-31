@@ -835,6 +835,8 @@ class UrlMappings {
         "/reports/products/getstatement"(controller: "productReport", action: "getProductStatement")
         "/reports/batches/statement"(controller: "productReport", action: "batchStatement")
         "/reports/batches/getreport"(controller: "productReport", action: "getBatchStatement")
+        "/reports/products/price-list"(controller: "productReport", action: "priceList")
+        "/reports/products/getpricelist"(controller: "productReport", action: "getPriceList")
 
 
         /*<-------------------------------------------Shipments------------------------------------------------->*/
