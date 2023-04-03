@@ -2124,5 +2124,4 @@ class ProductService {
 
     }
 
-
 }

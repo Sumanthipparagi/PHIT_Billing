@@ -387,6 +387,7 @@
                                     <li><a href="/reports/sales/gstreport">GST Report</a></li>
                                     <li><a href="/reports/sales/invoice-payment-report">Invoice Payment Report</a></li>
                                     <li><a href="/reports/sales/customer-ledger">Customer Ledger</a></li>
+                                    <li><a href="/reports/sales/fastslowunsold">FSN Analysis</a></li>
                                 </ul>
                             </li>
                             <li><a href="javascript:void(0);" class="menu-toggle">Accounts Report</span><span

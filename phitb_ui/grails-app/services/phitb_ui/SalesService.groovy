@@ -2298,4 +2298,34 @@ contains both deliveryChallan and products
         }
 
     }
+
+    def getFSN(long entityId, String fromDate, String toDate)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_FSN_REPORT)
+                    .queryParam("entityId", entityId)
+                    .queryParam("fromDate", fromDate)
+                    .queryParam("toDate", toDate)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray fsn = new JSONArray(apiResponse.readEntity(String.class))
+                return fsn
+            }
+            else
+                return null
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  getFSN  , Ex:' + ex)
+            log.error('Service :salesService , action :  getFSN  , Ex:' + ex)
+            return null
+        }
+
+    }
 }

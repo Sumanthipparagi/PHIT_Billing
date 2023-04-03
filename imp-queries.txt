@@ -1,0 +1,26 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `calculateFSN`(IN `entityId` bigint, IN `fromDate` date, IN `toDate` date)
+BEGIN
+    SET SESSION group_concat_max_len = 100000000;
+    SET @myExecSQL = CONCAT("
+        SELECT
+            sp.product_id AS productId,
+            COUNT(*) AS frequency,
+            SUM(sp.sqty+sp.free_qty) AS qty,
+            SUM(sp.s_rate * (sp.sqty+sp.free_qty)) AS sales,
+            SUM((sp.s_rate * (sp.sqty+sp.free_qty)) - (sp.discount * (sp.sqty+sp.free_qty))) AS netSales,
+            ((COUNT(*) * SUM((sp.s_rate * (sp.sqty+sp.free_qty)) - (sp.discount * (sp.sqty+sp.free_qty)))) / ((SELECT COUNT(*) FROM sale_product_details) * SUM((sp.s_rate * (sp.sqty+sp.free_qty)) - (sp.discount * (sp.sqty+sp.free_qty))))) AS fsnScore
+        FROM
+            sale_product_details sp
+        INNER JOIN
+            sale_bill_details sb ON sb.id = sp.bill_id
+        WHERE
+            sp.deleted = FALSE AND sb.deleted = FALSE AND sb.bill_status = 'ACTIVE' AND sb.entity_id = ", entityId," AND sb.date_created BETWEEN '", fromDate,"' AND '", toDate,"'
+        GROUP BY
+            product_id
+        ORDER BY
+            FSNScore DESC;
+    ");
+    PREPARE stmt FROM @myExecSQL;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END

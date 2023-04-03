@@ -1,20 +1,23 @@
 package phitb_sales
 
-
-import grails.rest.*
 import grails.converters.*
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.hibernate.Criteria
+import org.hibernate.SQLQuery
 
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
+import java.sql.ResultSet
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 class ReportsController {
+
+    def sessionFactory
     static responseFormats = ['json', 'xml']
     static allowedMethods = [getCustomerWiseBillDetails: ["GET", "POST"]]
 
@@ -541,4 +544,30 @@ class ReportsController {
             response.status = 400
         }
     }
+
+    def getFSN()
+    {
+        try {
+            long entityId = Long.parseLong(params.entityId)
+            String fromDateStr = params.fromDate
+            String toDateStr = params.toDate
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            Date fromDate = sdf.parse(fromDateStr)
+            Date toDate = sdf.parse(toDateStr)
+            def session = sessionFactory.getCurrentSession()
+            SQLQuery fsnQuery = session.createSQLQuery('call calculateFSN(:entityId, :fromDate, :toDate);')
+                    .setParameter("entityId", entityId)
+                    .setParameter("fromDate", fromDate)
+                    .setParameter("toDate", toDate)
+                    .setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)
+            def fsn = fsnQuery.list()
+            respond fsn
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+        }
+    }
+
+
 }

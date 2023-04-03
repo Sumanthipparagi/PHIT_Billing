@@ -512,6 +512,7 @@ public class Links
 
     public static String GST_SALES_REPORTS = APP_CONTEXT_PATH + "sales/reports/salesgst";
     public static String CREDIT_NOTE_GST_SALES_REPORTS = APP_CONTEXT_PATH + "sales/reports/creditnotegst";
+    public static String SALE_FSN_REPORT = APP_CONTEXT_PATH + "sales/reports/fsn";
 
     public static String SALE_SCHEME_UPDATE = APP_CONTEXT_PATH + "sales/schemeconfiguration/{id}";
     public static String SALE_SCHEME_DELETE = APP_CONTEXT_PATH + "sales/schemeconfiguration/{id}";

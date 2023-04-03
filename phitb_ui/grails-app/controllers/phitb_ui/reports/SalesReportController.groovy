@@ -5,10 +5,10 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.grails.web.json.JSONArray
-import org.grails.web.json.JSONException
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
 import phitb_ui.EntityService
+import phitb_ui.InventoryService
 import phitb_ui.ProductService
 import phitb_ui.PurchaseService
 import phitb_ui.ReportsService
@@ -18,8 +18,6 @@ import phitb_ui.entity.EntityRegisterController
 
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.util.function.ToDoubleFunction
-import java.util.stream.Collectors
 
 class SalesReportController {
 
@@ -1123,4 +1121,58 @@ class SalesReportController {
         respond jsonObject, formats: ['json']
     }
 
+
+    def fastSlowUnsoldProducts()
+    {
+        render(view: '/reports/salesReport/fastSlowUnsold')
+    }
+
+    def getFastSlowUnsoldProducts()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+        long entityId = session.getAttribute("entityId")
+        String dateRange = params.dateRange
+        if(dateRange) {
+            ArrayList<Long> productIds = new ArrayList<>()
+            String fromDateStr = sdf.parse(dateRange.split("-")[0].trim()).format("yyyy-MM-dd HH:mm:ss")
+            String toDateStr = sdf.parse(dateRange.split("-")[1].trim()).format("yyyy-MM-dd HH:mm:ss")
+            JSONArray fsn = new JSONArray()
+            JSONArray jsonArray = new SalesService().getFSN(entityId, fromDateStr, toDateStr)
+            for (JSONObject jsonObject : jsonArray) {
+                JSONObject product = new ProductService().getProductById(jsonObject.get("productId").toString())
+                if(product)
+                {
+                    productIds.add(product.id)
+                    jsonObject.put("product",product)
+                    fsn.add(jsonObject)
+                }
+            }
+
+            //get unsold products
+            JSONArray stocks = new InventoryService().getStockBookByEntity(entityId)
+            for (JSONObject stock : stocks) {
+                if(!productIds.contains(stock.get("productId")))
+                {
+                    JSONObject product = new ProductService().getProductById(stock.get("productId").toString())
+                    if(product)
+                    {
+                        JSONObject notSoldProduct = new JSONObject()
+                        notSoldProduct.put("product", product)
+                        notSoldProduct.put("fsnScore", 0.0)
+                        notSoldProduct.put("sales", 0.0)
+                        notSoldProduct.put("productId", product.id)
+                        notSoldProduct.put("qty", 0)
+                        notSoldProduct.put("frequency", 0)
+                        notSoldProduct.put("netSales", 0.0)
+                        fsn.add(notSoldProduct)
+                    }
+                }
+            }
+
+
+            respond fsn, formats: ['json']
+        }
+        else
+            response.status = 400
+    }
 }

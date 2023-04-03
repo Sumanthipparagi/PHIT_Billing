@@ -822,6 +822,8 @@ class UrlMappings {
 
         "/reports/sales/get-customer-ledger"(controller: "salesReport", action: "getCustomerLedger")
         "/reports/sales/customer-ledger"(controller: "salesReport", action: "customerLedger")
+        "/reports/sales/fastslowunsold"(controller: "salesReport", action: "fastSlowUnsoldProducts")
+        "/reports/sales/getfastslowunsold"(controller: "salesReport", action: "getFastSlowUnsoldProducts")
 
         "/reports/accounts/outstanding"(controller: "accountsReport", action: "outstandingReport")
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")
@@ -837,6 +839,7 @@ class UrlMappings {
         "/reports/batches/getreport"(controller: "productReport", action: "getBatchStatement")
         "/reports/products/price-list"(controller: "productReport", action: "priceList")
         "/reports/products/getpricelist"(controller: "productReport", action: "getPriceList")
+
 
 
         /*<-------------------------------------------Shipments------------------------------------------------->*/

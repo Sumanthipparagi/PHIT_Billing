@@ -471,6 +471,7 @@ class UrlMappings {
             "/reports/salesreturn-areawise(.$format)?"(controller: 'reports', action: 'getSaleReturnAreaWiseBillDetails')
             "/reports/statistics(.$format)?"(controller: 'reports', action: 'getSalesStats')
             "/reports/salesinfo(.$format)?"(controller: 'reports', action: 'getSalesInfoTillDate')
+            "/reports/fsn(.$format)?"(controller: 'reports', action: 'getFSN')
 
             "/salebilldetails/updateirn(.$format)?"(controller: 'saleBillDetails', action: 'updateIRNDetails')
             "/salebilldetails/save-invoice(.$format)?"(controller: 'saleBillDetails', action: 'saveInvoice')
