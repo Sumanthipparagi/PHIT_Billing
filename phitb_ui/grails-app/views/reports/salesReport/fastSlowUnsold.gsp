@@ -181,7 +181,7 @@
                 var header = "<tr><th data-f-bold='true'><strong>SL No.</strong></th><th data-f-bold='true'><strong>Product Name</strong></th><th data-f-bold='true'><strong>Sales Amt</strong></th><th data-f-bold='true'><strong>Net Sales Amt</strong></th><th data-f-bold='true'><strong>Sale Frequency</strong></th><th data-f-bold='true'><strong>Sale Qty</strong></th><th data-f-bold='true'><strong>FSN Score</strong></th>";
                 mainTableHeader += header +"</thead><tbody>";
                 $.each(data, function (key, fsn) {
-                    var row = "<tr><td>"+(++key)+"</td><td>" + fsn.product.productName + "</td><td>" + fsn.sales.toFixed(2) + "</td><td>" + fsn.netSales.toFixed(2) + "</td><td>" + fsn.frequency + "</td><td>" + fsn.qty + "</td><td>" + fsn.fsnScore.toFixed(5) + "</td>";
+                    var row = "<tr><td>"+(++key)+"</td><td>" + fsn.product.productName + "</td><td>" + fsn.sales.toFixed(2) + "</td><td>" + fsn.netSales.toFixed(2) + "</td><td>" + fsn.frequency + "</td><td>" + fsn.qty + "</td><td>" + (fsn.fsnScore * 1000).toFixed(2) + "</td>";
                     content += row;
                 });
 
