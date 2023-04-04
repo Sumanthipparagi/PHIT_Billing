@@ -249,10 +249,10 @@
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
-                        if (json.data[i].billStatus !== "CANCELLED" && json.data[i].billStatus !== "APPROVED") {
+                        if (json.data[i].billStatus !== "CANCELLED" && json.data[i].billStatus !== "APPROVED" && ${session.getAttribute("financialYearValid")}) {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#"><i class="fa fa-times"></i></a>';
                         }
-                        if (("${(session.getAttribute('entityTypeName'))}" === "${Constants.ENTITY_C_F}" || "${session.getAttribute('entityTypeName')}" === "${Constants.ENTITY_SUPER_STOCKIST}") && json.data[i].billStatus !== "APPROVED" && json.data[i].billStatus !== "CANCELLED") {
+                        if (("${(session.getAttribute('entityTypeName'))}" === "${Constants.ENTITY_C_F}" || "${session.getAttribute('entityTypeName')}" === "${Constants.ENTITY_SUPER_STOCKIST}") && json.data[i].billStatus !== "APPROVED" && json.data[i].billStatus !== "CANCELLED" && ${session.getAttribute("financialYearValid")}) {
 
                             approveInvoice = '<a class="btn btn-sm btn-success" title="Approved" onclick="approveGrn(' + json.data[i].id
                                 + ')" href="#"><i class="fa fa-check"></i></a>';

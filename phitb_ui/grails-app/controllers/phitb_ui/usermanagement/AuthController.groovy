@@ -8,6 +8,7 @@ import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.SystemService
+import phitb_ui.UtilsService
 import phitb_ui.accounts.BankRegisterController
 import phitb_ui.entity.AccountRegisterController
 import phitb_ui.entity.EntityRegisterController
@@ -19,8 +20,11 @@ import phitb_ui.system.CountryController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
+import java.text.SimpleDateFormat
+
 class AuthController {
 
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
     def index() {
         render(view: '/usermanagement/auth/index')
     }
@@ -59,7 +63,6 @@ class AuthController {
                 if (auth.get("username").toString().equals(username) && auth.get("password").toString().equals(password)) {
                     JSONObject entity = auth.get("user").entity
                     session.setMaxInactiveInterval(3600000)
-                    //String roleName = auth?.get("user")?.role?.name?.toString()
                     session.setAttribute("login", true)
                     session.setAttribute("userId", auth.get("user")?.id)
                     session.setAttribute("entityId", entity?.get("id"))
@@ -77,18 +80,20 @@ class AuthController {
                     session.setAttribute("permittedFeatures", permittedFeatures)
                     session.setAttribute("features", new EntityService().getFeatureList(permittedFeatures))
                     JSONArray jsonArray = new EntityService().getFinancialYearByEntity(entity?.id?.toString())
-                    /* JSONArray domainType = new EntityService().getEntityDomainType()
-                     session.setAttribute("domainType",domainType[0].domainType)*/
                     if (jsonArray == null || jsonArray.size() < 1) {
                         println("Financial year not available")
                         session.invalidate()
                         redirect(uri: "/")
                     } else {
-                        JSONObject jsonObject = jsonArray.last() //TODO: this should be obtained from settings
-                        String startYear = jsonObject.get("startDate").toString().split("/")[2]
-                        String endYear = jsonObject.get("endDate").toString().split("/")[2]
-                        session.setAttribute("financialYear", startYear + "-" + endYear)
-                        session.setAttribute("startDate", jsonObject.get("startDate").toString())
+                        Date currentDate = new Date()
+                        JSONObject jsonObject = jsonArray.last() as JSONObject
+                        Date startDate = sdf.parse(jsonObject.get("startDate").toString())
+                        Date endDate = sdf.parse(jsonObject.get("endDate").toString())
+                        session.setAttribute("financialYear", startDate.toCalendar().get(Calendar.YEAR) + "-" + endDate.toCalendar().get(Calendar.YEAR))
+                        session.setAttribute("startDate", startDate)
+                        session.setAttribute("endDate", endDate)
+                        boolean financialYearValid = new UtilsService().isDateWithinRange(currentDate, startDate, endDate)
+                        session.setAttribute("financialYearValid", financialYearValid)
                         redirect(uri: "/dashboard")
                     }
                 } else {

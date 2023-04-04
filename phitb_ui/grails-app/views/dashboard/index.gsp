@@ -7,12 +7,12 @@
     <meta name="description" content="phitb">
     <title>:: PharmIT Billing :: Dashboard</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}">
-<asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
-<asset:stylesheet rel="stylesheet" src="/themeassets/plugins/morrisjs/morris.css"/>
-<asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jvectormap/jquery-jvectormap-2.0.3.min.css"/>
-<!-- Custom Css -->
-<asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
-<asset:stylesheet rel="stylesheet" src="/themeassets/css/color_skins.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/morrisjs/morris.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jvectormap/jquery-jvectormap-2.0.3.min.css"/>
+    <!-- Custom Css -->
+    <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/css/color_skins.css"/>
 
 </head>
 
@@ -38,19 +38,19 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Dashboard</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ul>
                 </div>
 
-%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
-%{--                    <div class="input-group m-b-0">--}%
-%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
-%{--                        <span class="input-group-addon">--}%
-%{--                            <i class="zmdi zmdi-search"></i>--}%
-%{--                        </span>--}%
-%{--                    </div>--}%
-%{--                </div>--}%
+                %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+                %{--                    <div class="input-group m-b-0">--}%
+                %{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+                %{--                        <span class="input-group-addon">--}%
+                %{--                            <i class="zmdi zmdi-search"></i>--}%
+                %{--                        </span>--}%
+                %{--                    </div>--}%
+                %{--                </div>--}%
             </div>
         </div>
 
@@ -147,63 +147,53 @@
 
 <script>
     getStats();
-    function getStats()
-    {
+
+    function getStats() {
         $.ajax({
-           url: "dashboard/stats",
-           method: "GET",
-           success: function (data) {
-               var salesCurrentMonth = data["salesCurrentMonth"];
-               var salesReturnCurrentMonth = data["salesReturnCurrentMonth"];
-               var salesPreviousMonth = data["salesPreviousMonth"];
-               var salesReturnPreviousMonth = data["salesReturnPreviousMonth"];
-               var totalDraftInvoice = data["totalDraftInvoice"];
-               var totalOutstanding = data["totalOutstanding"];
-               $("#salesCurrentMonth").text(salesCurrentMonth);
-               $("#salesReturnCurrentMonth").text(salesReturnCurrentMonth);
-               $("#totalDraftInvoice").text(totalDraftInvoice);
-               $("#totalOutstanding").text(totalOutstanding);
+            url: "dashboard/stats",
+            method: "GET",
+            success: function (data) {
+                var salesCurrentMonth = data["salesCurrentMonth"];
+                var salesReturnCurrentMonth = data["salesReturnCurrentMonth"];
+                var salesPreviousMonth = data["salesPreviousMonth"];
+                var salesReturnPreviousMonth = data["salesReturnPreviousMonth"];
+                var totalDraftInvoice = data["totalDraftInvoice"];
+                var totalOutstanding = data["totalOutstanding"];
+                $("#salesCurrentMonth").text(salesCurrentMonth);
+                $("#salesReturnCurrentMonth").text(salesReturnCurrentMonth);
+                $("#totalDraftInvoice").text(totalDraftInvoice);
+                $("#totalOutstanding").text(totalOutstanding);
 
-               //First
-               var percentageDiff = 0;
-               if(salesPreviousMonth > 0) {
-                   var diff = salesCurrentMonth - salesPreviousMonth;
-                   if (diff !== 0)
-                       percentageDiff = (diff / salesPreviousMonth) * 100;
-               }
-               if(percentageDiff > 0)
-               {
-                   $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-up' style='color: lightgreen;'></i>");
-               }
-               else if(percentageDiff === 0)
-               {
-                   $("#salesPreviousMonth").html("-");
-               }
-               else
-               {
-                   $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-down' style='color: red;'></i>");
-               }
+                //First
+                var percentageDiff = 0;
+                if (salesPreviousMonth > 0) {
+                    var diff = salesCurrentMonth - salesPreviousMonth;
+                    if (diff !== 0)
+                        percentageDiff = (diff / salesPreviousMonth) * 100;
+                }
+                if (percentageDiff > 0) {
+                    $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-up' style='color: lightgreen;'></i>");
+                } else if (percentageDiff === 0) {
+                    $("#salesPreviousMonth").html("-");
+                } else {
+                    $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-down' style='color: red;'></i>");
+                }
 
-               //Third
-               percentageDiff = 0;
-               if(salesReturnPreviousMonth > 0) {
-                   diff = salesReturnCurrentMonth - salesReturnPreviousMonth;
-                   if (diff !== 0)
-                       percentageDiff = (diff / salesReturnPreviousMonth) * 100;
-               }
-               if(percentageDiff > 0)
-               {
-                   $("#salesReturnPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-up' style='color: lightgreen;'></i>");
-               }
-               else if(percentageDiff === 0)
-               {
-                   $("#salesReturnPreviousMonth").html("-");
-               }
-               else
-               {
-                   $("#salesReturnPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-down' style='color: red;'></i>");
-               }
-           }
+                //Third
+                percentageDiff = 0;
+                if (salesReturnPreviousMonth > 0) {
+                    diff = salesReturnCurrentMonth - salesReturnPreviousMonth;
+                    if (diff !== 0)
+                        percentageDiff = (diff / salesReturnPreviousMonth) * 100;
+                }
+                if (percentageDiff > 0) {
+                    $("#salesReturnPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-up' style='color: lightgreen;'></i>");
+                } else if (percentageDiff === 0) {
+                    $("#salesReturnPreviousMonth").html("-");
+                } else {
+                    $("#salesReturnPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-down' style='color: red;'></i>");
+                }
+            }
         });
 
         $.ajax({
@@ -218,8 +208,8 @@
     // Morris-chart
     function MorrisArea(result) {
         var dataArr = [];
-        $.each(result, function (index, dt){
-            dataArr.push({'period': ''+dt.month, 'Sales': dt.totalSales})
+        $.each(result, function (index, dt) {
+            dataArr.push({'period': '' + dt.month, 'Sales': dt.totalSales})
         });
 
         console.log(JSON.stringify(dataArr));
@@ -250,13 +240,13 @@
     selectSideMenu("dashboard-menu");
 </script>
 <script>
-    $( document ).ready(function() {
+    $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: "/get-onoboard-info",
             dataType: 'json',
             success: function (data) {
-                if(data.series.length === 0 && data.division.length === 0 && data.priority.length === 0){
+                if (data.series.length === 0 && data.division.length === 0 && data.priority.length === 0) {
                     let timerInterval
                     Swal.fire({
                         title: 'Auto close alert!',
@@ -276,20 +266,114 @@
                     }).then((result) => {
                         /* Read more about handling dismissals below */
                         if (result.dismiss === Swal.DismissReason.timer) {
-                          Swal.fire('I was closed by the timer')
+                            Swal.fire('I was closed by the timer')
                         }
                     });
 
-                    window.location.href ="/entity-onborad";
+                    window.location.href = "/entity-onborad";
                 }
                 // console.log(data)
                 // alert(data)
             },
             error: function (data) {
-               // alert("Something went Wrong!")
+                // alert("Something went Wrong!")
             }
         });
         // alert("logged In");
+
+        //show popup if year-end
+        /*if (!${session.getAttribute("financialYearValid")}) {
+            Swal.fire({
+                title: 'Financial Year End',
+                html: 'Do you want to start new financial year?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Select some options",
+                        html: "<div class=\"row\">" +
+                            "<div class=\"col-md-6\">" +
+                            "<div class=\"form-check\">" +
+                            "<input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox1\">" +
+                            "<label class=\"form-check-label\" for=\"checkbox1\">" +
+                            "Checkbox 1" +
+                            "</label>" +
+                            "</div>" +
+                            "<div class=\"form-check\">" +
+                            "<input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox2\">" +
+                            "<label class=\"form-check-label\" for=\"checkbox2\">" +
+                            "Checkbox 2" +
+                            "</label>" +
+                            "</div>" +
+                            "<div class=\"form-check\">" +
+                            "<input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox3\">" +
+                            "<label class=\"form-check-label\" for=\"checkbox3\">" +
+                            "Checkbox 3" +
+                            "</label>" +
+                            "</div>" +
+                            "<div class=\"form-check\">" +
+                            "<input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox4\">" +
+                            "<label class=\"form-check-label\" for=\"checkbox4\">" +
+                            "Checkbox 4" +
+                            "</label>" +
+                            "</div>" +
+                            "</div>" +
+                            "<div class=\"col-md-6\">" +
+                            "<div class=\"form-check\">" +
+                            "<input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox5\">" +
+                            "<label class=\"form-check-label\" for=\"checkbox5\">" +
+                            "Checkbox 5" +
+                            "</label>" +
+                            "</div>" +
+                            "<div class=\"form-check\">" +
+                            "<input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox6\">" +
+                            "<label class=\"form-check-label\" for=\"checkbox6\">" +
+                            "Checkbox 6" +
+                            "</label>" +
+                            "</div>" +
+                            "<div class=\"form-check\">" +
+                            "<input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox7\">" +
+                            "<label class=\"form-check-label\" for=\"checkbox7\">" +
+                            "Checkbox 7" +
+                            "</label>" +
+                            "</div>" +
+                        "<div class=\"form-check\">"+
+                                "<input class=\"form-check-input\" type=\"checkbox\" value=\"\" id=\"checkbox8\">" +
+                            "<label class=\"form-check-label\" for=\"checkbox8\">" +
+                            "Checkbox 8" +
+                            "</label>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>",
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            const options = [];
+                            const checkboxes = Swal.getPopup().querySelectorAll('input[type="checkbox"]');
+                            checkboxes.forEach((checkbox) => {
+                                if (checkbox.checked) {
+                                    options.push(checkbox.value);
+                                }
+                            });
+                            if (options.length === 0) {
+                                Swal.showValidationMessage("Please select at least one option");
+                            }
+                            return options;
+                        }
+                    }).then((result) => {
+                        // Show a success message with the selected options
+                        Swal.fire({
+                            title: "You selected:",
+                            html: result.value.join(", "),
+                            icon: "success"
+                        });
+                    });
+                }
+            });
+        }*/
     });
 </script>
 </body>

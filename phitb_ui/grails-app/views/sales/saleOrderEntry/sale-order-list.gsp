@@ -233,22 +233,22 @@
                         var cancelInvoice = "";
                         var clonetoSaleEntry = "";
                         var editInvoice = "";
-                        if (json.data[i].billStatus === "DRAFT")
+                        if (json.data[i].billStatus === "DRAFT" && ${session.getAttribute("financialYearValid")})
                         {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/sale-order-entry?id=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                             invoiceNumber = "DRAFT";
                         }
-                        else if(json.data[i].billStatus === "CANCELLED")
+                        else if(json.data[i].billStatus === "CANCELLED" && ${session.getAttribute("financialYearValid")})
                         {
                             //only print option
                         }
-                        else if(json.data[i].billStatus === "CONVERTED")
+                        else if(json.data[i].billStatus === "CONVERTED" && ${session.getAttribute("financialYearValid")})
                         {
                             //only print option
                         }
-                        else
+                        else if(${session.getAttribute("financialYearValid")})
                         {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                             clonetoSaleEntry =

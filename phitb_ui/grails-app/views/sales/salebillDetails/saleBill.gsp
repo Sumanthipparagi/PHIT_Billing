@@ -309,13 +309,13 @@
                         var editInvoice = "";
                         var cloneInvoice="";
                         var irn="";
-                        if (json.data[i].billStatus !== "CANCELLED") {
+                        if (json.data[i].billStatus !== "CANCELLED" && ${session.getAttribute("financialYearValid")}) {
                             cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#" style="color: red;"><i class="fa fa-times"></i> Cancel</a>';
                         } else if (json.data[i].billStatus !== "DRAFT") {
                             approveInvoice = '';
                         }
 
-                        if (json.data[i].billStatus!== "DRAFT" && json.data[i].invoiceNumber!==undefined) {
+                        if (json.data[i].billStatus!== "DRAFT" && json.data[i].invoiceNumber!==undefined && ${session.getAttribute("financialYearValid")}) {
                             cloneInvoice =
                                 '<a class="dropdown-item" title="Clone"  href="/sale-entry/clone-invoice?saleBillId='
                                 + json.data[i].id + '&type=CLONE" target="_blank"><i class="fa fa-clone"></i> Clone</a>';
@@ -329,7 +329,7 @@
 
                         if(json.data[i].irnDetails===undefined){
 
-                            if(json.data[i].billStatus!=="DRAFT" && json.data[i].billStatus!=="CANCELLED"){
+                            if(json.data[i].billStatus!=="DRAFT" && json.data[i].billStatus!=="CANCELLED" && ${session.getAttribute("financialYearValid")}){
                                 irn = '<a class="dropdown-item" title="IRN"  onclick="genrateIRN('+json.data[i].id+')" target="_blank"><i class="fa fa-print"></i> Genrate IRN</a>';
                             }
                         }else{
@@ -349,11 +349,11 @@
                             else
                                 invoiceNumber = "DRAFT";
                         }
-                        if (json.data[i].billStatus === "DRAFT") {
+                        if (json.data[i].billStatus === "DRAFT" && ${session.getAttribute("financialYearValid")}) {
                             editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
 
-                        <g:if test="${entityConfigs?.REGEN_NEW_DOC?.saleEntry}">
+                        <g:if test="${entityConfigs?.REGEN_NEW_DOC?.saleEntry && session.getAttribute("financialYearValid")}">
                         if (json.data[i].billStatus === "CANCELLED") {
                             editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }

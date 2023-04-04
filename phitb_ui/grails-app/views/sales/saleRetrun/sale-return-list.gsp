@@ -228,10 +228,10 @@
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
-                        if (json.data[i].returnStatus !== "CANCELLED") {
+                        if (json.data[i].returnStatus !== "CANCELLED" && ${session.getAttribute("financialYearValid")}) {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
-                        else if(json.data[i].returnStatus!== "DRAFT")
+                        else if(json.data[i].returnStatus!== "DRAFT" && ${session.getAttribute("financialYearValid")})
                         {
                             approveInvoice =  '';
 
@@ -242,7 +242,7 @@
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
                             invoiceNumber = "";
-                        if(json.data[i].returnStatus=== "DRAFT")
+                        if(json.data[i].returnStatus=== "DRAFT" && ${session.getAttribute("financialYearValid")})
                         {
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';

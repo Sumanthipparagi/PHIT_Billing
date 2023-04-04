@@ -199,7 +199,12 @@
                             <g:if test="${session.getAttribute('role') != Constants.SUPER_USER}">
                                 <p class="m-b-0">${session.getAttribute("entityName")}</p>
                             </g:if>
+                            <g:if test="${session.getAttribute("financialYearValid")}">
                             <small>Financial Year: ${session.getAttribute("financialYear")}</small>
+                            </g:if>
+                            <g:else>
+                                <small style="color: red;font-weight: 800;">Financial Year: ${session.getAttribute("financialYear")}</small>
+                            </g:else>
 
                     </div>
                     </div>

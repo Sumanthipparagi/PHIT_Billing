@@ -206,7 +206,7 @@
                         var cancelInvoice = "";
                         var date = new Date(json.data[i].date);
                         var pd = new Date(json.data[i].paymentDate);
-                        if (json.data[i].approvedStatus !== "CANCELLED" && json.data[i].approvedStatus !== "APPROVED") {
+                        if (json.data[i].approvedStatus !== "CANCELLED" && json.data[i].approvedStatus !== "APPROVED" && ${session.getAttribute("financialYearValid")}) {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelReceipt(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
                         else
@@ -214,10 +214,12 @@
                             cancelInvoice =  '';
 
                         }
-                        var editbtn =
-                            ' <button type="button" data-id="'+json.data[i].id+'" data-recievedfrom="'+json.data[i].receivedFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
-                        // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                        //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                        var editbtn = ""
+                        if(${session.getAttribute("financialYearValid")})
+                        {
+                            editbtn = ' <button type="button" data-id="'+json.data[i].id+'" data-recievedfrom="'+json.data[i].receivedFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
+                        }
+
                         return_data.push({
                             'action': editbtn+"  "+cancelInvoice,
                             'id': json.data[i].receiptId,

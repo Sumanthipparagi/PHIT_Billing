@@ -342,4 +342,8 @@ class UtilsService {
     static String hexToString(String input) {
         return new String(new BigInteger(input, 16).toByteArray());
     }
+
+    boolean isDateWithinRange (Date date, Date startDate, Date endDate) {
+        return ! (date.before (startDate) || date.after (endDate));
+    }
 }
