@@ -89,6 +89,7 @@ class SaleBillDetailsService
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
         String invoiceStatus = paramsJsonObject.get("invoiceStatus")
+        String financialYear = paramsJsonObject.get("financialYear")
 
         long userId = 0
         if(paramsJsonObject.has("userId"))
@@ -126,6 +127,7 @@ class SaleBillDetailsService
             if(userId > 0)
                 eq("userId", userId)
 
+            eq("financialYear", financialYear)
             eq("entityId", entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)

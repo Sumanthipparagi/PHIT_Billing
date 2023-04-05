@@ -2107,6 +2107,7 @@ class SaleReturnController {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("userId", session.getAttribute("userId"))
             jsonObject.put("entityId", session.getAttribute("entityId"))
+            jsonObject.put("financialYear", session.getAttribute("financialYear"))
             def apiResponse = new SalesService().salesReturnDatatable(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))

@@ -448,6 +448,7 @@ class SaleOrderEntryController {
             String userId = session.getAttribute("userId")
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
+            jsonObject.put("financialYear", session.getAttribute("financialYear"))
             def apiResponse = new SalesService().showSaleOrder(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))

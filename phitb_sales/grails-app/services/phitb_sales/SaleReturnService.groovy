@@ -169,6 +169,7 @@ class SaleReturnService {
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
         long entityId = paramsJsonObject.get("entityId")
+        String financialYear = paramsJsonObject.get("financialYear")
         String orderColumn = "id"
         switch (orderColumnId)
         {
@@ -192,6 +193,7 @@ class SaleReturnService {
             }
             eq('entityId', entityId)
             eq('deleted', false)
+            eq('financialYear', financialYear)
             order(orderColumn, orderDir)
         }
         def recordsTotal = saleReturnArrayList.totalCount
