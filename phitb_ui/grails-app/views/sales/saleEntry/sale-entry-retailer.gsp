@@ -645,16 +645,10 @@
                 {type: 'text', readOnly: true} //saved draft product id
                 </g:if>*/
             ],
-        /*    hiddenColumns: true,
+           hiddenColumns: true,
             hiddenColumns: {
-                <g:if test="${customer != null}">
-                columns: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
-                </g:if>
-                <g:else>
-                // columns: [15, 16, 17, 18, 19, 20, 21]
-                columns: [16, 17, 18, 19, 20, 21, 22]
-                </g:else>
-            },*/
+                columns: [20,21,22,23,24,25,26]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},

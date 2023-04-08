@@ -245,8 +245,22 @@
                                                          target="_blank">${entity?.email}</a>
                         </li>
                     </g:if>
+
+                    <li><b class="tab">Location</b>: ${city?.districtName}</li>
+                    <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
+                    <li><b class="tab">GST No</b>: ${entity.gstn}</li>
+                    <li><b class="tab">PAN No</b>: ${entity.pan}</li>
+                    <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
+                    <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
+                    <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
+                    <g:if test="${customer?.website && customer?.website != ''}">
+                        <li><b class="tab">Website</b>: <a href="${customer?.website}"
+                                                           target="_blank">${customer?.website}</a></li>
+                    </g:if>
+                    <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
+
                 </td>
-                <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
+                <td colspan="12" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
                     <b>${customer.entityName}</b><br>
                     <sub>${customer.addressLine1}${customer.addressLine2}
                     </sub>
@@ -255,12 +269,13 @@
                                                           target="_blank">${customer?.phoneNumber}</a>
                         </li>
                     </g:if>
-                   %{-- <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
-                        <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
-                        </li>
-                    </g:if>--}%
+                    <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
+                    <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
+                    <li><b class="tab">PAN</b>: ${customer.pan}</li>
+                    <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
+                    <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
                 </td>
-                <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
+               %{-- <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
                     <b>${customer.entityName}</b><br>
                     <sub>${customer.addressLine1}${customer.addressLine2}
                     </sub>
@@ -269,11 +284,7 @@
                                                           target="_blank">${customer?.phoneNumber}</a>
                         </li>
                     </g:if>
-                   %{-- <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
-                        <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
-                        </li>
-                    </g:if>--}%
-                </td>
+                </td>--}%
                 <td colspan="9" style="vertical-align:top;font-size:8pt;">
                     <strong>TAX INVOICE</strong>
                     <ul style="margin: 0;">
@@ -284,10 +295,6 @@
                         <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate" style="font-size: 13px;"></span></li>
                         <li><b class="tab">Dr Name</b>:&nbsp;<span>${saleBillDetail?.drname}</span>
                         </li>
-                        %{--                <li><b class="tab">No of cases</b>:</li>--}%
-                        %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
-                        %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
-                        %{--                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>--}%
                     </ul>
                 </td>
             </tr>
@@ -377,12 +384,12 @@
                 <th>Exp Date</th>
                 %{--        <th>Mfg Date/ Use Before</th>--}%
                 <th>MRP</th>
-                <th>PTR</th>
+               %{-- <th>PTR</th>--}%
                 <th>PTS</th>
                 <th>Quantity</th>
                 <th >Discount Quantity</th>
-                <th >Discount Repl Quantity</th>
-                <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Total Quantity</th>
+                %{--<th >Discount Repl Quantity</th>
+                <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Total Quantity</th>--}%
                 <th >Final Bill Quantity</th>
                 <th>pres.qty</th>
                 <th>No.of days</th>
@@ -495,7 +502,7 @@
                         <td id="expDate${pd.id}">${pd.expiryDate}</td>
                         %{--            <td></td>--}%
                         <td>${pd.mrp}</td>
-                        <td>${String.format("%.2f", pd?.batch?.ptr)}</td>
+                       %{-- <td>${String.format("%.2f", pd?.batch?.ptr)}</td>--}%
                         <td>${String.format("%.2f", pd.sRate)}</td>
                         <td>${(long) pd.sqty}</td>
                         <g:if test="${pd?.replacement == false}">
@@ -507,7 +514,7 @@
                         <g:else>
                             <td>0</td>
                         </g:else>
-                        <g:if test="${pd?.replacement!= null}">
+                        %{--<g:if test="${pd?.replacement!= null}">
                             <g:if test="${pd?.replacement == true}">
                                 <td>${(long) pd.freeQty}</td>
                             </g:if>
@@ -518,7 +525,7 @@
                         <g:else>
                             <td>0</td>
                         </g:else>
-                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty + (long) pd.freeQty}</td>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty + (long) pd.freeQty}</td>--}%
                         <td>${(long) pd.sqty}</td>
                         <td>${pd.presqty}</td>
                         <td>${pd.noOfDays}</td>
@@ -571,7 +578,7 @@
                     <td>${sp.batchNumber}</td>
                     <td id="expDate${sp.id}">${sp.expiryDate}</td>
                     %{--                    <td></td>--}%
-                    <td>${sp.mrp}</td>
+                    %{--<td>${sp.mrp}</td>--}%
                     <td>${String.format("%.2f", sp?.batch?.ptr)}</td>
                     <td>${String.format("%.2f", sp.sRate)}</td>
                     <td>${(long) sp.sqty}</td>
@@ -584,7 +591,7 @@
                     <g:else>
                         <td>0</td>
                     </g:else>
-                    <g:if test="${sp?.replacement!= null}">
+                    %{--<g:if test="${sp?.replacement!= null}">
                         <g:if test="${sp?.replacement == true}">
                             <td>${(long) sp.freeQty}</td>
                         </g:if>
@@ -595,7 +602,7 @@
                     <g:else>
                         <td>0</td>
                     </g:else>
-                    <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.sqty + (long) sp.freeQty}</td>
+                    <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.sqty + (long) sp.freeQty}</td>--}%
                     <td>${(long) sp.sqty}</td>
                     <td>${sp.presqty}</td>
                     <td>${sp.noOfDays}</td>
@@ -625,7 +632,7 @@
             </g:each>
         </g:else>
         <tr>
-            <td colspan="18">Amount in words:
+            <td colspan="15">Amount in words:
                 <b> <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
                     ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.ceil(total)).toString())}
                 </g:if>
