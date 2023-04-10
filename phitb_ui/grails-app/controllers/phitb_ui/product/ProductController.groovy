@@ -69,7 +69,8 @@ class ProductController {
             ArrayList<String> manufacturerList = []
             ArrayList<String> companyList = []
             entity.each {
-                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER)) {
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER)
+                        || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER_AND_MARKETING)) {
                     manufacturerList.add(it)
                 }
 
