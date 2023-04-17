@@ -30,15 +30,14 @@
                             </div>
 
 
-                            <div class="col-lg-6 form-group  form-float">
+                            <div class="col-lg-6 form-group">
                                 <label for="cityIds">
                                     City
                                 </label>
-                                <select class="form-control show-tick cityIds" name="cityIds" id="cityIds"
+                                <select style="width: 100%" class="form-control cityIds" name="cityIds" id="cityIds"
                                         multiple="multiple" required>
-%{--                                    <option value="0">Please Select</option>--}%
                                     <g:each var="c" in="${citylist}">
-                                        <option value="${c.id}">${c.name}</option>
+                                        <option value="${c.id}">${c.areaName}</option>
                                     </g:each>
                                 </select>
                             </div>

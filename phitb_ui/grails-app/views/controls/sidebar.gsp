@@ -434,7 +434,7 @@
                             <li><a href="/city">City</a></li>
                         </g:if>
                         <li><a href="/district">District</a></li>
-                        <li><a href="/division">Division</a></li>
+                        <li><a href="/division-master">Division</a></li>
                         <li><a href="/region">Region</a></li>
                     %{--                        <g:if test="${UtilsService.isPermitted("VIEW_COUNTRY", session.getAttribute("permittedFeatures").toString())}">--}%
                     %{--                            <li><a href="/country">Country</a></li>--}%

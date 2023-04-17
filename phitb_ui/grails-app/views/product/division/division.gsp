@@ -16,11 +16,10 @@
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 
     <style>
 
@@ -145,7 +144,7 @@
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
-<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
+%{--<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>--}%
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -160,31 +159,19 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
-<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js" type="text/javascript"/>
-
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
 
-    var fridgetable;
+    var divisiontable;
     var id = null;
     $(function () {
-        fridgeTable();
-
-        var stateObject = {
-            "Front-end": {
-                "HTML": ["Links", "Images", "Tables", "Lists"],
-                "CSS": ["Borders", "Margins", "Backgrounds", "Float"],
-                "JavaScript": ["Variables", "Operators", "Functions", "Conditions"]
-            },
-            "Back-end": {
-                "PHP": ["Variables", "Strings", "Arrays"],
-                "SQL": ["SELECT", "UPDATE", "DELETE"]
-            }
-        }
-
+        divisionTable();
+        $("#cityIds").select2();
     });
 
-    function fridgeTable() {
-        fridgetable = $(".fridgeTable").DataTable({
+    function divisionTable() {
+        divisiontable = $(".fridgeTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -275,7 +262,7 @@
             processData: false,
             success: function () {
                 Swal.fire("Success!", "Division Submitted Successfully", "success");
-                fridgeTable();
+                divisionTable();
                 $('#adddivisionModal').modal('hide');
             },
             error: function () {
@@ -328,7 +315,7 @@
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                fridgeTable();
+                divisionTable();
                 Swal.fire("Success!", "Division Deleted Successfully", "success");
             }, error: function () {
                 Swal.fire("Error!", "Something went wrong", "error");

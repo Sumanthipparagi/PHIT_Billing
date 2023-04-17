@@ -411,13 +411,13 @@ class UrlMappings {
         "/product/get-products-by-entity"(controller: 'product', action: 'productByEntityId')
 
 
-        //      Division
-        "/division"(controller: "divisionMaster") {
+        //Division
+        "/division"(controller: "division") {
             action = [GET: "index", POST: "save"]
         }
-        "/division/datatable"(controller: "divisionMaster", action: "dataTable")
-        "/division/update/$id"(controller:"divisionMaster",action:"update")
-        "/division/delete/$id"(controller: "divisionMaster",action:"delete")
+        "/division/datatable"(controller: "division", action: "dataTable")
+        "/division/update/$id"(controller:"division",action:"update")
+        "/division/delete/$id"(controller: "division",action:"delete")
 
 
         // Product Category
