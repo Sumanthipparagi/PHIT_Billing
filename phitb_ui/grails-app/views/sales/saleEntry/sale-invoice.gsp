@@ -301,23 +301,26 @@
                         <li><b class="tab">GST No</b>: ${entity.gstn}</li>
                         <li><b class="tab">PAN No</b>: ${entity.pan}</li>
                         <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
-                        <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
-                        <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
+                        <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+                            <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
+                            <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
                         %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
                         %{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
                         %{--                </g:if>--}%
-                        <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
-
+                            <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
+                        </g:if>
                     </ul>
                 </td>
                 <td colspan="6" style="vertical-align:top;">
                     <ul>
-%{--                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>--}%
+                        %{--                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>--}%
                         <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
                         <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
                         <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                        <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                        <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
+                        <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+                            <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
+                            <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
+                        </g:if>
                         <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
                         <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
                         %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
@@ -333,12 +336,14 @@
                 </td>
                 <td colspan="6" style="vertical-align:top;">
                     <ul>
-%{--                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>--}%
+                        %{--                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>--}%
                         <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
                         <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
                         <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                        <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                        <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
+                        <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+                            <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
+                            <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
+                        </g:if>
                         <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
                         <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
                         %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
@@ -372,20 +377,31 @@
             <tr>
                 <th>Sl.No</th>
                 <th>Material HSN Code</th>
-                <th>Material Description</th>
-                <th>Pack(size)</th>
-%{--                <th>C</th>--}%
-                <th>Batch no.</th>
-                <th>Exp Date</th>
+                <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+                    <th>Material Description</th>
+                    <th>Pack(size)</th>
+                </g:if>
+                <g:else>
+                    <th colspan="2">Material Description</th>
+                </g:else>
+            %{--                <th>C</th>--}%
+
+                <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+                    <th>Batch no.</th>
+                    <th>Exp Date</th>
                 %{--        <th>Mfg Date/ Use Before</th>--}%
-                <th>MRP</th>
-                <th>PTR</th>
+                    <th>MRP</th>
+                    <th>PTR</th>
+                </g:if>
+                <g:else>
+                    <th colspan="4">Batch no.</th>
+                </g:else>
                 <th>PTS</th>
                 <th>Quantity</th>
-                <th >Discount Quantity</th>
-                <th >Discount Repl Quantity</th>
+                <th>Discount Quantity</th>
+                <th>Discount Repl Quantity</th>
                 <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Total Quantity</th>
-                <th >Final Bill Quantity</th>
+                <th>Final Bill Quantity</th>
                 <th>Amt After Disc.</th>
                 <th>Disc.Amt/Disc.%</th>
                 <th>Amt/CGST%</th>
@@ -409,7 +425,7 @@
         %>
         <tbody>
 
-        <g:if test="${settings.size()!= 0 && settings?.IPG!= Constants.NONE}">
+        <g:if test="${settings.size() != 0 && settings?.IPG != Constants.NONE}">
             <g:each var="key, groupData" in="${groupDetails}" status="i">
 
                 <%
@@ -436,47 +452,32 @@
 
                         double amountBeforeTaxes = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
                         divtotalBeforeTaxes += amountBeforeTaxes
-                        divTotaldiscount += amountBeforeTaxes/100*pd.discount
-                        if (pd.igstPercentage > 0)
-                        {
+                        divTotaldiscount += amountBeforeTaxes / 100 * pd.discount
+                        if (pd.igstPercentage > 0) {
                             def igstPercentage = igstGroup.get(pd.igstPercentage.toString())
-                            if (igstPercentage == null)
-                            {
+                            if (igstPercentage == null) {
                                 divIgstGroup.put(pd.igstPercentage.toString(), amountBeforeTaxes)
-                            }
-                            else
-                            {
+                            } else {
                                 divIgstGroup.put(pd.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
                             }
-                        }
-                        else
-                        {
+                        } else {
                             def gstPercentage = divGstGroup.get(pd.gstPercentage.toString())
-                            if (gstPercentage == null)
-                            {
+                            if (gstPercentage == null) {
                                 divGstGroup.put(pd.gstPercentage.toString(), amountBeforeTaxes)
-                            }
-                            else
-                            {
+                            } else {
                                 divGstGroup.put(pd.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
                             }
 
                             def sgstPercentage = sgstGroup.get(pd.sgstPercentage.toString())
-                            if (sgstPercentage == null)
-                            {
+                            if (sgstPercentage == null) {
                                 divSgstGroup.put(pd.sgstPercentage.toString(), amountBeforeTaxes)
-                            }
-                            else
-                            {
+                            } else {
                                 divSgstGroup.put(pd.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
                             }
                             def cgstPercentage = cgstGroup.get(pd.cgstPercentage.toString())
-                            if (cgstPercentage == null)
-                            {
+                            if (cgstPercentage == null) {
                                 divCgstGroup.put(pd.cgstPercentage.toString(), amountBeforeTaxes)
-                            }
-                            else
-                            {
+                            } else {
                                 divCgstGroup.put(pd.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
                             }
                         }
@@ -484,14 +485,26 @@
                     <tr>
                         <td>${j + 1}</td>
                         <td>${pd.productId.hsnCode}</td>
-                        <td><b>${pd.productId.productName}</b></td>
-                        <td><b>${pd.productId.unitPacking}</b></td>
-%{--                        <td><b>${pd?.productId?.schedule?.scheduleCode}</b></td>--}%
-                        <td>${pd.batchNumber}</td>
-                        <td id="expDate${pd.id}">${pd.expiryDate}</td>
+
+                        <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+                            <td><b>${pd.productId.productName}</b></td>
+                            <td><b>${pd.productId.unitPacking}</b></td>
+                        </g:if>
+                        <g:else>
+                            <td colspan="2"><b>${pd.productId.productName}</b></td>
+                        </g:else>
+                    %{--                        <td><b>${pd?.productId?.schedule?.scheduleCode}</b></td>--}%
+
+                        <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+                            <td>${pd.batchNumber}</td>
+                            <td id="expDate${pd.id}">${pd.expiryDate}</td>
                         %{--            <td></td>--}%
-                        <td>${pd.mrp}</td>
-                        <td>${String.format("%.2f", pd?.batch?.ptr)}</td>
+                            <td>${pd.mrp}</td>
+                            <td>${String.format("%.2f", pd?.batch?.ptr)}</td>
+                        </g:if>
+                        <g:else>
+                            <td colspan="4">${pd.batchNumber}</td>
+                        </g:else>
                         <td>${String.format("%.2f", pd.sRate)}</td>
                         <td>${(long) pd.sqty}</td>
                         <g:if test="${pd?.replacement == false}">
@@ -503,13 +516,13 @@
                         <g:else>
                             <td>0</td>
                         </g:else>
-                        <g:if test="${pd?.replacement!= null}">
-                        <g:if test="${pd?.replacement == true}">
-                            <td>${(long) pd.freeQty}</td>
-                        </g:if>
-                        <g:else>
-                            <td>0</td>
-                        </g:else>
+                        <g:if test="${pd?.replacement != null}">
+                            <g:if test="${pd?.replacement == true}">
+                                <td>${(long) pd.freeQty}</td>
+                            </g:if>
+                            <g:else>
+                                <td>0</td>
+                            </g:else>
                         </g:if>
                         <g:else>
                             <td>0</td>
@@ -521,17 +534,17 @@
                             float amount = pd.sqty * pd.sRate
                         %>
                         <td>${String.format("%.2f", amount)}</td>
-                        <td>${String.format("%.2f", amount*(pd.discount/100))}<br>${pd.discount}</td>
+                        <td>${String.format("%.2f", amount * (pd.discount / 100))}<br>${pd.discount}</td>
                         <%
                             cgst.push(pd.cgstAmount / amount * 100)
                             sgst.push(pd.sgstAmount / amount * 100)
                             igst.push(pd.igstAmount / amount * 100)
                         %>
-                        <td>${String.format("%.2f", pd.cgstAmount)}<br>${String.format("%.2f", pd.cgstPercentage).toString()+"%"}
+                        <td>${String.format("%.2f", pd.cgstAmount)}<br>${String.format("%.2f", pd.cgstPercentage).toString() + "%"}
                         </td>
-                        <td>${String.format("%.2f", pd.sgstAmount)}<br>${String.format("%.2f", pd.sgstPercentage).toString()+"%"}
+                        <td>${String.format("%.2f", pd.sgstAmount)}<br>${String.format("%.2f", pd.sgstPercentage).toString() + "%"}
                         </td>
-                        <td>${String.format("%.2f", pd.igstAmount)}<br>${String.format("%.2f", pd.igstPercentage).toString()+"%"}
+                        <td>${String.format("%.2f", pd.igstAmount)}<br>${String.format("%.2f", pd.igstPercentage).toString() + "%"}
                         </td>
                         <td>${String.format("%.2f", pd.amount)}</td>
                     </tr>
@@ -556,13 +569,27 @@
                     <td>${i + 1}</td>
                     <td>${sp.productId.hsnCode}</td>
                     <td><b>${sp.productId.productName}</b></td>
-                    <td><b>${sp.productId.unitPacking}</b></td>
-%{--                    <td><b>${sp?.productId?.schedule?.scheduleCode}</b></td>--}%
+                    <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+
+                        <td><b>${sp.productId.unitPacking}</b></td>
+                    </g:if>
+                    <g:else>
+                        <td></td>
+                    </g:else>
+                %{--                    <td><b>${sp?.productId?.schedule?.scheduleCode}</b></td>--}%
                     <td>${sp.batchNumber}</td>
-                    <td id="expDate${sp.id}">${sp.expiryDate}</td>
-%{--                    <td></td>--}%
-                    <td>${sp.mrp}</td>
-                    <td>${String.format("%.2f", sp?.batch?.ptr)}</td>
+                    <g:if test="${!settings.has("saleInvoiceFormat") || (settings.has("saleInvoiceFormat") && settings.get("saleInvoiceFormat") == "DEFAULT")}">
+
+                        <td id="expDate${sp.id}">${sp.expiryDate}</td>
+                    %{--                    <td></td>--}%
+                        <td>${sp.mrp}</td>
+                        <td>${String.format("%.2f", sp?.batch?.ptr)}</td>
+                    </g:if>
+                    <g:else>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </g:else>
                     <td>${String.format("%.2f", sp.sRate)}</td>
                     <td>${(long) sp.sqty}</td>
                     <g:if test="${sp?.replacement == false}">
@@ -574,7 +601,7 @@
                     <g:else>
                         <td>0</td>
                     </g:else>
-                    <g:if test="${sp?.replacement!= null}">
+                    <g:if test="${sp?.replacement != null}">
                         <g:if test="${sp?.replacement == true}">
                             <td>${(long) sp.freeQty}</td>
                         </g:if>
@@ -592,17 +619,17 @@
                         float amount = sp.sqty * sp.sRate
                     %>
                     <td>${String.format("%.2f", amount)}</td>
-                    <td>${String.format("%.2f", amount*(sp.discount/100))}<br>${sp.discount}</td>
+                    <td>${String.format("%.2f", amount * (sp.discount / 100))}<br>${sp.discount}</td>
                     <%
                         cgst.push(sp.cgstAmount / amount * 100)
                         sgst.push(sp.sgstAmount / amount * 100)
                         igst.push(sp.igstAmount / amount * 100)
                     %>
-                    <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstPercentage).toString()+"%"}
+                    <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstPercentage).toString() + "%"}
                     </td>
-                    <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstPercentage).toString()+"%"}
+                    <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstPercentage).toString() + "%"}
                     </td>
-                    <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstPercentage).toString()+"%"}
+                    <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstPercentage).toString() + "%"}
                     </td>
                     <td>${String.format("%.2f", sp.amount)}</td>
                 </tr>
@@ -610,15 +637,15 @@
         </g:else>
         <tr>
             <td colspan="13">Amount in words:
-                <b> <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
-                ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.ceil(total)).toString())}
-        </g:if>
-            <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
-                ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.floor(total)).toString())}
-            </g:elseif>
-            <g:else>
-                ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", total))}
-            </g:else></b>
+                <b><g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+                    ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.ceil(total)).toString())}
+                </g:if>
+                    <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+                        ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.floor(total)).toString())}
+                    </g:elseif>
+                    <g:else>
+                        ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", total))}
+                    </g:else></b>
             </td>
             <td><b>Total</b></td>
             <td>${String.format("%.2f", totalBeforeTaxes)}</td>
@@ -627,15 +654,15 @@
             <td>${String.format("%.2f", totalsgst)}</td>
             <td>${String.format("%.2f", totaligst)}</td>
             <td>${String.format("%.2f", total)}</td>
-           %{-- <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
-                <td>${String.format("%.2f", Math.ceil(total))}</td>
-            </g:if>
-            <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
-                <td>${String.format("%.2f", Math.floor(total))}</td>
-            </g:elseif>
-            <g:else>
-                <td>${String.format("%.2f", total)}</td>
-            </g:else>--}%
+            %{-- <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+                 <td>${String.format("%.2f", Math.ceil(total))}</td>
+             </g:if>
+             <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+                 <td>${String.format("%.2f", Math.floor(total))}</td>
+             </g:elseif>
+             <g:else>
+                 <td>${String.format("%.2f", total)}</td>
+             </g:else>--}%
         </tr>
         <tr style="border: 1px solid #ffffff">
             <td colspan="14" style="border: 0"><g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
@@ -714,10 +741,10 @@
                     <g:else>
                         <td>0.00</td>
                     </g:else>                    <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
-                        <td>${String.format("%.2f",Double.parseDouble(String.format("%.2f", Math.ceil(total)).toString()) - total)}</td>
-                    </g:if>
+                    <td>${String.format("%.2f", Double.parseDouble(String.format("%.2f", Math.ceil(total)).toString()) - total)}</td>
+                </g:if>
                     <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
-                        <td>${String.format("%.2f",total - Math.floor(total))}</td>
+                        <td>${String.format("%.2f", total - Math.floor(total))}</td>
                     </g:elseif>
                     <g:else>
                         <td>0.00</td>
@@ -731,9 +758,9 @@
             </table></td>
         </tr>
 
-            <tr style="border: 1px solid #ffffff;">
-    <g:if test="${settings.size() != 0  && settings?.IPG!= Constants.NONE}">
-        <td colspan="7" style="border: 0">
+        <tr style="border: 1px solid #ffffff;">
+            <g:if test="${settings.size() != 0 && settings?.IPG != Constants.NONE}">
+                <td colspan="7" style="border: 0">
                     <table class="print" style="margin-top: 2%;width: 100%">
                         <thead>
                         <th>
@@ -766,17 +793,17 @@
 
                     </table>
                 </td>
-    </g:if>
-                <td  style="border: 0;"></td>
-                <td  style="border: 0;"></td>
-                <td  style="border: 0;"></td>
-                <td  style="border: 0;"></td>
-                <td  style="border: 0;"></td>
-                <td  style="border: 0;"></td>
-                <td  style="border: 0;"></td>
+            </g:if>
+            <td style="border: 0;"></td>
+            <td style="border: 0;"></td>
+            <td style="border: 0;"></td>
+            <td style="border: 0;"></td>
+            <td style="border: 0;"></td>
+            <td style="border: 0;"></td>
+            <td style="border: 0;"></td>
 
-                <g:if test="${saleReturnAdjustmentDetails.size()!=0}">
-                <td  colspan="4" style="border: 0;">
+            <g:if test="${saleReturnAdjustmentDetails.size() != 0}">
+                <td colspan="4" style="border: 0;">
                     <table>
                         <tr>
                             <th colspan="4" style="text-align: center;text-transform: uppercase;">Credits Applied</th>
@@ -787,18 +814,18 @@
                             <th>Adj. date</th>
                             <th>Inv. date</th>
                         </tr>
-                <g:each var="ca" in="${saleReturnAdjustmentDetails}" status="i">
-                        <tr>
-                            <td>${ca?.saleReturnAdjustment?.docNo}</td>
-                            <td>${ca?.saleReturn?.invoiceNumber}</td>
-                            <td id="adjDate${ca?.saleReturnAdjustment?.id}">${ca?.saleReturnAdjustment?.dateCreated}</td>
-                            <td id="srDate${ca?.saleReturn?.id}">${ca?.saleReturn?.dateCreated}</td>
-                        </tr>
-                </g:each>
+                        <g:each var="ca" in="${saleReturnAdjustmentDetails}" status="i">
+                            <tr>
+                                <td>${ca?.saleReturnAdjustment?.docNo}</td>
+                                <td>${ca?.saleReturn?.invoiceNumber}</td>
+                                <td id="adjDate${ca?.saleReturnAdjustment?.id}">${ca?.saleReturnAdjustment?.dateCreated}</td>
+                                <td id="srDate${ca?.saleReturn?.id}">${ca?.saleReturn?.dateCreated}</td>
+                            </tr>
+                        </g:each>
                     </table>
                 </td>
-                </g:if>
-            </tr>
+            </g:if>
+        </tr>
         </tbody>
         <tfoot style="border: 1px solid #ffffff">
         <tr style="border: 1px solid #ffffff">
@@ -830,20 +857,20 @@
         %{--    colorLight : '#fff',--}%
         %{--    correctLevel : QRCode.CorrectLevel.H--}%
         %{--});--}%
-      /*  var css = '@page { size: landscape; }',
-            head = document.head || document.getElementsByTagName('head')[0],
-            style = document.createElement('style');
+        /*  var css = '@page { size: landscape; }',
+              head = document.head || document.getElementsByTagName('head')[0],
+              style = document.createElement('style');
 
-        style.type = 'text/css';
-        style.media = 'print';
+          style.type = 'text/css';
+          style.media = 'print';
 
-        if (style.styleSheet) {
-            style.styleSheet.cssText = css;
-        } else {
-            style.appendChild(document.createTextNode(css));
-        }
+          if (style.styleSheet) {
+              style.styleSheet.cssText = css;
+          } else {
+              style.appendChild(document.createTextNode(css));
+          }
 
-        head.appendChild(style);*/
+          head.appendChild(style);*/
 
         window.print();
         var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();
@@ -866,25 +893,25 @@
         });
         var netAmount =
         ${totalBeforeTaxes}
-%{--        <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">--}%
-%{--        var netInvAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));--}%
-%{--        </g:if>--}%
-%{--        <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">--}%
-%{--        var netInvAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));--}%
-%{--        </g:elseif>--}%
-%{--        <g:else>--}%
+        %{--        <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">--}%
+        %{--        var netInvAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));--}%
+        %{--        </g:if>--}%
+        %{--        <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">--}%
+        %{--        var netInvAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));--}%
+        %{--        </g:elseif>--}%
+        %{--        <g:else>--}%
         var netInvAmt = parseFloat(totalGst) + netAmount
-%{--        </g:else>--}%
+        %{--        </g:else>--}%
 
-                <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
-                var netPayAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));
-                </g:if>
-                <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
-                var netPayAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));
-                </g:elseif>
-                <g:else>
-                var netPayAmt = parseFloat(totalGst) + netAmount
-                </g:else>
+        <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+        var netPayAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));
+        </g:if>
+        <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+        var netPayAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));
+        </g:elseif>
+        <g:else>
+        var netPayAmt = parseFloat(totalGst) + netAmount
+        </g:else>
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netPayAmt.toFixed(2));
 
@@ -899,7 +926,7 @@
         </g:else>
 
 
-<g:each var="ca" in="${saleReturnAdjustmentDetails}" status="i">
+        <g:each var="ca" in="${saleReturnAdjustmentDetails}" status="i">
         $("#adjDate${ca?.saleReturnAdjustment?.id}").text(" " +
             moment('${ca?.saleReturnAdjustment?.dateCreated}').format('DD-MM-YYYY'));
 
@@ -908,51 +935,51 @@
 
         </g:each>
 
-    //
-    // var rowCount = $('.extended tr').length;
-    // var row = rowCount - 2;
-    //
-    // var userDetails = $('#userDetails').prop('outerHTML');
-    // var prodHeaders="";
-    // var prodDetails="";
-    // $(".extended tr th").each(function(){
-    //     prodHeaders += $(this).prop('outerHTML');
-    // });
-    // $(".extended").each(function(){
-    //     prodDetails += $(this).prop('outerHTML');
-    // });
-    // var array = [];
-    // var headers = [];
-    // $('.extended th').each(function(index, item) {
-    //     headers[index] = $(item).html()
-    // });
-    //
-    // $('.extended tr').has('td').each(function() {
-    //     var arrayItem = {};
-    //     $('td', $(this)).each(function(index, item) {
-    //         arrayItem[headers[index].replace(/\s+/g, '').replace(/[\W_]/g, "_")] = $(item).html();
-    //     });
-    //     array.push(arrayItem);
-    // });
-    // var data = array.slice(5);
-    // var pdetails="";
-    // for (var i = 0; i < data.length; i++)
-    // {
-    //     pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
-    // }
-    // var prodTableHeaders =
-    //     '<table style="width:1308px;table-layout: auto;" class="extended">'+prodHeaders;
-    // if(row > 5)
-    // {
-    //     document.getElementById("breakPage").style.pageBreakAfter = "always";
-    //     $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
-    //     $("#prodDetails tr").slice(-data.length).remove();
-    // }
+        //
+        // var rowCount = $('.extended tr').length;
+        // var row = rowCount - 2;
+        //
+        // var userDetails = $('#userDetails').prop('outerHTML');
+        // var prodHeaders="";
+        // var prodDetails="";
+        // $(".extended tr th").each(function(){
+        //     prodHeaders += $(this).prop('outerHTML');
+        // });
+        // $(".extended").each(function(){
+        //     prodDetails += $(this).prop('outerHTML');
+        // });
+        // var array = [];
+        // var headers = [];
+        // $('.extended th').each(function(index, item) {
+        //     headers[index] = $(item).html()
+        // });
+        //
+        // $('.extended tr').has('td').each(function() {
+        //     var arrayItem = {};
+        //     $('td', $(this)).each(function(index, item) {
+        //         arrayItem[headers[index].replace(/\s+/g, '').replace(/[\W_]/g, "_")] = $(item).html();
+        //     });
+        //     array.push(arrayItem);
+        // });
+        // var data = array.slice(5);
+        // var pdetails="";
+        // for (var i = 0; i < data.length; i++)
+        // {
+        //     pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
+        // }
+        // var prodTableHeaders =
+        //     '<table style="width:1308px;table-layout: auto;" class="extended">'+prodHeaders;
+        // if(row > 5)
+        // {
+        //     document.getElementById("breakPage").style.pageBreakAfter = "always";
+        //     $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
+        //     $("#prodDetails tr").slice(-data.length).remove();
+        // }
 
 
-};
+    };
 
-var qrText = '${saleBillDetail.invoiceNumber}';
+    var qrText = '${saleBillDetail.invoiceNumber}';
     <g:if test="${irnDetails != null}">
     qrText = '${irnDetails.SignedQRCode}';
     </g:if>

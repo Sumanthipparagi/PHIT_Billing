@@ -251,6 +251,16 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
+                if (jsonObject.get("saleInvoiceFormat").toString())
+                {
+                    EntitySetting entitySetting1 = new EntitySetting()
+                    entitySetting1.code = "saleInvoiceFormat";
+                    entitySetting1.name = "Sales Invoice Format";
+                    entitySetting1.value = jsonObject.get("saleInvoiceFormat").toString();
+                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
+                    entitySetting1.save(flush: true)
+                }
             }
             else
             {
@@ -409,6 +419,16 @@ class EntitySettingService
                     entitySetting1.code = "transportationCharges";
                     entitySetting1.name = "Apply Transportation Chanrges to Customer? (Paid Amt.)";
                     entitySetting1.value = jsonObject.get("transportationCharges").toString();
+                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
+                    entitySetting1.save(flush: true)
+                }
+                if (jsonObject.get("saleInvoiceFormat").toString())
+                {
+                    EntitySetting entitySetting1 = new EntitySetting()
+                    entitySetting1.code = "saleInvoiceFormat";
+                    entitySetting1.name = "Sales Invoice Format";
+                    entitySetting1.value = jsonObject.get("saleInvoiceFormat").toString();
                     entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
