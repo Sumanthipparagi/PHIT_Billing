@@ -36,9 +36,9 @@
                                 </label>
                                 <select style="width: 100%" class="form-control cityIds" name="cityIds" id="cityIds"
                                         multiple="multiple" required>
-                                    <g:each var="c" in="${citylist}">
+                                  %{--  <g:each var="c" in="${citylist}">
                                         <option value="${c.id}">${c.areaName}</option>
-                                    </g:each>
+                                    </g:each>--}%
                                 </select>
                             </div>
 
@@ -90,7 +90,6 @@
                                 </label>
 
                                 <select class="form-control show-tick managerId" name="managerId" id="managerId">
-                                    <option value="0">Please Select</option>
                                     <g:each var="m" in="${managerList}">
                                         <option value="${m.id}">${m.userName}</option>
                                     </g:each>
@@ -103,7 +102,6 @@
                                 </label>
                                 <select class="form-control show-tick customerIds" name="customerIds"
                                         id="customerIds"  multiple="multiple" >
-                                    <option value="">-- Please select --</option>
                                     <g:each var="cust" in="${customerList}">
                                         <option value="${cust.id}">${cust.customerGroupName}</option>
                                     </g:each>
