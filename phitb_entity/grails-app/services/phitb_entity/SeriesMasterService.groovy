@@ -36,6 +36,7 @@ class SeriesMasterService {
                 entity{
                     eq('id',entityId)
                 }
+                eq('deleted', false)
             }
         }
     }
