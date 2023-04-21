@@ -57,14 +57,14 @@
                     </ul>
                 </div>
 
-%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
-%{--                    <div class="input-group m-b-0">--}%
-%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
-%{--                        <span class="input-group-addon">--}%
-%{--                            <i class="zmdi zmdi-search"></i>--}%
-%{--                        </span>--}%
-%{--                    </div>--}%
-%{--                </div>--}%
+                %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+                %{--                    <div class="input-group m-b-0">--}%
+                %{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+                %{--                        <span class="input-group-addon">--}%
+                %{--                            <i class="zmdi zmdi-search"></i>--}%
+                %{--                        </span>--}%
+                %{--                    </div>--}%
+                %{--                </div>--}%
             </div>
         </div>
 
@@ -80,7 +80,8 @@
                                         <input id="dateRange" class="dateRange" type="text" name="dateRange"
                                                style="border-radius: 6px;margin: 4px;"/>
                                         <button class="input-group-btn btn btn-info btn-sm"
-                                                data-toggle="modal" data-target="#myModal" ><i class="fa fa-filter"></i> </button>
+                                                data-toggle="modal" data-target="#myModal"><i class="fa fa-filter"></i>
+                                        </button>
                                         <button class="input-group-btn btn btn-info btn-sm"
                                                 onclick="getReport()">Get Report</button>
                                     </div>
@@ -91,20 +92,22 @@
                                 <div class="form-group">
                                     <div class="input-group inlineblock">
                                         <label>Export:</label>
-                                        <button class="input-group-btn btn btn-info btn-sm" id="btnExport"><i class="fa fa-file-excel-o"></i> Excel</button>
-                                        <button class="input-group-btn btn btn-danger btn-sm" id="btnPrint"><i class="fa fa-print"></i> Print</button>
+                                        <button class="input-group-btn btn btn-info btn-sm" id="btnExport"><i
+                                                class="fa fa-file-excel-o"></i> Excel</button>
+                                        <button class="input-group-btn btn btn-danger btn-sm" id="btnPrint"><i
+                                                class="fa fa-print"></i> Print</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-2 d-flex justify-content-center">
+                           %{-- <div class="col-md-2 d-flex justify-content-center">
                                 <div class="checkbox inlineblock">
                                     <input id="paidInvoice" type="checkbox" checked/>
                                     <label for="paidInvoice">
                                         Show Paid Invoices
                                     </label>
                                 </div>
-                            </div>
+                            </div>--}%
                         </div>
                     </div>
 
@@ -155,7 +158,7 @@
             format: "DD/MM/YYYY"
         },
         maxDate: moment()
-    }).on('apply.daterangepicker', function(ev, picker) {
+    }).on('apply.daterangepicker', function (ev, picker) {
         dueOnDate = moment(picker.endDate).format('DD/MM/YYYY');
     });
 
@@ -171,10 +174,9 @@
         });
         var dateRange = $('.dateRange').val();
         var paidInvoice = $("#paidInvoice").is(":checked") ? "false" : "true";
-        var url =  "/reports/accounts/getpayments?dateRange=" + dateRange + "&paidInvoice="+paidInvoice
+        var url = "/reports/accounts/getpayments?dateRange=" + dateRange + "&paidInvoice=" + paidInvoice
         var ids = "";
-        switch (filterType)
-        {
+        switch (filterType) {
             case "ALL":
                 break;
             case "PARTY":
@@ -183,13 +185,13 @@
                 for (var i = 0; i < checkboxes.length; i++) {
                     // Check if the current radio button is checked
                     if (checkboxes[i].checked) {
-                        if(ids === null)
+                        if (ids === null)
                             ids = checkboxes[i].value + ",";
                         else
                             ids += checkboxes[i].value + ",";
                     }
                 }
-                url += "&entityids="+ids;
+                url += "&entityids=" + ids;
                 break;
         }
 
@@ -205,25 +207,31 @@
             contentType: false,
             processData: false,
             success: function (data) {
-                /*var content = "";
+                var content = "";
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='10'>Outstanding Report, Date: " +
+                    "<tr><th data-f-bold='true' colspan='10'>Payments Report, Date: " +
                     dateRange + "</th></tr>" +
-                    //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
-                    //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Fin. Year</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+dueOnDate+"</th><th data-f-bold='true'>Paid</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
-                var billDetails = "";
-                $.each(data, function (key, city) {
-                    billDetails = "";
-                    var cityName = "<tr><td colspan='9' data-f-bold='true'>Area: <span class='customerData cust" +
+                    "<th data-f-bold='true'>SL No.</th><th data-f-bold='true'>Payment No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Bill No.</th><th data-f-bold='true'>Amount</th><th data-f-bold='true'>Paid</th><th data-f-bold='true'>Balance</th></tr></thead><tbody>";
+                var paymentDetails = "";
+                $.each(data, function (key, innerData) {
+                    var i = 0;
+                    paymentDetails = "";
+                    var cityName = "<tr><td colspan='9' data-f-bold='true'><span class='customerData cust" +
                         key + "'><strong>" + key + "</strong></span></td></tr>";
                     var customerInfo = "";
                     var customerDue = 0;
                     var customerBalance = 0;
                     var customerTotalDue = 0;
-                    $.each(city, function (customer, invs) {
+                    $.each(innerData, function (key, payment) {
+                        var billNumbers = "";
+                        $.each(payment.products, function (key, product) {
+                            billNumbers += product.transId +", ";
+                        })
+                        paymentDetails += "<tr><td>"+(++i)+"</td><td>"+payment.paymentId+"</td><td>"+payment.dateCreated+"</td><td>"+billNumbers+"</td><td>-</td><td>"+payment.amountPaid.toFixed(2)+"</td><td></td></tr>"
+                    });
+                    /*$.each(city, function (customer, invs) {
                         var bills = "<tr><td colspan='10' data-f-bold='true'>"+customer+"</td></tr>";
                         var customerDue = 0;
                         var customerBalance = 0;
@@ -276,12 +284,12 @@
                             "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>"+formatNumber(customerBalance.toFixed(2))+"</strong></u></td><td data-f-bold='true'><u><strong>"+formatNumber(customerDue.toFixed(2))+"</strong></u></td>" +
                             "<td data-f-bold='true'><u><strong>"+formatNumber(customerTotalDue.toFixed(2))+"</strong></u></td><td data-f-bold='true'></td></tr>";
                         customerInfo += (bills + customerTotal);
-                    });
-                    billDetails += customerInfo;
-                    content += cityName + billDetails;
+                    });*/
+                    paymentDetails += customerInfo;
+                    content += cityName + paymentDetails;
                 });
                 var mainTableFooter = "</tbody></table>";
-                $("#result").html(mainTableHeader + content + mainTableFooter);*/
+                $("#result").html(mainTableHeader + content + mainTableFooter);
                 loading.close();
             },
             error: function () {
@@ -290,6 +298,7 @@
             }
         })
     }
+
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
@@ -326,8 +335,7 @@
           });
       });*/
 
-    function dateFormat(dt, type)
-    {
+    function dateFormat(dt, type) {
         dt = dt.replace("T", " ").replace("Z", '');
         var date = moment(dt, "DD/MM/YYYY HH:mm:ss").toDate()
         //return moment(date).format('DD/MM/YYYY hh:mm:ss a');
@@ -340,8 +348,7 @@
     }
 
 
-    function formatNumber(n)
-    {
+    function formatNumber(n) {
         return Number(n).toLocaleString()
     }
 
