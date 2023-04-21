@@ -399,6 +399,7 @@
                                     class="badge badge-success float-right"></span></a>
                                 <ul class="ml-menu">
                                     <li><a href="/reports/accounts/outstanding">Outstanding</a></li>
+                                    <li><a href="/reports/accounts/payments">Payments Report</a></li>
                                 </ul>
                             </li>
                             <li><a href="javascript:void(0);" class="menu-toggle">Inventory Report</span><span

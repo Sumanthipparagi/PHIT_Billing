@@ -827,6 +827,8 @@ class UrlMappings {
 
         "/reports/accounts/outstanding"(controller: "accountsReport", action: "outstandingReport")
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")
+        "/reports/accounts/payments"(controller: "accountsReport", action: "paymentReport")
+        "/reports/accounts/getpayments"(controller: "accountsReport", action: "getPaymentReport")
 
         "/reports/inventory/statement"(controller: "inventoryReport", action: "statement")
         "/reports/inventory/getstatement"(controller: "inventoryReport", action: "getStatement")

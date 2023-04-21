@@ -2,6 +2,7 @@ package phitb_ui.reports
 
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.AccountsService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.ReportsService
@@ -72,6 +73,46 @@ class AccountsReportController {
                 resultJson.put(cityDetail?.districtName?.toString(), customers2)
         }
         respond resultJson, formats: ['json']
+    }
+
+    def paymentReport()
+    {
+        render(view: '/reports/accountsReport/payment-report')
+    }
+
+    def getPaymentReport()
+    {
+        String entityId = session.getAttribute("entityId")
+        String dateRange = params.dateRange
+        String entityids = params.entityids
+        JSONArray jsonArray = new AccountsService().getPaymentDetailsByDateRange(dateRange, entityId)
+        JSONObject reportJson = new JSONObject()
+        if(entityids != null)
+        {
+            ArrayList<String> filterEntities = entityids.split(",")
+            for (JSONObject jsonObject : jsonArray) {
+                if(filterEntities.contains(jsonObject.get("transferFrom").toString()))
+                {
+                    JSONArray payments = new JSONArray()
+                    JSONObject entity = new EntityService().getEntityById(jsonObject.get("transferFrom").toString())
+                    if(reportJson.has(entity.entityName))
+                    {
+                        payments = reportJson.get(entity.entityName)
+                        payments.add(jsonObject)
+                    }
+                    else
+                    {
+                        payments.add(jsonObject)
+                    }
+                    reportJson.put(entity.entityName, payments)
+                }
+            }
+        }
+        else
+        {
+            reportJson.put("ALL", jsonArray)
+        }
+        respond reportJson, formats: ['json']
     }
 
 }
