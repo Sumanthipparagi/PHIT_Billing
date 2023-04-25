@@ -309,4 +309,10 @@ class UserRegisterController {
         }
     }
 
+    def updateUserTheme()
+    {
+        session.setAttribute("menuDark", true)
+        session.setAttribute("theme", "theme-purple")
+    }
+
 }

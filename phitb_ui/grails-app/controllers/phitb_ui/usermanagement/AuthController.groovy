@@ -94,6 +94,10 @@ class AuthController {
                         session.setAttribute("endDate", endDate)
                         boolean financialYearValid = new UtilsService().isDateWithinRange(currentDate, startDate, endDate)
                         session.setAttribute("financialYearValid", financialYearValid)
+
+                        session.setAttribute("menuDark", false)
+                        session.setAttribute("theme", "theme-dark")
+
                         redirect(uri: "/dashboard")
                     }
                 } else {

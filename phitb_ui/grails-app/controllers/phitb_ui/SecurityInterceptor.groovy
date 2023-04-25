@@ -41,7 +41,24 @@ class SecurityInterceptor {
         }
     }
 
-    boolean after() { true }
+    boolean after() {
+        //security features
+      /*  if(session.hasProperty("menuDark") && session.hasProperty("theme")) {
+            boolean menuDark = session.getAttribute("menuDark")
+            String theme = session.getAttribute("theme")
+            String themeExpiryDate = "Sun, 31 Dec 2119 07:28:00 GMT"
+            response.setHeader("SET-COOKIE", "theme="+theme+"; Expires="+themeExpiryDate+";secure;HttpOnly;SameSite=None;")
+            response.setHeader("SET-COOKIE", "menu-dark="+menuDark+"; Expires="+themeExpiryDate+";secure;HttpOnly;SameSite=None;")
+        }*/
+
+        response.setHeader("X-Frame-Options", "SAMEORIGIN")
+        response.setHeader("Cache-Control", "must-revalidate")
+        response.setHeader("SET-COOKIE", "JSESSIONID=" + request.getSession().id + ";secure;HttpOnly;SameSite=None;")
+        response.setHeader("X-Content-Type-Options", "nosniff")
+        response.setHeader("X-XSS-Protection", "1; mode=block")
+
+        true
+    }
 
     void afterView() {
         // no-op
