@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat
 class AuthController {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+
     def index() {
         render(view: '/usermanagement/auth/index')
     }
@@ -32,6 +33,7 @@ class AuthController {
     def login() {
         String username = params.username
         String password = params.password
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
         if (username != null && password != null) {
 
             //TODO: Login Log
@@ -52,6 +54,8 @@ class AuthController {
                 ip = request.getRemoteAddr();
             }
 
+            String browserInfo = request.getHeader("User-Agent")
+
             JSONObject auth = new EntityService().getAuth(username)
 
             if (auth) {
@@ -63,6 +67,25 @@ class AuthController {
                 if (auth.get("username").toString().equals(username) && auth.get("password").toString().equals(password)) {
                     JSONObject entity = auth.get("user").entity
                     session.setMaxInactiveInterval(3600000)
+
+                    try {
+                        JSONObject loginInfo = new JSONObject()
+                        loginInfo.put("userId", auth.get("user")?.id)
+                        loginInfo.put("ipAddress", ip)
+                        loginInfo.put("formId", "")
+                        loginInfo.put("browserInfo", browserInfo)
+                        loginInfo.put("loginId", username)
+                        loginInfo.put("entityType", entity?.get("entityType")?.id)
+                        loginInfo.put("entity", entity?.get("id"))
+
+                        loginInfo.put("loginTime", sdf1.format(new Date()))
+                        loginInfo = new EntityService().saveUserLoginInfo(loginInfo)
+                        session.setAttribute("loginInfoId", loginInfo.get("id"))
+                    }
+                    catch (Exception ex) {
+                        ex.printStackTrace()
+                    }
+
                     session.setAttribute("login", true)
                     session.setAttribute("userId", auth.get("user")?.id)
                     session.setAttribute("entityId", entity?.get("id"))
@@ -81,6 +104,15 @@ class AuthController {
                     session.setAttribute("features", new EntityService().getFeatureList(permittedFeatures))
                     JSONArray jsonArray = new EntityService().getFinancialYearByEntity(entity?.id?.toString())
                     if (jsonArray == null || jsonArray.size() < 1) {
+                        try {
+                            String loginInfoId = session.getAttribute("loginInfoId")
+                            JSONObject loginInfo = new EntityService().getUserLoginInfo(loginInfoId)
+                            loginInfo.put("logoutTime", sdf1.format(new Date()))
+                            new EntityService().updateUserLoginInfo(loginInfo)
+                        }
+                        catch (Exception ex) {
+                            ex.printStackTrace()
+                        }
                         println("Financial year not available")
                         session.invalidate()
                         redirect(uri: "/")
@@ -115,6 +147,17 @@ class AuthController {
     }
 
     def logout() {
+
+        try {
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+            String loginInfoId = session.getAttribute("loginInfoId")
+            JSONObject loginInfo = new EntityService().getUserLoginInfo(loginInfoId)
+            loginInfo.put("logoutTime", sdf1.format(new Date()))
+            new EntityService().updateUserLoginInfo(loginInfo)
+        }
+        catch (Exception ex) {
+            ex.printStackTrace()
+        }
         session.invalidate()
         redirect(uri: "/")
     }
@@ -137,14 +180,14 @@ class AuthController {
                 def department = new EntityService().getDeparmentByEntityId(session.getAttribute('entityId').toString())
                 Object entity = new EntityRegisterController().show() as ArrayList<String>
                 JSONArray routes = new EntityService().getRouteByEntity(session.getAttribute("entityId").toString())
-                render(view: '/usermanagement/auth/updateUser', model: [user        : user, statelist: statelist,
-                                                                        routes      : routes,
-                                                                        countrylist : countrylist, citylist: citylist,
-                                                                        userList    : userList,
-                                                                        genderList  : genderList, department: department,
-                                                                        bank        : bank, roles: roles, account: account,
+                render(view: '/usermanagement/auth/updateUser', model: [user       : user, statelist: statelist,
+                                                                        routes     : routes,
+                                                                        countrylist: countrylist, citylist: citylist,
+                                                                        userList   : userList,
+                                                                        genderList : genderList, department: department,
+                                                                        bank       : bank, roles: roles, account: account,
                                                                         //userregister: userregister,
-                                                                        division    : division, entity: entity, city: city])
+                                                                        division   : division, entity: entity, city: city])
             } else {
                 redirect(uri: '/')
             }

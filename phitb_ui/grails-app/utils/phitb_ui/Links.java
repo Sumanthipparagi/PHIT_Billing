@@ -257,6 +257,9 @@ public class Links
     public static String USER_REGISTER_DELETE = APP_CONTEXT_PATH + "entity/userregister/{id}";
     public static String USER_EXISTS = APP_CONTEXT_PATH + "entity/userregister/usernameexists";
 
+    //User Login Info
+    public static String USER_LOGININFO = APP_CONTEXT_PATH + "entity/userloginfo";
+
 
     //Customer Group Register
     public static String CUSTOMER_GROUP_REGISTER_SHOW = APP_CONTEXT_PATH + "entity/customergroupregister";

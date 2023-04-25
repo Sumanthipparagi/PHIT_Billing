@@ -75,10 +75,19 @@ class UserLogInfoService
         UserLogInfo userLogInfo = new UserLogInfo()
         userLogInfo.loginId = jsonObject.get("loginId").toString()
         userLogInfo.ipAddress = jsonObject.get("ipAddress").toString()
-        userLogInfo.formId = jsonObject.get("formId").toString()
+
+        if(jsonObject.has("browserInfo"))
+            userLogInfo.browserInfo = jsonObject.get("browserInfo").toString()
+
+        if(jsonObject.has("formId"))
+            userLogInfo.formId = jsonObject.get("formId").toString()
+
         userLogInfo.userId = Long.parseLong(jsonObject.get("userId").toString())
         userLogInfo.loginTime = sdf.parse(jsonObject.get("loginTime").toString())
-        userLogInfo.logoutTime = sdf.parse(jsonObject.get("logoutTime").toString())
+
+        if(jsonObject.has("logoutTime"))
+            userLogInfo.logoutTime = sdf.parse(jsonObject.get("logoutTime").toString())
+
         userLogInfo.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
         userLogInfo.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         userLogInfo.save(flush: true)
@@ -98,14 +107,8 @@ class UserLogInfoService
         if (userLogInfo)
         {
             userLogInfo.isUpdatable = true
-            userLogInfo.loginId = jsonObject.get("loginId").toString()
-            userLogInfo.ipAddress = jsonObject.get("ipAddress").toString()
-            userLogInfo.formId = jsonObject.get("formId").toString()
-            userLogInfo.userId = Long.parseLong(jsonObject.get("userId").toString())
-            userLogInfo.loginTime = sdf.parse(jsonObject.get("loginTime").toString())
-            userLogInfo.logoutTime = sdf.parse(jsonObject.get("logoutTime").toString())
-            userLogInfo.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
-            userLogInfo.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            if(jsonObject.has("logoutTime"))
+                userLogInfo.logoutTime = sdf.parse(jsonObject.get("logoutTime").toString())
             userLogInfo.save(flush: true)
             if (!userLogInfo.hasErrors())
             {

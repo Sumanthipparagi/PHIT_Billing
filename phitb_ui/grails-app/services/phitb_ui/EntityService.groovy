@@ -76,6 +76,7 @@ class EntityService {
         }
 
     }
+
     def showParentEntities(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -227,8 +228,7 @@ class EntityService {
             }
         }
 
-        if(jsonObject.has("entityRoute"))
-        {
+        if (jsonObject.has("entityRoute")) {
             JSONArray rIds = new JSONArray()
             def routeIds = jsonObject.get("entityRoute")
             for (Object rt : routeIds) {
@@ -324,8 +324,7 @@ class EntityService {
 
     def putUser(JSONObject jsonObject) {
 
-        if(jsonObject.has("entityRoute"))
-        {
+        if (jsonObject.has("entityRoute")) {
             JSONArray rIds = new JSONArray()
             def routeIds = jsonObject.get("entityRoute")
             for (Object rt : routeIds) {
@@ -496,11 +495,10 @@ class EntityService {
                     .resolveTemplate("id", entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200){
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 return jsonArray
-            }
-            else{
+            } else {
                 return []
             }
 
@@ -733,7 +731,7 @@ class EntityService {
     def putEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       // WebTarget target = client.target("http://localhost:8088")
+        // WebTarget target = client.target("http://localhost:8088")
         try {
             Response apiResponse = target
                     .path(new Links().ENTITY_IRN_UPDATE)
@@ -1493,19 +1491,19 @@ class EntityService {
 
     }
 
-    def getTermsAndConditionsById(String id){
+    def getTermsAndConditionsById(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
         try {
             Response apiResponse = target
-                    .path(new Links().TC_MASTER_SHOW+"/"+id)
+                    .path(new Links().TC_MASTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200){
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class));
                 return jsonObject1
-            }else{
+            } else {
                 return null;
             }
         }
@@ -1815,7 +1813,6 @@ class EntityService {
     }*/
 
 
-
     JSONArray getTaxesByEntity(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -1827,12 +1824,10 @@ class EntityService {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-             if(apiResponse.status == 200)
-             {
-                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
-                 return jsonArray
-             }
-            else
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -1867,14 +1862,14 @@ class EntityService {
     }
 
 
-    def getTaxRegisterByValueAndEntity(String taxValue, String entityId){
+    def getTaxRegisterByValueAndEntity(String taxValue, String entityId) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().TAX_REGISTER_BY_VALUE_ENTITY)
-                    .queryParam('entityId',entityId)
-                    .queryParam('taxValue',taxValue)
+                    .queryParam('entityId', entityId)
+                    .queryParam('taxValue', taxValue)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse?.status == 200) {
@@ -1888,8 +1883,6 @@ class EntityService {
             log.error('Service :EntityService , action :  getTaxRegisterByValueAndEntity  , Ex:' + ex)
         }
     }
-
-
 
 
     def getTaxes() {
@@ -1967,15 +1960,14 @@ class EntityService {
 //            url += "?affiliateId=" + affiliateId
         try {
 
-            if(affiliateId)
-            {
+            if (affiliateId) {
                 Response apiResponse = target
                         .path(url)
-                        .queryParam('affiliateId',affiliateId)
+                        .queryParam('affiliateId', affiliateId)
                         .request(MediaType.APPLICATION_JSON_TYPE)
                         .get()
                 return apiResponse
-            }else{
+            } else {
                 Response apiResponse = target
                         .path(url)
                         .request(MediaType.APPLICATION_JSON_TYPE)
@@ -2500,12 +2492,12 @@ class EntityService {
         try {
             Response apiResponse = target
                     .path(new Links().DEPARTMENT_MASTER_ENTITY)
-                    .queryParam("entityId",entityId)
+                    .queryParam("entityId", entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
-                return  jsonArray
+                return jsonArray
 
             } else {
                 return null
@@ -2749,19 +2741,19 @@ class EntityService {
     }
 
 
-    boolean billDetailsCheckUserType(String userId){
+    boolean billDetailsCheckUserType(String userId) {
         def user = getUser(userId);
-        if(user!=null){
-            if(user.role.name == Constants.SUPER_USER){
-                return  true
-            }else{
+        if (user != null) {
+            if (user.role.name == Constants.SUPER_USER) {
+                return true
+            } else {
                 return false
             }
         }
     }
 
 
-    def checkPhoneNumber(String phoneNumber, String entityId){
+    def checkPhoneNumber(String phoneNumber, String entityId) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
@@ -2796,8 +2788,6 @@ class EntityService {
         }
 
     }
-
-
 
 
     //Entity Route
@@ -2895,13 +2885,10 @@ class EntityService {
                     .path(new Links().ENTITY_ROUTE_SHOW_BY_ENTITY + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
@@ -2915,7 +2902,7 @@ class EntityService {
 
 
     /**
-    Get Entities belongs to users route, by sending user id
+     Get Entities belongs to users route, by sending user id
      */
     def getEntityByUserRoute(String id) {
         Client client = ClientBuilder.newClient()
@@ -2936,5 +2923,73 @@ class EntityService {
             log.error('Service :EntityService , action :  getEntityByUserRoute  , Ex:' + ex)
         }
 
+    }
+
+
+    JSONObject saveUserLoginInfo(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().USER_LOGININFO)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            } else {
+               return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  saveUserLoginInfo  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveUserLoginInfo  , Ex:' + ex)
+            return null
+        }
+
+    }
+
+    JSONObject getUserLoginInfo(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().USER_LOGININFO + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getUserLoginInfo  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getUserLoginInfo  , Ex:' + ex)
+            return null
+        }
+    }
+
+    JSONObject updateUserLoginInfo(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().USER_LOGININFO + "/"+jsonObject.get("id"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  updateUserLoginInfo  , Ex:' + ex)
+            log.error('Service :EntityService , action :  updateUserLoginInfo  , Ex:' + ex)
+            return null
+        }
     }
 }

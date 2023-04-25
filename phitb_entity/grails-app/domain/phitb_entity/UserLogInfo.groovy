@@ -13,11 +13,14 @@ class UserLogInfo implements LogicalDelete<UserLogInfo>
     Date logoutTime
     EntityTypeMaster entityType
     EntityRegister entity
+    String browserInfo
 
     Date dateCreated
     Date lastUpdated
     static constraints = {
-
+        logoutTime nullable: true
+        formId nullable: true
+        browserInfo nullable: true, maxSize: 500
     }
 
     static mapping = {
