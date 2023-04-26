@@ -408,6 +408,11 @@ class InventoryReportController {
         for (JSONObject stockBook : stockBooks) {
             JSONObject product = new ProductService().getProductById(stockBook.productId.toString())
             stockBook.put("product", product)
+            def taxResponse = new EntityService().getTaxRegister(stockBook.taxId.toString())
+            if(taxResponse.status == 200) {
+                JSONObject tax = new JSONObject(taxResponse.readEntity(String.class))
+                stockBook.put("tax", tax)
+            }
             stockReport.add(stockBook)
 
         }

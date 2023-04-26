@@ -157,10 +157,10 @@
             processData: false,
             success: function (data) {
                 var content = "";
-                var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
+                var mainTableHeader = "<table class='table table-bordered table-sm table-responsive' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='13'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='13'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='13'>Stock Report, Date: </th></tr>" +
+                    "<tr><th data-f-bold='true' colspan='13'>Stock Report</th></tr>" +
                     //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
                     "<tr><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Packing</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Exp Date</th><th data-f-bold='true'>Qty</th><th data-f-bold='true'>Free Qty</th><th data-f-bold='true'>Sale Rate</th><th data-f-bold='true'>MRP</th><th data-f-bold='true'>Pur. Rate</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Value</th><th data-f-bold='true'>P. Bill</th><th data-f-bold='true'>P. Date</th></tr>" +
@@ -178,16 +178,16 @@
                         "<td>" + value?.product.productName + "</td>" +
                         "<td>" + value?.packingDesc + "</td>" +
                         "<td>" + value?.batchNumber + "</td>" +
-                        "<td>" + value?.expDate + "</td>" +
+                        "<td>" + dateFormat(value?.expDate) + "</td>" +
                         "<td>" + value?.remainingQty + "</td>" +
                         "<td>" + value?.remainingFreeQty + "</td>" +
-                        "<td>" + value?.saleRate + "</td>" +
-                        "<td>" + value?.mrp + "</td>" +
-                        "<td>" + value?.purchaseRate + "</td>" +
-                        "<td></td>" +
+                        "<td>" + value?.saleRate.toFixed(2) + "</td>" +
+                        "<td>" + value?.mrp.toFixed(2) + "</td>" +
+                        "<td>" + value?.purchaseRate.toFixed(2) + "</td>" +
+                        "<td>" + value?.tax?.taxName + "</td>" +
                         "<td>" + val.toFixed(2) + "</td>" +
                         "<td></td>" +
-                        "<td>" + value?.purcDate + "</td>" +
+                        "<td>" + dateFormat(value?.purcDate) + "</td>" +
                         "</td></tr>";
                     content += stockDetails
                 });
@@ -205,7 +205,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'areawise-sales-report.xlsx',
+            name: 'stock-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }
@@ -240,7 +240,7 @@
 
     function dateFormat(dt) {
         dt = dt.replace("T", " ").replace("Z", '');
-        var date = moment(dt, 'DD/MM/YYYY HH:mm:ss');
+        var date = moment(dt, 'YYYY-MM-DD HH:mm:ss');
         //return moment(date).format('DD/MM/YYYY hh:mm:ss a');
         return moment(date).format('DD/MM/YYYY');
     }
