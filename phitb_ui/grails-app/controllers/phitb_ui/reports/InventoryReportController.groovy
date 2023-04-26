@@ -422,6 +422,20 @@ class InventoryReportController {
             System.out.print(ex)
         }
     }
+
+    def stockReport()
+    {
+        render(view: '/reports/inventoryReport/stockreport')
+    }
+
+    def getStockReport()
+    {
+        JSONArray stockbooks = new InventoryService().getStockBookByEntity(session.getAttribute("entityId"))
+        for (JSONObject stoockBook : stockbooks) {
+
+        }
+        respond stockbook, formats: ['json']
+    }
 }
 
 class InventoryStatement {

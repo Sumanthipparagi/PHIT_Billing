@@ -406,6 +406,7 @@
                                     class="badge badge-success float-right"></span></a>
                                 <ul class="ml-menu">
                                     <li><a href="/reports/inventory/statement">Statement</a></li>
+                                    <li><a href="/reports/inventory/stockreport">Stock Report</a></li>
                                     <li><a href="/reports/inventory/expiry">Expiry</a></li>
                                 </ul>
                             </li>

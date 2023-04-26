@@ -834,6 +834,8 @@ class UrlMappings {
         "/reports/inventory/getstatement"(controller: "inventoryReport", action: "getStatement")
         "/reports/inventory/expiry"(controller: "inventoryReport", action: "expiryReport")
         "/reports/inventory/getexpiry"(controller: "inventoryReport", action: "generateExpiryReport")
+        "/reports/inventory/stockreport"(controller: "inventoryReport", action: "stockReport")
+        "/reports/inventory/getstockreport"(controller: "inventoryReport", action: "getStockReport")
 
         "/reports/products/statement"(controller: "productReport", action: "productStatement")
         "/reports/products/getstatement"(controller: "productReport", action: "getProductStatement")
