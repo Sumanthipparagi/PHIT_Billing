@@ -57,14 +57,14 @@
                     </ul>
                 </div>
 
-%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
-%{--                    <div class="input-group m-b-0">--}%
-%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
-%{--                        <span class="input-group-addon">--}%
-%{--                            <i class="zmdi zmdi-search"></i>--}%
-%{--                        </span>--}%
-%{--                    </div>--}%
-%{--                </div>--}%
+                %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+                %{--                    <div class="input-group m-b-0">--}%
+                %{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+                %{--                        <span class="input-group-addon">--}%
+                %{--                            <i class="zmdi zmdi-search"></i>--}%
+                %{--                        </span>--}%
+                %{--                    </div>--}%
+                %{--                </div>--}%
             </div>
         </div>
 
@@ -158,28 +158,36 @@
             success: function (data) {
                 var content = "";
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
-                    "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
-                    "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='10'>Inventory Report, Date: </th></tr>" +
+                    "<tr><td data-f-bold='true' colspan='13'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
+                    "<tr><td colspan='13'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+                    "<tr><th data-f-bold='true' colspan='13'>Stock Report, Date: </th></tr>" +
                     //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<tr><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Packing</th><th data-f-bold='true' colspan='2'>Opening<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Purchase/P.Return<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Sales/S.Return<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Closing<br>Qty &emsp;Amt</th></tr>" +
+                    "<tr><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Packing</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Exp Date</th><th data-f-bold='true'>Qty</th><th data-f-bold='true'>Free Qty</th><th data-f-bold='true'>Sale Rate</th><th data-f-bold='true'>MRP</th><th data-f-bold='true'>Pur. Rate</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Value</th><th data-f-bold='true'>P. Bill</th><th data-f-bold='true'>P. Date</th></tr>" +
                     "</thead><tbody>";
                 var stockDetails = "";
                 $.each(data, function (key, value) {
-                    var closingQty = (value?.openingQty - value?.saleQty);
-                    closingQty = closingQty + value?.purchaseQty;
+                    /* var closingQty = (value?.openingQty - value?.saleQty);
+                     closingQty = closingQty + value?.purchaseQty;
 
-                    var closingAmt = (value?.openingAmt - value?.saleAmt);
-                    closingAmt = closingAmt + value?.purchaseAmt;
-
+                     var closingAmt = (value?.openingAmt - value?.saleAmt);
+                     closingAmt = closingAmt + value?.purchaseAmt;
+ */
+                    var val = (value?.remainingQty + value?.remainingFreeQty) * value?.saleRate;
                     stockDetails = "<tr>" +
-                                "<td>" + value?.productName + "</td>" +
-                                "<td>" + value?.packing + "</td></td>"+
-                                "<td>" + value?.openingQty + "</td><td>"+ value?.openingAmt.toFixed(2) + "</td>"+
-                                "<td>" + value?.purchaseQty + "</td><td>"+ value?.purchaseAmt.toFixed(2) + "</td>"+
-                                "<td>" + value?.saleQty + "</td><td>"+ value?.saleAmt.toFixed(2) + "</td>"+
-                                "<td>" + closingQty + "</td><td>"+ closingAmt.toFixed(2) +
+                        "<td>" + value?.product.productName + "</td>" +
+                        "<td>" + value?.packingDesc + "</td>" +
+                        "<td>" + value?.batchNumber + "</td>" +
+                        "<td>" + value?.expDate + "</td>" +
+                        "<td>" + value?.remainingQty + "</td>" +
+                        "<td>" + value?.remainingFreeQty + "</td>" +
+                        "<td>" + value?.saleRate + "</td>" +
+                        "<td>" + value?.mrp + "</td>" +
+                        "<td>" + value?.purchaseRate + "</td>" +
+                        "<td></td>" +
+                        "<td>" + val.toFixed(2) + "</td>" +
+                        "<td></td>" +
+                        "<td>" + value?.purcDate + "</td>" +
                         "</td></tr>";
                     content += stockDetails
                 });
