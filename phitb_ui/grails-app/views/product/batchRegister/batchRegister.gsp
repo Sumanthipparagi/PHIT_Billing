@@ -67,7 +67,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Batch Register</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Batch Register</li>
                     </ul>
                 </div>
@@ -113,7 +113,7 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Product</th>
                                     <th style="width: 20%">Batch Number</th>
-                                    <th style="width: 20%">Manfacture Date</th>
+                                    <th style="width: 20%">Manufacture Date</th>
                                     <th style="width: 20%">Expiry Date</th>
                                     <th style="width: 20%">Purchase Rate</th>
                                     <th style="width: 20%">PTR</th>
@@ -208,7 +208,7 @@
                         var manfDate = new Date(json.data[i].manfDate);
                         var expiryDate = new Date(json.data[i].expiryDate);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '"data-product="' + json.data[i].product.id + '"' +
+                            '" data-product="' + json.data[i].product.id + '"' +
                             'data-batchNumber="' + json.data[i].batchNumber + '"' +
                             'data-manfDate="' + moment(manfDate).format('DD/MM/YYYY') + '"' +
                             ' data-expiryDate="' +  moment(expiryDate).format('DD/MM/YYYY') + '"' +

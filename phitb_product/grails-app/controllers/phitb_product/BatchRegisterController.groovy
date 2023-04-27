@@ -194,10 +194,10 @@ class BatchRegisterController {
      */
     def dataTable() {
         try {
-            String start = params.start
-            String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
             respond batchRegisterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
