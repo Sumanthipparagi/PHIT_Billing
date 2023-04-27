@@ -256,12 +256,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Accounts Submitted Successfully", "success");
+                Swal.fire("Success!", "Accounts Submitted Successfully", "success");
                 accountsTable();
                 $('#addaccountsModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -321,9 +321,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 accountsTable();
-                swal("Success!", "Account Modes Deleted Successfully", "success");
+                Swal.fire("Success!", "Account Modes Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }
