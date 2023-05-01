@@ -114,7 +114,7 @@
                                     <th>GST Amt</th>
                                     <th>Net Amt</th>
                                     <th>City</th>
-                                    <th>GTN Status</th>
+                                    <th>Status</th>
                                     <th>Balance</th>
                                     <th>Financial Year</th>
                                 </tr>

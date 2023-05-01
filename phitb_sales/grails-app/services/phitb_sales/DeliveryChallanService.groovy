@@ -104,14 +104,14 @@ class DeliveryChallanService {
             or {
                 if (searchTerm != "")
                 {
-                    ilike('financialYear', '%' + searchTerm + '%')
+                    ilike('invoiceNumber', '%' + searchTerm + '%')
                 }
             }
             if (!invoiceStatus.equalsIgnoreCase("ALL"))
             {
                 eq('billStatus', invoiceStatus)
             }
-            eq('customerId', entityId)
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
