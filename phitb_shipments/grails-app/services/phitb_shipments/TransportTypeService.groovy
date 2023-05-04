@@ -77,13 +77,14 @@ class TransportTypeService {
         catch(Exception ex)
         {
             System.out.println(ex)
+            return null
         }
     }
 
     TransportType save(JSONObject jsonObject) {
         TransportType transportType = new TransportType()
         transportType.transportType = jsonObject.get("transportType")
-        transportType.vehicleId = Long.parseLong(jsonObject.get("vehicleId").toString())
+        transportType.vehicleId = jsonObject.get("vehicleId").toString()
         transportType.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         transportType.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         transportType.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
@@ -102,15 +103,12 @@ class TransportTypeService {
             if (transportType) {
                 transportType.isUpdatable = true
                 transportType.transportType = jsonObject.get("transportType")
-                transportType.vehicleId = Long.parseLong(jsonObject.get("vehicleId").toString())
+                transportType.vehicleId = jsonObject.get("vehicleId").toString()
                 transportType.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
                 transportType.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 transportType.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
                 transportType.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
                 transportType.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-                transportType.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-                transportType.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-                transportType.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
                 transportType.save(flush: true)
                 if (!transportType.hasErrors())
                     return transportType
