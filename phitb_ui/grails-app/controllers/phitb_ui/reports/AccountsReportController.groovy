@@ -85,6 +85,7 @@ class AccountsReportController {
         String entityId = session.getAttribute("entityId")
         String dateRange = params.dateRange
         String entityids = params.entityids
+        String billType = params.billType
         JSONArray jsonArray = new AccountsService().getPaymentDetailsByDateRange(dateRange, entityId)
         JSONObject reportJson = new JSONObject()
         if(entityids != null)

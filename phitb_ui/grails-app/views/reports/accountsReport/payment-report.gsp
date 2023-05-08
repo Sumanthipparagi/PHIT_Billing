@@ -152,6 +152,7 @@
 --}%
 <script>
     var filterType = "";
+    var billType = "PAID";
     var dueOnDate = "";
     $('.dateRange').daterangepicker({
         locale: {
@@ -175,6 +176,7 @@
         var dateRange = $('.dateRange').val();
         var paidInvoice = $("#paidInvoice").is(":checked") ? "false" : "true";
         var url = "/reports/accounts/getpayments?dateRange=" + dateRange + "&paidInvoice=" + paidInvoice
+        url += "&billType="+billType;
         var ids = "";
         switch (filterType) {
             case "ALL":

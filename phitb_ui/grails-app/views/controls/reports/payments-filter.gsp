@@ -25,19 +25,24 @@
                                 <input onchange="getSelectedValue()" type="radio" id="option1" name="options"
                                        value="option1"> Party Wise
                             </label><br>
-                          %{--  <label for="option2">
-                                <input onchange="getSelectedValue()" type="radio" id="option2" name="options"
-                                       value="option2"> Series Wise
+                        </form>
+                        <br>
+
+                        <form style="border: 1px solid black; padding: 10px;">
+                            <label for="option21">
+                                <input onchange="getSelectedValue()" type="radio" id="option21" name="options"
+                                       value="option21" checked> Paid Bills
                             </label><br>
-                            <label for="option3">
-                                <input onchange="getSelectedValue()" type="radio" id="option3" name="options"
-                                       value="option3"> Area Wise
-                            </label><br>--}%
+                            <label for="option22">
+                                <input onchange="getSelectedValue()" type="radio" id="option22" name="options"
+                                       value="option22"> Due Bills
+                            </label><br>
                         </form>
                     </div>
 
                     <div class="col-8">
-                        <p style="border: 1px solid black; padding: 5px; max-height: 205px; height: 205px; overflow: auto;" id="filterContent">
+                        <p style="border: 1px solid black; padding: 5px; max-height: 220px; height: 220px; overflow: auto;"
+                           id="filterContent">
                         </p>
                     </div>
                 </div>
@@ -75,8 +80,8 @@
                             type: "GET",
                             success: function (data) {
                                 var content = "<ul style=\"list-style-type: none;\">";
-                                $.each(data, function(index, value){
-                                    content += "<li><input type=\"checkbox\" id=\"item"+index+"\" name=\"party\" value=\""+value.id+"\">  <label for=\"item"+index+"\">"+value.entityName+"</label></li>"
+                                $.each(data, function (index, value) {
+                                    content += "<li><input type=\"checkbox\" id=\"item" + index + "\" name=\"party\" value=\"" + value.id + "\">  <label for=\"item" + index + "\">" + value.entityName + "</label></li>"
                                 })
 
                                 content += "</ul>";
@@ -87,6 +92,13 @@
                             }
                         })
                         break;
+                    case "option21":
+                        billType = "PAID"
+                        break;
+                    case "option22":
+                        billType = "DUE";
+                        break;
+
                 }
 
             }
