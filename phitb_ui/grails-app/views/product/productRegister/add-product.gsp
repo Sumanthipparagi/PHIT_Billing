@@ -25,7 +25,6 @@
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
     <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
 
-
 </head>
 
 <body class="theme-black">
@@ -53,14 +52,14 @@
                     </ul>
                 </div>
 
-%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
-%{--                    <div class="input-group m-b-0">--}%
-%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
-%{--                        <span class="input-group-addon">--}%
-%{--                            <i class="zmdi zmdi-search"></i>--}%
-%{--                        </span>--}%
-%{--                    </div>--}%
-%{--                </div>--}%
+                %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+                %{--                    <div class="input-group m-b-0">--}%
+                %{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+                %{--                        <span class="input-group-addon">--}%
+                %{--                            <i class="zmdi zmdi-search"></i>--}%
+                %{--                        </span>--}%
+                %{--                    </div>--}%
+                %{--                </div>--}%
             </div>
         </div>
 
@@ -86,8 +85,9 @@
                         <form action="/product" id="form_validation" method="POST" role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row">
-                                <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;padding: 10px;
-                                ">
+                                <div class="col-md-6"
+                                     style="max-width: 49%;border: 1px solid black;  border-radius: 10px;padding: 10px;
+                                     ">
                                     <div class="row">
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="productCode">
@@ -99,6 +99,7 @@
                                                    placeholder="Product Code"
                                                    required/>
                                         </div>
+
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="productName">
                                                 Product Name
@@ -109,6 +110,7 @@
                                                    placeholder="Product Name"
                                                    required/>
                                         </div>
+
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="manufacturerId">
                                                 Manufacturer
@@ -122,6 +124,7 @@
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-md-6 form-group">
                                             <label for="mktCompanyId">
                                                 Marketing Company
@@ -129,11 +132,12 @@
                                             <select class="form-control show-tick mktCompanyId" name="mktCompanyId"
                                                     id="mktCompanyId" style="border: 0;">
                                                 <option value="0">Please Select</option>
-                                                <g:each var="c" in="${companyList}" >
+                                                <g:each var="c" in="${companyList}">
                                                     <option value="${c.id}">${c.entityName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="rackId">
                                                 Rack
@@ -145,6 +149,7 @@
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="division">
                                                 Division
@@ -160,9 +165,12 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="ml-1"></div>
-                                <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;    padding: 10px;
-                                ">
+
+                                <div class="col-md-6"
+                                     style="max-width: 49%;border: 1px solid black;  border-radius: 10px;    padding: 10px;
+                                     ">
                                     <div class="row">
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="composition">
@@ -178,16 +186,19 @@
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="costRange">
                                                 Cost Range
                                             </label>
-                                            <select class="form-control show-tick costRange" name="costRange" id="costRange">
+                                            <select class="form-control show-tick costRange" name="costRange"
+                                                    id="costRange">
                                                 <g:each var="c" in="${productcost}">
                                                     <option value="${c.id}">${c.priceType}</option>
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="productType">
                                                 Product Type
@@ -199,6 +210,7 @@
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="unit">
                                                 Unit
@@ -210,6 +222,7 @@
                                             </select>
 
                                         </div>
+
                                         <div class="col-lg-12 form-group  form-float">
                                             <label for="unitPacking">
                                                 Unit Packing
@@ -218,17 +231,16 @@
                                                    name="unitPacking"
                                                    placeholder="Unit Packing"/>
                                         </div>
-%{--                                        <div class="col-lg-6 form-group  form-float">--}%
-%{--                                            <label for="productMoo">--}%
-%{--                                                Product MOQ--}%
-%{--                                            </label>--}%
-%{--                                            <input type="number" id="productMoo" class="form-control productMoo"--}%
-%{--                                                   name="productMoo"--}%
-%{--                                                   placeholder="Product MOQ"/>--}%
-%{--                                        </div>--}%
+                                        %{--                                        <div class="col-lg-6 form-group  form-float">--}%
+                                        %{--                                            <label for="productMoo">--}%
+                                        %{--                                                Product MOQ--}%
+                                        %{--                                            </label>--}%
+                                        %{--                                            <input type="number" id="productMoo" class="form-control productMoo"--}%
+                                        %{--                                                   name="productMoo"--}%
+                                        %{--                                                   placeholder="Product MOQ"/>--}%
+                                        %{--                                        </div>--}%
                                     </div>
                                 </div>
-
 
 
                                 <div class="col-md-6 mt-2" style="max-width: 49%;border: 1px solid black;
@@ -245,36 +257,43 @@
                                                    placeholder="Per Lot Quantity"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseRate">
                                                 Purchase Rate
                                                 <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseRate" class="form-control purchaseRate"
-                                                   name="purchaseRate" onblur="setTwoNumberDecimal" step="0.25" value="0.00"
+                                                   name="purchaseRate" onblur="setTwoNumberDecimal" step="0.25"
+                                                   value="0.00"
                                                    placeholder="Purchase Rate"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseTradeDiscount">
                                                 Purchase Trade Discount
                                                 <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseTradeDiscount" onblur="setTwoNumberDecimal"
-                                                   class="form-control purchaseTradeDiscount" name="purchaseTradeDiscount"
+                                                   class="form-control purchaseTradeDiscount"
+                                                   name="purchaseTradeDiscount"
                                                    placeholder="Purchase Trade Discount" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseMarginPercent">
                                                 Purchase Margin percent
                                                 <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseMarginPercent" onblur="setTwoNumberDecimal"
-                                                   class="form-control purchaseMarginPercent" name="purchaseMarginPercent"
+                                                   class="form-control purchaseMarginPercent"
+                                                   name="purchaseMarginPercent"
                                                    placeholder="Purchase Margin Percent" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleRate">
                                                 Sale Rate
@@ -285,6 +304,7 @@
                                                    placeholder="Sale Rate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleTradeDiscount">
                                                 Sale Trade Discount
@@ -295,6 +315,7 @@
                                                    placeholder="Sale Trade Discount" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmenPercent">
                                                 Sale Margin Percent
@@ -305,6 +326,7 @@
                                                    placeholder="Sale Margin Percent" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipPRate">
                                                 VIP Purchase Rate
@@ -315,6 +337,7 @@
                                                    placeholder="vipPRate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipSRate">
                                                 VIP Sale Rate
@@ -325,6 +348,7 @@
                                                    placeholder="vipSRate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="mrp">
                                                 MRP
@@ -335,6 +359,7 @@
                                                    placeholder="MRP" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="ptr">
                                                 PTR
@@ -345,6 +370,7 @@
                                                    placeholder="PTR" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="restrictedRate">
                                                 Restricted Rate
@@ -359,13 +385,12 @@
                                 </div>
 
 
-
                                 <div class="ml-1"></div>
 
                                 <div class="col-md-6 mt-2" style="max-width: 49%;border: 1px solid black;
                                 border-radius:
                                 10px;padding: 10px;
-                            ">
+                                ">
                                     <div class="row">
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="nriRate">
@@ -377,6 +402,7 @@
                                                    placeholder="NRI Rate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmanCommission">
                                                 Salesman Commission
@@ -387,16 +413,19 @@
                                                    placeholder="Salesman Commission" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="grossProfitPercentage">
                                                 Gross Profit Percentage
                                                 <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="grossProfitPercentage" onblur="setTwoNumberDecimal"
-                                                   class="form-control grossProfitPercentage" name="grossProfitPercentage"
+                                                   class="form-control grossProfitPercentage"
+                                                   name="grossProfitPercentage"
                                                    placeholder="Gross Profit Percentage" step="0.25" value="0.00"
                                                    required/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="taxId">
                                                 Tax
@@ -408,35 +437,37 @@
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleType">
                                                 Sale Type
                                                 <span class="required-indicator" style="color: red;">*</span>
                                             </label>
-                                            <select class="form-control show-tick saleType" name="saleType" id="saleType">
-                                                    <option value="${Constants.SALEABLE}">SALEABLE</option>
-                                                    <option value="${Constants.SAMPLE}">SAMPLE</option>
-                                                    <option value="${Constants.PROMOTIONAL}">PROMOTIONAL</option>
+                                            <select class="form-control show-tick saleType" name="saleType"
+                                                    id="saleType">
+                                                <option value="${Constants.SALEABLE}">SALEABLE</option>
+                                                <option value="${Constants.SAMPLE}">SAMPLE</option>
+                                                <option value="${Constants.PROMOTIONAL}">PROMOTIONAL</option>
                                             </select>
                                         </div>
-%{--                                        <div class="col-lg-6 form-group  form-float">--}%
-%{--                                            <label for="thresholdLevel">--}%
-%{--                                                Threshold Level--}%
-%{--                                            </label>--}%
-%{--                                            <input type="text" id="thresholdLevel"--}%
-%{--                                                   class="form-control thresholdLevel" name="thresholdLevel"--}%
-%{--                                                   placeholder="Threshold Level"--}%
-%{--                                                   />--}%
-%{--                                        </div>--}%
+                                        %{--                                        <div class="col-lg-6 form-group  form-float">--}%
+                                        %{--                                            <label for="thresholdLevel">--}%
+                                        %{--                                                Threshold Level--}%
+                                        %{--                                            </label>--}%
+                                        %{--                                            <input type="text" id="thresholdLevel"--}%
+                                        %{--                                                   class="form-control thresholdLevel" name="thresholdLevel"--}%
+                                        %{--                                                   placeholder="Threshold Level"--}%
+                                        %{--                                                   />--}%
+                                        %{--                                        </div>--}%
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="orderQuantity">
                                                 Order Quantity
                                             </label>
                                             <input type="number" id="orderQuantity"
                                                    class="form-control orderQuantity" name="orderQuantity"
-                                                   placeholder="Order Quantity" value="0"
-                                                   />
+                                                   placeholder="Order Quantity" value="0"/>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="group">
                                                 Product Group
@@ -448,53 +479,60 @@
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="schedule">
                                                 Product Schedule
                                             </label>
-                                            <select class="form-control show-tick schedule" name="schedule" id="schedule">
+                                            <select class="form-control show-tick schedule" name="schedule"
+                                                    id="schedule">
                                                 <option value="0">--Please Select--</option>
                                                 <g:each var="c" in="${productSchedules}">
                                                     <option value="${c.id}">${c.scheduleCode}</option>
                                                 </g:each>
                                             </select>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="category1">
-                                                Product Category
+                                                Product Category <span class="required-indicator" style="color: red;">*</span>
                                             </label>
-                                            <select class="form-control show-tick category1" name="category" id="category1">
+                                            <select class="form-control show-tick category1" name="category"
+                                                    id="category1" required>
                                                 <option value="0">--Please Select--</option>
                                                 <g:each var="c" in="${productCategories}">
                                                     <option value="${c.id}">${c.categoryName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
-%{--                                        <div class="col-lg-6 form-group  form-float">--}%
-%{--                                            <label for="sendMail">--}%
-%{--                                                Send Mail--}%
-%{--                                            </label>--}%
-%{--                                            <select class="form-control show-tick sendMail" name="sendMail" id="sendMail">--}%
-%{--                                                    <option value="0">YES</option>--}%
-%{--                                                    <option value="1">NO</option>--}%
-%{--                                            </select>--}%
-%{--                                        </div>--}%
+                                        %{--                                        <div class="col-lg-6 form-group  form-float">--}%
+                                        %{--                                            <label for="sendMail">--}%
+                                        %{--                                                Send Mail--}%
+                                        %{--                                            </label>--}%
+                                        %{--                                            <select class="form-control show-tick sendMail" name="sendMail" id="sendMail">--}%
+                                        %{--                                                    <option value="0">YES</option>--}%
+                                        %{--                                                    <option value="1">NO</option>--}%
+                                        %{--                                            </select>--}%
+                                        %{--                                        </div>--}%
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="discountAllowed">
                                                 Discount Allowed
                                             </label>
-                                            <select class="form-control show-tick discountAllowed" name="discountAllowed"id="discountAllowed">
+                                            <select class="form-control show-tick discountAllowed"
+                                                    name="discountAllowed" id="discountAllowed">
                                                 <option value="0">YES</option>
                                                 <option value="1">NO</option>
                                             </select>
                                         </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="ccmProduct">
                                                 CCM Product
                                             </label>
-                                            <select class="form-control show-tick ccmProduct" name="ccmProduct" id="ccmProduct">
-                                                    <option value="YES">YES</option>
-                                                    <option value="NO">NO</option>
+                                            <select class="form-control show-tick ccmProduct" name="ccmProduct"
+                                                    id="ccmProduct">
+                                                <option value="YES">YES</option>
+                                                <option value="NO">NO</option>
                                             </select>
                                         </div>
                                     </div>
@@ -509,72 +547,87 @@
                                                 HSN Code
                                             </label>
                                             <input type="text" id="hsnCode" class="form-control hsnCode" name="hsnCode"
-                                                   placeholder="HSN Code"
-                                                   />
+                                                   placeholder="HSN Code"/>
                                         </div>
 
-%{--                                        <div class="col-lg-6 form-group  form-float">--}%
-                                           %{-- <label for="saleMarginPercent">
-                                                Sale Margin Percent
-                                                <span class="required-indicator" style="color: red;">*</span>
+                                        %{--                                        <div class="col-lg-6 form-group  form-float">--}%
+                                        %{-- <label for="saleMarginPercent">
+                                             Sale Margin Percent
+                                             <span class="required-indicator" style="color: red;">*</span>
 
-                                            </label>--}%
-                                            <input type="hidden" id="saleMarginPercent" onblur="setTwoNumberDecimal"
-                                                   class="form-control saleMarginPercent" name="saleMarginPercent"
-                                                   placeholder="Sale Margin Percent" value="0.00" step="0.25" required
-                                                   />
-%{--                                        </div>--}%
-                                       %{-- <div class="col-lg-6 form-group  form-float">
-                                            <label for="soundexCode">
-                                                Soundex Code
-                                            </label>
-                                            <input type="text" id="soundexCode"
-                                                   class="form-control soundexCode" name="soundexCode"
-                                                   placeholder="Soundex Code"
-                                                   required/>
-                                        </div>--}%
+                                         </label>--}%
+                                        <input type="hidden" id="saleMarginPercent" onblur="setTwoNumberDecimal"
+                                               class="form-control saleMarginPercent" name="saleMarginPercent"
+                                               placeholder="Sale Margin Percent" value="0.00" step="0.25" required/>
+                                        %{--                                        </div>--}%
+                                        %{-- <div class="col-lg-6 form-group  form-float">
+                                             <label for="soundexCode">
+                                                 Soundex Code
+                                             </label>
+                                             <input type="text" id="soundexCode"
+                                                    class="form-control soundexCode" name="soundexCode"
+                                                    placeholder="Soundex Code"
+                                                    required/>
+                                         </div>--}%
                                         <div class="col-lg-12 form-group  form-float">
                                             <label for="narration">
                                                 Narration
                                             </label>
                                             <textarea type="text" id="narration"
-                                                   class="form-control narration" name="narration"
-                                                   placeholder="Narration"
-                                                   ></textarea>
+                                                      class="form-control narration" name="narration"
+                                                      placeholder="Narration"></textarea>
                                         </div>
-%{--                                        <div class="col-lg-6 form-group  form-float">--}%
-%{--                                            <label for="restrictedAssignment">--}%
-%{--                                                Restricted Assignment--}%
-%{--                                            </label>--}%
-%{--                                            <input type="text" id="restrictedAssignment"--}%
-%{--                                                   class="form-control restrictedAssignment" name="restrictedAssignment"--}%
-%{--                                                   placeholder="Restricted Assignment"--}%
-%{--                                                   required/>--}%
-%{--                                        </div>--}%
-                                       %{-- <div class="col-lg-6 form-group  form-float">
-                                            <label for="entityType">
-                                                Entity Type
-                                            </label>
-                                            <select class="form-control show-tick entityType" name="entityTypeId"
-                                                    id="entityType">
-                                                <g:each var="et" in="${entitytype}">
-                                                    <option value="${et.id}">${et.name}</option>
-                                                </g:each>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="entity">
-                                                Entity
-                                            </label>
-                                            <select class="form-control show-tick entity" name="entityId" id="entity">
-                                                <g:each var="e" in="${entity}">
-                                                    <option value="${e.id}">${e.entityName}</option>
-                                                </g:each>
-                                            </select>
-                                        </div>--}%
+                                        %{--                                        <div class="col-lg-6 form-group  form-float">--}%
+                                        %{--                                            <label for="restrictedAssignment">--}%
+                                        %{--                                                Restricted Assignment--}%
+                                        %{--                                            </label>--}%
+                                        %{--                                            <input type="text" id="restrictedAssignment"--}%
+                                        %{--                                                   class="form-control restrictedAssignment" name="restrictedAssignment"--}%
+                                        %{--                                                   placeholder="Restricted Assignment"--}%
+                                        %{--                                                   required/>--}%
+                                        %{--                                        </div>--}%
+                                        %{-- <div class="col-lg-6 form-group  form-float">
+                                             <label for="entityType">
+                                                 Entity Type
+                                             </label>
+                                             <select class="form-control show-tick entityType" name="entityTypeId"
+                                                     id="entityType">
+                                                 <g:each var="et" in="${entitytype}">
+                                                     <option value="${et.id}">${et.name}</option>
+                                                 </g:each>
+                                             </select>
+                                         </div>
+                                         <div class="col-lg-6 form-group  form-float">
+                                             <label for="entity">
+                                                 Entity
+                                             </label>
+                                             <select class="form-control show-tick entity" name="entityId" id="entity">
+                                                 <g:each var="e" in="${entity}">
+                                                     <option value="${e.id}">${e.entityName}</option>
+                                                 </g:each>
+                                             </select>
+                                         </div>--}%
                                     </div>
                                 </div>
 
+
+                                <div class="col-md-12 mt-2" style="max-width: 99%;border: 1px solid black;
+                                border-radius: 10px;padding: 10px;
+                                ">
+                                    <div class="row">
+                                        <div class="col-lg-12 form-group  form-float">
+                                            <div class="form-check form-check-inline">
+
+                                                <input type="checkbox" id="autoBatch" class="form-control autoBatch"
+                                                       name="autoBatch" value="true"/>
+                                                <label for="autoBatch">
+                                                    Generate Batch Automatically?
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
 
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">

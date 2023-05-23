@@ -22,6 +22,7 @@ import phitb_ui.Links
 import phitb_ui.ProductService
 
 import java.nio.file.Files
+import java.text.SimpleDateFormat
 
 class ProductController {
 
@@ -179,16 +180,57 @@ class ProductController {
 
     def save() {
         try {
+            boolean autoGenBatch = false
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId").toString())
             jsonObject.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             jsonObject.put("soundexCode", "NA")
             def apiResponse = new ProductService().saveProductRegister(jsonObject)
             if (apiResponse?.status == 200) {
-                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-//                respond obj, formats: ['json'], status: 200
-                redirect(uri: '/product')
+                JSONObject savedProduct = new JSONObject(apiResponse.readEntity(String.class))
+                if(jsonObject.has("autoBatch"))
+                {
+                    //TODO: generate batch
+                    Date today = new Date()
+                    Calendar cal = Calendar.getInstance()
+                    cal.setTime(today)
+                    cal.add(Calendar.YEAR, 100)
+                    Date after100Years = cal.getTime()
 
+                    JSONObject batchRegister = new JSONObject()
+                    batchRegister.product = savedProduct.get("id")
+                    batchRegister.manfDate = today.format("dd/MM/yyyy")
+                    batchRegister.expiryDate = after100Years.format("dd/MM/yyyy")
+                    batchRegister.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
+                    batchRegister.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+                    batchRegister.ptr = Double.parseDouble(jsonObject.get("ptr").toString())
+                    batchRegister.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+                    batchRegister.qty = 1
+                    batchRegister.box = 1
+                    batchRegister.caseWt = "1"
+                    //auto batch number: Entity ID + Product ID + date in ddMMyyyyHHmmss format
+                    batchRegister.batchNumber = savedProduct.get("entityId") +""+savedProduct.get("id")+today.format("ddMMyyyyHHmmss")
+                    if(jsonObject.has("category") && jsonObject.get("category").toString()!=0)
+                    {
+                        batchRegister.productCat =  jsonObject.get("category").toString()
+                    }
+                    else
+                    {
+                        batchRegister.productCat = null
+                    }
+                    batchRegister.status = 1
+                    batchRegister.syncStatus = 1
+                    batchRegister.entityTypeId = session.getAttribute("entityTypeId")
+                    batchRegister.entityId =  session.getAttribute("entityId")
+                    batchRegister.createdUser = session.getAttribute("userId")
+                    batchRegister.modifiedUser = session.getAttribute("userId")
+                    def batchResponse = new ProductService().saveBatchRegister(batchRegister)
+                    if(batchResponse.status == 200)
+                    {
+                        println("Batch generated")
+                    }
+                }
+                redirect(uri: '/product')
             } else {
                 response.status = apiResponse?.status ?: 400
             }

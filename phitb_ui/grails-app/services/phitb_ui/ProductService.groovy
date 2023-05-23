@@ -1711,7 +1711,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-//        WebTarget target = client.target("http://localhost:8085/");
+   /*     WebTarget target = client.target("http://localhost:8085/");*/
         try
         {
             println(jsonObject)
