@@ -190,7 +190,6 @@ class ProductController {
                 JSONObject savedProduct = new JSONObject(apiResponse.readEntity(String.class))
                 if(jsonObject.has("autoBatch"))
                 {
-                    //TODO: generate batch
                     Date today = new Date()
                     Calendar cal = Calendar.getInstance()
                     cal.setTime(today)
