@@ -49,6 +49,7 @@ class BatchRegisterService {
                 product{
                     eq('id',productId)
                 }
+                eq('deleted', false)
                 //ge("expiryDate", currentDate)
             }
     }

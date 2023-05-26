@@ -34,6 +34,7 @@ class ProductRegisterService {
             division{
                 eq('id',divisionId)
             }
+            eq('deleted', false)
             order("productName", "asc")
         }
 
