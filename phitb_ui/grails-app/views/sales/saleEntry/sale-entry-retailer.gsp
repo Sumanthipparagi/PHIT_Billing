@@ -171,6 +171,10 @@
                                         class="zmdi zmdi-plus"></i>
                                 </button>
                             </div>
+                            <div class="col-md-6">
+                                <label for="gstInclusive">Cost inclusive of GST?</label>
+                                <input id="gstInclusive" name="gstInclusive" type="checkbox" class="checkbox checkbox-inline" style="margin-top: 5px;margin-left: 5px;" value="false"/>
+                            </div>
 
                             <g:if test="${customer!=null}">
                                 <div class="col-md-3 mt-2">
@@ -857,7 +861,9 @@
                     }
                 } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 || selection > 6
                     && selection <= 25) {
-                    if (e.keyCode === 13 || e.keyCode === 9 || e.keyCode === 37 || e.keyCode === 39 || e.type === "click") {
+                    //TODO: get cellmeta and check if readonly enabled
+                    var cellMeta = hot.getCellMeta(row, 6);
+                    if (!cellMeta.readOnly && (e.keyCode === 13 || e.keyCode === 9 || e.keyCode === 37 || e.keyCode === 39 || e.type === "click")) {
                         var discount = 0;
                         if (selection === 6) {
                             var mrp = hot.getDataAtCell(row, 7);
@@ -871,6 +877,7 @@
                                 hot.setDataAtCell(row, 6, Number(this.getActiveEditor().TEXTAREA.value));
                                 this.selectCell(row, selection + 1);
                             }
+                            costInclusiveOfGST(row);
                         }
                         if (selection === 4) {
                             this.getActiveEditor().enableFullEditMode();
@@ -2433,6 +2440,78 @@
          }
      });
 
+
+    $("#gstInclusive").on("change", function (){
+        //change amounts to include GST
+        if ($(this).is(':checked')) {
+            Swal.fire({
+                title: "Are you sure you want to include GST in the cost?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'OK',
+                denyButtonText: 'Cancel',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).prop('disabled', true);
+                    console.log(hot.getData());
+                    if(hot.getData()[0][1] != null) {
+                        costInclusiveOfGST();
+                    }
+                } else if (result.isDenied) {
+                    $("#gstInclusive").prop('checked', false);
+                }
+            });
+
+        } else {
+            $(this).prop('disabled', false);
+        }
+
+    });
+
+    function calculateGST(amount, gstPercentage) {
+        return amount / (1 + gstPercentage / 100);
+    }
+
+
+    function costInclusiveOfGST(tableRow = null)
+    {
+        if($("#gstInclusive").is(':checked')) {
+            var data = hot.getData();
+            for (var row = 0; row < data.length; row++) {
+                if(tableRow != null && row !== tableRow)
+                {
+                    continue;
+                }
+                var gstPercentage = Number(hot.getDataAtCell(row, 17));
+                var saleQty = Number(hot.getDataAtCell(row, 4));
+                var saleRate = Number(hot.getDataAtCell(row, 6));
+                if (hot.getActiveEditor())
+                    saleRate = Number(hot.getActiveEditor().TEXTAREA.value);
+                var gstAmount = 0;
+                var amountWithoutGST = calculateGST(saleRate, gstPercentage);
+                gstAmount = saleRate - amountWithoutGST;
+                hot.setDataAtCell(row, 6, amountWithoutGST.toFixed(2));
+                hot.setDataAtCell(row, 10, gstAmount.toFixed(2));
+                hot.setDataAtCell(row, 11, Number(saleRate.toFixed(2)) * Number(saleQty));
+
+                if (stateId === '${session.getAttribute('stateId')}') {
+                    hot.setDataAtCell(row, 12, Number(gstAmount / 2).toFixed(2)); //SGST
+                    hot.setDataAtCell(row, 13, Number(gstAmount / 2).toFixed(2)); //CGST
+                    hot.setDataAtCell(row, 14, 0); //IGST
+                    hot.setDataAtCell(row, 20, 0);
+                } else {
+                    hot.setDataAtCell(row, 12, 0); //SGST
+                    hot.setDataAtCell(row, 13, 0); //CGST
+                    hot.setDataAtCell(row, 14, (gstAmount).toFixed(2)); //IGST
+                    hot.setDataAtCell(row, 18, 0);
+                    hot.setDataAtCell(row, 19, 0);
+                }
+            }
+
+            calculateTotalAmt();
+        }
+    }
 </script>
 
 <g:include view="controls/footer-content.gsp"/>

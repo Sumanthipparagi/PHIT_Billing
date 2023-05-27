@@ -2380,16 +2380,17 @@
     function costInclusiveOfGST(tableRow = null)
     {
         if($("#gstInclusive").is(':checked')) {
-            console.log("inclusive GST");
             var data = hot.getData();
             for (var row = 0; row < data.length; row++) {
-                if(tableRow != null && row != tableRow)
+                if(tableRow != null && row !== tableRow)
                 {
                     continue;
                 }
                 var gstPercentage = Number(hot.getDataAtCell(row, 17));
                 var saleQty = Number(hot.getDataAtCell(row, 4));
                 var saleRate = Number(hot.getDataAtCell(row, 6));
+                if (hot.getActiveEditor())
+                    saleRate = Number(hot.getActiveEditor().TEXTAREA.value);
                 var gstAmount = 0;
                 var amountWithoutGST = calculateGST(saleRate, gstPercentage);
                 gstAmount = saleRate - amountWithoutGST;
