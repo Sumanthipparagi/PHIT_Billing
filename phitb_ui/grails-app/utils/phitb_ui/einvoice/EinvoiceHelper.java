@@ -33,15 +33,16 @@ public class EinvoiceHelper {
     static ClassLoader classLoader = EinvoiceHelper.class.getClassLoader();
 
     static {
-        //JKSPassword = "123456".toCharArray();
-        JKSPassword = "pMif10!TSb".toCharArray();
+        //TODO: To be changed
+        JKSPassword = "123456".toCharArray();
+        //JKSPassword = "pMif10!TSb".toCharArray();
         //PFXPassword = "tcs".toCharArray();
         if(classLoader != null) {
-           //jksFilePath = Objects.requireNonNull(classLoader.getResource("KeyStore/KeyStore-test.jks")).getPath();
-            jksFilePath = Objects.requireNonNull(classLoader.getResource("KeyStore/KeyStore-prod.jks")).getPath();
+           jksFilePath = Objects.requireNonNull(classLoader.getResource("KeyStore/KeyStore-test.jks")).getPath();
+           //jksFilePath = Objects.requireNonNull(classLoader.getResource("KeyStore/KeyStore-prod.jks")).getPath();
 
-            //publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey-test")).getPath();
-            publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey-prod")).getPath();
+            publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey-test")).getPath();
+            //publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey-prod")).getPath();
         }
     }
 

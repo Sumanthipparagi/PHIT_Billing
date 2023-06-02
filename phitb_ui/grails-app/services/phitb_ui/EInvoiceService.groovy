@@ -120,7 +120,8 @@ class EInvoiceService {
         println(authPayload.toString())
 
         String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().getBytes());
-        byte[] b = new NicV4TokenPayloadGen().readFile(this.class.classLoader.getResource('KeyStore/publicKey-prod').file)
+        //byte[] b = new NicV4TokenPayloadGen().readFile(this.class.classLoader.getResource('KeyStore/publicKey-prod').file)
+        byte[] b = new NicV4TokenPayloadGen().readFile(this.class.classLoader.getResource('KeyStore/publicKey-test').file)
         NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
         String encData = gen.encryptPayload(base64EncodedPayload);
         JSONObject finalPayLoad = new JSONObject()
@@ -156,8 +157,9 @@ class EInvoiceService {
                 new EntityService().updateEntityIRN(entityIrnDetails)
                 return entityIrnDetails
             } else {
-                println(apiResponse.readEntity(String.class))
-                log.error(apiResponse.readEntity(String.class))
+                def resp = apiResponse.readEntity(String.class)
+                println(resp)
+                log.error(resp)
                 return null
             }
         }
@@ -317,6 +319,12 @@ class EInvoiceService {
                 BuyerDtls.put("Em", buyerDetails.get("email"))
             BuyerDtls.put("Stcd", buyerState.get("irnStateCode"))
             BuyerDtls.put("Pos",  buyerState.get("irnStateCode"))
+
+            //TODO: to be removed
+            BuyerDtls.put("Pin", 431116)
+            BuyerDtls.put("Stcd", "27")
+            BuyerDtls.put("Pos",  "27")
+
             irnObject.put("BuyerDtls", BuyerDtls)
 
             //Dispatch Details
@@ -335,6 +343,11 @@ class EInvoiceService {
             }
             DispDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
             DispDtls.put("Stcd", sellerState.get("irnStateCode"))
+
+            //TODO: to be removed
+            DispDtls.put("Pin", 431116)
+            DispDtls.put("Stcd", "27")
+
             irnObject.put("DispDtls", DispDtls)
 
             //Ship Details
@@ -531,7 +544,7 @@ class EInvoiceService {
     }
 
     //TODO: e-Way Bill generation to be included
-    generateEWayBill(HttpSession session, JSONObject saleBillDetail)
+    def generateEWayBill(HttpSession session, JSONObject saleBillDetail)
     {
         JSONObject authData = generateSignatureAndAuthToken(session)
         if (authData == null) {
@@ -549,6 +562,8 @@ class EInvoiceService {
         eWayBillObject.put("Distance","")
         eWayBillObject.put("VehType","")
         eWayBillObject.put("TransName","")
+        eWayBillObject.put("ExpShipDtls","")
+        eWayBillObject.put("DispDtls","")
 
         String appKey = authData.get("appKey")
         String sek = authData.get("sek")

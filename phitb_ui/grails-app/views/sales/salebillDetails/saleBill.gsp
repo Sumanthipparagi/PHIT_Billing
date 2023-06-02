@@ -39,7 +39,7 @@
         }
     */
 
-    .buttons-collection{
+    .buttons-collection {
         border-width: 0 !important;
         border-radius: 0 !important;
     }
@@ -49,11 +49,12 @@
     }
 
     .scroll {
-        height:35rem;
+        height: 35rem;
         overflow-y: scroll;
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
     }
+
     .scroll::-webkit-scrollbar {
         display: none;
     }
@@ -132,11 +133,11 @@
                                 </div>
                             </div>
 
-                           %{-- <div class="col-md-4">
-                                <div>
-                                    <a onclick="exportIRN()" class="btn btn-info" style="color: white;"><i class="fa fa-download"></i> e-Invoice JSON</a>
-                                </div>
-                            </div>--}%
+                            %{-- <div class="col-md-4">
+                                 <div>
+                                     <a onclick="exportIRN()" class="btn btn-info" style="color: white;"><i class="fa fa-download"></i> e-Invoice JSON</a>
+                                 </div>
+                             </div>--}%
 
                             <div class="col-md-4 clearfix">
                                 <div class="pull-left"></div>
@@ -180,7 +181,7 @@
                 </div>
             </div>
 
-            <div id="detailsContainer" class="hidden" >
+            <div id="detailsContainer" class="hidden">
                 <div class="card">
                     <div class="body scroll" style="min-height: 57rem;">
                         <g:include view="sales/salebillDetails/sale-invoice-details.gsp"/>
@@ -192,6 +193,128 @@
     </div>
 </section>
 
+
+
+<!--eway bill Modal element -->
+<div id="ewayBillModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">E-Way Bill Details</h4>
+            </div>
+
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <table style="width: 100%" class="table table-bordered">
+                                <thead>
+
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Invoice No.</strong>
+                                    </td>
+                                    <td>
+                                        <p id="ewayBillModalInvoiceNumber"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="transportName"><strong>Transporter</strong></label>
+                                    </td>
+                                    <td>
+                                        <select id="transportName" name="transportName"
+                                                class="form-control">
+                                            <option value="">--Please Select--</option>
+                                            <g:each in="${transporter}" var="t">
+                                                <option value="${t.id}">${t.name}</option>
+                                            </g:each>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="transportMode"><strong>Transport Mode</strong></label>
+                                    </td>
+                                    <td>
+                                        <select id="transportMode" name="transportMode"
+                                                class="form-control">
+                                            <option value="1">Road</option>
+                                            <option value="2">Rail</option>
+                                            <option value="3">Air</option>
+                                            <option value="4">Ship</option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="transportDocNo"><strong>Transport Doc No.</strong></label>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" style="width: 100%;" id="transportDocNo"
+                                               name="transportDocNo"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="transportDocDate"><strong>Transport Doc Date</strong></label>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="date" style="width: 100%;"
+                                               id="transportDocDate" name="transportDocNo"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="vehicleNumber"><strong>Vehicle Number</strong></label>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" style="width: 100%;" id="vehicleNumber"
+                                               name="vehicleNumber"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="vehicleType"><strong>Vehicle Type</strong></label>
+                                    </td>
+                                    <td>
+                                        <select id="vehicleType" name="vehicleType"
+                                                class="form-control">
+                                            <option value="R">Regular</option>
+                                            <option value="O">ODC</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="distance"><strong>Distance (in KM)</strong></label>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="number" min="0" style="width: 100%;"
+                                               id="distance" name="distance"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="dt"
+                            onclick="generateEwayBill()">Generate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 %{--<g:include view="controls/entity/add-entity-register.gsp"/>--}%
 <g:include view="controls/delete-modal.gsp"/>
@@ -233,17 +356,17 @@
         loadSaleInvoiceTable();
         $("#creditsApplied").text("0.00");
 
-        $('#remarks').on("input", function(){
+        $('#remarks').on("input", function () {
             var maxlength = $(this).attr("maxlength");
             var currentLength = $(this).val().length;
 
-            if( currentLength >= maxlength ){
+            if (currentLength >= maxlength) {
                 $("#remarksCharacters").addClass("danger");
-            }else{
+            } else {
                 $("#remarksCharacters").removeClass("danger");
             }
             $("#remarksCharacters").text(currentLength);
-           // $('#paymentDate').val(new Date().toDateInputValue());
+            // $('#paymentDate').val(new Date().toDateInputValue());
         });
     });
 
@@ -307,41 +430,41 @@
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
-                        var cloneInvoice="";
-                        var irn="";
+                        var cloneInvoice = "";
+                        var irn = "";
                         if (json.data[i].billStatus !== "CANCELLED" && ${session.getAttribute("financialYearValid")}) {
                             cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#" style="color: red;"><i class="fa fa-times"></i> Cancel</a>';
                         } else if (json.data[i].billStatus !== "DRAFT") {
                             approveInvoice = '';
                         }
 
-                        if (json.data[i].billStatus!== "DRAFT" && json.data[i].invoiceNumber!==undefined && ${session.getAttribute("financialYearValid")}) {
+                        if (json.data[i].billStatus !== "DRAFT" && json.data[i].invoiceNumber !== undefined && ${session.getAttribute("financialYearValid")}) {
                             cloneInvoice =
                                 '<a class="dropdown-item" title="Clone"  href="/sale-entry/clone-invoice?saleBillId='
                                 + json.data[i].id + '&type=CLONE" target="_blank"><i class="fa fa-clone"></i> Clone</a>';
-                        }else{
-                            cloneInvoice=""
+                        } else {
+                            cloneInvoice = ""
                         }
-                        if(json.data[i].receiptLog.length > 0){
-                            cancelInvoice=""
+                        if (json.data[i].receiptLog.length > 0) {
+                            cancelInvoice = ""
                         }
 
 
-                        if(json.data[i].irnDetails===undefined){
+                        if (json.data[i].irnDetails === undefined) {
 
-                            if(json.data[i].billStatus!=="DRAFT" && json.data[i].billStatus!=="CANCELLED" && ${session.getAttribute("financialYearValid")}){
-                                irn = '<a class="dropdown-item" title="IRN"  onclick="genrateIRN('+json.data[i].id+')" target="_blank"><i class="fa fa-print"></i> Genrate IRN</a>';
+                            if (json.data[i].billStatus !== "DRAFT" && json.data[i].billStatus !== "CANCELLED" && ${session.getAttribute("financialYearValid")}) {
+                                irn = '<a class="dropdown-item" title="IRN"  onclick="genrateIRN(' + json.data[i].id + ')" target="_blank"><i class="fa fa-print"></i> Genrate IRN</a>';
                             }
-                        }else{
-                            irn='';
+                        } else {
+                            irn = '';
                         }
 
-%{--                <g:if test="${session.getAttribute('domainType') == Constants.FURNITURE}">--}%
-%{--                        var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';--}%
-%{--                        </g:if>--}%
-%{--                        <g:else>--}%
+                        %{--                <g:if test="${session.getAttribute('domainType') == Constants.FURNITURE}">--}%
+                        %{--                        var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';--}%
+                        %{--                        </g:if>--}%
+                        %{--                        <g:else>--}%
                         var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
-%{--                        </g:else>--}%
+                        %{--                        </g:else>--}%
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined) {
                             if (json.data[i].billStatus === "CANCELLED")
@@ -430,13 +553,13 @@
                     url: url,
                     dataType: 'json',
                     success: function (data) {
-                        if(data?.dayend){
+                        if (data?.dayend) {
                             Swal.fire(
                                 'Failed!',
                                 'Day Ended',
                                 'error'
                             );
-                        }else{
+                        } else {
                             Swal.fire(
                                 'Success!',
                                 'Invoice Cancelled',
@@ -509,13 +632,13 @@
         $("#detailsContentError").addClass("hidden");
         $(".detailsSpinner").removeClass("hidden");
         $("#detailsContent").addClass("hidden");
-        if(!$("#detailsContainer").hasClass("opened")) {
+        if (!$("#detailsContainer").hasClass("opened")) {
             toggleDetails();
         }
         //Get invoice Details
         $.ajax({
             method: "GET",
-            url: "../sale-bill/"+id,
+            url: "../sale-bill/" + id,
             success: function (data) {
                 $(".detailsSpinner").addClass("hidden");
                 $("#detailsContent").removeClass("hidden");
@@ -533,55 +656,45 @@
                 var badgeContainer = "";
                 var saleReturnIds = "";
                 var saleBillId = $(".saleBillId").val(invoice.id);
-                var einvoice = "<a class='btn btn-sm btn-info' style='color: white;' onclick='exportIRNSingle("+invoice.id+")'><i class='fa fa-download'></i> e-invoice JSON</a>"
-                if(invoice.billStatus !== "DRAFT")
-                {
-                    if(invoice.invoiceNumber !== undefined) {
+                var einvoice = "<a class='btn btn-sm btn-info' style='color: white;' onclick='exportIRNSingle(" + invoice.id + ")'><i class='fa fa-download'></i> e-invoice JSON</a>"
+                var ewaybill = "<a class='btn btn-sm btn-info' style='color: white;' onclick='showEwayBillModal(" + invoice.id + ",\"" + invoice.invoiceNumber + "\")'><i class='fa fa-truck'></i> e-Way Bill</a>"
+                if (invoice.billStatus !== "DRAFT") {
+                    if (invoice.invoiceNumber !== undefined) {
                         orderDate = moment(invoice.orderDate.split("T")[0], "YYYY-MM-DD").format("DD/MM/YYYY");
                         dueDate = moment(invoice.dueDate.split("T")[0], "YYYY-MM-DD").format("DD/MM/YYYY");
                     }
-                    if(invoice.billStatus === "ACTIVE")
-                    {
+                    if (invoice.billStatus === "ACTIVE") {
                         badgeContainer += "<div class=\"badge badge-success\">ACTIVE</div>"
-                    }
-                    else if(invoice.billStatus === "CANCELLED")
-                    {
+                    } else if (invoice.billStatus === "CANCELLED") {
                         badgeContainer += "<div class=\"badge badge-danger\">CANCELLED</div>"
                     }
 
-                    if(invoice.balance === 0)
-                    {
+                    if (invoice.balance === 0) {
                         badgeContainer += "<div class=\"badge badge-success ml-2\">SETTLED</div>"
-                    }
-                    else if(invoice.balance === invoice.invoiceTotal)
-                    {
+                    } else if (invoice.balance === invoice.invoiceTotal) {
                         badgeContainer += "<div class=\"badge badge-danger ml-2\">UNSETTLED</div>"
-                    }
-                    else
-                    {
+                    } else {
                         badgeContainer += "<div class=\"badge badge-warning ml-2\">PARTIALLY SETTLED</div>"
                     }
 
-                    if(invoice.billStatus === "ACTIVE") {
-                        badgeContainer += "<div class='row'><div class='col-md-12'> " + einvoice + "</div></div>";
+                    if (invoice.billStatus === "ACTIVE") {
+                        badgeContainer += "<div class='row'><div class='col-md-12'> " + einvoice + " " + ewaybill + "</div></div>";
+                    } else {
+                        badgeContainer += "<div class='row'><div class='col-md-12'> " + ewaybill + "</div></div>";
                     }
-                }
-                else
-                {
+                } else {
                     badgeContainer += "<div class=\"badge badge-warning\">DRAFT</div>"
                 }
 
-                if(invoice.billStatus === "DRAFT")
-                {
+                if (invoice.billStatus === "DRAFT") {
                     $("#invoiceNumber").text("DRAFT INVOICE");
-                }
-                else {
+                } else {
                     $("#invoiceNumber").text(invoice.invoiceNumber);
                 }
                 $("#invoiceDate").text(orderDate);
                 $("#dueDate").text(dueDate);
-                var entityDetails = "<span style='font-weight: bold'>"+entity.entityName + "</span><br><small>"+entity.addressLine1 + ", " +entity.addressLine2 + "<br>"+entityCity.districtName+"<br>"+entity.pinCode+"</small>";
-                var customerDetails = "<span style='font-weight: bold'>"+customer.entityName + "</span><br><small>"+customer.addressLine1 + ", " +customer.addressLine2 + "<br>"+customerCity.districtName+"<br>"+customer.pinCode+"</small>";
+                var entityDetails = "<span style='font-weight: bold'>" + entity.entityName + "</span><br><small>" + entity.addressLine1 + ", " + entity.addressLine2 + "<br>" + entityCity.districtName + "<br>" + entity.pinCode + "</small>";
+                var customerDetails = "<span style='font-weight: bold'>" + customer.entityName + "</span><br><small>" + customer.addressLine1 + ", " + customer.addressLine2 + "<br>" + customerCity.districtName + "<br>" + customer.pinCode + "</small>";
                 $("#entityDetails").html(entityDetails);
                 $("#customerDetails").html(customerDetails);
 
@@ -592,11 +705,11 @@
                 var tableContent = $("#saleProductsTableBody");
                 tableContent.empty();
                 $.each(saleProducts, function (index, saleProduct) {
-                    subtotal += (saleProduct.amount-saleProduct.gstAmount);
+                    subtotal += (saleProduct.amount - saleProduct.gstAmount);
                     totalAmt += saleProduct.amount;
                     totaltax += saleProduct.gstAmount;
-                    tableContent.append("<tr><td>"+(++index)+"</td><td style=\"white-space: normal !important; word-wrap: break-word;\">"+saleProduct.product.productName+"<br><small>Batch: "+saleProduct.batchNumber+"</small></td><td>"+saleProduct.sqty+"</td><td>"+saleProduct.freeQty+"</td>" +
-                        "<td>"+(saleProduct.amount-saleProduct.gstAmount).toFixed(2)+"</td><td>"+saleProduct.gstAmount.toFixed(2)+"</td><td>"+saleProduct.amount.toFixed(2)+"</td></tr>")
+                    tableContent.append("<tr><td>" + (++index) + "</td><td style=\"white-space: normal !important; word-wrap: break-word;\">" + saleProduct.product.productName + "<br><small>Batch: " + saleProduct.batchNumber + "</small></td><td>" + saleProduct.sqty + "</td><td>" + saleProduct.freeQty + "</td>" +
+                        "<td>" + (saleProduct.amount - saleProduct.gstAmount).toFixed(2) + "</td><td>" + saleProduct.gstAmount.toFixed(2) + "</td><td>" + saleProduct.amount.toFixed(2) + "</td></tr>")
                 });
 
                 var availableCredits = 0.0;
@@ -606,22 +719,19 @@
                 $.each(saleReturns, function (index, saleReturn) {
                     availableCredits += saleReturn.balance;
                     if (saleReturn.balance > 0) {
-                        var checkbox = "<input type='checkbox' class='creditSelection'  data-id='"+saleReturn.id+"' data-balance='"+saleReturn.balance+"'/>";
-                        availableCreditsTable += "<tr><td>" + (++i) + "</td><td>" + saleReturn.invoiceNumber + "</td><td>" + saleReturn.balance.toFixed(2) + "</td><td>"+checkbox+"</td></tr>";
+                        var checkbox = "<input type='checkbox' class='creditSelection'  data-id='" + saleReturn.id + "' data-balance='" + saleReturn.balance + "'/>";
+                        availableCreditsTable += "<tr><td>" + (++i) + "</td><td>" + saleReturn.invoiceNumber + "</td><td>" + saleReturn.balance.toFixed(2) + "</td><td>" + checkbox + "</td></tr>";
                     }
                 });
                 $("#creditsTable").html(availableCreditsTable);
 
-                if(availableCredits > 0)
-                {
+                if (availableCredits > 0) {
                     $("#paymentsAlert").html("<div class=\"alert alert-primary\" role=\"alert\">\n" +
                         "<div class=\"container\">\n" +
-                        "    <strong><u>₹"+availableCredits.toFixed(2)+"</u> Total Credits Available!</strong>"+
+                        "    <strong><u>₹" + availableCredits.toFixed(2) + "</u> Total Credits Available!</strong>" +
                         "</div>\n" +
                         "</div>")
-                }
-                else
-                {
+                } else {
                     $("#paymentsAlert").html("");
                 }
 
@@ -639,18 +749,15 @@
                 previousPaymentsTable.html("<td colspan=\"5\">No Receipts for this Invoice</td>");
                 $.each(receiptLog, function (index, value) {
                     previousPaymentsTable.html("");
-                    var cancelCreditsButton = "<a data-id="+value.receipt.id+" data-billid="+value.billId+" href='#' class='btn btn-sm btn-danger cancelReceipt'><i class='fa fa-times'></i></a>"
-                    if(value.receiptStatus == "CANCELLED")
-                    {
+                    var cancelCreditsButton = "<a data-id=" + value.receipt.id + " data-billid=" + value.billId + " href='#' class='btn btn-sm btn-danger cancelReceipt'><i class='fa fa-times'></i></a>"
+                    if (value.receiptStatus == "CANCELLED") {
                         rowStyle = "style='text-decoration-line: line-through;'";
                         cancelCreditsButton = "";
-                    }
-                    else
-                    {
+                    } else {
                         rowStyle = "";
                     }
-                    var date = moment(value.receipt.paymentDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-                    tableContent1 += "<tr "+rowStyle+" ><td>"+(++index)+"</td><td>"+value.receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td>"+cancelCreditsButton+" <a href='#' class='btn btn-sm btn-info print' data-custid="+invoice.customerId+" data-id="+value.receipt.id+"><i class='fa fa-print'></i></a></td></tr>";
+                    var date = moment(value.receipt.paymentDate.split("T")[0], "YYYY-MM-DD").format("DD/MM/YYYY");
+                    tableContent1 += "<tr " + rowStyle + " ><td>" + (++index) + "</td><td>" + value.receipt.receiptId + "</td><td>" + date + "</td><td>" + value.amountPaid.toFixed(2) + "</td><td>" + cancelCreditsButton + " <a href='#' class='btn btn-sm btn-info print' data-custid=" + invoice.customerId + " data-id=" + value.receipt.id + "><i class='fa fa-print'></i></a></td></tr>";
                 });
                 previousPaymentsTable.append(tableContent1);
 
@@ -659,19 +766,16 @@
                 creditsAdjustmentTable.html("<td colspan=\"5\">No Credit Adjustments for this Invoice</td>");
                 $.each(saleReturnAdjustmentDetails, function (index, value) {
                     creditsAdjustmentTable.html("");
-                    var cancelCreditsButton = "<a href='#' data-id='"+value.saleReturnAdjustment.id+"' class='btn btn-sm btn-danger cancelCredit'><i class='fa fa-times'></i></a>"
-                    if(value.saleReturnAdjustment?.cancelledDate)
-                    {
+                    var cancelCreditsButton = "<a href='#' data-id='" + value.saleReturnAdjustment.id + "' class='btn btn-sm btn-danger cancelCredit'><i class='fa fa-times'></i></a>"
+                    if (value.saleReturnAdjustment?.cancelledDate) {
                         rowStyle = "style='text-decoration-line: line-through;'";
                         cancelCreditsButton = "";
-                    }
-                    else
-                    {
+                    } else {
                         rowStyle = "";
                     }
 
-                    var date = moment(value.dateCreated.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-                    tableContent2 += "<tr "+rowStyle+"><td>"+(++index)+"</td><td>"+value.saleReturnAdjustment.docNo+"</td><td>"+date+"</td><td>"+value.adjAmount.toFixed(2)+"</td><td>"+cancelCreditsButton+" <a href='#' class='btn btn-sm btn-info printCredits' data-said="+value.saleReturnAdjustment.id+" data-id="+invoice.id+"><i class='fa fa-print'></i></a></td></tr>";
+                    var date = moment(value.dateCreated.split("T")[0], "YYYY-MM-DD").format("DD/MM/YYYY");
+                    tableContent2 += "<tr " + rowStyle + "><td>" + (++index) + "</td><td>" + value.saleReturnAdjustment.docNo + "</td><td>" + date + "</td><td>" + value.adjAmount.toFixed(2) + "</td><td>" + cancelCreditsButton + " <a href='#' class='btn btn-sm btn-info printCredits' data-said=" + value.saleReturnAdjustment.id + " data-id=" + invoice.id + "><i class='fa fa-print'></i></a></td></tr>";
                 });
                 creditsAdjustmentTable.append(tableContent2);
 
@@ -690,6 +794,11 @@
             }
         })
 
+    }
+
+    function showEwayBillModal(invoiceId, invoiceNumber) {
+        $("#ewayBillModal").modal("toggle");
+        $("#ewayBillModalInvoiceNumber").text(invoiceNumber);
     }
 
     function toggleDetails() {
@@ -727,70 +836,63 @@
 
     function applyCredits(creditAvailable) {
         var totalDueOfSelected = parseFloat2Decimal($("#creditsTotalDue").text());
-        if(creditAvailable > totalDueOfSelected) {
+        if (creditAvailable > totalDueOfSelected) {
             $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
-        }
-        else {
+        } else {
             creditAvailable = parseFloat2Decimal($("#creditsApplied").text()) + creditAvailable;
-            if(creditAvailable > totalDueOfSelected)
+            if (creditAvailable > totalDueOfSelected)
                 $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
             else
                 $("#creditsApplied").text(creditAvailable.toFixed(2));
         }
     }
-    function removeCredits(creditAmount)
-    {
+
+    function removeCredits(creditAmount) {
         var appliedCredit = parseFloat2Decimal($("#creditsApplied").text());
-        appliedCredit = appliedCredit-creditAmount;
-        if(appliedCredit <= 0)
+        appliedCredit = appliedCredit - creditAmount;
+        if (appliedCredit <= 0)
             $("#creditsApplied").text("0.00");
         else
             $("#creditsApplied").text(parseFloat2Decimal(appliedCredit));
     }
 
     function paymentModeChange() {
-       var paymentMode = $("#paymentMode :selected").text();
-       if(paymentMode === "CARD")
-       {
-           $("#cardNumberContainer").removeClass("hidden");
-           $("#instrumentIdContainer").addClass("hidden");
-           $("#payeeBankerContainer").addClass("hidden");
-           $("#depositToContainer").removeClass("hidden");
-           $("#paymentMethodContainer").removeClass("hidden");
+        var paymentMode = $("#paymentMode :selected").text();
+        if (paymentMode === "CARD") {
+            $("#cardNumberContainer").removeClass("hidden");
+            $("#instrumentIdContainer").addClass("hidden");
+            $("#payeeBankerContainer").addClass("hidden");
+            $("#depositToContainer").removeClass("hidden");
+            $("#paymentMethodContainer").removeClass("hidden");
 
-           $("#paymentDateContainer").removeClass("col-md-6");
-           $("#paymentDateContainer").addClass("col-md-12");
-       }
-       else if(paymentMode === "BANK")
-       {
-           $("#cardNumberContainer").addClass("hidden");
-           $("#instrumentIdContainer").removeClass("hidden");
-           $("#payeeBankerContainer").removeClass("hidden");
-           $("#depositToContainer").removeClass("hidden");
-           $("#paymentMethodContainer").removeClass("hidden");
+            $("#paymentDateContainer").removeClass("col-md-6");
+            $("#paymentDateContainer").addClass("col-md-12");
+        } else if (paymentMode === "BANK") {
+            $("#cardNumberContainer").addClass("hidden");
+            $("#instrumentIdContainer").removeClass("hidden");
+            $("#payeeBankerContainer").removeClass("hidden");
+            $("#depositToContainer").removeClass("hidden");
+            $("#paymentMethodContainer").removeClass("hidden");
 
-           $("#paymentDateContainer").removeClass("col-md-12");
-           $("#paymentDateContainer").addClass("col-md-6");
-       }
-       else
-       {
-           //cash
-           $("#cardNumberContainer").addClass("hidden");
-           $("#instrumentIdContainer").addClass("hidden");
-           $("#payeeBankerContainer").addClass("hidden");
-           $("#depositToContainer").addClass("hidden");
-           $("#paymentMethodContainer").addClass("hidden");
+            $("#paymentDateContainer").removeClass("col-md-12");
+            $("#paymentDateContainer").addClass("col-md-6");
+        } else {
+            //cash
+            $("#cardNumberContainer").addClass("hidden");
+            $("#instrumentIdContainer").addClass("hidden");
+            $("#payeeBankerContainer").addClass("hidden");
+            $("#depositToContainer").addClass("hidden");
+            $("#paymentMethodContainer").addClass("hidden");
 
-           $("#paymentDateContainer").removeClass("col-md-6");
-           $("#paymentDateContainer").addClass("col-md-12");
+            $("#paymentDateContainer").removeClass("col-md-6");
+            $("#paymentDateContainer").addClass("col-md-12");
 
-       }
+        }
     }
 
     function recordPayment() {
         var totalDueOfSelected = parseFloat2Decimal($("#totalDueOfSelected").text());
-        if(totalDueOfSelected === 0)
-        {
+        if (totalDueOfSelected === 0) {
             Swal.fire({
                 title: "Invoice settled already!",
                 text: "There is no due for this invoice",
@@ -831,8 +933,7 @@
         var saleReturnIds = $("#saleReturnIds").val();
         var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
 
-        if(paymentDate == null || paymentDate === "")
-        {
+        if (paymentDate == null || paymentDate === "") {
             processingSwal.close();
 
             Swal.fire({
@@ -843,8 +944,7 @@
             return;
         }
 
-        if((amount + creditsApplied) >totalDueOfSelected)
-        {
+        if ((amount + creditsApplied) > totalDueOfSelected) {
             processingSwal.close();
             Swal.fire({
                 title: "Error",
@@ -858,7 +958,7 @@
         $.ajax({
             url: "/sale-bill/record-payment",
             method: "POST",
-            data:{
+            data: {
                 amount: amount,
                 paymentMode: paymentMode,
                 paymentMethod: paymentMethod,
@@ -872,8 +972,7 @@
                 saleReturnIds: saleReturnIds,
                 creditsApplied: creditsApplied
             },
-            success: function(saleBill)
-            {
+            success: function (saleBill) {
                 processingSwal.close();
                 Swal.fire({
                     title: "Success!",
@@ -886,7 +985,7 @@
             error: function (data) {
                 processingSwal.close();
                 var text = "Please try later!";
-                if(data !== undefined)
+                if (data !== undefined)
                     text = data.responseText;
                 Swal.fire({
                     title: "Error!",
@@ -909,47 +1008,46 @@
     }
 
     $(document).on("click", ".print", function () {
-        var custId =  $(this).data('custid');
-        var id =  $(this).data('id');
+        var custId = $(this).data('custid');
+        var id = $(this).data('id');
         $("#printabel").remove();
         receiptPrint(custId, id)
     });
 
-    function receiptPrint(custId,id) {
+    function receiptPrint(custId, id) {
         $("<iframe id='printabel'>")
             .hide()
-            .attr("src", "/print-recipt/"+custId+"/recipt/"+id)
+            .attr("src", "/print-recipt/" + custId + "/recipt/" + id)
             .appendTo("body");
     }
 
     $(document).on("click", ".printCredits", function () {
-        var said =  $(this).data('said');
-        var id =  $(this).data('id');
+        var said = $(this).data('said');
+        var id = $(this).data('id');
         $("#printabel").remove();
         creditsPrint(said, id)
     });
+
     function creditsPrint(said, id) {
         $("<iframe id='printabel'>")
             .hide()
-            .attr("src", "/sale-return/sale-return-adjustment/print/"+id+"?said="+said)
+            .attr("src", "/sale-return/sale-return-adjustment/print/" + id + "?said=" + said)
             .appendTo("body");
     }
 
 
     $(document).on("click", ".creditSelection", function () {
-        var id =  $(this).data('id');
-        var balance =  parseFloat2Decimal($(this).data('balance'));
+        var id = $(this).data('id');
+        var balance = parseFloat2Decimal($(this).data('balance'));
         var saleReturnIds = $("#saleReturnIds").val();
-        if($(this).is(':checked')) {
+        if ($(this).is(':checked')) {
             if (saleReturnIds != null) {
                 saleReturnIds = saleReturnIds + id + ",";
             } else
                 saleReturnIds = id + ",";
             applyCredits(balance);
-        }
-        else
-        {
-            saleReturnIds = saleReturnIds.replace(id+",","");
+        } else {
+            saleReturnIds = saleReturnIds.replace(id + ",", "");
             removeCredits(balance);
 
         }
@@ -959,8 +1057,8 @@
     });
 
     $(document).on("click", ".cancelReceipt", function () {
-        var id =  $(this).data('id');
-        var billId =  $(this).data('billid');
+        var id = $(this).data('id');
+        var billId = $(this).data('billid');
         Swal.fire({
             title: 'Cancel Receipt?',
             text: "Do you want to cancel this receipt?",
@@ -972,7 +1070,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "receipt/cancel?id="+id,
+                    url: "receipt/cancel?id=" + id,
                     method: "GET",
                     success: function (data) {
                         Swal.fire({
@@ -1030,16 +1128,15 @@
                     showCloseButton: false,
                     showConfirmButton: false
                 });
-                var id =  $(this).data('id');
+                var id = $(this).data('id');
                 $.ajax({
                     url: "sale-bill/adjust-credits",
                     method: "POST",
-                    data:{
+                    data: {
                         saleBillId: saleBillId,
                         saleReturnAdjustmentId: id
                     },
-                    success: function(saleBill)
-                    {
+                    success: function (saleBill) {
                         processingSwal.close();
                         Swal.fire({
                             title: "Success!",
@@ -1062,14 +1159,12 @@
         });
     });
 
-    function adjustCredits()
-    {
+    function adjustCredits() {
         var saleBillId = $(".saleBillId").val();
         var saleReturnIds = $("#saleReturnIds").val();
         var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
         var totalDueOfSelected = parseFloat2Decimal($("#creditsTotalDue").text());
-        if(totalDueOfSelected === 0)
-        {
+        if (totalDueOfSelected === 0) {
             Swal.fire({
                 title: "Invoice settled already!",
                 text: "There is no due for this invoice",
@@ -1081,8 +1176,7 @@
             return
         }
 
-        if(creditsApplied === 0)
-        {
+        if (creditsApplied === 0) {
             Swal.fire({
                 title: "Credits not selected",
                 text: "No credits selected to adjust.",
@@ -1114,13 +1208,12 @@
         $.ajax({
             url: "sale-bill/adjust-credits",
             method: "POST",
-            data:{
+            data: {
                 saleBillId: saleBillId,
                 saleReturnIds: saleReturnIds,
                 creditsApplied: creditsApplied
             },
-            success: function(saleBill)
-            {
+            success: function (saleBill) {
                 processingSwal.close();
                 Swal.fire({
                     title: "Success!",
@@ -1141,10 +1234,9 @@
             }
         })
     }
-    
-    function parseFloat2Decimal(num)
-    {
-        if(!isNaN(num)) {
+
+    function parseFloat2Decimal(num) {
+        if (!isNaN(num)) {
             num = Number(num);
             num = Math.round(num * 1e2) / 1e2;
             return num;
@@ -1164,11 +1256,10 @@
         }
     }*/
 
-    function exportIRNSingle(id)
-    {
+    function exportIRNSingle(id) {
         Swal.fire({
             icon: "info",
-            title:"Generate e-Invoice JSON?",
+            title: "Generate e-Invoice JSON?",
             text: "JSON file will be generated for pending invoices.",
             showDenyButton: true,
             showCancelButton: false,
@@ -1183,11 +1274,10 @@
                     allowOutsideClick: false
                 });
                 $.ajax({
-                    url: "sale-bill/download-irn/"+id,
+                    url: "sale-bill/download-irn/" + id,
                     method: "POST",
                     dataType: "text",
-                    success: function(json)
-                    {
+                    success: function (json) {
                         waitingSwal.close();
                         Swal.fire({
                             title: "Success!",
@@ -1199,7 +1289,7 @@
                         });
                         var link = document.createElement('a');
                         link.href = window.URL.createObjectURL(blob);
-                        link.download = Date.now()+"_e-invoice.json";
+                        link.download = Date.now() + "_e-invoice.json";
                         link.click();
                     },
                     error: function () {
@@ -1217,11 +1307,11 @@
         });
 
     }
-    function exportIRN()
-    {
+
+    function exportIRN() {
         Swal.fire({
             icon: "info",
-            title:"Generate e-Invoice JSON?",
+            title: "Generate e-Invoice JSON?",
             text: "JSON file will be generated for pending invoices.",
             showDenyButton: true,
             showCancelButton: false,
@@ -1239,8 +1329,7 @@
                     url: "sale-bill/download-irn",
                     method: "POST",
                     dataType: "text",
-                    success: function(json)
-                    {
+                    success: function (json) {
                         waitingSwal.close();
                         Swal.fire({
                             title: "Success!",
@@ -1252,7 +1341,7 @@
                         });
                         var link = document.createElement('a');
                         link.href = window.URL.createObjectURL(blob);
-                        link.download = Date.now()+"_e-invoice.json";
+                        link.download = Date.now() + "_e-invoice.json";
                         link.click();
                     },
                     error: function () {

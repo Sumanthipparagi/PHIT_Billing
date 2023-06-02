@@ -4,6 +4,7 @@ import phitb_ui.AccountsService
 import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
+import phitb_ui.ShipmentService
 import phitb_ui.SystemService
 import phitb_ui.Tools
 import phitb_ui.UtilsService
@@ -199,11 +200,12 @@ class SalebillDetailsController {
 
         def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
         def entityConfigs = new EntityService().getEntityConfigByEntity(session.getAttribute('entityId').toString())
-
+        JSONArray transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         ArrayList<JSONObject> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
         ArrayList<JSONObject> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
         render(view: '/sales/salebillDetails/saleBill', model: [bank           : bank,
                                                                 accountMode    : accountMode,
+                                                                transporter    : transporter,
                                                                 paymentModes   : paymentModes,
                                                                 accountRegister: accountRegister,
                                                                 settings       : settings,
@@ -281,9 +283,9 @@ class SalebillDetailsController {
                     if (billLogResponse?.status == 200) {
                         println("Bill Log Saved!")
                     }
-                    if(params.type!=null){
+                    if (params.type != null) {
                         paymentCollectionLog.put("collectedAmount", amount)
-                        paymentCollectionLog.put("balance", saleBill.balance-amount)
+                        paymentCollectionLog.put("balance", saleBill.balance - amount)
                         paymentCollectionLog.put("invoiceAmount", saleBill.invoiceTotal)
                         paymentCollectionLog.put("documentNumber", saleBill.invoiceNumber)
                         paymentCollectionLog.put("receiptId", receiptId)
@@ -317,8 +319,7 @@ class SalebillDetailsController {
             return
         }
 
-        if(saleReturnAdjustmentId)
-        {
+        if (saleReturnAdjustmentId) {
             JSONObject invObject = new JSONObject()
             invObject.put("id", saleBill.id)
             invObject.put("userId", session.getAttribute("userId"))
@@ -332,8 +333,7 @@ class SalebillDetailsController {
                 println("Error Updating Invoice")
                 response.status = 400
             }
-        }
-        else {
+        } else {
             double creditsApplied = Double.parseDouble(params.creditsApplied)
             String saleReturnIds = params.saleReturnIds
 
@@ -366,9 +366,7 @@ class SalebillDetailsController {
                     println("Error Updating Invoice")
                     response.status = 400
                 }
-            }
-            else
-            {
+            } else {
                 respond saleBill, formats: ['json']
             }
         }
@@ -430,7 +428,7 @@ class SalebillDetailsController {
             String financialYear = session.getAttribute("financialYear").toString()
             JSONArray finalJson = new JSONArray()
             JSONArray saleBillDetails = new SalesService().getSaleBillDetailsByPendingIRN(financialYear, entityId)
-            if(saleBillDetails) {
+            if (saleBillDetails) {
                 println("Total Bills: " + saleBillDetails?.size())
                 int i = 0;
                 for (Object saleBillDetail : saleBillDetails) {
@@ -448,8 +446,7 @@ class SalebillDetailsController {
                     }
                 }
                 render(text: finalJson.toString(), status: 200)
-            }
-            else
+            } else
                 response.status = 400
         }
         catch (Exception ex) {
@@ -464,23 +461,20 @@ class SalebillDetailsController {
             String id = params.id
             String entityId = session.getAttribute("entityId").toString()
             JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(id)
-            if(saleBillDetail && saleBillDetail.entityId.toString() == entityId) {
+            if (saleBillDetail && saleBillDetail.entityId.toString() == entityId) {
                 JSONArray finalJson = new JSONArray()
-                def products =new SalesService().getSaleProductDetailsByBill(saleBillDetail.id.toString())
+                def products = new SalesService().getSaleProductDetailsByBill(saleBillDetail.id.toString())
                 String json = EInvoiceService.buildIrnPayload(saleBillDetail, products)
                 if (json) {
                     JSONObject jsonObject = new JSONObject(json)
                     if (jsonObject) {
                         finalJson.add(jsonObject)
                         render(text: finalJson, status: 200)
-                    }
-                    else
+                    } else
                         response.status = 400
-                }
-                else
+                } else
                     response.status = 400
-            }
-            else
+            } else
                 response.status = 400
         }
         catch (Exception ex) {
@@ -490,23 +484,20 @@ class SalebillDetailsController {
         }
     }
 
-    def genrateIrn(){
+    def genrateIrn() {
         String billId = params.id
         def saleBillDetail = new SalesService().getSaleBillDetailsById(billId)
-        if(saleBillDetail){
-            String billStatus =  saleBillDetail.billStatus
+        if (saleBillDetail) {
+            String billStatus = saleBillDetail.billStatus
             def saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillDetail.id.toString())
-            try
-            {
-                if (billStatus.equalsIgnoreCase("ACTIVE"))
-                {
+            try {
+                if (billStatus.equalsIgnoreCase("ACTIVE")) {
                     //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                   def result = new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
-                    respond result, formats: ['json'],status: 200
+                    def result = new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                    respond result, formats: ['json'], status: 200
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 ex.printStackTrace()
             }
 
@@ -514,7 +505,7 @@ class SalebillDetailsController {
     }
 
 
-    def retailerBillDetails(){
+    def retailerBillDetails() {
         render(view: '/sales/saleEntry/retailer-bill-list')
     }
 
