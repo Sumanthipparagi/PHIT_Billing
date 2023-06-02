@@ -635,6 +635,28 @@ class SaleBillDetailsController {
         }
     }
 
+
+
+    def updateEWayBillDetails() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            SaleBillDetails saleBillDetails = saleBillDetailsService.updateEWayBillDetails(jsonObject)
+            respond saleBillDetails
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
     /**
      * Save new Sale Bill Details along with products
      * @param Sale Bill Details

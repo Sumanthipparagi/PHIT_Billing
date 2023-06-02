@@ -502,6 +502,7 @@ public class Links
     public static String SALE_BILL_CONSOLIDATED_REPORTS = APP_CONTEXT_PATH + "sales/reports/consolidated";
     public static String SALE_RETURN_AREAWISE = APP_CONTEXT_PATH + "sales/reports/salesreturn-areawise";
     public static String SALE_BILL_UPDATE_IRN = APP_CONTEXT_PATH + "sales/salebilldetails/updateirn";
+    public static String SALE_BILL_UPDATE_EWAYBILL = APP_CONTEXT_PATH + "sales/salebilldetails/updateewaybill";
     public static String SALE_RETURN_BY_DATERANGE = APP_CONTEXT_PATH + "sales/salereturnbydaterange";
     public static String SALE_RETURN_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/salereturnbydaterangecustomer";
     public static String SALE_ENTRY_STATS = APP_CONTEXT_PATH + "sales/reports/statistics";
@@ -793,14 +794,17 @@ public class Links
 
 
     //e-Invoice
-    public static String E_INVOICE_BASE_URL = "https://nsdlgsp.co.in";
-   // public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
+    //public static String E_INVOICE_BASE_URL = "https://nsdlgsp.co.in";
+    public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
     public static String E_INVOICE_VERSION = "/ewb_v1.04";
     public static String E_INVOICE_GET_KEY = E_INVOICE_BASE_URL + "/GSPUtility/getKey";
     public static String E_INVOICE_AUTH_TOKEN = E_INVOICE_BASE_URL + E_INVOICE_VERSION + "/einv/authtoken";
     public static String E_INVOICE_GEN_IRN = E_INVOICE_BASE_URL + E_INVOICE_VERSION + "/einv/gen-irn";
     public static String E_INVOICE_CANCEL_IRN = E_INVOICE_BASE_URL + E_INVOICE_VERSION + "/einv/can-irn";
     public static String E_INVOICE_GET_IRN = E_INVOICE_BASE_URL +  E_INVOICE_VERSION + "/einv/get-irn";
+
+    public static String E_WAYBILL_GEN = E_INVOICE_BASE_URL + E_INVOICE_VERSION + "/einv/gen-ewb-irn";
+    public static String E_WAYBILL_CANCEL = E_INVOICE_BASE_URL + E_INVOICE_VERSION + "/einv/can-ewb";
 
     //    Bill detail log
     public static String BILL_DETAIL_LOG = APP_CONTEXT_PATH + "accounts/reciptdetaillog";

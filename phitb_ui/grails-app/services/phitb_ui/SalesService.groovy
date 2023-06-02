@@ -445,6 +445,25 @@ contains both sale bill and products
 
     }
 
+    def updateSaleBillEwayBillDetails(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_UPDATE_EWAYBILL)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :saleService , action :  save  , Ex:' + ex)
+            log.error('Service :saleService , action :  save  , Ex:' + ex)
+        }
+
+    }
+
 
     def saveSaleRetrun(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();

@@ -267,8 +267,8 @@ class EInvoiceService {
 
             //Seller Details
             JSONObject SellerDtls = new JSONObject()
-            SellerDtls.put("Gstin", sellerDetails.get("gstn"))
-            //SellerDtls.put("Gstin", "27ABFPD4021L002") //TODO: to be removed
+            //SellerDtls.put("Gstin", sellerDetails.get("gstn"))
+            SellerDtls.put("Gstin", "27ABFPD4021L002") //TODO: to be removed
             SellerDtls.put("LglNm", sellerDetails.get("entityName"))
             SellerDtls.put("TrdNm", sellerDetails.get("entityName"))
             SellerDtls.put("Addr1", new UtilsService().truncateString(sellerDetails.get("addressLine1").toString(),100))
@@ -283,15 +283,15 @@ class EInvoiceService {
             else
                 SellerDtls.put("Loc", sellerCity.get("areaName"))
 
-            SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
-            //SellerDtls.put("Pin", 431116) //TODO:to be removed
+            //SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
+            SellerDtls.put("Pin", 431116) //TODO:to be removed
 
             if(new UtilsService().isValidPhoneNumber())
                 SellerDtls.put("Ph", sellerDetails.get("mobileNumber"))
             if(new UtilsService().isValidEmailAddress(sellerDetails?.get("email")?.toString()))
                 SellerDtls.put("Em", sellerDetails.get("email"))
-            SellerDtls.put("Stcd", sellerState.get("irnStateCode"))
-           // SellerDtls.put("Stcd", "27") //TODO: to be removed
+            //SellerDtls.put("Stcd", sellerState.get("irnStateCode"))
+            SellerDtls.put("Stcd", "27") //TODO: to be removed
             irnObject.put("SellerDtls", SellerDtls)
 
             //Buyer Details
@@ -527,6 +527,139 @@ class EInvoiceService {
         catch (Exception ex) {
             System.err.println('Service :EInvoiceService , action :  cancelIRN  , Ex:' + ex)
             log.error('Service :EInvoiceService , action :  cancelIRN  , Ex:' + ex)
+        }
+    }
+
+    //TODO: e-Way Bill generation to be included
+    generateEWayBill(HttpSession session, JSONObject saleBillDetail)
+    {
+        JSONObject authData = generateSignatureAndAuthToken(session)
+        if (authData == null) {
+            println("AUTH DATA is NULL")
+            return
+        }
+        String invoiceId = saleBillDetail.get("id")
+        JSONObject eWayBillObject = new JSONObject()
+        eWayBillObject.put("Irn","")
+        eWayBillObject.put("TransId","")
+        eWayBillObject.put("TransMod","")
+        eWayBillObject.put("TrnDocNO","")
+        eWayBillObject.put("TrnDocDt","")
+        eWayBillObject.put("VehNo","")
+        eWayBillObject.put("Distance","")
+        eWayBillObject.put("VehType","")
+        eWayBillObject.put("TransName","")
+
+        String appKey = authData.get("appKey")
+        String sek = authData.get("sek")
+        String encryptedPayload = new NICEncryption(appKey, sek).EncryptPayload(eWayBillObject.toString())
+
+        JSONObject finalPayLoad = new JSONObject()
+        finalPayLoad.put("Data", encryptedPayload)
+
+        Logger logger = Logger.getLogger(getClass().getName())
+        Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
+        Client client = ClientBuilder.newClient();
+        client.register(feature)
+        WebTarget target = client.target(new Links().E_WAYBILL_GEN)
+        try {
+            Response apiResponse = target
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("aspid", new Constants().E_INVOICE_ASP_ID)
+                    .header("asp_secret_key", authData.get("aspSecretKey"))
+                    .header("session_id", authData.get("sessionId"))
+                    .header("gstin", authData.get("irnGSTIN"))
+                    .header("authtoken", authData.get("authToken"))
+                    .header("username", authData.get("irnUsername"))
+                    .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject generatedEWayBill = new JSONObject(apiResponse.readEntity(String.class))
+                if (generatedEWayBill) {
+                    if (generatedEWayBill.get("Status").toString().equalsIgnoreCase("1")) {
+                        def ewayBillDetails = new NICEncryption(appKey, sek).DecryptResponse(generatedEWayBill.get("Data").toString())
+                        Response apiResp = new SalesService().getSaleInvoiceById(invoiceId)
+                        if (apiResp.status == 200) {
+                            JSONObject salesInvoice = new JSONObject(apiResp.readEntity(String.class))
+                            JSONObject ewayDetailsJSON = new JSONObject()
+                            ewayDetailsJSON.put("id", salesInvoice.get("id"))
+                            ewayDetailsJSON.put("ewayBillDetails", ewayBillDetails)
+                            new SalesService().updateSaleBillEwayBillDetails(ewayDetailsJSON)
+                        }
+                    } else {
+                        println(generatedEWayBill.get("ErrorDetails").toString())
+                        log.error(generatedEWayBill.get("ErrorDetails").toString())
+                    }
+                }
+                return generatedEWayBill
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EInvoiceService , action :  generateEWayBill  , Ex:' + ex)
+            log.error('Service :EInvoiceService , action :  generateEWayBill  , Ex:' + ex)
+        }
+
+    }
+
+    def cancelEwayBillDetails(HttpSession session, String ewbNo, String invoiceId)
+    {
+        JSONObject cancelJson = new JSONObject()
+        cancelJson.put("ewbNo", ewbNo)
+        cancelJson.put("cancelRsnCode", "2")
+        cancelJson.put("cancelRmrk", "Cancelled the order")
+        JSONObject authData = generateSignatureAndAuthToken(session)
+        if (authData == null) {
+            return
+        }
+        String appKey = authData.get("appKey")
+        String sek = authData.get("sek")
+        String encryptedPayload = new NICEncryption(appKey, sek).EncryptPayload(cancelJson.toString())
+
+        JSONObject finalPayLoad = new JSONObject()
+        finalPayLoad.put("Data", encryptedPayload)
+
+        Logger logger = Logger.getLogger(getClass().getName())
+        Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
+        Client client = ClientBuilder.newClient();
+        client.register(feature)
+        WebTarget target = client.target(new Links().E_WAYBILL_CANCEL)
+        try {
+            Response apiResponse = target
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("aspid", new Constants().E_INVOICE_ASP_ID)
+                    .header("asp_secret_key", authData.get("aspSecretKey"))
+                    .header("session_id", authData.get("sessionId"))
+                    .header("gstin", authData.get("irnGSTIN"))
+                    .header("authtoken", authData.get("authToken"))
+                    .header("username", authData.get("irnUsername"))
+                    .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject cancelledEwayBill = new JSONObject(apiResponse.readEntity(String.class))
+                if (cancelledEwayBill) {
+                    if (cancelledEwayBill.get("Status").toString().equalsIgnoreCase("1")) {
+                        JSONObject cancelledEwayBillDetails = new JSONObject(new NICEncryption(appKey, sek).DecryptResponse(cancelledEwayBill.get("Data").toString()))
+                        Response apiResp = new SalesService().getSaleInvoiceById(invoiceId)
+                        if (apiResp.status == 200) {
+                            JSONObject salesInvoice = new JSONObject(apiResp.readEntity(String.class))
+                            JSONObject cancelledEwayBillDetailsJSON = new JSONObject()
+                            cancelledEwayBillDetailsJSON.put("id", salesInvoice.get("id"))
+                            cancelledEwayBillDetailsJSON.put("cancelledDate", cancelledEwayBillDetails.get("CancelDate").toString())
+                            new SalesService().updateSaleBillEwayBillDetails(cancelledEwayBillDetailsJSON)
+                        }
+                    } else {
+                        println(cancelledEwayBill.get("ErrorDetails").toString())
+                        log.error(cancelledEwayBill.get("ErrorDetails").toString())
+                    }
+                }
+                return cancelledEwayBill
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EInvoiceService , action :  cancelEwayBillDetails  , Ex:' + ex)
+            log.error('Service :EInvoiceService , action :  cancelEwayBillDetails  , Ex:' + ex)
         }
     }
 

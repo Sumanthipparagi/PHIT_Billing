@@ -70,6 +70,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     String uuid
 
     String irnDetails
+    String ewayBillDetails
     static constraints = {
         invoiceNumber unique: true, nullable: true
         irnDetails nullable: true
@@ -101,10 +102,12 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
         totalQty scale: 2
         totalDiscount scale: 2
         totalAmount scale: 2
+        ewayBillDetails nullable: true
     }
 
     static mapping = {
         irnDetails sqlType: 'longText'
+        ewayBillDetails sqlType: 'longText'
         publicNote sqlType: 'longText'
         privateNote sqlType: 'longText'
     }

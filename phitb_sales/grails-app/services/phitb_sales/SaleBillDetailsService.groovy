@@ -532,6 +532,34 @@ class SaleBillDetailsService
         }
     }
 
+    def updateEWayBillDetails(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
+        saleBillDetails.isUpdatable = true
+
+        if (saleBillDetails)
+        {
+            if(jsonObject.has("cancelledDate")) {
+                JSONObject jsonObject1 = new JSONObject(saleBillDetails.ewayBillDetails)
+                jsonObject1.put("cancelDate", jsonObject.get("cancelDate"))
+                saleBillDetails.ewayBillDetails = jsonObject1.toString()
+            }
+            else
+            {
+                if(jsonObject.has("ewayBillDetails"))
+                    saleBillDetails.ewayBillDetails = jsonObject.get("ewayBillDetails").toString()
+            }
+            saleBillDetails.save(flush:true)
+            return saleBillDetails
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
+
+
     def getByDateRangeAndEntity(String dateRange, String entityId)
     {
         try {

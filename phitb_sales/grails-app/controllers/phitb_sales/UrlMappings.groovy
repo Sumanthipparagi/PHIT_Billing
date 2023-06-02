@@ -474,6 +474,7 @@ class UrlMappings {
             "/reports/fsn(.$format)?"(controller: 'reports', action: 'getFSN')
 
             "/salebilldetails/updateirn(.$format)?"(controller: 'saleBillDetails', action: 'updateIRNDetails')
+            "/salebilldetails/updateewaybill(.$format)?"(controller: 'saleBillDetails', action: 'updateEWayBillDetails')
             "/salebilldetails/save-invoice(.$format)?"(controller: 'saleBillDetails', action: 'saveInvoice')
             "/salebilldetails/update-invoice/$id(.$format)?"(controller: 'saleBillDetails', action: 'updateInvoice')
             "/delete-drafts-sale-bill(.$format)"(controller: 'saleBillDetails', action: 'deleteAllDraftsSaleBill')
