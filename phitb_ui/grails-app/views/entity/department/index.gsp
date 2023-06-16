@@ -99,7 +99,7 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addbankRegisterModal"><font style="vertical-align: inherit;"><font
+                                data-target="#addDepartmentModal"><font style="vertical-align: inherit;"><font
                                 style="vertical-align: inherit;">Add Department</font></font></button>
                     </div>
                     <div class="body">
@@ -134,7 +134,7 @@
 </section>
 
 
-<g:include view="controls/accounts/add-bank-register.gsp"/>
+<g:include view="controls/entity/add-department.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -161,10 +161,10 @@
 
 <script>
 
-    var departmentTable;
+    var dtTable;
     var id = null;
     $(function () {
-        fridgeTable();
+        departmentTable();
         $('#entityId').select2();
         $('#cityId').select2({
             ajax: {
@@ -188,8 +188,8 @@
         });
     });
 
-    function fridgeTable() {
-        departmentTable = $(".departmentTable").DataTable({
+    function departmentTable() {
+        dtTable = $(".departmentTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -214,10 +214,11 @@
                     for (var i = 0; i < json.data.length; i++) {
 
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-name="' + json.data[i].bankName + '"' +
-                            '" data-entityId="' + json.data[i].entityId + '"' +
+                            '" data-name="' + json.data[i].name + '"' +
+                            '" data-entityId="' + json.data[i].entity.id + '"' +
+                            '" data-description="' + json.data[i].description + '"' +
                             '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addbankRegisterModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addDepartmentModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -238,7 +239,7 @@
 
 
 
-    $(".bankForm").submit(function (event) {
+    $(".departmentForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -250,14 +251,13 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/bank-register/update/' + id;
+            url = '/department/update/' + id;
             type = 'POST'
         } else {
-            url = '/bank-register';
+            url = '/department';
             type = 'POST'
         }
 
-        console.log(type);
         $.ajax({
             url: url,
             type: type,
@@ -265,9 +265,9 @@
             contentType: false,
             processData: false,
             success: function () {
-                Swal.fire("Success!", "Bank Register Submitted Successfully", "success");
-                fridgeTable();
-                $('#addbankRegisterModal').modal('hide');
+                Swal.fire("Success!", "Department Submitted Successfully", "success");
+                departmentTable();
+                $('#addDepartmentModal').modal('hide');
             },
             error: function () {
                 Swal.fire("Error!", "Something went wrong", "error");
@@ -277,8 +277,8 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".bankTitle").text("Add Bank Register")
-        $(".bankForm")[0].reset();
+        $(".departmentTitle").text("Add Department")
+        $(".departmentForm")[0].reset();
         id = null
     });
 
@@ -289,11 +289,10 @@
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".bankName").val($(this).attr('data-bankName')).change();
-        $(".cityId").val($(this).attr('data-cityId')).change();
-        $(".ifscCode").val($(this).attr('data-ifscCode'));
+        $(".name").val($(this).attr('data-name')).change();
+        $(".description").val($(this).attr('data-description')).change();
         $(".entityId").val($(this).attr('data-entityId')).change();
-        $(".bankTitle").text("Update Bank Register");
+        $(".departmentTitle").text("Update Department");
     });
 
 
@@ -301,19 +300,18 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Bank Register ?");
-
+        $("#myModalLabel").text("Delete Department?");
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/bank-register/delete/' + id,
+            url: '/department/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                fridgeTable();
-                Swal.fire("Success!", "Bank Register Deleted Successfully", "success");
+                departmentTable();
+                Swal.fire("Success!", "Department Deleted Successfully", "success");
             }, error: function () {
                 Swal.fire("Error!", "Something went wrong", "error");
             }
@@ -325,7 +323,7 @@
 
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("accounts-menu");
+    selectSideMenu("entity-menu");
 </script>
 </body>
 </html>

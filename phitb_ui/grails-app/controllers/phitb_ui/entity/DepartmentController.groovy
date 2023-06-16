@@ -15,6 +15,11 @@ class DepartmentController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entity", session.getAttribute("entityId"))
+            jsonObject.put("entityType", session.getAttribute("entityTypeId"))
+            jsonObject.put("createdUser", session.getAttribute("userId"))
+            jsonObject.put("modifiedUser", session.getAttribute("userId"))
+
             def apiResponse = new EntityService().saveDepartment(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -38,6 +43,10 @@ class DepartmentController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entity", session.getAttribute("entityId"))
+            jsonObject.put("entityType", session.getAttribute("entityTypeId"))
+            jsonObject.put("createdUser", session.getAttribute("userId"))
+            jsonObject.put("modifiedUser", session.getAttribute("userId"))
             def apiResponse = new EntityService().putDepartment(jsonObject)
             if (apiResponse.status == 200)
             {
@@ -60,8 +69,8 @@ class DepartmentController {
     def delete(){
         try
         {
-            JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().deleteDepartment(jsonObject)
+            String id = params.id
+            def apiResponse = new EntityService().deleteDepartment(id)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()

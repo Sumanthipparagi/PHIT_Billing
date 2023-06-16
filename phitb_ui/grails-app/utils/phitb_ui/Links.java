@@ -169,6 +169,7 @@ public class Links
 
     public static String ENTITY_TYPE_MASTER_SHOW = APP_CONTEXT_PATH + "entity/entitytypemaster";
     public static String DEPARTMENT_MASTER_SHOW = APP_CONTEXT_PATH + "entity/departmentmaster";
+    public static String DEPARTMENT_MASTER_DELETE = APP_CONTEXT_PATH + "entity/departmentmaster";
     public static String DEPARTMENT_MASTER_ENTITY = APP_CONTEXT_PATH + "entity/departmentmasterbyentity";
     public static String DEPARTMENT_DATATABLE = APP_CONTEXT_PATH + "entity/departmentmaster/datatable";
     public static String DIVISION_SHOW = APP_CONTEXT_PATH + "product/division";

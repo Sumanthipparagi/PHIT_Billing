@@ -1,6 +1,8 @@
 package phitb_ui.entity
 
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.Constants
 import phitb_ui.EmailService
 import phitb_ui.EntityService
 
@@ -8,7 +10,18 @@ class EntitySettingsController {
 
     def index() {
         try {
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            def entity = new ArrayList<>()
+            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)) {
+
+                def apiResponse = new EntityService().getParentEntities()
+                if (apiResponse?.status == 200) {
+                    entity = new JSONArray(apiResponse.readEntity(String.class))
+                }
+            }
+            else
+            {
+                entity.add(new EntityService().getEntityById(session.getAttribute("entityId").toString()))
+            }
             render(view: '/entity/entitySettings/index', model: [entity: entity])
         }
         catch (Exception ex) {
@@ -96,12 +109,20 @@ class EntitySettingsController {
 
 
     def settings() {
-        def entity = new EntityService().getEntityById(params.id)
-        def entitySettings = new EntityService().getEntitySettingsByEntity(params.id)
-        def entityConfigs = new EntityService().getEntityConfigByEntity(params.id)
-        def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
-        render(view: '/entity/entitySettings/settings', model: [entity       : entity, entitySettings: entitySettings, emailSettings: emailSettings,
-                                                                entityConfigs: entityConfigs])
+        String id = params.id
+        if(id.equalsIgnoreCase(session.getAttribute("entityId").toString())
+                || session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)) {
+            def entity = new EntityService().getEntityById(params.id)
+            def entitySettings = new EntityService().getEntitySettingsByEntity(params.id)
+            def entityConfigs = new EntityService().getEntityConfigByEntity(params.id)
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            render(view: '/entity/entitySettings/settings', model: [entity       : entity, entitySettings: entitySettings, emailSettings: emailSettings,
+                                                                    entityConfigs: entityConfigs])
+        }
+        else
+        {
+            redirect(uri: "/dashboard")
+        }
     }
 
 }

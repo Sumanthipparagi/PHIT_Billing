@@ -2566,7 +2566,7 @@ class EntityService {
         {
             println(jsonObject)
             Response apiResponse = target
-                    .path(new Links().DEPARTMENT_MASTER_SHOW)
+                    .path(new Links().DEPARTMENT_MASTER_SHOW + "/" + jsonObject.get("id"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
@@ -2585,15 +2585,14 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteDepartment(JSONObject jsonObject)
+    def deleteDepartment(String id)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
-                    .path(new Links().DEPARTMENT_MASTER_SHOW)
-                    .resolveTemplate("id", jsonObject.id)
+                    .path(new Links().DEPARTMENT_MASTER_DELETE + "/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
             return apiResponse
