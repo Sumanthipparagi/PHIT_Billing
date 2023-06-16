@@ -5,6 +5,7 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
 import phitb_ui.Constants
+import phitb_ui.EntityService
 import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.entity.CustomerGroupController
@@ -22,32 +23,10 @@ class BankRegisterController {
     {
         try
         {
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            def seriesurl = Links.API_GATEWAY + Links.SERIES_MASTER_SHOW
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl5 = new URL(seriesurl)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def series = new JsonSlurper().parseText(apiUrl5.text)
-            ArrayList<String> statelist = new StateController().show() as ArrayList<String>
-            ArrayList<String> divisionList = new DivisionController().show() as ArrayList<String>
-            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-            ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
-            ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> citylist = new CityController().show() as ArrayList<String>
-            ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
-            ArrayList<String> managerList = []
-            userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
-                {
-                    managerList.add(it)
-                }
-            }
-            render(view: '/accounts/bankRegister/bankRegister',model: [entity     :entity, statelist:statelist,
-                                                                       countrylist:countrylist, citylist:citylist,
-                                                                       zoneList   :zoneList,
-                                                                       entitytype :entitytype, customer:customer, series:series,
-                                                                       managerList:managerList, divisionList:divisionList])
+
+            ArrayList<JSONObject> entityList = new ArrayList<>()
+            entityList.add(new EntityService().getEntityById(session.getAttribute("entityId").toString()))
+            render(view: '/accounts/bankRegister/bankRegister',model: [entity     :entityList])
         }
         catch (Exception ex)
         {
@@ -110,7 +89,6 @@ class BankRegisterController {
     {
         try
         {
-            println(params)
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new AccountsService().putBankRegister(jsonObject)
             if (apiResponse.status == 200)

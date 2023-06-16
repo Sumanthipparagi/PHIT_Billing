@@ -33,7 +33,7 @@
         <div class="col-lg-5 col-md-5 col-sm-12">
           <h2>Jquery DataTables</h2>
           <ul class="breadcrumb padding-0">
-            <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
             <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
             <li class="breadcrumb-item active">Jquery DataTables</li>
           </ul>

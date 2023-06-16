@@ -5,42 +5,34 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="bankTitle"></h4>
+                    <h4 class="departmentTitle"></h4>
                 </div>
 
                 <form action="" id="form_validation" method="post" role="form" class="bankForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="bankName">
-                                    Bank Name
+                            <div class="col-lg-12 form-group  form-float">
+                                <label for="name">
+                                    Department Name
                                 </label>
-                                <input type="text" id="bankName" class="form-control bankName" name="bankName"
-                                       placeholder="Bank Name"
-                                       required/>
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="cityId">
-                                    City
-                                </label>
-                                <select style="width: 100%" class="form-control show-tick select select2-hidden-accessible cityId" name="cityId" id="cityId">
-                                </select>
-                            </div>
-
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="ifscCode">
-                                    IFSC code
-                                </label>
-                                <input type="text" id="ifscCode" class="form-control ifscCode" name="ifscCode"
-                                       placeholder="IFSC code"
+                                <input type="text" id="name" class="form-control name" name="name"
+                                       placeholder="Department Name"
                                        required/>
                             </div>
 
 
-                            <div class="col-lg-6 form-group  form-float">
+                            <div class="col-lg-12 form-group  form-float">
+                                <label for="description">
+                                    Description
+                                </label>
+                                <input type="text" id="description" class="form-control description" name="description"
+                                       placeholder="Description"
+                                       required/>
+                            </div>
+
+
+                            <div class="col-lg-12 form-group  form-float">
                                 <label for="entityId">
                                     Entity
                                 </label>
@@ -53,20 +45,9 @@
                             </div>
 
 
-                            %{--                            <div class="col-lg-6 form-group  form-float">--}%
-                            %{--                                <label for="entityTypeId">--}%
-                            %{--                                    Entity Type--}%
-                            %{--                                </label>--}%
-                            %{--                                <select class="form-control show-tick entityType" name="entityTypeId" id="entityTypeId">--}%
-                            %{--                                    <g:each var="et" in="${entitytype}">--}%
-                            %{--                                        <option value="${et.id}">${et.name}</option>--}%
-                            %{--                                    </g:each>--}%
-                            %{--                                </select>--}%
-                            %{--                            </div>--}%
-
                             <input type="hidden" class="entityTypeId"  name="entityTypeId">
-%{--                            <input type="hidden" name="entityId" value="1">--}%
-                            <input type="hidden" name="createdUser" value="1">
+                            %{--                            <input type="hidden" name="entityId" value="1">--}%
+                            <input type="hidden" name="createdUser" value="${session.get}">
                             <input type="hidden" name="modifiedUser" value="1">
                             <input type="hidden" name="status" value="1">
                             <input type="hidden" name="syncStatus" value="1">

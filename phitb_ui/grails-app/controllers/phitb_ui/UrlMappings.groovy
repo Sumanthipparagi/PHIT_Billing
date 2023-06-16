@@ -382,6 +382,14 @@ class UrlMappings {
         "/service-type/update/$id"(controller:"serviceType",action:"update")
         "/service-type/delete/$id"(controller: "serviceType",action:"delete")
 
+        //Department
+        "/department"(controller: "department") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/department/datatable"(controller: "department", action: "dataTable")
+        "/department/update/$id"(controller:"department",action:"update")
+        "/department/delete/$id"(controller: "department",action:"delete")
+
         /*<-------------------------------------------Accounts------------------------------------------------->*/
         "/credit-jv"(controller: "creditJv",action:"index")
         "/credit-jv/save"(controller: "creditJv",action:"saveCreditJv")

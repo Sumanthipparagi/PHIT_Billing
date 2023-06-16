@@ -71,7 +71,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Payment Collection Logs </h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Payment Collection Logs</li>
                     </ul>
                 </div>

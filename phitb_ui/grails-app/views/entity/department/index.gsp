@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="PharmIT">
 
-    <title>:: PharmIt ::  City</title>
+    <title>:: PharmIt :: Department</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -16,18 +16,20 @@
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
 
     <style>
 
-    /*div.dataTables_scrollBody table tbody  td {*/
-    /*    border-top: none;*/
-    /*    padding: 0.9px;*/
-    /*    text-align: center;*/
-    /*    border-collapse: unset!important;*/
-    /*}*/
+    div.dataTables_scrollBody table tbody  td {
+        border-top: none;
+        padding: 0.9px;
+        text-align: center;
+        border-collapse: unset!important;
+    }
 
     .editbtn
     {
@@ -43,7 +45,6 @@
     }
 
     </style>
-
 
 </head>
 <body class="theme-black">
@@ -61,20 +62,20 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>City Master</h2>
+                    <h2>Department</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">City Master</li>
+                        <li class="breadcrumb-item active">Department</li>
                     </ul>
                 </div>
-%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
-%{--                    <div class="input-group m-b-0">--}%
-%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
-%{--                        <span class="input-group-addon">--}%
-%{--                            <i class="zmdi zmdi-search"></i>--}%
-%{--                        </span>--}%
-%{--                    </div>--}%
-%{--                </div>--}%
+             %{--   <div class="col-lg-7 col-md-7 col-sm-12">
+                    <div class="input-group m-b-0">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-group-addon">
+                            <i class="zmdi zmdi-search"></i>
+                        </span>
+                    </div>
+                </div>--}%
             </div>
         </div>
         <!-- Basic Examples -->
@@ -98,17 +99,16 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addCityModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add City</font></font></button>
+                                data-target="#addbankRegisterModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Department</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover cityTable dataTable">
+                            <table class="table table-bordered table-striped table-hover departmentTable dataTable">
                                 <thead>
                                 <tr>
-%{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Name</th>
-                                    <th style="width: 20%">State</th>
+                                    %{--                                    <th style="width: 20%">ID</th>--}%
+                                    <th style="width: 20%">Department Name</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -133,12 +133,15 @@
     </div>
 </section>
 
-<g:include view="controls/add-city.gsp"/>
+
+<g:include view="controls/accounts/add-bank-register.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
+<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -149,21 +152,44 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-%{--<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />--}%
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-
+<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
+<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js" type="text/javascript"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 
 <script>
 
-    var citytable;
+    var departmentTable;
     var id = null;
     $(function () {
-        cityTable();
+        fridgeTable();
+        $('#entityId').select2();
+        $('#cityId').select2({
+            ajax: {
+                url: '/city/get',
+                dataType: 'json',
+                //delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        type: 'select2'
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data
+                    };
+                },
+            },
+            placeholder: 'Search for cities',
+            minimumInputLength: 2
+        });
     });
 
-    function cityTable() {
-        citytable = $(".cityTable").DataTable({
+    function fridgeTable() {
+        departmentTable = $(".departmentTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -177,33 +203,26 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search City"
+                searchPlaceholder: "Search Department Name"
             },
             ajax: {
                 type: 'GET',
-                url: '/city/datatable',
+                url: '/department/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-areaName="' + json.data[i].areaName + '"' +
-                            'data-areaCode="' + json.data[i].areaCode + '"' +
-                            ' data-circleName="' + json.data[i].circleName + '"' +
-                            ' data-pincode="' + json.data[i].pincode + '"' +
-                            ' data-latitude="' + json.data[i].latitude + '"' +
-                            ' data-logitude="' + json.data[i].logitude + '"' +
-                            ' data-region="' + json.data[i].region.id + '"' +
-                            ' data-division="' + json.data[i].division.id + '"' +
-                            ' data-district="' + json.data[i].district.id + '"' +
-                            ' data-state="' + json.data[i].state.id + '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addCityModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            '" data-name="' + json.data[i].bankName + '"' +
+                            '" data-entityId="' + json.data[i].entityId + '"' +
+                            '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addbankRegisterModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             // 'id': json.data[i].id,
-                            'name': json.data[i].areaName,
-                            'state': json.data[i].state.name,
+                            'name': json.data[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -211,43 +230,44 @@
                 }
             },
             columns: [
-                // {'data': 'id', 'width': '20%'},
-                {'data': 'name', 'width': '20%'},
-                {'data': 'state', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'name'},
+                {'data': 'action'}
             ]
         });
     }
 
-    $(".cityForm").submit(function (event) {
+
+
+    $(".bankForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
 
         //grab all form data
         var formData = new FormData(this);
+        console.log(formData);
 
         var url = '';
         var type = '';
         if (id) {
-            url = '/city/update/' + id;
+            url = '/bank-register/update/' + id;
             type = 'POST'
         } else {
-            url = '/city';
+            url = '/bank-register';
             type = 'POST'
         }
 
+        console.log(type);
         $.ajax({
-
             url: url,
             type: type,
             data: formData,
             contentType: false,
             processData: false,
             success: function () {
-                Swal.fire("Success!", "City Submitted Successfully", "success");
-                cityTable();
-                $('#addCityModal').modal('hide');
+                Swal.fire("Success!", "Bank Register Submitted Successfully", "success");
+                fridgeTable();
+                $('#addbankRegisterModal').modal('hide');
             },
             error: function () {
                 Swal.fire("Error!", "Something went wrong", "error");
@@ -257,53 +277,43 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".cityForm")[0].reset();
-        $(".cityTitle").text("Add City");
-        id = null;
-        $('.state').val("").change();
-        $('.state').select2();
-        $('.division').select2();
-        $('.region').select2();
-        $('.district').select2();
+        $(".bankTitle").text("Add Bank Register")
+        $(".bankForm")[0].reset();
+        id = null
+    });
 
+    $('#entityId').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".areaName").val($(this).attr('data-areaName'));
-        $(".areaCode").val($(this).attr('data-areaCode'));
-        $(".circleName").val($(this).attr('data-circleName'));
-        $(".pincode").val($(this).attr('data-pincode'));
-        $(".latitude").val($(this).attr('data-latitude'));
-        $(".logitude").val($(this).attr('data-logitude'));
-        $(".region").val($(this).attr('data-region')).change();
-        $(".division").val($(this).attr('data-division')).change();
-        $(".district").val($(this).attr('data-district')).change();
-        $(".state").val($(this).attr('data-state')).change();
-        $('.state').select2();
-        $('.division').select2();
-        $('.region').select2();
-        $('.district').select2();
-
-        $(".cityTitle").text("Update City");
+        $(".bankName").val($(this).attr('data-bankName')).change();
+        $(".cityId").val($(this).attr('data-cityId')).change();
+        $(".ifscCode").val($(this).attr('data-ifscCode'));
+        $(".entityId").val($(this).attr('data-entityId')).change();
+        $(".bankTitle").text("Update Bank Register");
     });
+
+
 
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete City ?");
+        $("#myModalLabel").text("Delete Bank Register ?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/city/delete/' + id,
+            url: '/bank-register/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                cityTable();
-                Swal.fire("Success!", "City Deleted Successfully", "success");
+                fridgeTable();
+                Swal.fire("Success!", "Bank Register Deleted Successfully", "success");
             }, error: function () {
                 Swal.fire("Error!", "Something went wrong", "error");
             }
@@ -312,9 +322,10 @@
 
 
 </script>
+
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("system-menu");
+    selectSideMenu("accounts-menu");
 </script>
 </body>
 </html>

@@ -72,6 +72,9 @@ class DepartmentMasterService {
                 }
             }
             eq('deleted', false)
+            entity {
+                eq('id', entityId)
+            }
             order(orderColumn, orderDir)
         }
         def recordsTotal = departmentMasterMasterArrayList.totalCount

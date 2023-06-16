@@ -64,7 +64,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Bank Register</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Bank Register</li>
                     </ul>
                 </div>
@@ -110,9 +110,6 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Bank Name</th>
                                     <th style="width: 20%">IFSC Code</th>
-                                    <th style="width: 20%">City</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -169,6 +166,7 @@
     var id = null;
     $(function () {
         fridgeTable();
+        $('#entityId').select2();
         $('#cityId').select2({
             ajax: {
                 url: '/city/get',
@@ -229,10 +227,7 @@
                         return_data.push({
                             // 'id': json.data[i].id,
                             'bankName': json.data[i].bankName,
-                            'cityId': json.data[i].cityId,
                             'ifscCode': json.data[i].ifscCode,
-                            'entity': json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -241,12 +236,9 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'bankName', 'width': '20%'},
-                {'data': 'ifscCode', 'width': '20%'},
-                {'data': 'cityId', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'bankName', 'width': '25%'},
+                {'data': 'ifscCode', 'width': '25%'},
+                {'data': 'action', 'width': '25%'}
             ]
         });
     }

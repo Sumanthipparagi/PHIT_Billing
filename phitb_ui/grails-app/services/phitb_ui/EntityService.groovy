@@ -2474,8 +2474,33 @@ class EntityService {
 
         }
         catch (Exception ex) {
-            System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :entityService , action :  getAllDepartment  , Ex:' + ex)
+            log.error('Service :entityService , action :  getAllDepartment  , Ex:' + ex)
+        }
+
+    }
+
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def getDepartmentDatatable(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().DEPARTMENT_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getDepartmentDatatable  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getDepartmentDatatable  , Ex:' + ex)
         }
 
     }
@@ -2507,6 +2532,76 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :getDeparmentByEntityId , action :  show  , Ex:' + ex)
             log.error('Service :getDeparmentByEntityId , action :  show  , Ex:' + ex)
+        }
+
+    }
+
+    def saveDepartment(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().DEPARTMENT_MASTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  saveDepartment  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveDepartment  , Ex:' + ex)
+        }
+
+    }
+
+    def putDepartment(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().DEPARTMENT_MASTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  putDepartment  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putDepartment  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteDepartment(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DEPARTMENT_MASTER_SHOW)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  deleteDepartment  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteDepartment  , Ex:' + ex)
         }
 
     }

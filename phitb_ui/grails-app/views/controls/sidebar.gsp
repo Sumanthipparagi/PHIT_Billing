@@ -513,6 +513,12 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_TAX", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/tax">Tax Register</a></li>
                         </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_BANK_REGISTER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/bank-register">Bank</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_DEPARTMENT", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/department">Department</a></li>
+                        </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_TERRITORY", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/territory">Territory</a></li>
                         </g:if>
