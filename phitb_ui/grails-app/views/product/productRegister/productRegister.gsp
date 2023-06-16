@@ -118,6 +118,10 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Product Name</th>
                                     <th style="width: 20%">HSN code</th>
+                                    <th style="width: 20%">Company</th>
+                                    <th style="width: 20%">MRP</th>
+                                    <th style="width: 20%">Category</th>
+                                    <th style="width: 20%">GST</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -208,10 +212,19 @@
                             +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                        var categoryName = ""
+                        if(json.data[i]?.category != null)
+                        {
+                            categoryName = json.data[i]?.category?.categoryName
+                        }
                         return_data.push({
                             'id': json.data[i].id,
                             'productName': json.data[i].productName,
                             'hsnCode': json.data[i].hsnCode,
+                            'company': json.data[i].mktCompanyId,
+                            'mrp':json.data[i].mrp,
+                            'category':categoryName,
+                            'gst':json.data[i].taxId,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -222,6 +235,10 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'productName', 'width': '20%'},
                 {'data': 'hsnCode', 'width': '20%'},
+                {'data': 'company', 'width': '20%'},
+                {'data': 'mrp', 'width': '20%'},
+                {'data': 'category', 'width': '20%'},
+                {'data': 'gst', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

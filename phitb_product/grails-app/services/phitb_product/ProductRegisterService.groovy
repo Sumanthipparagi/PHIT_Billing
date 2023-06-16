@@ -52,7 +52,7 @@ class ProductRegisterService {
         start = paramsJsonObject.get("start")
         length = paramsJsonObject.get("length")
 
-        String orderColumn = "id"
+        String orderColumn = "productName"
         switch (orderColumnId) {
             case '0':
                 orderColumn = "id"
