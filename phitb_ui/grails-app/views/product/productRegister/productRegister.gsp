@@ -118,10 +118,10 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Product Name</th>
                                     <th style="width: 20%">HSN code</th>
-                                    <th style="width: 20%">Company</th>
+                                  %{--  <th style="width: 20%">Company</th>--}%
                                     <th style="width: 20%">MRP</th>
                                     <th style="width: 20%">Category</th>
-                                    <th style="width: 20%">GST</th>
+                                    %{--<th style="width: 20%">GST</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -221,10 +221,10 @@
                             'id': json.data[i].id,
                             'productName': json.data[i].productName,
                             'hsnCode': json.data[i].hsnCode,
-                            'company': json.data[i].mktCompanyId,
+                            //'company': json.data[i].mktCompanyId,
                             'mrp':json.data[i].mrp,
                             'category':categoryName,
-                            'gst':json.data[i].taxId,
+                           // 'gst':json.data[i].taxId,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -235,10 +235,10 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'productName', 'width': '20%'},
                 {'data': 'hsnCode', 'width': '20%'},
-                {'data': 'company', 'width': '20%'},
+              //  {'data': 'company', 'width': '20%'},
                 {'data': 'mrp', 'width': '20%'},
                 {'data': 'category', 'width': '20%'},
-                {'data': 'gst', 'width': '20%'},
+             //   {'data': 'gst', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

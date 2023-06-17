@@ -24,12 +24,20 @@ class SchemeEntryController {
 
     def addScheme()
     {
-        ArrayList<String> zoneList = new ZoneController().show()
+        String entityId = session.getAttribute("entityId").toString()
+        ArrayList<JSONObject> zoneList = new ArrayList<>()
+        ArrayList<JSONObject> allZones = new ZoneController().show()
+        for (JSONObject jsonObject : allZones) {
+            if(jsonObject.get("entityId").toString().equalsIgnoreCase(entityId))
+            {
+                zoneList.add(jsonObject)
+            }
+        }
         ArrayList<String> stateList = new StateController().show() as ArrayList<String>
         ArrayList<String> cityList = new CityController().show() as ArrayList<String>
         ArrayList<String> hqAreaList = new HQAreasController().getByEntity() as ArrayList<String>
-        ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
-        ArrayList<String> productList = new ProductController().show() as ArrayList<String>
+        def entityList = new EntityRegisterController().getByAffiliateById(entityId)
+        ArrayList<String> productList = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
         ArrayList<String> batchList = new BatchRegisterController().show() as ArrayList<String>
         ArrayList<String> distributorList = []
         entityList.each {

@@ -15,7 +15,7 @@
     <!-- Custom Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.min.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
     <asset:stylesheet
@@ -259,9 +259,12 @@
                                                     <label for="slab1Status">
                                                         Slab 1 Status
                                                     </label>
-                                                    <input type="number" id="slab1Status" class="form-control slab1Status"
-                                                           name="slab1Status" placeholder="Slab 1 Status" value ="0"
-                                                           required/>
+                                                    <select type="number" id="slab1Status" class="form-control slab1Status"
+                                                           name="slab1Status"
+                                                            required>
+                                                        <option value ="1">ACTIVE</option>
+                                                        <option value ="0">DEACTIVE</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -316,9 +319,12 @@
                                                     <label for="slab2Status">
                                                         Slab 2 Status
                                                     </label>
-                                                    <input type="number" id="slab2Status"
-                                                           class="form-control slab2Status" value ="0"
-                                                           name="slab2Status" placeholder="Slab 2 Status"/>
+                                                    <select type="number" id="slab2Status"
+                                                           class="form-control slab2Status"
+                                                           name="slab2Status" >
+                                                        <option value ="1">ACTIVE</option>
+                                                        <option value ="0">DEACTIVE</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -373,9 +379,12 @@
                                                     <label for="slab3Status">
                                                         Slab 3 Status
                                                     </label>
-                                                    <input type="number" id="slab3Status"
-                                                           class="form-control slab3Status" value ="0"
-                                                           name="slab3Status" placeholder="Slab 3 Status"/>
+                                                    <select type="number" id="slab3Status"
+                                                           class="form-control slab3Status"
+                                                           name="slab3Status">
+                                                        <option value ="1">ACTIVE</option>
+                                                        <option value ="0">DEACTIVE</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -530,7 +539,7 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
@@ -708,7 +717,7 @@
         var batch = $('.batch').val();
         if((zone ==="" || zone === undefined) && (state ==="" || state === undefined ) && (city ==="" || city === undefined ) && (hqarea ==="" || hqarea === undefined) && (client ==="" || client === undefined ))
         {
-            alert("Please enter basic details!");
+            alert("Please enter details!");
             return false;
         }
 
@@ -725,22 +734,19 @@
             success:function(data){
                 // $("#validation-status").text(data);
                 // swal('success','User updated Successfully',data);
-                swal({
-                        title: "Success!",
-                        text: "Created Successfully! ",
-                        type: "success"
-                    },
-                    function(){
-                        window.location.href = "/scheme-entry";
-
-                    }
-                );
+                Swal.fire({
+                    title: "Success!",
+                    text: "Created Successfully! ",
+                    type: "success"
+                }).then(function() {
+                    window.location.href = "/scheme-entry";
+                });
             },
             error:function(data){
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
                 // swal('error','User update Failed',data.responseText);
-                swal("Error", "Request failed!"+data.responseText, "error");
+                Swal.fire("Error", "Request failed!"+data.responseText, "error");
 
             }
         });
