@@ -1014,4 +1014,60 @@ class PurchaseService {
         }
     }
 
+    boolean purchaseProductDeleteCheck(String productId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_PRODUCT_DEL_CHECK + "?id="+productId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(jsonObject.get("delete"))
+                    return true
+                else
+                    return false
+            }
+            else
+            {
+                return false
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :purchase , action :  purchaseProductDeleteCheck  , Ex:' + ex)
+            log.error('Service :purchase , action :  purchaseProductDeleteCheck  , Ex:' + ex)
+            return false
+        }
+    }
+
+    boolean purchaseBatchDeleteCheck(String productId, String batchNumber) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_BATCH_DEL_CHECK + "?id="+productId +"&batchNumber="+batchNumber)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(jsonObject.get("delete"))
+                    return true
+                else
+                    return false
+            }
+            else
+            {
+                return false
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :purchase , action :  purchaseBatchDeleteCheck  , Ex:' + ex)
+            log.error('Service :purchase , action :  purchaseBatchDeleteCheck  , Ex:' + ex)
+            return false
+        }
+    }
+
 }

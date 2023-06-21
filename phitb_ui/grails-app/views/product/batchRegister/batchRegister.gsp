@@ -386,7 +386,8 @@
                 fridgeTable();
                 Swal.fire("Success!", "Batch Register Deleted Successfully", "success");
             }, error: function () {
-                Swal.fire("Error!", "Something went wrong", "error");
+                $('.deleteModal').modal('hide');
+                Swal.fire("Unable to Delete!", "Please make sure the batch is not used in either sales or purchase.", "error");
             }
         });
     }

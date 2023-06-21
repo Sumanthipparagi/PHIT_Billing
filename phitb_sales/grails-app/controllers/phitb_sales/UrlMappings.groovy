@@ -633,6 +633,9 @@ class UrlMappings {
 
             "/save-retailer-entry"(controller: 'saleBillDetails', action: 'saveRetailerInvoice')
 
+            "/product-del-check"(controller: 'reports', action: 'productDeleteClearance')
+            "/batch-del-check"(controller: 'reports', action: 'batchDeleteClearance')
+
         }
     }
 }

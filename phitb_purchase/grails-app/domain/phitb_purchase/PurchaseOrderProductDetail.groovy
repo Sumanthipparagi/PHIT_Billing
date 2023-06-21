@@ -1,6 +1,8 @@
 package phitb_purchase
 
-class PurchaseOrderProductDetail {
+import gorm.logical.delete.LogicalDelete
+
+class PurchaseOrderProductDetail implements Serializable, LogicalDelete<PurchaseOrderProductDetail> {
 
     long finId
     long billId

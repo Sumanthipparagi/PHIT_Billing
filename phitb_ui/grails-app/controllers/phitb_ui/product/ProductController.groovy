@@ -11,6 +11,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import phitb_ui.Constants
 import phitb_ui.EntityService
+import phitb_ui.PurchaseService
+import phitb_ui.SalesService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.TaxController
 import phitb_ui.entity.UserRegisterController
@@ -268,12 +270,25 @@ class ProductController {
     def delete() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().deleteProductRegister(jsonObject)
-            if (apiResponse.status == 200) {
-                JSONObject data = new JSONObject()
-                data.put("success", "success")
-                respond data, formats: ['json'], status: 200
-            } else {
+
+            //check if product is used in purchase
+            boolean purchaseDelete = new PurchaseService().purchaseProductDeleteCheck(jsonObject.id)
+
+            //check if product is used in sales
+            boolean salesDelete = new SalesService().salesProductDeleteCheck(jsonObject.id)
+
+            if(purchaseDelete && salesDelete) {
+                def apiResponse = new ProductService().deleteProductRegister(jsonObject)
+                if (apiResponse.status == 200) {
+                    JSONObject data = new JSONObject()
+                    data.put("success", "success")
+                    respond data, formats: ['json'], status: 200
+                } else {
+                    response.status = 400
+                }
+            }
+            else
+            {
                 response.status = 400
             }
         }

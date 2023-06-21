@@ -2347,4 +2347,61 @@ contains both deliveryChallan and products
         }
 
     }
+
+    boolean salesProductDeleteCheck(String productId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALES_PRODUCT_DEL_CHECK + "?id="+productId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(jsonObject.get("delete"))
+                    return true
+                else
+                    return false
+            }
+            else
+            {
+                return false
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :sales , action :  salesProductDeleteCheck  , Ex:' + ex)
+            log.error('Service :sales , action :  salesProductDeleteCheck  , Ex:' + ex)
+            return false
+        }
+    }
+
+    boolean salesBatchDeleteCheck(String productId, String batchNumber) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALES_BATCH_DEL_CHECK + "?id="+productId +"&batchNumber="+batchNumber)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(jsonObject.get("delete"))
+                    return true
+                else
+                    return false
+            }
+            else
+            {
+                return false
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :sales , action :  salesBatchDeleteCheck  , Ex:' + ex)
+            log.error('Service :sales , action :  salesBatchDeleteCheck  , Ex:' + ex)
+            return false
+        }
+    }
+
 }

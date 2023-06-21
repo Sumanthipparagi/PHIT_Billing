@@ -32,4 +32,56 @@ class ReportsController {
             response.status = 400
         }
     }
+
+    def productDeleteClearance() {
+        try {
+            String id = params.id
+            JSONObject jsonObject = new JSONObject()
+            if (id) {
+                long purchaseCount = PurchaseProductDetail.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long purchaseOrderCount = PurchaseOrderProductDetail.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long purchaseReturnCount = PurchaseReturnDetail.countByProductIdAndDeleted(Long.parseLong(id), false)
+
+                long total = purchaseCount + purchaseOrderCount + purchaseReturnCount
+                if (total == 0) {
+                    jsonObject.put("delete", true)
+                } else {
+                    jsonObject.put("delete", false)
+                }
+            } else {
+                jsonObject.put("delete", false)
+            }
+            respond jsonObject
+        }
+        catch (Exception ex) {
+            ex.printStackTrace()
+        }
+    }
+
+    def batchDeleteClearance() {
+        try {
+            String id = params.id
+            String batchNumber = params.batchNumber
+            JSONObject jsonObject = new JSONObject()
+            if (id) {
+
+                long purchaseCount = PurchaseProductDetail.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long purchaseOrderCount = PurchaseOrderProductDetail.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long purchaseReturnCount = PurchaseReturnDetail.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+
+                long total = purchaseCount + purchaseOrderCount + purchaseReturnCount
+                if (total == 0) {
+                    jsonObject.put("delete", true)
+                } else {
+                    jsonObject.put("delete", false)
+                }
+            } else {
+                jsonObject.put("delete", false)
+            }
+            respond jsonObject
+        }
+        catch (Exception ex) {
+            ex.printStackTrace()
+        }
+    }
 }

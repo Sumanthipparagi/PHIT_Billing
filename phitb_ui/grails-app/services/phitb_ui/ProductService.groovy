@@ -1801,8 +1801,8 @@ class ProductService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :productService , action :  delete  , Ex:' + ex)
+            log.error('Service :productService , action :  delete  , Ex:' + ex)
         }
 
     }

@@ -319,7 +319,8 @@
                 userRegisterTable();
                 swal("Success!", "Product Register Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                $('.deleteModal').modal('hide');
+                Swal.fire("Unable to Delete!", "Please make sure the batch is not used in either sales or purchase.", "error");
             }
         });
     }

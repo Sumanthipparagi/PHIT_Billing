@@ -7,6 +7,8 @@ import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.ProductService
+import phitb_ui.PurchaseService
+import phitb_ui.SalesService
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.TaxController
@@ -146,15 +148,25 @@ class BatchRegisterController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().deleteBatchRegister(jsonObject)
-            if (apiResponse.status == 200)
-            {
-                JSONObject data = new JSONObject()
-                data.put("success", "success")
-                respond data, formats: ['json'], status: 200
+
+            JSONObject batch = new ProductService().getBatchById(jsonObject.id)
+            //check if batch is used in purchase
+            boolean purchaseDelete = new PurchaseService().purchaseBatchDeleteCheck(jsonObject.id, batch.batchNumber)
+
+            //check if batch is used in sales
+            boolean salesDelete = new SalesService().salesBatchDeleteCheck(jsonObject.id, batch.batchNumber)
+
+            if(purchaseDelete && salesDelete) {
+                def apiResponse = new ProductService().deleteBatchRegister(jsonObject)
+                if (apiResponse.status == 200) {
+                    JSONObject data = new JSONObject()
+                    data.put("success", "success")
+                    respond data, formats: ['json'], status: 200
+                } else {
+                    response.status = 400
+                }
             }
-            else
-            {
+            else {
                 response.status = 400
             }
         }

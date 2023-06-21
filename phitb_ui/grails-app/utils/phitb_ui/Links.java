@@ -922,6 +922,14 @@ public class Links
     public static String PAYMENT_COLLECTION_RECEIPTID = APP_CONTEXT_PATH +"accounts/payment-collection/receiptId";
 
 
+    public static String PURCHASE_PRODUCT_DEL_CHECK = APP_CONTEXT_PATH +"purchase/product-del-check";
+    public static String PURCHASE_BATCH_DEL_CHECK = APP_CONTEXT_PATH +"purchase/batch-del-check";
+
+    public static String SALES_PRODUCT_DEL_CHECK = APP_CONTEXT_PATH +"sales/product-del-check";
+    public static String SALES_BATCH_DEL_CHECK = APP_CONTEXT_PATH +"sales/batch-del-check";
+
+
+
 
 
 }

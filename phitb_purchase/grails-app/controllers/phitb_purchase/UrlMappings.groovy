@@ -123,6 +123,8 @@ class UrlMappings {
 //            status
             "/status"(controller: 'status', action: 'index')
 
+            "/product-del-check"(controller: 'reports', action: 'productDeleteClearance')
+            "/batch-del-check"(controller: 'reports', action: 'batchDeleteClearance')
         }
     }
 }

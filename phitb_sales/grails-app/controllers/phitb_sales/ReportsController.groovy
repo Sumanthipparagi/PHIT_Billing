@@ -569,5 +569,65 @@ class ReportsController {
         }
     }
 
+    def productDeleteClearance() {
+        try {
+            String id = params.id
+            JSONObject jsonObject = new JSONObject()
+            if (id) {
+                long salesCount = SaleProductDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long salesOrderCount = SaleOrderProductDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long salesReturnCount = SaleReturnDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long gtnCount = GoodsTransferNoteProduct.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long stockAdjCount = StockAdjustmentDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long sampleConversion = SampleConversionDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long schemeConfig = SchemeConfiguration.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long deliveryChallan = DeliveryChallanProduct.countByProductIdAndDeleted(Long.parseLong(id), false)
+
+                long total = salesCount + salesOrderCount + salesReturnCount + gtnCount + stockAdjCount + sampleConversion + schemeConfig + deliveryChallan
+                if (total == 0) {
+                    jsonObject.put("delete", true)
+                } else {
+                    jsonObject.put("delete", false)
+                }
+            } else {
+                jsonObject.put("delete", false)
+            }
+            respond jsonObject
+        }
+        catch (Exception ex) {
+            ex.printStackTrace()
+        }
+    }
+
+    def batchDeleteClearance() {
+        try {
+            String id = params.id
+            String batchNumber = params.batchNumber
+            JSONObject jsonObject = new JSONObject()
+            if (id) {
+                long salesCount = SaleProductDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long salesOrderCount = SaleOrderProductDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long salesReturnCount = SaleReturnDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long gtnCount = GoodsTransferNoteProduct.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long stockAdjCount = StockAdjustmentDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long sampleConversion = SampleConversionDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long schemeConfig = SchemeConfiguration.countByProductIdAndBatchAndDeleted(Long.parseLong(id),batchNumber, false)
+                long deliveryChallan = DeliveryChallanProduct.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+
+                long total = salesCount + salesOrderCount + salesReturnCount + gtnCount + stockAdjCount + sampleConversion + schemeConfig + deliveryChallan
+                if (total == 0) {
+                    jsonObject.put("delete", true)
+                } else {
+                    jsonObject.put("delete", false)
+                }
+            } else {
+                jsonObject.put("delete", false)
+            }
+            respond jsonObject
+        }
+        catch (Exception ex) {
+            ex.printStackTrace()
+        }
+    }
 
 }
