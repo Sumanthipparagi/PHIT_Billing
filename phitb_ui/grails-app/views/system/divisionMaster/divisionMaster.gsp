@@ -180,7 +180,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/division/datatable',
+                url: '/division-master/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -221,10 +221,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/division/update/' + id;
+            url = '/division-master/update/' + id;
             type = 'POST'
         } else {
-            url = '/division';
+            url = '/division-master';
             type = 'POST'
         }
         $.ajax({
@@ -271,7 +271,7 @@
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/division/delete/' + id,
+            url: '/division-master/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');

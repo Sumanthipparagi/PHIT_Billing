@@ -34,11 +34,8 @@
                                 <label for="cityIds">
                                     City
                                 </label>
-                                <select style="width: 100%" class="form-control cityIds" name="cityIds" id="cityIds"
+                                <select style="width: 100%;" class="form-control select2-hidden-accessible" name="cityIds" id="cityIds"
                                         multiple="multiple" required>
-                                  %{--  <g:each var="c" in="${citylist}">
-                                        <option value="${c.id}">${c.areaName}</option>
-                                    </g:each>--}%
                                 </select>
                             </div>
 
@@ -120,19 +117,6 @@
                                     </g:each>
                                 </select>
                             </div>
-
-
-%{--                            <div class="col-lg-6 form-group  form-float">--}%
-%{--                                <label for="entityTypeId">--}%
-%{--                                    Entity Type--}%
-%{--                                </label>--}%
-%{--                                <select class="form-control show-tick entityType" name="entityTypeId"--}%
-%{--                                        id="entityTypeId" required>--}%
-%{--                                    <g:each var="et" in="${entitytype}">--}%
-%{--                                        <option value="${et.id}">${et.name}</option>--}%
-%{--                                    </g:each>--}%
-%{--                                </select>--}%
-%{--                            </div>--}%
 
                             <input type="hidden" class="entityType" name="entityTypeId" value="">
                             <input type="hidden" class="createdUser" name="createdUser" value="${session.getAttribute('userId')}">

@@ -551,7 +551,7 @@
                                 <li><a href="/batch-register">Batch Register</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_DIVISION", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/division">Division</a></li>
+                                <li><a href="/division">Product Division</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_CATEGORY", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/product-category">Product Category</a></li>
@@ -569,7 +569,7 @@
                                 <li><a href="/product-type">Product Type</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_DIVISION_GROUP", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/division-group">Division Group</a></li>
+                                <li><a href="/division-group">Product Division Group</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_CLASS", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/product-class">Product Class</a></li>

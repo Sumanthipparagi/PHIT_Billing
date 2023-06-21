@@ -71,7 +71,7 @@
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <form action="/add-scheme-entry" id="addSchemeEntry" method="POST"
-                      role="form" class="schemeRegisterForm"  enctype="multipart/form-data">
+                      role="form" class="schemeRegisterForm" enctype="multipart/form-data">
                     <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card">
@@ -157,23 +157,23 @@
                                                 %{--                                                --}%
                                                 %{--                                            </div>--}%
 
-%{--                                                <div class="col-lg-6 form-group  form-float">--}%
-%{--                                                  --}%
-%{--                                                </div>--}%
+                                                %{--                                                <div class="col-lg-6 form-group  form-float">--}%
+                                                %{--                                                  --}%
+                                                %{--                                                </div>--}%
 
-%{--                                                <div class="col-lg-6 form-group  form-float">--}%
-%{--                                                    <label for="distributor">--}%
-%{--                                                        Distributor--}%
-%{--                                                    </label>--}%
-%{--                                                    <select class="form-control show-tick distributor"--}%
-%{--                                                            name="distributorId"--}%
-%{--                                                            id="distributor">--}%
-%{--                                                        <option value="">--Please Select--</option>--}%
-%{--                                                        <g:each var="d" in="${distributorList}">--}%
-%{--                                                            <option value="${d.id}">${d.entityName}</option>--}%
-%{--                                                        </g:each>--}%
-%{--                                                    </select>--}%
-%{--                                                </div>--}%
+                                                %{--                                                <div class="col-lg-6 form-group  form-float">--}%
+                                                %{--                                                    <label for="distributor">--}%
+                                                %{--                                                        Distributor--}%
+                                                %{--                                                    </label>--}%
+                                                %{--                                                    <select class="form-control show-tick distributor"--}%
+                                                %{--                                                            name="distributorId"--}%
+                                                %{--                                                            id="distributor">--}%
+                                                %{--                                                        <option value="">--Please Select--</option>--}%
+                                                %{--                                                        <g:each var="d" in="${distributorList}">--}%
+                                                %{--                                                            <option value="${d.id}">${d.entityName}</option>--}%
+                                                %{--                                                        </g:each>--}%
+                                                %{--                                                    </select>--}%
+                                                %{--                                                </div>--}%
 
 
                                                 <div class="col-lg-6 form-group  form-float">
@@ -194,7 +194,7 @@
                                                         Batch
                                                     </label>
                                                     <select class="form-control show-tick batch" name="batch"
-                                                            id="batch" >
+                                                            id="batch">
                                                         <option value="">-- Please Select --</option>
 
                                                         %{--                                        <g:each var="p" in="${batchList}">--}%
@@ -229,7 +229,7 @@
                                                     </label>
                                                     <input type="number" id="slab1MinQty"
                                                            class="form-control slab1MinQty"
-                                                           onblur="setTwoNumberDecimal" value ="0"
+                                                           onblur="setTwoNumberDecimal" value="0"
                                                            name="slab1MinQty" placeholder="Slab 1 Min Quantity"
                                                            required/>
                                                 </div>
@@ -240,7 +240,7 @@
                                                     </label>
                                                     <input type="number" id="slab1SchemeQty"
                                                            class="form-control slab1SchemeQty"
-                                                           onblur="setTwoNumberDecimal" value ="0"
+                                                           onblur="setTwoNumberDecimal" value="0"
                                                            name="slab1SchemeQty" placeholder="Slab 1 Scheme Quantity"
                                                            required/>
                                                 </div>
@@ -249,21 +249,25 @@
                                                     <label for="slab1BulkStatus">
                                                         Slab 1 Bulk Status
                                                     </label>
-                                                    <input type="number" id="slab1BulkStatus"
-                                                           class="form-control slab1BulkStatus" value ="0"
-                                                           name="slab1BulkStatus" placeholder=" Slab 1 bulk Status"
-                                                           required/>
+                                                    <select type="number" id="slab1BulkStatus"
+                                                            class="form-control slab1BulkStatus"
+                                                            name="slab1BulkStatus"
+                                                            required>
+                                                        <option value="1">ACTIVE</option>
+                                                        <option value="0">INACTIVE</option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="col-lg-6 form-group  form-float">
                                                     <label for="slab1Status">
                                                         Slab 1 Status
                                                     </label>
-                                                    <select type="number" id="slab1Status" class="form-control slab1Status"
-                                                           name="slab1Status"
+                                                    <select type="number" id="slab1Status"
+                                                            class="form-control slab1Status"
+                                                            name="slab1Status"
                                                             required>
-                                                        <option value ="1">ACTIVE</option>
-                                                        <option value ="0">DEACTIVE</option>
+                                                        <option value="1">ACTIVE</option>
+                                                        <option value="0">INACTIVE</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -292,7 +296,7 @@
                                                     </label>
                                                     <input type="number" id="slab2MinQty"
                                                            class="form-control slab2MinQty"
-                                                           onblur="setTwoNumberDecimal" value ="0"
+                                                           onblur="setTwoNumberDecimal" value="0"
                                                            name="slab2MinQty" placeholder="Slab 2 Min Quantity"/>
                                                 </div>
 
@@ -302,7 +306,7 @@
                                                     </label>
                                                     <input type="number" id="slab2SchemeQty"
                                                            class="form-control slab2SchemeQty"
-                                                           onblur="setTwoNumberDecimal" value ="0"
+                                                           onblur="setTwoNumberDecimal" value="0"
                                                            name="slab2SchemeQty" placeholder="Slab 2 Scheme Quantity"/>
                                                 </div>
 
@@ -310,9 +314,12 @@
                                                     <label for="slab2BulkStatus">
                                                         Slab 2 Bulk Status
                                                     </label>
-                                                    <input type="number" id="slab2BulkStatus"
-                                                           class="form-control slab2BulkStatus" value ="0"
-                                                           name="slab2BulkStatus" placeholder="Slab 2 Bulk Status"/>
+                                                    <select type="number" id="slab2BulkStatus"
+                                                            class="form-control slab2BulkStatus"
+                                                            name="slab2BulkStatus">
+                                                        <option value="1">ACTIVE</option>
+                                                        <option value="0">INACTIVE</option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="col-lg-6 form-group  form-float">
@@ -320,10 +327,10 @@
                                                         Slab 2 Status
                                                     </label>
                                                     <select type="number" id="slab2Status"
-                                                           class="form-control slab2Status"
-                                                           name="slab2Status" >
-                                                        <option value ="1">ACTIVE</option>
-                                                        <option value ="0">DEACTIVE</option>
+                                                            class="form-control slab2Status"
+                                                            name="slab2Status">
+                                                        <option value="1">ACTIVE</option>
+                                                        <option value="0">INACTIVE</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -352,7 +359,7 @@
                                                     </label>
                                                     <input type="number" id="slab3MinQty"
                                                            class="form-control slab3MinQty"
-                                                           onblur="setTwoNumberDecimal" value ="0"
+                                                           onblur="setTwoNumberDecimal" value="0"
                                                            name="slab3MinQty" placeholder="Slab 3 Min Quantity"/>
                                                 </div>
 
@@ -362,7 +369,7 @@
                                                     </label>
                                                     <input type="number" id="slab3SchemeQty"
                                                            class="form-control slab3SchemeQty"
-                                                           onblur="setTwoNumberDecimal" value ="0"
+                                                           onblur="setTwoNumberDecimal" value="0"
                                                            name="slab3SchemeQty" placeholder="Slab 3 Scheme Quantity"/>
                                                 </div>
 
@@ -370,9 +377,12 @@
                                                     <label for="slab3BulkStatus">
                                                         Slab 3 Bulk Status
                                                     </label>
-                                                    <input type="number" id="slab3BulkStatus"
-                                                           class="form-control slab3BulkStatus" value ="0"
-                                                           name="slab3BulkStatus" placeholder="Slab 3 Bulk Status"/>
+                                                    <select type="number" id="slab3BulkStatus"
+                                                           class="form-control slab3BulkStatus"
+                                                           name="slab3BulkStatus">
+                                                        <option value ="1">ACTIVE</option>
+                                                        <option value ="0">INACTIVE</option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="col-lg-6 form-group  form-float">
@@ -380,10 +390,10 @@
                                                         Slab 3 Status
                                                     </label>
                                                     <select type="number" id="slab3Status"
-                                                           class="form-control slab3Status"
-                                                           name="slab3Status">
-                                                        <option value ="1">ACTIVE</option>
-                                                        <option value ="0">DEACTIVE</option>
+                                                            class="form-control slab3Status"
+                                                            name="slab3Status">
+                                                        <option value="1">ACTIVE</option>
+                                                        <option value="0">INACTIVE</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -429,7 +439,8 @@
                                                         Special Discount
                                                     </label>
                                                     <input type="text" id="specialDiscount"
-                                                           class="form-control specialDiscount" value ="0" onblur="setTwoNumberDecimal()"
+                                                           class="form-control specialDiscount" value="0"
+                                                           onblur="setTwoNumberDecimal()"
                                                            name="specialDiscount" placeholder="Special Discount"/>
                                                 </div>
 
@@ -458,7 +469,8 @@
                                                         Special Rate
                                                     </label>
                                                     <input type="number" id="specialRate"
-                                                           class="form-control specialRate" onblur="setTwoNumberDecimal()" value ="0"
+                                                           class="form-control specialRate"
+                                                           onblur="setTwoNumberDecimal()" value="0"
                                                            name="specialRate" placeholder="Special Rate"/>
                                                 </div>
 
@@ -483,12 +495,16 @@
                                                 </div>
                                                 <input type="hidden" name="schemeStatus" value="1">
                                                 <input type="hidden" name="status" value="1">
-                                                <input type="hidden" name="entityId" value="${session.getAttribute('entityId')}">
-                                                <input type="hidden" name="entityTypeId" value="${session.getAttribute('entityTypeId')}">
+                                                <input type="hidden" name="entityId"
+                                                       value="${session.getAttribute('entityId')}">
+                                                <input type="hidden" name="entityTypeId"
+                                                       value="${session.getAttribute('entityTypeId')}">
                                                 <input type="hidden" name="distributorId" value="0">
                                                 <input type="hidden" name="syncStatus" value="1">
-                                                <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
-                                                <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
+                                                <input type="hidden" name="createdUser"
+                                                       value="${session.getAttribute('userId')}">
+                                                <input type="hidden" name="modifiedUser"
+                                                       value="${session.getAttribute('userId')}">
 
                                                 <div class="col-lg-12">
                                                     <div class="" style="float: right;">
@@ -616,10 +632,7 @@
                     "                                                            <option value=\"${e.id}\">${e.entityName}</option>\n" +
                     "                                                        </g:each>\n" +
                     "                                                    </select>"
-            }
-
-
-            else if (this.value === "") {
+            } else if (this.value === "") {
                 selectors = "";
                 $('.selectors').removeClass('col-lg-6')
             }
@@ -707,7 +720,7 @@
     }
 
 
-    $('#addSchemeEntry').submit(function(event) {
+    $('#addSchemeEntry').submit(function (event) {
 
         var zone = $('.zone').val();
         var state = $('.state').val();
@@ -715,38 +728,36 @@
         var hqarea = $('.hqarea').val();
         var client = $('.customer').val();
         var batch = $('.batch').val();
-        if((zone ==="" || zone === undefined) && (state ==="" || state === undefined ) && (city ==="" || city === undefined ) && (hqarea ==="" || hqarea === undefined) && (client ==="" || client === undefined ))
-        {
+        if ((zone === "" || zone === undefined) && (state === "" || state === undefined) && (city === "" || city === undefined) && (hqarea === "" || hqarea === undefined) && (client === "" || client === undefined)) {
             alert("Please enter details!");
             return false;
         }
 
-        if(batch ==="" || batch === null)
-        {
+        if (batch === "" || batch === null) {
             alert("Please select the product with batches!");
             return false;
         }
         var formData = $(this);
         $.ajax({
-            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url         : formData.attr('action'), // the url where we want to POST
-            data        : formData.serialize(), // our data object
-            success:function(data){
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: formData.attr('action'), // the url where we want to POST
+            data: formData.serialize(), // our data object
+            success: function (data) {
                 // $("#validation-status").text(data);
                 // swal('success','User updated Successfully',data);
                 Swal.fire({
                     title: "Success!",
                     text: "Created Successfully! ",
                     type: "success"
-                }).then(function() {
+                }).then(function () {
                     window.location.href = "/scheme-entry";
                 });
             },
-            error:function(data){
+            error: function (data) {
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
                 // swal('error','User update Failed',data.responseText);
-                Swal.fire("Error", "Request failed!"+data.responseText, "error");
+                Swal.fire("Error", "Request failed!" + data.responseText, "error");
 
             }
         });
@@ -754,7 +765,6 @@
         // }
 
     });
-
 
 
     function setTwoNumberDecimal(event) {

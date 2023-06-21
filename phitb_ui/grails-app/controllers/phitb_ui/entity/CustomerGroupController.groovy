@@ -19,7 +19,7 @@ class CustomerGroupController {
         try
         {
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
-            ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
+/*            ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
@@ -36,12 +36,12 @@ class CustomerGroupController {
                 {
                     salesmanList.add(it)
                 }
-            }
+            }*/
 
             render(view: '/entity/customerGroup/customerGroup',model: [entity:entity,
-                                                                         statelist:statelist,countrylist:countrylist,
+                                                                         /*statelist:statelist,countrylist:countrylist,
                                                                          salesmanList:salesmanList,
-                                                                         managerList:managerList,zoneList:zoneList])
+                                                                         managerList:managerList,zoneList:zoneList*/])
         }
         catch (Exception ex)
         {

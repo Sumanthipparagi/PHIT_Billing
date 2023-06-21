@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="PharmIT">
 
-    <title>:: PharmIt :: Division</title>
+    <title>:: PharmIt :: Product Division</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -42,7 +42,6 @@
     tbody td {
         padding: 0px;
     }
-
     </style>
 
 </head>
@@ -61,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Division</h2>
+                    <h2>Product Division</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Division</li>
+                        <li class="breadcrumb-item active">Product Division</li>
                     </ul>
                 </div>
 %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
@@ -99,7 +98,7 @@
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#adddivisionModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Division</font></font></button>
+                                style="vertical-align: inherit;">Add Product Division</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
@@ -166,8 +165,9 @@
     var divisiontable;
     var id = null;
     $(function () {
+        $("#cityIds").select2();
         divisionTable();
-        $("#cityIds").select2({
+    /*    $("#cityIds").select2({
             minimumInputLength: 3,
             required: true,
             ajax: {
@@ -192,6 +192,10 @@
                 cache: true
             }
         });
+*/
+       /* $('#cityIds').each(function() {
+            $(this).select2({ dropdownParent: $(this).parent()});
+        })*/
     });
 
     function divisionTable() {

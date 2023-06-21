@@ -252,7 +252,7 @@
             contentType: false,
             processData: false,
             success: function () {
-                Swal.fire("Success!", "CCm Submitted Successfully", "success");
+                Swal.fire("Success!", "Customer Group Submitted Successfully", "success");
                 customerGroupTable();
                 $('#addcustomerGroupModal').modal('hide');
             },

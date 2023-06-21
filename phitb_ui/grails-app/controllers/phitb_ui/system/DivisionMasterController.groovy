@@ -98,7 +98,6 @@ class DivisionMasterController
     {
         try
         {
-            println(params)
             JSONObject jsonObject = new JSONObject(params)
             if(params.entityId!=null || params.entityId!="")
             {

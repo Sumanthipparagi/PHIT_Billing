@@ -90,7 +90,7 @@ class DivisionService {
             DivisionMaster division = DivisionMaster.findById(Long.parseLong(id))
             if (division) {
                 division.isUpdatable = true
-                division.divisionName = jsonObject.get("regionName").toString()
+                division.divisionName = jsonObject.get("divisionName").toString()
                 division.regionCode = jsonObject.get("regionCode").toString()
                 division.divisionCode = jsonObject.get("divisionCode").toString()
                 division.save(flush: true)
