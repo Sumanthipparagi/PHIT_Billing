@@ -1898,7 +1898,6 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try
         {
             Response apiResponse = target

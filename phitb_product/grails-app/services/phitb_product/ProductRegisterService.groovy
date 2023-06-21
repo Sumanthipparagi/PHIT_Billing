@@ -52,10 +52,10 @@ class ProductRegisterService {
         start = paramsJsonObject.get("start")
         length = paramsJsonObject.get("length")
 
-        String orderColumn = "productName"
+        String orderColumn = "id"
         switch (orderColumnId) {
             case '0':
-                orderColumn = "id"
+                orderColumn = "productName"
                 break;
             case '1':
                 orderColumn = "batchNumber"
@@ -89,11 +89,11 @@ class ProductRegisterService {
 
     ProductRegister save(JSONObject jsonObject) {
         ProductRegister productRegister = new ProductRegister()
-        productRegister.productCode = jsonObject.get("productCode").toString()
-        productRegister.productName = jsonObject.get("productName").toString()
+        productRegister.productCode = jsonObject.get("productCode").toString()?.trim()
+        productRegister.productName = jsonObject.get("productName").toString()?.trim()
         productRegister.manufacturerId = Long.parseLong(jsonObject.get("manufacturerId").toString())
         productRegister.mktCompanyId = Long.parseLong(jsonObject.get("mktCompanyId").toString())
-        productRegister.hsnCode = jsonObject.get("hsnCode").toString()
+        productRegister.hsnCode = jsonObject.get("hsnCode").toString()?.trim()
         productRegister.rackId = Long.parseLong(jsonObject.get("rackId").toString())
         productRegister.division = Division.findById(Long.parseLong(jsonObject.get("division").toString()))
         if(jsonObject.has("composition") && jsonObject.get("composition").toString()!=0)
@@ -196,11 +196,11 @@ class ProductRegisterService {
         ProductRegister productRegister = ProductRegister.findById(Long.parseLong(id))
         if (productRegister) {
             productRegister.isUpdatable = true
-            productRegister.productCode = jsonObject.get("productCode").toString()
-            productRegister.productName = jsonObject.get("productName").toString()
+            productRegister.productCode = jsonObject.get("productCode").toString()?.trim()
+            productRegister.productName = jsonObject.get("productName").toString()?.trim()
             productRegister.manufacturerId = Long.parseLong(jsonObject.get("manufacturerId").toString())
             productRegister.mktCompanyId = Long.parseLong(jsonObject.get("mktCompanyId").toString())
-            productRegister.hsnCode = jsonObject.get("hsnCode").toString()
+            productRegister.hsnCode = jsonObject.get("hsnCode").toString()?.trim()
             productRegister.rackId = Long.parseLong(jsonObject.get("rackId").toString())
             productRegister.division = Division.findById(Long.parseLong(jsonObject.get("division").toString()))
             if(jsonObject.has("composition") && jsonObject.get("composition").toString()!=0)

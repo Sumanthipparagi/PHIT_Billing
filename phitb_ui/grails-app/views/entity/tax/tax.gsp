@@ -98,7 +98,7 @@
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addtaxModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Tax</font></font></button>
+                                style="vertical-align: inherit;">Add New Tax</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">

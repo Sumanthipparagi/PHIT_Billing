@@ -38,8 +38,26 @@
                                        required/>
                             </div>
 
-
                             <div class="col-lg-6 form-group  form-float">
+                                <label for="entity">
+                                    Entity
+                                </label>
+                                <select class="form-control show-tick entity" name="entity" id="entity">
+                                    <option value="">-- Please select --</option>
+
+                                    <g:each var="e" in="${entity}">
+                                        <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <hr>
+                                <h6>Sales</h6>
+                            </div>
+
+                           %{-- <div class="col-lg-6 form-group  form-float">
                                 <label for="salesTaxType">
                                     Sales Tax Type
                                 </label>
@@ -47,7 +65,7 @@
                                        name="salesTaxType"
                                        placeholder="Sales Tax Type"
                                        required/>
-                            </div>
+                            </div>--}%
 
 
                             <div class="col-lg-6 form-group  form-float">
@@ -71,36 +89,6 @@
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="purchaseTaxType">
-                                    Purchase Tax Type
-                                </label>
-                                <input type="text" id="purchaseTaxType" class="form-control purchaseTaxType"
-                                       name="purchaseTaxType"
-                                       placeholder="Purchase Tax Type"
-                                       required/>
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="purchaseSgst">
-                                    Purchase SGST
-                                </label>
-                                <input type="number" step="any" id="purchaseSgst" class="form-control purchaseSgst"
-                                       name="purchaseSgst"
-                                       placeholder="Purchase SGST"
-                                       required/>
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="purchaseCgst">
-                                    Purchase CGST
-                                </label>
-                                <input type="number" step="any" id="purchaseCgst" class="form-control purchaseCgst"
-                                       name="purchaseCgst"
-                                       placeholder="Purchase CGST"
-                                       required/>
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
                                 <label for="salesIgst">
                                     Sales IGST
                                 </label>
@@ -109,17 +97,6 @@
                                        placeholder="Sales IGST"
                                        required/>
                             </div>
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="purchaseIgst">
-                                    Purchase IGST
-                                </label>
-                                <input type="number" step="any" id="purchaseIgst" class="form-control purchaseIgst"
-                                       name="purchaseIgst"
-                                       placeholder="Sales IGST"
-                                       required/>
-                            </div>
-
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="gstOnMrpSales">
@@ -143,15 +120,89 @@
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
                                 </select>
-                               %{-- <input type="text" id="gstOnSchemeValueSales" class="form-control gstOnSchemeValueSales"
-                                       name="gstOnSchemeValueSales"
-                                       placeholder="GST on Scheme Value Sales"
-                                       required/>--}%
+                                %{-- <input type="text" id="gstOnSchemeValueSales" class="form-control gstOnSchemeValueSales"
+                                        name="gstOnSchemeValueSales"
+                                        placeholder="GST on Scheme Value Sales"
+                                        required/>--}%
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
+                                <label for="gstDiscountSales">
+                                    GST on Discount Sales
+                                </label>
+                                <select name="gstDiscountSales" id="gstDiscountSales" class="form-control gstDiscountSales" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                                %{--  <input type="text" id="gstDiscountSales" class="form-control gstDiscountSales"
+                                         name="gstDiscountSales"
+                                         placeholder="GST Discount Sales"
+                                         required/>--}%
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="saleStatus">
+                                    Sale Status
+                                </label>
+                                <select type="text" id="saleStatus" class="form-control saleStatus"
+                                        name="saleStatus"
+                                        required>
+                                    <option value="1">ACTIVE</option>
+                                    <option value="0">INACTIVE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <hr>
+                                <h6>Purchase</h6>
+                            </div>
+                            %{--<div class="col-lg-6 form-group  form-float">
+                                <label for="purchaseTaxType">
+                                    Purchase Tax Type
+                                </label>
+                                <input type="text" id="purchaseTaxType" class="form-control purchaseTaxType"
+                                       name="purchaseTaxType"
+                                       placeholder="Purchase Tax Type"
+                                       required/>
+                            </div>--}%
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="purchaseSgst">
+                                    Purchase SGST
+                                </label>
+                                <input type="number" step="any" id="purchaseSgst" class="form-control purchaseSgst"
+                                       name="purchaseSgst"
+                                       placeholder="Purchase SGST"
+                                       required/>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="purchaseCgst">
+                                    Purchase CGST
+                                </label>
+                                <input type="number" step="any" id="purchaseCgst" class="form-control purchaseCgst"
+                                       name="purchaseCgst"
+                                       placeholder="Purchase CGST"
+                                       required/>
+                            </div>
+
+
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="purchaseIgst">
+                                    Purchase IGST
+                                </label>
+                                <input type="number" step="any" id="purchaseIgst" class="form-control purchaseIgst"
+                                       name="purchaseIgst"
+                                       placeholder="Sales IGST"
+                                       required/>
+                            </div>
+
+
+                            <div class="col-lg-6 form-group  form-float">
                                 <label for="gstOnMrpPur">
-                                    GST on MRP Pur
+                                    GST on MRP Purchase
                                 </label>
                                 <select name="gstOnMrpPur" id="gstOnMrpPur" class="form-control gstOnMrpPur" required>
                                     <option value="0">No</option>
@@ -166,7 +217,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="gstOnSchemeValuePur">
-                                    GST on Scheme Value Pur
+                                    GST on Scheme Value Purchase
                                 </label>
 
                                 <select name="gstOnSchemeValuePur" id="gstOnSchemeValuePur" class="form-control gstOnSchemeValuePur" required>
@@ -181,22 +232,8 @@
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="gstDiscountSales">
-                                    GST on Discount Sales
-                                </label>
-                                <select name="gstDiscountSales" id="gstDiscountSales" class="form-control gstDiscountSales" required>
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                </select>
-                              %{--  <input type="text" id="gstDiscountSales" class="form-control gstDiscountSales"
-                                       name="gstDiscountSales"
-                                       placeholder="GST Discount Sales"
-                                       required/>--}%
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
                                 <label for="gstDiscountPur">
-                                    GST on Discount Pur
+                                    GST on Discount Purchase
                                 </label>
 
                                 <select name="gstDiscountPur" id="gstDiscountPur" class="form-control gstDiscountPur" required>
@@ -210,40 +247,16 @@
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="saleStatus">
-                                    Sale Status
-                                </label>
-                                <input type="text" id="saleStatus" class="form-control saleStatus"
-                                       name="saleStatus"
-                                       placeholder="Sale Status"
-                                       required/>
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
                                 <label for="purStatus">
-                                    Pur Status
+                                    Purchase Status
                                 </label>
-                                <input type="text" id="purStatus" class="form-control purStatus"
+                                <select type="text" id="purStatus" class="form-control purStatus"
                                        name="purStatus"
-                                       placeholder="Pur Status"
-                                       required/>
-                            </div>
-
-
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="entity">
-                                    Entity
-                                </label>
-                                <select class="form-control show-tick entity" name="entity" id="entity">
-                                    <option value="">-- Please select --</option>
-
-                                    <g:each var="e" in="${entity}">
-                                        <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
-                                    </g:each>
+                                        required>
+                                    <option value="1">ACTIVE</option>
+                                    <option value="0">INACTIVE</option>
                                 </select>
                             </div>
-
 
 %{--                            <div class="col-lg-6 form-group  form-float">--}%
 %{--                                <label for="entityTypeId">--}%
@@ -262,6 +275,8 @@
                             <input type="hidden" name="regionStateIds" value="1">
                             <input type="hidden" name="status" value="1">
                             <input type="hidden" name="syncStatus" value="1">
+                            <input type="hidden" id="salesTaxType" name="salesTaxType" value="1"/>
+                            <input type="hidden" id="purchaseTaxType" name="purchaseTaxType" value="1"/>
                         </div>
                     </div>
 

@@ -115,7 +115,7 @@ class BatchRegisterService {
             batchRegister.qty = Long.parseLong(jsonObject.get("qty").toString())
             batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
             batchRegister.caseWt = jsonObject.get("caseWt").toString()
-            batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
+            batchRegister.batchNumber = jsonObject.get("batchNumber").toString()?.trim()
             if(jsonObject.has("productCat") && jsonObject.get("productCat").toString()!=0)
             {
                 batchRegister.productCat =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
@@ -155,7 +155,7 @@ class BatchRegisterService {
             batchRegister.qty = Long.parseLong(jsonObject.get("qty").toString())
             batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
             batchRegister.caseWt = jsonObject.get("caseWt").toString()
-            batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
+            batchRegister.batchNumber = jsonObject.get("batchNumber").toString()?.trim()
             if(jsonObject.has("productCat") && jsonObject.get("productCat").toString()!=0)
             {
                 batchRegister.productCat =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))

@@ -38,9 +38,9 @@ class ReportsController {
             String id = params.id
             JSONObject jsonObject = new JSONObject()
             if (id) {
-                long purchaseCount = PurchaseProductDetail.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long purchaseOrderCount = PurchaseOrderProductDetail.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long purchaseReturnCount = PurchaseReturnDetail.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long purchaseCount = PurchaseProductDetail.countByProductId(Long.parseLong(id))
+                long purchaseOrderCount = PurchaseOrderProductDetail.countByProductId(Long.parseLong(id))
+                long purchaseReturnCount = PurchaseReturnDetail.countByProductId(Long.parseLong(id))
 
                 long total = purchaseCount + purchaseOrderCount + purchaseReturnCount
                 if (total == 0) {
@@ -65,9 +65,9 @@ class ReportsController {
             JSONObject jsonObject = new JSONObject()
             if (id) {
 
-                long purchaseCount = PurchaseProductDetail.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
-                long purchaseOrderCount = PurchaseOrderProductDetail.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
-                long purchaseReturnCount = PurchaseReturnDetail.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long purchaseCount = PurchaseProductDetail.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
+                long purchaseOrderCount = PurchaseOrderProductDetail.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
+                long purchaseReturnCount = PurchaseReturnDetail.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
 
                 long total = purchaseCount + purchaseOrderCount + purchaseReturnCount
                 if (total == 0) {

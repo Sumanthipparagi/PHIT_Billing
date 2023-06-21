@@ -1019,7 +1019,8 @@ class PurchaseService {
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
-                    .path(new Links().PURCHASE_PRODUCT_DEL_CHECK + "?id="+productId)
+                    .path(new Links().PURCHASE_PRODUCT_DEL_CHECK)
+                    .queryParam("id", productId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse.status == 200)
@@ -1047,7 +1048,9 @@ class PurchaseService {
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
-                    .path(new Links().PURCHASE_BATCH_DEL_CHECK + "?id="+productId +"&batchNumber="+batchNumber)
+                    .path(new Links().PURCHASE_BATCH_DEL_CHECK)
+                    .queryParam("id", productId)
+                    .queryParam("batchNumber", batchNumber)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse.status == 200)

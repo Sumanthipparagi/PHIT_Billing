@@ -148,13 +148,13 @@ class BatchRegisterController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-
-            JSONObject batch = new ProductService().getBatchById(jsonObject.id)
+            String batchNumber = jsonObject.get("batchNumber")
+            String productId = jsonObject.get("productId")
             //check if batch is used in purchase
-            boolean purchaseDelete = new PurchaseService().purchaseBatchDeleteCheck(jsonObject.id, batch.batchNumber)
+            boolean purchaseDelete = new PurchaseService().purchaseBatchDeleteCheck(productId, batchNumber)
 
             //check if batch is used in sales
-            boolean salesDelete = new SalesService().salesBatchDeleteCheck(jsonObject.id, batch.batchNumber)
+            boolean salesDelete = new SalesService().salesBatchDeleteCheck(productId, batchNumber)
 
             if(purchaseDelete && salesDelete) {
                 def apiResponse = new ProductService().deleteBatchRegister(jsonObject)

@@ -168,6 +168,20 @@ class ProductController {
             def apiResponse = new ProductService().showProductRegister(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                JSONArray dataArray = responseObject.data
+                JSONArray finalArray = new JSONArray()
+                for (JSONObject product : dataArray) {
+                    def tax = new TaxController().show(product.taxId.toString())
+                    product.put("tax", tax)
+
+                    JSONObject marketingCompany = new EntityService().getEntityById(product?.mktCompanyId?.toString())
+                    if(marketingCompany) {
+                        product.put("marketingCompany", marketingCompany)
+                    }
+                    finalArray.add(product)
+                }
+                responseObject.put("data", finalArray)
+
                 respond responseObject, formats: ['json'], status: 200
             } else {
                 response.status = 400
@@ -399,6 +413,16 @@ class ProductController {
                     product.put("productType",product?.productType?.productType)
                     product.put("schedule",product?.schedule?.scheduleCode)
                     product.put("category",product?.category?.categoryName)
+
+                    try {
+                        def tax = new TaxController().show(product.taxId.toString())
+                        product.put("taxName", tax.taxName)
+                        product.put("taxValue", tax.taxValue)
+                    }
+                    catch (Exception ex)
+                    {
+                        println("unable to get tax: "+ex.printStackTrace())
+                    }
                 }
                 respond productArray, formats: ['json'], status: 200;
             }

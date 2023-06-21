@@ -103,7 +103,7 @@
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addbatchModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Batch Register</font></font></button>
+                                style="vertical-align: inherit;">Create New Batch</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
@@ -176,6 +176,7 @@
     var fridgetable;
     var id = null;
     var productId = null;
+    var batchNumber = null;
     $(function () {
         fridgeTable();
     });
@@ -224,10 +225,11 @@
                             ' data-entityType="' + json.data[i].entityTypeId + '"' +
                             '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addbatchModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
-                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
+                        var deletebtn = '<button type="button" data-productid="'+json.data[i].product.id+'" data-batchnumber="'+json.data[i].batchNumber+'" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
+                            'action': editbtn + ' ' + deletebtn,
                             'product': json.data[i].product.productName,
                             'batchNumber': json.data[i].batchNumber,
                             'manfDate':  moment(manfDate).format('DD/MM/YYYY'),
@@ -237,8 +239,7 @@
                             'mrp': json.data[i].mrp,
                             'box': json.data[i].box,
                             'caseWt': json.data[i].caseWt,
-                            'productCat': json.data[i].productCat.categoryName,
-                            'action': editbtn + ' ' + deletebtn
+                            'productCat': json.data[i].productCat.categoryName
                         });
                     }
                     return return_data;
@@ -246,6 +247,7 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
+                {'data': 'action', 'width': '20%'},
                 {'data': 'product', 'width': '20%'},
                 {'data': 'batchNumber', 'width': '20%'},
                 {'data': 'manfDate', 'width': '20%'},
@@ -255,8 +257,7 @@
                 {'data': 'mrp', 'width': '20%'},
                 {'data': 'box', 'width': '20%'},
                 {'data': 'caseWt', 'width': '20%'},
-                {'data': 'productCat', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'productCat', 'width': '20%'}
             ]
         });
     }
@@ -372,7 +373,9 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Batch Register ?");
+        batchNumber = $(this).data('batchnumber');
+        productId = $(this).data('productid');
+        $("#myModalLabel").text("Delete Batch?");
 
     });
 
@@ -380,11 +383,15 @@
         $.ajax({
             type: 'POST',
             url: '/batch-register/delete/' + id,
+            data:{
+                'batchNumber': batchNumber,
+                'productId': productId
+            },
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                Swal.fire("Success!", "Batch Register Deleted Successfully", "success");
+                Swal.fire("Success!", "Batch Deleted Successfully", "success");
             }, error: function () {
                 $('.deleteModal').modal('hide');
                 Swal.fire("Unable to Delete!", "Please make sure the batch is not used in either sales or purchase.", "error");

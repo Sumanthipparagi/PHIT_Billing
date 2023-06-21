@@ -41,7 +41,7 @@
     }
 
     tbody td {
-        padding: 0px;
+        padding: 0;
     }
 
     </style>
@@ -100,7 +100,7 @@
                     <div class="header">
                         <a href="/product/add-product">  <button type="button"
                                                                              class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"><font style="vertical-align: inherit;"><font
-                                    style="vertical-align: inherit;">Add Product Register</font></font></button></a>
+                                    style="vertical-align: inherit;">Add New Product</font></font></button></a>
 
 
                     </div>
@@ -108,7 +108,7 @@
 
                     <div class="body">
 
-                        <button type="button" class="btn btn-round btn-primary  addbtn"  id="exportWorksheet" >Export</button>
+                        <button type="button" class="btn btn-round btn-outline-primary  addbtn"  id="exportWorksheet" >Export</button>
                         <br><br>
                         <div class="table-responsive">
                             <table
@@ -116,13 +116,13 @@
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
+                                    <th style="width: 20%">Action</th>
                                     <th style="width: 20%">Product Name</th>
                                     <th style="width: 20%">HSN code</th>
-                                  %{--  <th style="width: 20%">Company</th>--}%
                                     <th style="width: 20%">MRP</th>
-                                    <th style="width: 20%">Category</th>
-                                    %{--<th style="width: 20%">GST</th>--}%
-                                    <th style="width: 20%">Action</th>
+                                    <th>Category</th>
+                                    <th>GST</th>
+                                    <th>Company</th>
                                 </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
@@ -184,7 +184,7 @@
 
     function userRegisterTable() {
         productregister = $(".productRegisterTable").DataTable({
-            "order": [[0, "desc"]],
+            "order": [[0, "asc"]],
             sPaginationType: "simple_numbers",
             responsive: {
                 details: true
@@ -206,7 +206,6 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json);
                         var editbtn =
                             '<a href="/product/update-product/' + json.data[i].id
                             +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
@@ -217,15 +216,20 @@
                         {
                             categoryName = json.data[i]?.category?.categoryName
                         }
+                        var marketingCompanyName = ""
+                        if(json.data[i].marketingCompany)
+                        {
+                            marketingCompanyName = json.data[i].marketingCompany.entityName
+                        }
                         return_data.push({
-                            'id': json.data[i].id,
+                            'action': editbtn + ' ' + deletebtn,
+                            /*'id': json.data[i].id,*/
                             'productName': json.data[i].productName,
                             'hsnCode': json.data[i].hsnCode,
-                            //'company': json.data[i].mktCompanyId,
                             'mrp':json.data[i].mrp,
                             'category':categoryName,
-                           // 'gst':json.data[i].taxId,
-                            'action': editbtn + ' ' + deletebtn
+                            'gst':json.data[i].tax.taxName + " ("+json.data[i].tax.taxValue+"%)",
+                            'company': marketingCompanyName
                         });
                     }
                     return return_data;
@@ -233,13 +237,14 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'productName', 'width': '20%'},
-                {'data': 'hsnCode', 'width': '20%'},
-              //  {'data': 'company', 'width': '20%'},
-                {'data': 'mrp', 'width': '20%'},
-                {'data': 'category', 'width': '20%'},
-             //   {'data': 'gst', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'action'},
+                {'data': 'productName'},
+                {'data': 'hsnCode'},
+                {'data': 'mrp'},
+                {'data': 'category'},
+                {'data': 'gst'},
+                {'data': 'company', 'width': '20%'},
+
             ]
         });
     }
@@ -283,7 +288,7 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".entityRegisterTitle").text("Add User Register")
+        $(".entityRegisterTitle").text("Add Product")
         $(".entityRegisterForm")[0].reset();
         id = null
     });
@@ -305,7 +310,7 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Product Register?");
+        $("#myModalLabel").text("Delete Product?");
 
     });
 
@@ -317,7 +322,7 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 userRegisterTable();
-                swal("Success!", "Product Register Deleted Successfully", "success");
+                Swal.fire("Success!", "Product Deleted Successfully", "success");
             }, error: function () {
                 $('.deleteModal').modal('hide');
                 Swal.fire("Unable to Delete!", "Please make sure the batch is not used in either sales or purchase.", "error");
@@ -328,17 +333,29 @@
 
     $( document ).ready(function() {
         $("#exportWorksheet").click(function() {
-
+            var waitSwal = Swal.fire({
+                title:"Please Wait!",
+                text: "We are exporting the products",
+                icon: "warning",
+                showCloseButton: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                allowOutsideClick: false
+            });
             $.ajax({
                 url: "/product/product-export",
                 type: "GET",
                 contentType: false,
                 processData: false,
                 success: function(data) {
+                    waitSwal.close();
                     var jsonDataObject = eval(data);
                     exportWorksheet(jsonDataObject);
                 },
                 error: function () {
+                    waitSwal.close();
                     Swal.fire("Error!", "Something went wrong", "error");
 
                 }
@@ -357,7 +374,7 @@
         var myFile = "product-report.xlsx";
         var myWorkSheet = XLSX.utils.json_to_sheet(jsonObject);
         var myWorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
+        XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "Product-List");
         XLSX.writeFile(myWorkBook, myFile);
     }
 </script>

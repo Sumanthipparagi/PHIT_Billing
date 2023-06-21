@@ -574,14 +574,14 @@ class ReportsController {
             String id = params.id
             JSONObject jsonObject = new JSONObject()
             if (id) {
-                long salesCount = SaleProductDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long salesOrderCount = SaleOrderProductDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long salesReturnCount = SaleReturnDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long gtnCount = GoodsTransferNoteProduct.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long stockAdjCount = StockAdjustmentDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long sampleConversion = SampleConversionDetails.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long schemeConfig = SchemeConfiguration.countByProductIdAndDeleted(Long.parseLong(id), false)
-                long deliveryChallan = DeliveryChallanProduct.countByProductIdAndDeleted(Long.parseLong(id), false)
+                long salesCount = SaleProductDetails.countByProductId(Long.parseLong(id))
+                long salesOrderCount = SaleOrderProductDetails.countByProductId(Long.parseLong(id))
+                long salesReturnCount = SaleReturnDetails.countByProductId(Long.parseLong(id))
+                long gtnCount = GoodsTransferNoteProduct.countByProductId(Long.parseLong(id))
+                long stockAdjCount = StockAdjustmentDetails.countByProductId(Long.parseLong(id))
+                long sampleConversion = SampleConversionDetails.countByProductId(Long.parseLong(id))
+                long schemeConfig = SchemeConfiguration.countByProductId(Long.parseLong(id))
+                long deliveryChallan = DeliveryChallanProduct.countByProductId(Long.parseLong(id))
 
                 long total = salesCount + salesOrderCount + salesReturnCount + gtnCount + stockAdjCount + sampleConversion + schemeConfig + deliveryChallan
                 if (total == 0) {
@@ -605,14 +605,14 @@ class ReportsController {
             String batchNumber = params.batchNumber
             JSONObject jsonObject = new JSONObject()
             if (id) {
-                long salesCount = SaleProductDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
-                long salesOrderCount = SaleOrderProductDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
-                long salesReturnCount = SaleReturnDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
-                long gtnCount = GoodsTransferNoteProduct.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
-                long stockAdjCount = StockAdjustmentDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
-                long sampleConversion = SampleConversionDetails.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
-                long schemeConfig = SchemeConfiguration.countByProductIdAndBatchAndDeleted(Long.parseLong(id),batchNumber, false)
-                long deliveryChallan = DeliveryChallanProduct.countByProductIdAndBatchNumberAndDeleted(Long.parseLong(id),batchNumber, false)
+                long salesCount = SaleProductDetails.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
+                long salesOrderCount = SaleOrderProductDetails.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
+                long salesReturnCount = SaleReturnDetails.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
+                long gtnCount = GoodsTransferNoteProduct.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
+                long stockAdjCount = StockAdjustmentDetails.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
+                long sampleConversion = SampleConversionDetails.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
+                long schemeConfig = SchemeConfiguration.countByProductIdAndBatch(Long.parseLong(id),batchNumber)
+                long deliveryChallan = DeliveryChallanProduct.countByProductIdAndBatchNumber(Long.parseLong(id),batchNumber)
 
                 long total = salesCount + salesOrderCount + salesReturnCount + gtnCount + stockAdjCount + sampleConversion + schemeConfig + deliveryChallan
                 if (total == 0) {
