@@ -165,9 +165,8 @@
     var divisiontable;
     var id = null;
     $(function () {
-        $("#cityIds").select2();
         divisionTable();
-    /*    $("#cityIds").select2({
+        $("#cityIds").select2({
             minimumInputLength: 3,
             required: true,
             ajax: {
@@ -192,7 +191,6 @@
                 cache: true
             }
         });
-*/
        /* $('#cityIds').each(function() {
             $(this).select2({ dropdownParent: $(this).parent()});
         })*/
