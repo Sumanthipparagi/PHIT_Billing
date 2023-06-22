@@ -16,11 +16,12 @@
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 %{--    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>--}%
-    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.css"/>
+
     <style>
 
     /*div.dataTables_scrollBody table tbody  td {*/
@@ -158,7 +159,8 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 %{--<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>--}%
-<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.min.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-select/js/bootstrap-select.js"/>
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>--}%
 <script>
 
@@ -172,12 +174,11 @@
             ajax: {
                 url: '/city/get',
                 data: function (params) {
-                    var query = {
+                    // Query parameters will be ?search=[term]&page=[page]
+                    return {
                         search: params.term,
                         type: "select2"
-                    }
-                    // Query parameters will be ?search=[term]&page=[page]
-                    return query;
+                    };
                 },
                 processResults: function (response) {
                     var data = [];
@@ -191,9 +192,6 @@
                 cache: true
             }
         });
-       /* $('#cityIds').each(function() {
-            $(this).select2({ dropdownParent: $(this).parent()});
-        })*/
     });
 
     function divisionTable() {
@@ -220,7 +218,6 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json)
                         var editbtn = '<button type="button" ' + 'data-id="' + json.data[i].id +'"'+
                             'data-divisionName="' + json.data[i].divisionName + '"' +
                             'data-divisionShortName= "' + json.data[i].divisionShortName + '"' +

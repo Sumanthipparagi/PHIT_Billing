@@ -34,7 +34,7 @@
                                 <label for="cityIds">
                                     City
                                 </label>
-                                <select style="width: 100%;" class="form-control" name="cityIds" id="cityIds"
+                                <select style="width: 100%;border: 0;z-index:inherit;" class="form-control show-tick" name="cityIds" id="cityIds"
                                         multiple="multiple" required>
                                 </select>
                             </div>
