@@ -75,7 +75,6 @@ dependencies {
     compile 'org.grails.plugins:qrcode:0.9'
 
 
-
 }
 
 bootRun {

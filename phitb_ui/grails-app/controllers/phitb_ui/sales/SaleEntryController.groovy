@@ -1951,10 +1951,9 @@ class SaleEntryController
                     {
                         irnDetails = new JSONObject(saleBillDetail.get("irnDetails").toString())
                     }
-
-
-                    println(groupDetails)
                     JSONArray saleReturnAdjustmentDetails = new SalesService().getSaleReturnAdjustmentDetails(saleBillId, "INVS")
+
+
                     render(view: "/sales/saleEntry/sale-invoice", model: [saleBillDetail    : saleBillDetail,
                                                                           saleProductDetails: saleProductDetails,
                                                                           series            : series, entity: entity, customer: customer, city: city,
@@ -1974,12 +1973,11 @@ class SaleEntryController
                                                                           settings          : settings,
                                                                           saleReturnAdjustmentDetails:saleReturnAdjustmentDetails
                     ])
-
                 }
                 else
                 {
 
-                    render("No Bill Found")
+                    render("No Invoice Found")
                 }
             } else if(checkUser){
                 def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
