@@ -2776,7 +2776,6 @@ class EntityService {
 
 
     def getByEntity(String id) {
-        println("entityId: "+id)
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -2786,7 +2785,6 @@ class EntityService {
                     .get()
             if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
-                println(jsonArray.toString())
                 return jsonArray
             } else
                 return null
