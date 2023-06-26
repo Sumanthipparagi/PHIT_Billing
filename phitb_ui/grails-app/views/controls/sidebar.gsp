@@ -490,7 +490,7 @@
                             </g:if>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_CUSTOMER_GROUP_REGISTER", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="/customer-group-register">Customer Group Register</a></li>
+                            <li><a href="/customer-group-register">Customer Group</a></li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_DAY_END", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/day-end-master">Day End Master</a></li>

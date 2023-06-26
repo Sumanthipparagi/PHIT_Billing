@@ -60,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Customer Group Register</h2>
+                    <h2>Customer Group</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Customer Group Register</li>
+                        <li class="breadcrumb-item active">Customer Group</li>
                     </ul>
                 </div>
 %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%

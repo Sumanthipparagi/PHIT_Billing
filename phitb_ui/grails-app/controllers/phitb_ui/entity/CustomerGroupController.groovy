@@ -1,16 +1,9 @@
 package phitb_ui.entity
 
-import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
-import phitb_ui.Constants
 import phitb_ui.EntityService
-import phitb_ui.Links
 import phitb_ui.ProductService
-import phitb_ui.system.CityController
-import phitb_ui.system.CountryController
-import phitb_ui.system.StateController
-import phitb_ui.system.ZoneController
 
 class CustomerGroupController {
 
@@ -18,35 +11,14 @@ class CustomerGroupController {
     {
         try
         {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
-/*            ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
-            ArrayList<String> statelist = new StateController().show() as ArrayList<String>
-            ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
-            ArrayList<String> managerList = []
-            userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
-                {
-                    managerList.add(it)
-                }
-            }
-            ArrayList<String> salesmanList = []
-            userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN))
-                {
-                    salesmanList.add(it)
-                }
-            }*/
-
-            render(view: '/entity/customerGroup/customerGroup',model: [entity:entity,
-                                                                         /*statelist:statelist,countrylist:countrylist,
-                                                                         salesmanList:salesmanList,
-                                                                         managerList:managerList,zoneList:zoneList*/])
+            String entityId = session.getAttribute("entityId").toString()
+            ArrayList<JSONArray> entity = new EntityService().getByEntity(entityId)
+            render(view: '/entity/customerGroup/customerGroup',model: [entity:entity])
         }
         catch (Exception ex)
         {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.printStackTrace())
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.printStackTrace())
             response.status = 400
         }
     }

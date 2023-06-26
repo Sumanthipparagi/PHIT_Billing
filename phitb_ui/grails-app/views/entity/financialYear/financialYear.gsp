@@ -167,7 +167,6 @@
     var id = null;
     $(function () {
         financialYearTable();
-
     });
 
     function financialYearTable() {
@@ -284,9 +283,9 @@
     $(document).on("click", ".addbtn", function () {
         $(".financialYearForm")[0].reset();
         id = null;
-        $(".entity").val("").change();
-        $('.entity').select2();
-        $(".financialYearTitle").text("Add Financial year ");
+       /* $(".entity").val("").change();
+        $('.entity').select2();*/
+        $(".financialYearTitle").text("Add Financial Year");
     });
 
     $(document).on("click", ".editbtn", function () {
@@ -295,14 +294,16 @@
         $(".endDate").val($(this).attr('data-endDate'));
         $(".entity").val($(this).attr('data-entityRegister')).change();
         $('.entity').select2();
-        $("#entityTypeId").val($(this).attr('data-entitytype')).change()
-        $(".customerGroupTitle").text("Update Financial year");
+       // $("#entityTypeId").val($(this).attr('data-entitytype')).change()
+        $(".financialYearTitle").text("Update Financial year");
     });
+/*
 
     $('.entity').change(function(){
         var type = $('option:selected', this).attr('data-type');
         $(".entityType").val(type);
     });
+*/
 
 
     $(document).on("click", ".deletebtn", function () {

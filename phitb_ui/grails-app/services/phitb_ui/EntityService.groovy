@@ -2768,14 +2768,15 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
-            log.error('Service :InventoryService , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  save  , Ex:' + ex)
+            log.error('Service :EntityService , action :  save  , Ex:' + ex)
         }
 
     }
 
 
     def getByEntity(String id) {
+        println("entityId: "+id)
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -2785,6 +2786,7 @@ class EntityService {
                     .get()
             if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                println(jsonArray.toString())
                 return jsonArray
             } else
                 return null
