@@ -111,6 +111,7 @@
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
+                                    <th style="width: 20%">Action</th>
                                     <th style="width: 20%">Product</th>
                                     <th style="width: 20%">Batch Number</th>
                                     <th style="width: 20%">Manufacture Date</th>
@@ -121,7 +122,7 @@
                                     <th style="width: 20%">Box</th>
                                     <th style="width: 20%">CaseWt</th>
                                     <th style="width: 20%">Product Category</th>
-                                    <th style="width: 20%">Action</th>
+
                                 </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
@@ -205,7 +206,10 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json)
+
+                        var productCatName = ""
+                        if(json.data[i].productCat)
+                            productCatName = json.data[i].productCat?.categoryName
                         var manfDate = new Date(json.data[i].manfDate);
                         var expiryDate = new Date(json.data[i].expiryDate);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
@@ -220,7 +224,7 @@
                             ' data-mrp="' + json.data[i].mrp + '"' +
                             ' data-box="' + json.data[i].box + '"' +
                             ' data-caseWt="' + json.data[i].caseWt + '"' +
-                            ' data-productCat="' + json.data[i].productCat.id + '"' +
+                            ' data-productCat="' + json.data[i].productCat?.id + '"' +
                             ' data-entityId="' + json.data[i].entityId + '"' +
                             ' data-entityType="' + json.data[i].entityTypeId + '"' +
                             '"' +
@@ -239,7 +243,7 @@
                             'mrp': json.data[i].mrp,
                             'box': json.data[i].box,
                             'caseWt': json.data[i].caseWt,
-                            'productCat': json.data[i].productCat.categoryName
+                            'productCat': productCatName
                         });
                     }
                     return return_data;
