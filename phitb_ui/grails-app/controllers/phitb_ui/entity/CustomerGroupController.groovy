@@ -12,7 +12,7 @@ class CustomerGroupController {
         try
         {
             String entityId = session.getAttribute("entityId").toString()
-            ArrayList<JSONArray> entity = new EntityService().getByEntity(entityId)
+            def entity = new EntityService().getByEntity(entityId)
             render(view: '/entity/customerGroup/customerGroup',model: [entity:entity])
         }
         catch (Exception ex)
