@@ -116,7 +116,7 @@
                                     <th style="width: 20%">Sale Rate</th>
                                     <th style="width: 20%">MRP</th>
                                     <th style="width: 20%">Rem Qty</th>
-                                    <th style="width: 20%">Action</th>
+                                    %{--<th style="width: 20%">Action</th>--}%
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -251,7 +251,7 @@
                         var manfDate = new Date(json.data[i].manufacturingDate);
                         var expiryDate = new Date(json.data[i].expDate);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-product="' + json.data[i].product.productName + '"' +
+                            '" data-product="' + json.data[i].product?.productName + '"' +
                             '" data-batchNumber="' + json.data[i].batchNumber + '"' +
                             '" data-manfDate="' + moment(manufacturingDate).format('DD/MM/YYYY') + '"' +
                             '" data-expiryDate="' + moment(expDate).format('DD/MM/YYYY') + '"' +
@@ -277,7 +277,7 @@
                         var deletebtn = '';
                         return_data.push({
                             'id': json.data[i].id,
-                            'product': json.data[i].product.productName,
+                            'product': json.data[i].product?.productName,
                             'batchNumber': json.data[i].batchNumber,
                             'manfDate': moment(manfDate).format('DD/MM/YYYY'),
                             'expiryDate': moment(expiryDate).format('DD/MM/YYYY'),
@@ -286,7 +286,7 @@
                             'mrp': json.data[i].mrp,
                             'remainingQty': json.data[i].remainingQty,
                            /* 'action': editbtn + ' ' + deletebtn*/
-                            'action': deletebtn
+                           /* 'action': deletebtn*/
                         });
                     }
                     return return_data;
@@ -301,7 +301,7 @@
                 {'data': 'saleRate', 'width': '20%'},
                 {'data': 'mrp', 'width': '20%'},
                 {'data': 'remainingQty', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+               /* {'data': 'action', 'width': '20%'}*/
             ]
         });
     }

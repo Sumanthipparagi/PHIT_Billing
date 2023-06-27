@@ -142,10 +142,10 @@ class CompositionMasterController {
      */
     def dataTable() {
         try {
-            String start = params.start
-            String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            String start = paramsJsonObject.start
+            String length = paramsJsonObject.length
             respond compositionMasterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)

@@ -183,7 +183,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Form"
+                searchPlaceholder: "Search Compositions"
             },
             ajax: {
                 type: 'GET',
@@ -213,10 +213,7 @@
                 }
             },
             columns: [
-                // {'data': 'id', 'width': '20%'},
-                {'data': 'compositionName', 'width': '20%'},
-                // {'data': 'entity', 'width': '20%'},
-                // {'data': 'entitytype', 'width': '20%'},
+                {'data': 'compositionName', 'width': '80%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
