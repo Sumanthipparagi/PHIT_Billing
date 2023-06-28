@@ -1212,6 +1212,12 @@
         $.ajax({
             type: "GET",
             url: "/product/series/" + series,
+            data: function (params) {
+                return {
+                    search: params.term,
+                    page: params.page || 1
+                };
+            },
             dataType: 'json',
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
