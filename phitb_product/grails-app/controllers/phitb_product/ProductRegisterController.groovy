@@ -213,9 +213,6 @@ class ProductRegisterController
         }
     }
 
-
-
-
     /**
      * Delete selected Stock Activity
      * @param id
@@ -253,10 +250,10 @@ class ProductRegisterController
     {
         try
         {
-            String start = params.start
-            String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
             respond productRegisterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
@@ -340,18 +337,20 @@ class ProductRegisterController
 
 
     /**
-     * Get requested product by div
+     * Get requested product by name
      * @param id
-     * @return get product by div
+     * @return get product by name
      */
     def getProductByName()
     {
         try
         {
-            String name = params.productName
-            if (name)
+            String productName = params.productName
+            String entityId = params.entityId
+            if (productName)
             {
-                respond productRegisterService.getByEntityId(entityId)
+                long eId = Long.parseLong(entityId)
+                respond productRegisterService.getProductByName(productName, eId)
             }
         }
         catch (ResourceNotFoundException ex)

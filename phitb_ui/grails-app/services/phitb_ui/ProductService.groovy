@@ -525,6 +525,32 @@ class ProductService {
 
     }
 
+    def getProductByName(String productName, String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_REGISTER_SEARCH)
+                    .queryParam("productName", productName)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductByName  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductByName  , Ex:' + ex)
+        }
+
+    }
+
     def getBatchRegister() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);

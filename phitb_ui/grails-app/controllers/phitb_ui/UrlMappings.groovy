@@ -417,6 +417,7 @@ class UrlMappings {
         "/product/product-export"(controller: 'product', action: 'productReportExport')
         "/product/save-bulk-products"(controller: 'product', action: 'saveBulkProducts')
         "/product/get-products-by-entity"(controller: 'product', action: 'productByEntityId')
+        "/product/search"(controller: 'product', action: 'searchByName')
 
 
         //Division

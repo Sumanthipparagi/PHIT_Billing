@@ -148,6 +148,7 @@ class UrlMappings {
                         'save']
             }
             "/productregister/datatable(.$format)?"(controller: 'productRegister') {action = [GET: 'dataTable']}
+            "/productregister/search(.$format)?"(controller: 'productRegister') {action = [GET: 'getProductByName']}
             "/productregister/$id(.$format)?"(controller: 'productRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']

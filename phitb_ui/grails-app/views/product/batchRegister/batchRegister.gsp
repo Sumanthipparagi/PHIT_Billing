@@ -147,9 +147,9 @@
 </section>
 
 
-<g:include view="controls/product/add-batch-register.gsp"/>
-<g:include view="controls/delete-modal.gsp"/>
 
+<g:include view="controls/delete-modal.gsp"/>
+<g:include view="controls/product/add-batch-register.gsp"/>
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
@@ -171,7 +171,6 @@
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js" type="text/javascript"/>
 <asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
-
 <script>
 
     var fridgetable;
@@ -266,8 +265,31 @@
         });
     }
 
-
-
+    $('#productSelect').select2({
+        dropdownParent: $('#addbatchModal .modal-content'),
+        ajax: {
+            url: '/product/search',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    search: params.term,
+                    type: 'select2'
+                };
+            },
+            processResults: function (response) {
+                var data = [];
+                response.forEach(function (response) {
+                    data.push({"text": response.productName, "id": response.id});
+                });
+                return {
+                    results: data
+                };
+            },
+        },
+        placeholder: 'Enter Product Name (min 3 char)',
+        minimumInputLength: 3
+    });
 
     $('.manfDate').bootstrapMaterialDatePicker({
         time:false,
@@ -402,6 +424,8 @@
             }
         });
     }
+
+
 
 
 </script>

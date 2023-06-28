@@ -332,6 +332,21 @@ class ProductController {
         }
     }
 
+    def searchByName() {
+        try {
+            String entityId = session.getAttribute("entityId")
+            String productName = params.search
+            JSONArray jsonArray = new ProductService().getProductByName(productName, entityId)
+            respond jsonArray, formats: ['json']
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
     def getProductByDivision() {
         try {
             JSONArray jsonArray = new ProductService().getProductsByDivision(params.id)

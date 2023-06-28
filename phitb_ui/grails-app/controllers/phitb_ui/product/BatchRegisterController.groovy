@@ -31,7 +31,7 @@ class BatchRegisterController
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> series = new SeriesController().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-            ArrayList<String> productlist = new ProductService().getProductByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+           // ArrayList<String> productlist = new ProductService().getProductByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> productcatList = new ProductCategoryController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
@@ -51,7 +51,7 @@ class BatchRegisterController
                                                                          zoneList      : zoneList,
                                                                          customer      : customer, series: series,
                                                                          managerList   : managerList,
-                                                                         productlist   : productlist,
+                                                                       /*  productlist   : productlist,*/
                                                                          settings      : settings,
                                                                          productcatList: productcatList])
         }

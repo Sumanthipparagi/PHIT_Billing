@@ -384,6 +384,7 @@ public class Links
     public static String PRODUCT_REGISTER_BY_DIVISION = APP_CONTEXT_PATH + "product/productregisterbydivision";
     public static String PRODUCT_REGISTER_SAVE = APP_CONTEXT_PATH + "product/productregister";
     public static String PRODUCT_REGISTER_DATATABLE = APP_CONTEXT_PATH + "product/productregister/datatable";
+    public static String PRODUCT_REGISTER_SEARCH = APP_CONTEXT_PATH + "product/productregister/search";
     public static String PRODUCT_REGISTER_UPDATE = APP_CONTEXT_PATH + "product/productregister/{id}";
     public static String PRODUCT_REGISTER_DELETE = APP_CONTEXT_PATH + "product/productregister/{id}";
     public static String PRODUCT_REGISTER_BY_ID_HSN = APP_CONTEXT_PATH + "product/productregisterbyhsnandentity";

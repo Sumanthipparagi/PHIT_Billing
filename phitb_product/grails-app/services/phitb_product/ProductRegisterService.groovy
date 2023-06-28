@@ -336,10 +336,14 @@ class ProductRegisterService {
         }
     }
 
-    def getProductByName(String productName){
+    def getProductByName(String productName, long entityId ){
         if(productName){
-            return ProductRegister.createCriteria().list(){
-                eq('productName',productName)
+            Integer offset = 0
+            Integer max = 100
+
+            return ProductRegister.createCriteria().list(max: max, offset: offset){
+                ilike('productName',"%"+productName+"%")
+                eq('entityId',entityId)
                 eq('deleted', false)
                 order("productName", "asc")
             }
