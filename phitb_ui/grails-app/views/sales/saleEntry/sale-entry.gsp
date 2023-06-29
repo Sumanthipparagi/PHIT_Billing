@@ -71,7 +71,6 @@
             <div class="col-lg-12">
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="header" style="padding: 1px;">
-
                     </div>
 
                     <div class="body">
@@ -125,9 +124,10 @@
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
+                        </div>
+                        <div class="row">
 
-
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="priority">Invoice Type:</label>
                                 <select class="form-control" id="invType" name="invType">
                                     <option value="${Constants.REGULAR}"
@@ -137,7 +137,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="customerSelect">Rep:</label>
                                 <select class="form-control show-tick" id="repSelect">
                                     <option selected disabled>--SELECT--</option>
@@ -149,54 +149,57 @@
                             </div>
 
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="refNum">Ref. Number:</label>
                                 <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"
                                        value="${saleBillDetail?.refNo}"/>
                             </div>
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="refDate">Ref. Date:</label>
                                 <input type="date" class="form-control date" name="refDate" id="refDate"/>
                             </div>
 
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
                                 <br>
-                                <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
+                                <a title="Shipment" class="btn btn-sm btn-primary waves-effect" role="button" data-toggle="collapse"
                                    href="#shipmentDetails" aria-expanded="false"
-                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment
+                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i>
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mt-2">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
                                 <br>
-                                <a class="btn btn-primary waves-effect collapsed" role="button"
+                                <a title="Add Note" class="btn btn-sm btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
                                    aria-controls="noteDetails"><i class="zmdi zmdi-edit"></i>
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mt-2">
-                                <br>
-                                <button class="btn btn-primary waves-effect"
-                                        id="addNewRow" style="background-color: green;"><i
-                                        class="zmdi zmdi-plus"></i>
-                                </button>
+                            %{--<g:if test="${customer!=null}">--}%
+                            <div class="col-md-1 mx-0 px-0 " style="max-width: 60px;">
+                            <br>
+                                <a title="Mass Discount" role="button" style="color: white;"
+                                        class="btn btn-sm btn-primary waves-effect collapsed"
+                                        data-toggle="modal" data-target="#massDiscountModal"> Disc
+                                </a>
                             </div>
-                            <div class="col-md-6">
-                                <label for="gstInclusive">Cost inclusive of GST?</label>
+                            %{--</g:if>--}%
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 60px;">
+                                <br>
+                                <a title="Add Row" class="btn btn-sm btn-primary waves-effect"
+                                        id="addNewRow" style="background-color: green;color: white;"><i
+                                        class="zmdi zmdi-plus"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-1 mx-0 px-0" style="margin-top: 5px;">
+                                <br>
+                                <label for="gstInclusive"><strong>Incl. GST?</strong></label>
                                 <input id="gstInclusive" name="gstInclusive" type="checkbox" class="checkbox checkbox-inline" style="margin-top: 5px;margin-left: 5px;" value="false"/>
                             </div>
-
-                            <g:if test="${customer!=null}">
-                            <div class="col-md-3 mt-2">
-                                <br>
-                                <button class="btn btn-primary waves-effect" data-toggle="modal" data-target="#massDiscountModal"
-                                        style="background-color: black;"> Mass Discount
-                                </button>
-                            </div>
-                            </g:if>
+                        </div>
+                        <div class="row">
                         %{--                            data-toggle="modal"--}%
                         %{--                            data-target="#myModal"--}%
                             <g:if test="${tempStockArray != null}">
@@ -575,8 +578,10 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
+    var seriesId = null;
 
     $(document).ready(function () {
+        seriesId = $("#series").val()
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${saleTransportDetail?.lrDate}').format('YYYY-MM-DD'));
@@ -616,10 +621,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        /*data: products,*/
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/"+seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                                        if(!products.some(element => element.id ===  data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -1289,7 +1319,14 @@
                     // tempArray.push(saleData[i].id);
                     batchSelection(saleData[i]["productId"], null, false);
                     var batchId = saleData[i][12];
+                    if(!products.some(element => element.id ===  saleData[i]["productId"]))
+                        products.push({id: saleData[i]["productId"], text: saleData[i]["product"].productName});
+
                     hot.setDataAtCell(i, 1, saleData[i]["productId"]);
+
+                    //var productName = saleData[i]["product"].productName + "(" + saleData[i]["productId"] + ")";
+                    //hot.setDataAtCell(i, 1, productName);
+
                     hot.setDataAtCell(i, 2, saleData[i]["batchNumber"]);
                     hot.setCellMeta(i, 2, "batchId", batchId);
                     hot.setDataAtCell(i, 3, saleData[i]["expDate"].split("T")[0]);
@@ -1372,9 +1409,11 @@
             },
             success: function (data) {
                 saleData = data;
-                console.log(data);
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
+                    if(!products.some(element => element.id ===  saleData[i].productId))
+                        products.push({id: saleData[i].productId.id, text: saleData[i].productId.productName});
+
                     var sRate = saleData[i].sRate;
                     var sQty = saleData[i].sqty;
                     var fQty = saleData[i].freeQty;
@@ -1889,24 +1928,19 @@
     }
 
     function seriesChanged() {
-        var series = $("#series").val();
-        loadProducts(series);
+        seriesId = $("#series").val();
+        loadProducts(seriesId);
     }
 
     function loadProducts(series) {
         $('.loadTable').show();
         products.length = 0;//remove all elements
-        $.ajax({
+      /*  $.ajax({
             type: "GET",
             url: "/product/series/" + series,
-            data: function (params) {
-                return {
-                    search: params.term,
-                    page: params.page || 1
-                };
-            },
             dataType: 'json',
-            success: function (data) {
+            success: function (resp) {
+                var data = resp.results
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].saleType === '${Constants.SALEABLE}') {
                         products.push({id: data[i].id, text: data[i].productName});
@@ -1928,7 +1962,21 @@
             error: function () {
                 products.length = 0; //remove all elements
             }
-        });
+        });*/
+
+        <g:if test="${params.saleBillId && params.type!="CLONE"}">
+        loadDraftProducts();
+        console.log("Drafts Products loaded")
+        </g:if>
+        <g:elseif test="${params.type == "CLONE"}">
+        loadTempStockBookData();
+        console.log("tempstock Products loaded")
+        </g:elseif>
+        <g:else>
+        loadTempStockBookData();
+        console.log("tempstock Products loaded")
+        </g:else>
+
         $('.loadTable').hide();
     }
 

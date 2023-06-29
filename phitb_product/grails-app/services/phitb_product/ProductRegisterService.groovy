@@ -29,14 +29,34 @@ class ProductRegisterService {
 
     }
 
-    def getAllByDivision(long divisionId) {
-        return ProductRegister.createCriteria().list(){
+    def getAllByDivision(String divisionIds, String page, String search=null) {
+        JSONObject productsOfDivisions = new JSONObject()
+        long max = 10
+        long offset = 0
+        if(page && page != "1")
+            offset = Long.parseLong(page)*max
+
+        String[] divisionIdArray = divisionIds.split(",")
+        ArrayList<Long> divisionIdsArray = new ArrayList<>()
+        for (String dId : divisionIdArray) {
+            divisionIdsArray.add(Long.parseLong(dId))
+        }
+        def products =  ProductRegister.createCriteria().list(max:max, offset: offset){
             division{
-                eq('id',divisionId)
+                inList('id',divisionIdsArray)
+            }
+            if(search)
+            {
+                ilike("productName", "%"+search+"%")
             }
             eq('deleted', false)
             order("productName", "asc")
         }
+
+        long totalCount = products.totalCount
+        productsOfDivisions.put("totalCount",totalCount)
+        productsOfDivisions.put("products",products)
+        return productsOfDivisions
 
     }
 

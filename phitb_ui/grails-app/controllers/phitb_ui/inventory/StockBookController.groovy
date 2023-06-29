@@ -485,6 +485,9 @@ class StockBookController
                 json.put("sgst", tax.salesSgst)
                 json.put("cgst", tax.salesCgst)
                 json.put("igst", tax.salesIgst)
+
+                JSONObject product = new ProductService().getProductById(json["productId"].toString())
+                json.put("product",product)
                 responseArray.put(json)
             }
             emitTempStockPool()

@@ -24,20 +24,17 @@ import javax.ws.rs.core.Response
 @Transactional
 class ProductService {
 
-    def productServiceStatus()
-    {
+    def productServiceStatus() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_SERVICE_STATUS)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :product , action :  salesServiceStatus  , Ex:' + ex)
             log.error('Service :product , action :  salesServiceStatus  , Ex:' + ex)
         }
@@ -70,15 +67,13 @@ class ProductService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().PRODUCT_REGISTER_SHOW + "/"+id)
+                    .path(new Links().PRODUCT_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -91,7 +86,7 @@ class ProductService {
     def getProductTypes() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -128,7 +123,7 @@ class ProductService {
     def getProductRegister() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -148,7 +143,7 @@ class ProductService {
     def getProductGroups() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -171,10 +166,10 @@ class ProductService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().PRODUCT_GROUP_SHOW+"/"+id)
+                    .path(new Links().PRODUCT_GROUP_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200){
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
                 return jsonObject
             }
@@ -192,7 +187,7 @@ class ProductService {
 
         try {
             Response apiResponse = target
-                    .path(new Links().PRODUCT_GROUP_SHOW_BY_ENTITY+ "/"+ entityId)
+                    .path(new Links().PRODUCT_GROUP_SHOW_BY_ENTITY + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -208,7 +203,7 @@ class ProductService {
     def getDivisions() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -232,12 +227,12 @@ class ProductService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().DIVISION_SHOW+"/"+id)
+                    .path(new Links().DIVISION_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200){
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
-                return  jsonObject
+                return jsonObject
             }
         }
         catch (Exception ex) {
@@ -250,7 +245,7 @@ class ProductService {
     def getProductClass() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -270,7 +265,7 @@ class ProductService {
     def getProductCost() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -293,7 +288,7 @@ class ProductService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().PRODUCT_COST_SHOW_BY_ENTITY + "/"+ entityId)
+                    .path(new Links().PRODUCT_COST_SHOW_BY_ENTITY + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -308,7 +303,7 @@ class ProductService {
     def getProductCategories() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_CATEGORY_SHOW)
@@ -330,13 +325,13 @@ class ProductService {
 
         try {
             Response apiResponse = target
-                    .path(new Links().PRODUCT_CATEGORY_SHOW+"/"+id)
+                    .path(new Links().PRODUCT_CATEGORY_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200){
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
                 return jsonObject
-            }else{
+            } else {
                 return null
             }
         }
@@ -352,7 +347,7 @@ class ProductService {
 
         try {
             Response apiResponse = target
-                    .path(new Links().PRODUCT_CATEGORY_BY_ENTITY_SHOW+"/"+ entityId)
+                    .path(new Links().PRODUCT_CATEGORY_BY_ENTITY_SHOW + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -368,7 +363,7 @@ class ProductService {
     def getDivisionGroups() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -392,7 +387,7 @@ class ProductService {
     def getProductSchedules() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -421,13 +416,13 @@ class ProductService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().PRODUCT_SCHEDULE_SHOW+"/"+id)
+                    .path(new Links().PRODUCT_SCHEDULE_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200){
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
                 return jsonObject
-            }else{
+            } else {
                 return null
             }
         }
@@ -449,7 +444,7 @@ class ProductService {
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
-                    .path(new Links().PRODUCT_SCHEDULE_SHOW_BY_ENTITY+ "/"+entityId)
+                    .path(new Links().PRODUCT_SCHEDULE_SHOW_BY_ENTITY + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -465,7 +460,7 @@ class ProductService {
     def getCompositions() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -510,12 +505,10 @@ class ProductService {
                     .path(new Links().PRODUCT_REGISTER_BY_ENTITY + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -536,12 +529,10 @@ class ProductService {
                     .queryParam("entityId", entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -554,7 +545,7 @@ class ProductService {
     def getBatchRegister() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -576,16 +567,13 @@ class ProductService {
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
-                    .path(new Links().BATCH_REGISTER_SHOW + "/"+id)
+                    .path(new Links().BATCH_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
@@ -618,7 +606,7 @@ class ProductService {
     def getUnitType() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -642,7 +630,7 @@ class ProductService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().UNIT_TYPE_SHOW_BY_ENTITY + "/"+ entityId)
+                    .path(new Links().UNIT_TYPE_SHOW_BY_ENTITY + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -659,7 +647,7 @@ class ProductService {
     def getCustomerGroup() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try {
 
             Response apiResponse = target
@@ -676,7 +664,7 @@ class ProductService {
 
     }
 
-    def dayEndByEntityId(String entityId){
+    def dayEndByEntityId(String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
@@ -712,24 +700,21 @@ class ProductService {
     }
 
 //    Division
-    def saveDivision(JSONObject jsonObject)
-    {
+    def saveDivision(JSONObject jsonObject) {
         jsonObject = Tools.setCreatedUser(jsonObject)
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().DIVISION_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -741,13 +726,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showDivisoion(JSONObject jsonObject)
-    {
+    def showDivisoion(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DIVISION_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -755,32 +738,28 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putDivision(JSONObject jsonObject)
-    {
+    def putDivision(JSONObject jsonObject) {
         jsonObject = Tools.setModifiedUser(jsonObject)
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DIVISION_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
@@ -792,13 +771,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteDivision(JSONObject jsonObject)
-    {
+    def deleteDivision(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DIVISION_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -806,8 +783,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -816,23 +792,20 @@ class ProductService {
 
 
     //    Product Category
-    def saveProductCategory(JSONObject jsonObject)
-    {
+    def saveProductCategory(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
 
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PRODUCT_CATEGORY_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -844,13 +817,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showProductCategory(JSONObject jsonObject)
-    {
+    def showProductCategory(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_CATEGORY_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -858,31 +829,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putProductCategory(JSONObject jsonObject)
-    {
+    def putProductCategory(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_CATEGORY_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -894,13 +861,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteProductCategory(JSONObject jsonObject)
-    {
+    def deleteProductCategory(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_CATEGORY_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -908,8 +873,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -918,23 +882,20 @@ class ProductService {
 
 
     //    Product Category
-    def saveProductSchedule(JSONObject jsonObject)
-    {
+    def saveProductSchedule(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PRODUCT_SCHEDULE_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -946,13 +907,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showProductSchedule(JSONObject jsonObject)
-    {
+    def showProductSchedule(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_SCHEDULE_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -960,31 +919,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putProductSchedule(JSONObject jsonObject)
-    {
+    def putProductSchedule(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_SCHEDULE_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -996,13 +951,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteProductSchedule(JSONObject jsonObject)
-    {
+    def deleteProductSchedule(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_SCHEDULE_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1010,8 +963,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -1020,23 +972,20 @@ class ProductService {
 
 
     //    Product Category
-    def saveProductComposition(JSONObject jsonObject)
-    {
+    def saveProductComposition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PRODUCT_COMPOSITION_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1048,12 +997,10 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showProductComposition(JSONObject jsonObject)
-    {
+    def showProductComposition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_COMPOSITION_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1061,31 +1008,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putProductComposition(JSONObject jsonObject)
-    {
+    def putProductComposition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_COMPOSITION_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1097,13 +1040,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteProductComposition(JSONObject jsonObject)
-    {
+    def deleteProductComposition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_COMPOSITION_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1111,8 +1052,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -1121,23 +1061,20 @@ class ProductService {
 
 
     //    Product Type
-    def saveProductType(JSONObject jsonObject)
-    {
+    def saveProductType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PRODUCT_TYPE_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1149,13 +1086,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showProductType(JSONObject jsonObject)
-    {
+    def showProductType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_TYPE_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1163,31 +1098,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putProductType(JSONObject jsonObject)
-    {
+    def putProductType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_TYPE_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1200,13 +1131,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteProductType(JSONObject jsonObject)
-    {
+    def deleteProductType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_TYPE_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1214,8 +1143,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -1223,23 +1151,20 @@ class ProductService {
     }
 
     //    Product Group
-    def saveProductGroup(JSONObject jsonObject)
-    {
+    def saveProductGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PRODUCT_GROUP_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1251,13 +1176,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showProductGroup(JSONObject jsonObject)
-    {
+    def showProductGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_GROUP_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1265,31 +1188,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putProductGroup(JSONObject jsonObject)
-    {
+    def putProductGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_GROUP_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1301,13 +1220,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteProductGroup(JSONObject jsonObject)
-    {
+    def deleteProductGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_GROUP_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1315,8 +1232,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -1324,23 +1240,20 @@ class ProductService {
     }
 
     //    Unit Type
-    def saveUnitType(JSONObject jsonObject)
-    {
+    def saveUnitType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().UNIT_TYPE_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1352,13 +1265,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showUnitType(JSONObject jsonObject)
-    {
+    def showUnitType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().UNIT_TYPE_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1366,31 +1277,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putUnitType(JSONObject jsonObject)
-    {
+    def putUnitType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().UNIT_TYPE_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1402,13 +1309,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteUnitType(JSONObject jsonObject)
-    {
+    def deleteUnitType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().UNIT_TYPE_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1416,8 +1321,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -1426,23 +1330,20 @@ class ProductService {
 
 
     //    Division group
-    def saveDivisionGroup(JSONObject jsonObject)
-    {
+    def saveDivisionGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().DIVISION_GROUP_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1454,13 +1355,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showDivisionGroup(JSONObject jsonObject)
-    {
+    def showDivisionGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DIVISION_GROUP_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1468,31 +1367,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putDivisionGroup(JSONObject jsonObject)
-    {
+    def putDivisionGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DIVISION_GROUP_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1504,13 +1399,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteDivisionGroup(JSONObject jsonObject)
-    {
+    def deleteDivisionGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DIVISION_GROUP_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1518,8 +1411,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -1527,23 +1419,20 @@ class ProductService {
     }
 
     //    Product Class
-    def saveProductClass(JSONObject jsonObject)
-    {
+    def saveProductClass(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PRODUCT_CLASS_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1555,13 +1444,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showProductClass(JSONObject jsonObject)
-    {
+    def showProductClass(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_CLASS_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1569,31 +1456,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putProductClass(JSONObject jsonObject)
-    {
+    def putProductClass(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_CLASS_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1605,13 +1488,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteProductClass(JSONObject jsonObject)
-    {
+    def deleteProductClass(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_CLASS_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1619,8 +1500,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -1629,23 +1509,20 @@ class ProductService {
 
 
     //    Product Cost Range
-    def saveProductCost(JSONObject jsonObject)
-    {
+    def saveProductCost(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PRODUCT_COST_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1657,13 +1534,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showProductCost(JSONObject jsonObject)
-    {
+    def showProductCost(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_COST_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1671,31 +1546,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putProductCost(JSONObject jsonObject)
-    {
+    def putProductCost(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_COST_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1707,13 +1578,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteProductCost(JSONObject jsonObject)
-    {
+    def deleteProductCost(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_COST_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1721,8 +1590,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -1732,23 +1600,20 @@ class ProductService {
 
     //   Batch Register
 
-    def saveBatchRegister(JSONObject jsonObject)
-    {
+    def saveBatchRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-   /*     WebTarget target = client.target("http://localhost:8085/");*/
-        try
-        {
+        /*     WebTarget target = client.target("http://localhost:8085/");*/
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().BATCH_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1760,13 +1625,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showBatchRegister(JSONObject jsonObject)
-    {
+    def showBatchRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().BATCH_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1774,31 +1637,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putBatchRegister(JSONObject jsonObject)
-    {
+    def putBatchRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().BATCH_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1810,13 +1669,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteBatchRegister(JSONObject jsonObject)
-    {
+    def deleteBatchRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().BATCH_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1824,8 +1681,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :productService , action :  delete  , Ex:' + ex)
             log.error('Service :productService , action :  delete  , Ex:' + ex)
         }
@@ -1834,80 +1690,65 @@ class ProductService {
 
 
     //   Product Register
-    def getProductsByEntityId(String id)
-    {
+    def getProductsByEntityId(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().PRODUCT_REGISTER_BY_ENTITY + "/"+id)
+                    .path(new Links().PRODUCT_REGISTER_BY_ENTITY + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 def txt = apiResponse.readEntity(String.class)
                 JSONArray obj = new JSONArray(txt)
                 return obj
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
         }
 
     }
 
-    def getProductsByDivision(String id)
-    {
+    def getProductsByDivision(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().PRODUCT_REGISTER_BY_DIVISION + "/"+id)
+                    .path(new Links().PRODUCT_REGISTER_BY_DIVISION + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 def txt = apiResponse.readEntity(String.class)
                 JSONArray obj = new JSONArray(txt)
                 return obj
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProductsByDivision  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProductsByDivision  , Ex:' + ex)
         }
 
     }
 
-    def saveProductRegister(JSONObject jsonObject)
-    {
+    def saveProductRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PRODUCT_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
@@ -1919,12 +1760,10 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def showProductRegister(JSONObject jsonObject)
-    {
+    def showProductRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1932,31 +1771,27 @@ class ProductService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def putProductRegister(JSONObject jsonObject)
-    {
+    def putProductRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
@@ -1968,13 +1803,11 @@ class ProductService {
      * @param jsonObject
      * @return
      */
-    def deleteProductRegister(JSONObject jsonObject)
-    {
+    def deleteProductRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PRODUCT_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1982,8 +1815,7 @@ class ProductService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
@@ -2000,12 +1832,10 @@ class ProductService {
                     .path(new Links().DIVISION_BY_ENTITY + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -2015,33 +1845,34 @@ class ProductService {
 
     }
 
-    def getProductsBySeries(String seriesId, String entityId)
-    {
-        try
-        {
-        JSONArray divisions = getDivisionsByEntityId(entityId)
-        JSONArray products = new JSONArray()
-        for (JSONObject jsonObject : divisions) {
+    def getProductsBySeries(String seriesId, String entityId, String page = null, String search = null) {
+        try {
+            JSONArray divisions = getDivisionsByEntityId(entityId)
+            JSONObject obj = new JSONObject()
+            String divisionId = ""
+            for (JSONObject jsonObject : divisions) {
 
-            if(jsonObject.get("seriesId") == Long.parseLong(seriesId))
-            {
-                String divisionId = jsonObject.get("id")
+                if (jsonObject.get("seriesId") == Long.parseLong(seriesId)) {
+                    divisionId += jsonObject.get("id") + ","
+                }
+            }
+            if(divisionId != "") {
+                divisionId = new UtilsService().removeLastComma(divisionId)
                 Client client = ClientBuilder.newClient();
                 WebTarget target = client.target(new Links().API_GATEWAY)
 
-                    Response apiResponse = target
-                            .path(new Links().PRODUCT_REGISTER_BY_DIVISION + "/"+divisionId)
-                            .request(MediaType.APPLICATION_JSON_TYPE)
-                            .get()
-                    if (apiResponse?.status == 200)
-                    {
-                        JSONArray obj = new JSONArray(apiResponse.readEntity(String.class))
-                        products.addAll(obj)
-                    }
+                Response apiResponse = target
+                        .path(new Links().PRODUCT_REGISTER_BY_DIVISION + "/" + divisionId)
+                        .queryParam("search", search)
+                        .queryParam("page", page)
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .get()
+                if (apiResponse?.status == 200) {
+                    obj = new JSONObject(apiResponse.readEntity(String.class))
+                }
                 client.close()
             }
-        }
-        return products
+            return obj
         }
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProductsBySeries  , Ex:' + ex)
@@ -2060,13 +1891,10 @@ class ProductService {
                     .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
@@ -2088,13 +1916,10 @@ class ProductService {
                     .queryParam("entityId", URLEncoder.encode(entityId.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
@@ -2105,7 +1930,7 @@ class ProductService {
     }
 
 
-    def saveBulkProductRegister(JSONArray jsonArray){
+    def saveBulkProductRegister(JSONArray jsonArray) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -2114,8 +1939,8 @@ class ProductService {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonArray.toString(), MediaType.APPLICATION_JSON_TYPE))
             if (apiResponse?.status == 200) {
-              JSONArray jsonArray1 = new JSONArray(apiResponse.readEntity(String.class))
-                return  jsonArray1
+                JSONArray jsonArray1 = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray1
             } else
                 return null
         }
@@ -2127,7 +1952,7 @@ class ProductService {
     }
 
 
-    def saveBulkBatchRegister(JSONArray jsonArray){
+    def saveBulkBatchRegister(JSONArray jsonArray) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -2137,7 +1962,7 @@ class ProductService {
                     .post(Entity.entity(jsonArray.toString(), MediaType.APPLICATION_JSON_TYPE))
             if (apiResponse?.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
-                return  jsonObject1
+                return jsonObject1
             } else
                 return null
         }

@@ -346,4 +346,22 @@ class UtilsService {
     boolean isDateWithinRange (Date date, Date startDate, Date endDate) {
         return ! (date.before (startDate) || date.after (endDate));
     }
+
+    /**
+     * This method remove last comma (',') from String
+     * @param characters is String to remove last comma
+     * @return String without last Comma
+     */
+    static String removeLastComma(String characters)
+    {
+
+        int length = characters.size()
+        if (characters != null && length > 0 && characters.charAt(length - 1).toString() == ",")
+        {
+            characters = characters.substring(0, length - 1)
+        }
+
+        return characters
+    }
+
 }

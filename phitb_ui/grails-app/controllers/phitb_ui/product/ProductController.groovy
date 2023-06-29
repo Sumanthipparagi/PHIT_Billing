@@ -364,11 +364,14 @@ class ProductController {
 
     def getProductBySeries() {
         try {
-            JSONArray jsonArray = new ProductService().getProductsBySeries(params.id, session.getAttribute("entityId").toString())
-            if (jsonArray)
-                respond jsonArray, formats: ['json']
+            String search = params.search
+            String page = params.page
+            JSONObject jsonObject = new ProductService().getProductsBySeries(params.id, session.getAttribute("entityId").toString(), page, search)
+            if (jsonObject) {
+                respond jsonObject, formats: ['json']
+            }
             else
-                response.status = 404
+                response.status = 400
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
