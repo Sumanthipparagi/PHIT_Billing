@@ -401,6 +401,38 @@ class EntityRegisterController {
         }
     }
 
+    def getByParent() {
+        try {
+            String search = params.search
+            String page = params.page
+            String id = session.getAttribute("entityId")
+            JSONObject jsonObject = new EntityService().getByEntityPaginated(id,page,search)
+            if (jsonObject) {
+                JSONArray finalEntities = new JSONArray()
+                JSONArray entities = jsonObject.get("entities") as JSONArray
+                for (JSONObject entity : entities)
+                {
+                    if (entity?.cityId != 0)
+                    {
+                        def city = new SystemService().getCityById(entity?.cityId?.toString())
+                        entity.put("city", city)
+
+                        finalEntities.add(entity)
+                    }
+                }
+                jsonObject.put("entities", finalEntities)
+                respond jsonObject, formats:['json']
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
 
     def getEnitityById(String id) {
         return new EntityService().getEntityById(id)

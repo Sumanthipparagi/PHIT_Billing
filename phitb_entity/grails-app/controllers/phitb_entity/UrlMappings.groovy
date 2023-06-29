@@ -163,6 +163,7 @@ class UrlMappings
                 action = [GET: 'getByAffiliateId']
             }
             "/entityregister/getbyentity/$id"(controller: 'entityRegister',  action: 'getByParentEntity')
+            "/entityregister/getbyentity-paginated/$id"(controller: 'entityRegister',  action: 'getByParentEntityPaginated')
             "/entityregister/getparententities"(controller: 'entityRegister',  action: 'getParentEntities')
             "/entityregister/getbyuserroute/$id(.$format)?"(controller: 'entityRegister', action: 'getEntitiesByUserRoute')
 

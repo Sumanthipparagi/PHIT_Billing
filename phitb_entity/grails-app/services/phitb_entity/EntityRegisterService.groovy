@@ -501,6 +501,36 @@ class EntityRegisterService {
         }
     }
 
+    def getByParentEntity(long entityId, String page, String search=null) {
+        try {
+            JSONObject entities = new JSONObject()
+            long max = 10
+            long offset = 0
+            if(page && page != "1")
+                offset = Long.parseLong(page)*max
+
+            def entityList =  EntityRegister.createCriteria().list(max:max, offset: offset){
+                if(search)
+                {
+                    ilike("entityName", "%"+search+"%")
+                }
+                eq('parentEntity', entityId)
+                eq('deleted', false)
+                order("entityName", "asc")
+            }
+
+            long totalCount = entityList.totalCount
+            entities.put("totalCount",totalCount)
+            entities.put("entities",entityList)
+            return entities
+        }
+        catch (Exception ex)
+        {
+            println(ex.stackTrace)
+            throw new BadRequestException()
+        }
+    }
+
     /**
      * This returns only parent entities which are affiliated to itself.
      * In case of entity admin, returns parent entities affiliated to it

@@ -2795,6 +2795,28 @@ class EntityService {
         }
     }
 
+    def getByEntityPaginated(String id, String page = null, String search = null) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_SHOW_BY_ENTITY_PAGINATED + "/" + id)
+                    .queryParam("search", search)
+                    .queryParam("page", page)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            } else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getByEntityPaginated  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getByEntityPaginated  , Ex:' + ex)
+        }
+    }
+
     def getEntityDomainType() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

@@ -77,19 +77,21 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect"
-                                        onchange="customerSelectChanged()">
-                                    <option selected disabled>--SELECT--</option>
-                                    <g:each in="${customers}" var="cs">
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option data-state="${cs.stateId}" value="${cs.id}"
-                                                    data-address="${cs.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + " , " + cs.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + cs?.city?.stateName + ", " + cs?.city?.districtName + "-" + cs?.city?.pincode}"
-                                                    data-gstin="${cs.gstn}" data-shippingaddress="${cs.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', "")}"
-                                                    <g:if
-                                                            test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
-                                        </g:if>
-                                    </g:each>
-                                </select>
+                                <input style="width: 100%" type="hidden" id="customerSelect" />
+                                %{-- <select class="form-control show-tick" id="customerSelect"
+                                         onchange="customerSelectChanged()">
+                                     <option selected disabled>--SELECT--</option>
+                                     <g:each in="${customers}" var="cs">
+                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                             <option data-state="${cs.stateId}" value="${cs.id}"
+                                                     data-address="${cs.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + " , " + cs.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + cs?.city?.stateName + ", " + cs?.city?.districtName + "-" + cs?.city?.pincode}"
+                                                     data-gstin="${cs.gstn}"
+                                                     data-shippingaddress="${cs.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', "")}"
+                                                     <g:if
+                                                             test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
+                                         </g:if>
+                                     </g:each>
+                                 </select>--}%
                                 <span id="freezeContent"></span>
                             </div>
 
@@ -125,6 +127,7 @@
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
                         </div>
+
                         <div class="row">
 
                             <div class="col-md-2">
@@ -138,7 +141,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <label for="customerSelect">Rep:</label>
+                                <label for="repSelect">Rep:</label>
                                 <select class="form-control show-tick" id="repSelect">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${users}" var="u">
@@ -163,7 +166,8 @@
 
                             <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
                                 <br>
-                                <a title="Shipment" class="btn btn-sm btn-primary waves-effect" role="button" data-toggle="collapse"
+                                <a title="Shipment" class="btn btn-sm btn-primary waves-effect" role="button"
+                                   data-toggle="collapse"
                                    href="#shipmentDetails" aria-expanded="false"
                                    aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i>
                                 </a>
@@ -179,26 +183,30 @@
 
                             %{--<g:if test="${customer!=null}">--}%
                             <div class="col-md-1 mx-0 px-0 " style="max-width: 60px;">
-                            <br>
+                                <br>
                                 <a title="Mass Discount" role="button" style="color: white;"
-                                        class="btn btn-sm btn-primary waves-effect collapsed"
-                                        data-toggle="modal" data-target="#massDiscountModal"> Disc
+                                   class="btn btn-sm btn-primary waves-effect collapsed"
+                                   data-toggle="modal" data-target="#massDiscountModal">Disc
                                 </a>
                             </div>
                             %{--</g:if>--}%
                             <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 60px;">
                                 <br>
                                 <a title="Add Row" class="btn btn-sm btn-primary waves-effect"
-                                        id="addNewRow" style="background-color: green;color: white;"><i
+                                   id="addNewRow" style="background-color: green;color: white;"><i
                                         class="zmdi zmdi-plus"></i>
                                 </a>
                             </div>
+
                             <div class="col-md-1 mx-0 px-0" style="margin-top: 5px;">
                                 <br>
                                 <label for="gstInclusive"><strong>Incl. GST?</strong></label>
-                                <input id="gstInclusive" name="gstInclusive" type="checkbox" class="checkbox checkbox-inline" style="margin-top: 5px;margin-left: 5px;" value="false"/>
+                                <input id="gstInclusive" name="gstInclusive" type="checkbox"
+                                       class="checkbox checkbox-inline" style="margin-top: 5px;margin-left: 5px;"
+                                       value="false"/>
                             </div>
                         </div>
+
                         <div class="row">
                         %{--                            data-toggle="modal"--}%
                         %{--                            data-target="#myModal"--}%
@@ -582,7 +590,51 @@
 
     $(document).ready(function () {
         seriesId = $("#series").val()
-        $("#customerSelect").select2();
+        $("#customerSelect").select2({
+            placeholder: "Select Customer",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                            "id": entity.id,
+                            "state":entity.stateId,
+                            "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin":entity.gstn,
+                            "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                        if(!customers.some(cust => cust.id === entity.id))
+                            customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function(container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
+
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${saleTransportDetail?.lrDate}').format('YYYY-MM-DD'));
         $('#refDate').val(moment('${saleBillDetail?.refDate}').format('YYYY-MM-DD'));
@@ -597,9 +649,6 @@
         </g:if>
         </g:if>
 
-        <g:each in="${customers}" var="cs">
-        customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
-        </g:each>
         const container = document.getElementById('saleTable');
         //main table
         hot = new Handsontable(container, {
@@ -626,7 +675,7 @@
                         allowClear: true,
                         width: '0',
                         ajax: {
-                            url: "/product/series/"+seriesId,
+                            url: "/product/series/" + seriesId,
                             dataType: 'json',
                             quietMillis: 250,
                             data: function (term, page) {
@@ -640,7 +689,7 @@
                                 var data = response.products
                                 for (var i = 0; i < data.length; i++) {
                                     if (data[i].saleType === '${Constants.SALEABLE}') {
-                                        if(!products.some(element => element.id ===  data[i].id))
+                                        if (!products.some(element => element.id === data[i].id))
                                             products.push({id: data[i].id, text: data[i].productName});
                                     }
                                 }
@@ -679,7 +728,7 @@
                 {type: 'text', readOnly: true} //saved draft product id
                 </g:if>
             ],
-           hiddenColumns: true,
+            hiddenColumns: true,
             hiddenColumns: {
                 <g:if test="${customer != null}">
                 columns: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
@@ -826,17 +875,17 @@
                                     success: function (data) {
                                         beforeSendSwal.close();
                                         console.log("Data saved");
-                                       /* if(draftEdit){
-                                            if(data?.temp_stock){
-                                                Swal.fire({
-                                                    icon: 'error',
-                                                    title: 'Please delete temp stock',
-                                                    text: 'Please delete temp stock for this product',
-                                                    // footer: '<a href="">Why do I have this issue?</a>'
-                                                });
-                                               deleteTempStockRow(null, row)
-                                            }
-                                        }*/
+                                        /* if(draftEdit){
+                                             if(data?.temp_stock){
+                                                 Swal.fire({
+                                                     icon: 'error',
+                                                     title: 'Please delete temp stock',
+                                                     text: 'Please delete temp stock for this product',
+                                                     // footer: '<a href="">Why do I have this issue?</a>'
+                                                 });
+                                                deleteTempStockRow(null, row)
+                                             }
+                                         }*/
                                         batchHot.updateSettings({
                                             data: []
                                         });
@@ -860,13 +909,12 @@
                                     error: function (jqXHR, textStatus, errorThrown) {
                                         beforeSendSwal.close();
                                         console.log("Failed");
-                                        if (jqXHR.status === 400){
-                                            if(draftEdit)
+                                        if (jqXHR.status === 400) {
+                                            if (draftEdit)
                                                 alert("Please delete temp stock of this product and try again!");
                                             else
                                                 alert("Unable to save the row, please delete it and add again.");
-                                        }
-                                        else if (jqXHR.status === 404) {
+                                        } else if (jqXHR.status === 404) {
                                             batchSelection(batchId, mainTableRow, false);
                                             alert("Requested quantity not available in stocks.");
                                         }
@@ -1071,10 +1119,16 @@
             }
         });
 
-        stateId = $('#customerSelect option:selected').attr('data-state');
-        $('#customerSelect').change(function () {
-            stateId = $('#customerSelect option:selected').attr('data-state');
-        });
+        var data = $("#customerSelect").select2('data')
+        if(data) {
+            //stateId = $('#customerSelect option:selected').attr('data-state');
+            stateId = data.state;
+            $('#customerSelect').change(function () {
+                //stateId = $('#customerSelect option:selected').attr('data-state');
+                data = $("#customerSelect").select2('data')
+                stateId = data.state;
+            });
+        }
 
         function checkUnsavedTemp() {
             var data = hot.getData();
@@ -1319,7 +1373,7 @@
                     // tempArray.push(saleData[i].id);
                     batchSelection(saleData[i]["productId"], null, false);
                     var batchId = saleData[i][12];
-                    if(!products.some(element => element.id ===  saleData[i]["productId"]))
+                    if (!products.some(element => element.id === saleData[i]["productId"]))
                         products.push({id: saleData[i]["productId"], text: saleData[i]["product"].productName});
 
                     hot.setDataAtCell(i, 1, saleData[i]["productId"]);
@@ -1388,7 +1442,7 @@
             url: "/sale-product-details/sale-bill?id=${saleBillDetail?.id}",
             dataType: 'json',
             beforeSend: function () {
-                beforeSendSwal= Swal.fire({
+                beforeSendSwal = Swal.fire({
                     // title: "Loading",
                     html:
                         '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
@@ -1411,7 +1465,7 @@
                 saleData = data;
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
-                    if(!products.some(element => element.id ===  saleData[i].productId))
+                    if (!products.some(element => element.id === saleData[i].productId))
                         products.push({id: saleData[i].productId.id, text: saleData[i].productId.productName});
 
                     var sRate = saleData[i].sRate;
@@ -1488,7 +1542,7 @@
                     calculateTotalAmt();
                 }, 1000);
             },
-            error:function (data) {
+            error: function (data) {
                 beforeSendSwal.close();
                 Swal.fire("No products found")
             }
@@ -1751,11 +1805,14 @@
 
     }
 
-    function customerSelectChanged() {
+    $("#customerSelect").on('change', function(e) {
+        var data = $(this).select2('data');
+        if(data === null)
+            return;
         var customerId = $("#customerSelect").val();
-        var address = $('#customerSelect option:selected').attr('data-address');
-        var shippingAddress = $('#customerSelect option:selected').attr('data-shippingaddress');
-        var gstin = $('#customerSelect option:selected').attr('data-gstin');
+        var address = data.address
+        var shippingAddress = data.shippingaddress;
+        var gstin = data.gstin;
         var noOfCrDays = 0;
         if (customers.length > 0) {
             for (var i = 0; i < customers.length; i++) {
@@ -1772,7 +1829,7 @@
             }
             if (customerId != null && customerId != '') {
                 $('#address').html('Customer Address: ' +
-                    '  <span style="font-size: 12px">' + address + '</span><br>GSTIN: ' + gstin + '<br>Shipping Address: '+shippingAddress)
+                    '  <span style="font-size: 12px">' + address + '</span><br>GSTIN: ' + gstin + '<br>Shipping Address: ' + shippingAddress)
             } else {
                 $('#address').html('')
             }
@@ -1787,7 +1844,7 @@
         $('#duedate').prop("readonly", true);
         calculateTaxes(); //this is to change IGST if in case out of state
         calculateTotalAmt();
-    }
+    });
 
     function calculateTotalAmt() {
         totalAmt = 0;
@@ -1935,29 +1992,36 @@
     function loadProducts(series) {
         $('.loadTable').show();
         products.length = 0;//remove all elements
-      /*  $.ajax({
-            type: "GET",
-            url: "/product/series/" + series,
-            dataType: 'json',
-            success: function (resp) {
-                var data = resp.results
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].saleType === '${Constants.SALEABLE}') {
+        /*  $.ajax({
+              type: "GET",
+              url: "/product/series/" + series,
+              dataType: 'json',
+              success: function (resp) {
+                  var data = resp.results
+                  for (var i = 0; i < data.length; i++) {
+                      if (data[i].saleType === '
+        ${Constants.SALEABLE}') {
                         products.push({id: data[i].id, text: data[i].productName});
                     }
                 }
-                <g:if test="${params.saleBillId && params.type!="CLONE"}">
+
+        <g:if test="${params.saleBillId && params.type!="CLONE"}">
                 loadDraftProducts();
                 console.log("Drafts Products loaded")
-                </g:if>
-                <g:elseif test="${params.type == "CLONE"}">
+
+        </g:if>
+
+        <g:elseif test="${params.type == "CLONE"}">
                 loadTempStockBookData();
                 console.log("tempstock Products loaded")
-                </g:elseif>
-                <g:else>
+
+        </g:elseif>
+
+        <g:else>
                 loadTempStockBookData();
                 console.log("tempstock Products loaded")
-                </g:else>
+
+        </g:else>
             },
             error: function () {
                 products.length = 0; //remove all elements
@@ -2332,16 +2396,16 @@
     })(Handsontable);
 
     $(document).on('keyup', '.discount', function (e) {
-       if($('.discount').val() > 100){
-           Swal.fire({
-               icon: 'error',
-               title: 'Discount must be less than 100',
-               text: 'Discount must be less than 100',
-           });
-           $('.discount').val(0);
-       }
+        if ($('.discount').val() > 100) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Discount must be less than 100',
+                text: 'Discount must be less than 100',
+            });
+            $('.discount').val(0);
+        }
 
-        if($('.discount').val() < 0){
+        if ($('.discount').val() < 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Discount must be greater than 0',
@@ -2355,10 +2419,10 @@
     $('#massDiscount').click(function (e) {
         var hotData = hot.getSourceData();
         var idArray = [];
-        for(var i=0;i<hotData.length;i++){
+        for (var i = 0; i < hotData.length; i++) {
             idArray.push(hotData[i][25])
         }
-        if($('.discount').val() > 100){
+        if ($('.discount').val() > 100) {
             Swal.fire({
                 icon: 'error',
                 title: 'Discount must be less than 100',
@@ -2367,7 +2431,7 @@
             $('.discount').val(0);
             return
         }
-        if($('.discount').val() < 0){
+        if ($('.discount').val() < 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Discount must be greater than 0',
@@ -2376,19 +2440,20 @@
             $('.discount').val(0);
             return
         }
+        <g:if test="${customer!=null}">
         $.ajax({
             type: "GET",
             url: '/update-mass-discount',
             dataType: 'json',
-            data:{
-                data:JSON.stringify(idArray),
+            data: {
+                data: JSON.stringify(idArray),
                 discount: $('.discount').val()
             },
             success: function (data) {
                 $('#massDiscountModal').modal('hide');
                 loadDraftProducts()
             },
-            error:function (data) {
+            error: function (data) {
                 Swal.fire(
                     'Oops',
                     'Something went wrong!',
@@ -2396,11 +2461,49 @@
                 )
             }
         });
-
+        </g:if>
+        <g:else>
+        setMassDiscount();
+        $('#massDiscountModal').modal('hide');
+        </g:else>
     });
 
-    $("#gstInclusive").on("change", function (){
-       //change amounts to include GST
+    function setMassDiscount()
+    {
+        var discount = Number($('.discount').val())
+        var data = hot.getData();
+        for (var row = 0; row < data.length; row++) {
+            hot.setDataAtCell(row, 8, discount)
+            var gstPercentage = Number(hot.getDataAtCell(row, 17));
+            var saleQty = Number(hot.getDataAtCell(row, 4));
+            var saleRate = Number(hot.getDataAtCell(row, 6));
+            var sgstPercentage = hot.getDataAtCell(row, 18);
+            var cgstPercentage = hot.getDataAtCell(row, 19);
+
+            var value = saleRate * saleQty;
+            var priceBeforeGst = value - (value * discount / 100);
+            var finalPrice = priceBeforeGst + (priceBeforeGst * (gstPercentage / 100));
+            hot.setDataAtCell(row, 11, Number(finalPrice).toFixed(2));
+            if (gstPercentage !== 0) {
+                var gstAmount = priceBeforeGst * (gstPercentage / 100);
+                var sgstAmount = priceBeforeGst * (sgstPercentage / 100);
+                var cgstAmount = priceBeforeGst * (cgstPercentage / 100);
+                hot.setDataAtCell(row, 10, Number(gstAmount).toFixed(2)); //GST
+                hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
+                hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
+            } else {
+                hot.setDataAtCell(row, 10, 0); //GST
+                hot.setDataAtCell(row, 12, 0); //SGST
+                hot.setDataAtCell(row, 13, 0); //CGST
+            }
+
+        }
+        calculateTaxes()
+        calculateTotalAmt()
+    }
+
+    $("#gstInclusive").on("change", function () {
+        //change amounts to include GST
         if ($(this).is(':checked')) {
             Swal.fire({
                 title: "Are you sure you want to include GST in the cost?",
@@ -2413,7 +2516,7 @@
                 if (result.isConfirmed) {
                     $(this).prop('disabled', true);
                     console.log(hot.getData());
-                    if(hot.getData()[0][1] != null) {
+                    if (hot.getData()[0][1] != null) {
                         costInclusiveOfGST();
                     }
                 } else if (result.isDenied) {
@@ -2431,13 +2534,11 @@
         return amount / (1 + gstPercentage / 100);
     }
 
-    function costInclusiveOfGST(tableRow = null)
-    {
-        if($("#gstInclusive").is(':checked')) {
+    function costInclusiveOfGST(tableRow = null) {
+        if ($("#gstInclusive").is(':checked')) {
             var data = hot.getData();
             for (var row = 0; row < data.length; row++) {
-                if(tableRow != null && row !== tableRow)
-                {
+                if (tableRow != null && row !== tableRow) {
                     continue;
                 }
                 var gstPercentage = Number(hot.getDataAtCell(row, 17));
@@ -2445,12 +2546,17 @@
                 var saleRate = Number(hot.getDataAtCell(row, 6));
                 if (hot.getActiveEditor())
                     saleRate = Number(hot.getActiveEditor().TEXTAREA.value);
-                var gstAmount = 0;
-                var amountWithoutGST = calculateGST(saleRate, gstPercentage);
-                gstAmount = saleRate - amountWithoutGST;
-                hot.setDataAtCell(row, 6, amountWithoutGST.toFixed(2));
+                var discount = Number(hot.getDataAtCell(row, 8))
+                if(discount > 0 && discount<=100)
+                {
+                    saleRate = saleRate - (saleRate * discount / 100)
+                }
+                var value = Number(saleRate.toFixed(2)) * Number(saleQty)
+                var revisedSaleRate = calculateGST(saleRate, gstPercentage);
+                var gstAmount = (value * gstPercentage / 100);
+                hot.setDataAtCell(row, 6, revisedSaleRate.toFixed(2));
                 hot.setDataAtCell(row, 10, gstAmount.toFixed(2));
-                hot.setDataAtCell(row, 11, Number(saleRate.toFixed(2)) * Number(saleQty));
+                hot.setDataAtCell(row, 11, value.toFixed(2));
 
                 if (stateId === '${session.getAttribute('stateId')}') {
                     hot.setDataAtCell(row, 12, Number(gstAmount / 2).toFixed(2)); //SGST

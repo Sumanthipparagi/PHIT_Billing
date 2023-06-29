@@ -181,6 +181,7 @@ class UrlMappings {
         "/entity-register/update/$id"(controller:"entityRegister",action:"update")
         "/entity-register/delete/$id"(controller: "entityRegister",action:"delete")
         "/entity-register/getparententities"(controller: "entityRegister",action:"getParentEntities")
+        "/entity-register/getentities"(controller: "entityRegister",action:"getByParent")
         "/entity-register/getbyaffiliates/$id"(controller: "entityRegister",action:"getByAffiliates")
         "/getentitytypebyId"(controller: 'entityRegister', action: 'getEntityTypeById')
 

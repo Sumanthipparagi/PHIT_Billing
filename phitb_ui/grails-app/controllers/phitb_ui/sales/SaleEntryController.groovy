@@ -51,7 +51,7 @@ class SaleEntryController
                 salesmanList.add(it)
             }
         }*/
-        JSONArray customerArray = new JSONArray(customers)
+      /*  JSONArray customerArray = new JSONArray(customers)
         for (JSONObject c : customerArray)
         {
             if (c?.cityId != 0)
@@ -59,10 +59,10 @@ class SaleEntryController
                 def city = new SystemService().getCityById(c?.cityId?.toString())
                 c.put("city", city)
             }
-        }
+        }*/
         def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
         def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
-        render(view: '/sales/saleEntry/sale-entry', model: [customers   : customerArray, divisions: divisions, series: series,
+        render(view: '/sales/saleEntry/sale-entry', model: [/*customers   : customerArray, */divisions: divisions, series: series,
                                                             salesmanList: salesmanList, priorityList: priorityList,
                                                             transporter : transporter, settings: settings, users:
                                                                     users,entityConfigs:entityConfigs])

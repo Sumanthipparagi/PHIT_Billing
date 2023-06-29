@@ -388,5 +388,40 @@ class EntityRegisterController
         }
     }
 
+
+    /**
+     * Get requested entity register by parent entity, this method is for pagination
+     * @param id
+     * @return get requested entity register by parent entity
+     */
+    def getByParentEntityPaginated()
+    {
+        try
+        {
+            String id = params.id
+            if (id)
+            {
+                def check = request.getParameterMap()
+                String search = params.search
+                String page = params.page
+                JSONObject entities = entityRegisterService.getByParentEntity(Long.parseLong(id), page, search)
+                respond entities
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }
 
