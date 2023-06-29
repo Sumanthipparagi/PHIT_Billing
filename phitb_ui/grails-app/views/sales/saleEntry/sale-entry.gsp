@@ -1119,7 +1119,7 @@
             }
         });
 
-        var data = $("#customerSelect").select2('data')
+       /* var data = $("#customerSelect").select2('data')
         if(data) {
             //stateId = $('#customerSelect option:selected').attr('data-state');
             stateId = data.state;
@@ -1128,7 +1128,7 @@
                 data = $("#customerSelect").select2('data')
                 stateId = data.state;
             });
-        }
+        }*/
 
         function checkUnsavedTemp() {
             var data = hot.getData();
@@ -1810,6 +1810,7 @@
         if(data === null)
             return;
         var customerId = $("#customerSelect").val();
+        stateId = data.state + "";
         var address = data.address
         var shippingAddress = data.shippingaddress;
         var gstin = data.gstin;
@@ -1821,10 +1822,8 @@
                 }
             }
             if (!hot.isEmptyRow(0)) {
-                // $('#customerSelect').prop('disabled', true);
                 customerLock(true)
             } else {
-                // $('#customerSelect').prop('disabled',false);
                 customerLock(false)
             }
             if (customerId != null && customerId != '') {

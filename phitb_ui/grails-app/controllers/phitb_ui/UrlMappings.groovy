@@ -595,7 +595,7 @@ class UrlMappings {
         "/sale-invoice"(controller: "saleEntry",action:"saleBill")
         "/sales/check-scheme"(controller: "saleEntry", action: "checkSchemeConfiguration")
         "/sale-entry/cancel-invoice"(controller: "saleEntry", action: "cancelInvoice")
-        "/sale-entry/clone-invoice"(controller: "saleEntry", action: "cloneSaleBillDetails")
+        "/sale-entry-clone"(controller: "saleEntry", action: "cloneSaleBillDetails")
         "/update-mass-discount"(controller: 'saleEntry', action: 'updateMassDiscount')
 
 //        Scheme Entry

@@ -112,9 +112,10 @@
                                 <label for="drname">Dr Name:</label>
                                 <input type="text" class="form-control drname" name="drname" id="drname"/>
                             </div>
+                        </div>
+                        <div class="row">
 
-
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="priority">Invoice Type:</label>
                                 <select class="form-control" id="invType" name="invType">
                                     <option value="${Constants.REGULAR}"
@@ -124,8 +125,8 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-2 mt-2">
-                                <label for="">Rep:</label>
+                            <div class="col-md-2">
+                                <label for="repSelect">Rep:</label>
                                 <select class="form-control show-tick" id="repSelect">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${users}" var="u">
@@ -136,54 +137,59 @@
                             </div>
 
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="refNum">Ref. Number:</label>
                                 <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"
                                        value="${saleBillDetail?.refNo}"/>
                             </div>
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="refDate">Ref. Date:</label>
                                 <input type="date" class="form-control date" name="refDate" id="refDate"/>
                             </div>
 
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
                                 <br>
-                                <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
+                                <a title="Shipment" class="btn btn-sm btn-primary waves-effect" role="button"
+                                   data-toggle="collapse"
                                    href="#shipmentDetails" aria-expanded="false"
-                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment
+                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i>
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mt-2">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
                                 <br>
-                                <a class="btn btn-primary waves-effect collapsed" role="button"
+                                <a title="Add Note" class="btn btn-sm btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
                                    aria-controls="noteDetails"><i class="zmdi zmdi-edit"></i>
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mt-2">
+                            %{--<g:if test="${customer!=null}">--}%
+                            <div class="col-md-1 mx-0 px-0 " style="max-width: 60px;">
                                 <br>
-                                <button class="btn btn-primary waves-effect"
-                                        id="addNewRow" style="background-color: green;"><i
-                                        class="zmdi zmdi-plus"></i>
-                                </button>
+                                <a title="Mass Discount" role="button" style="color: white;"
+                                   class="btn btn-sm btn-primary waves-effect collapsed"
+                                   data-toggle="modal" data-target="#massDiscountModal">Disc
+                                </a>
                             </div>
-                            <div class="col-md-6">
-                                <label for="gstInclusive">Cost inclusive of GST?</label>
-                                <input id="gstInclusive" name="gstInclusive" type="checkbox" class="checkbox checkbox-inline" style="margin-top: 5px;margin-left: 5px;" value="false"/>
+                            %{--</g:if>--}%
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 60px;">
+                                <br>
+                                <a title="Add Row" class="btn btn-sm btn-primary waves-effect"
+                                   id="addNewRow" style="background-color: green;color: white;"><i
+                                        class="zmdi zmdi-plus"></i>
+                                </a>
                             </div>
 
-                            <g:if test="${customer!=null}">
-                                <div class="col-md-3 mt-2">
-                                    <br>
-                                    <button class="btn btn-primary waves-effect" data-toggle="modal" data-target="#massDiscountModal"
-                                            style="background-color: black;"> Mass Discount
-                                    </button>
-                                </div>
-                            </g:if>
+                            <div class="col-md-1 mx-0 px-0" style="margin-top: 5px;">
+                                <br>
+                                <label for="gstInclusive"><strong>Incl. GST?</strong></label>
+                                <input id="gstInclusive" name="gstInclusive" type="checkbox"
+                                       class="checkbox checkbox-inline" style="margin-top: 5px;margin-left: 5px;"
+                                       value="false"/>
+                            </div>
                         %{--                            data-toggle="modal"--}%
                         %{--                            data-target="#myModal"--}%
                             <g:if test="${tempStockArray != null}">
@@ -567,8 +573,10 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
+    var seriesId = null;
 
     $(document).ready(function () {
+        seriesId = $("#series").val();
         $('#phoneNumberModal').modal({backdrop: 'static', keyboard: false}, 'show');
         setTimeout(function(){
             document.getElementById("phono").focus();
@@ -612,10 +620,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        //data: products,
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/" + seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                                        if (!products.some(element => element.id === data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -1901,9 +1934,10 @@
     }
 
     function seriesChanged() {
-        var series = $("#series").val();
-        loadProducts(series);
+        seriesId = $("#series").val();
+        loadProducts(seriesId);
     }
+
 
     function loadProducts(series) {
         $('.loadTable').show();
@@ -2334,19 +2368,20 @@
             $('.discount').val(0);
             return
         }
+        <g:if test="${customer!=null}">
         $.ajax({
             type: "GET",
             url: '/update-mass-discount',
             dataType: 'json',
-            data:{
-                data:JSON.stringify(idArray),
+            data: {
+                data: JSON.stringify(idArray),
                 discount: $('.discount').val()
             },
             success: function (data) {
                 $('#massDiscountModal').modal('hide');
                 loadDraftProducts()
             },
-            error:function (data) {
+            error: function (data) {
                 Swal.fire(
                     'Oops',
                     'Something went wrong!',
@@ -2354,8 +2389,47 @@
                 )
             }
         });
+        </g:if>
+        <g:else>
+        setMassDiscount();
+        $('#massDiscountModal').modal('hide');
+        </g:else>
 
     });
+
+    function setMassDiscount()
+    {
+        var discount = Number($('.discount').val())
+        var data = hot.getData();
+        for (var row = 0; row < data.length; row++) {
+            hot.setDataAtCell(row, 8, discount)
+            var gstPercentage = Number(hot.getDataAtCell(row, 17));
+            var saleQty = Number(hot.getDataAtCell(row, 4));
+            var saleRate = Number(hot.getDataAtCell(row, 6));
+            var sgstPercentage = hot.getDataAtCell(row, 18);
+            var cgstPercentage = hot.getDataAtCell(row, 19);
+
+            var value = saleRate * saleQty;
+            var priceBeforeGst = value - (value * discount / 100);
+            var finalPrice = priceBeforeGst + (priceBeforeGst * (gstPercentage / 100));
+            hot.setDataAtCell(row, 11, Number(finalPrice).toFixed(2));
+            if (gstPercentage !== 0) {
+                var gstAmount = priceBeforeGst * (gstPercentage / 100);
+                var sgstAmount = priceBeforeGst * (sgstPercentage / 100);
+                var cgstAmount = priceBeforeGst * (cgstPercentage / 100);
+                hot.setDataAtCell(row, 10, Number(gstAmount).toFixed(2)); //GST
+                hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
+                hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
+            } else {
+                hot.setDataAtCell(row, 10, 0); //GST
+                hot.setDataAtCell(row, 12, 0); //SGST
+                hot.setDataAtCell(row, 13, 0); //CGST
+            }
+
+        }
+        calculateTaxes()
+        calculateTotalAmt()
+    }
 
 
     $(document).on('click', '#phoneNumber', function (e) {
@@ -2488,12 +2562,17 @@
                 var saleRate = Number(hot.getDataAtCell(row, 6));
                 if (hot.getActiveEditor())
                     saleRate = Number(hot.getActiveEditor().TEXTAREA.value);
-                var gstAmount = 0;
-                var amountWithoutGST = calculateGST(saleRate, gstPercentage);
-                gstAmount = saleRate - amountWithoutGST;
-                hot.setDataAtCell(row, 6, amountWithoutGST.toFixed(2));
+                var discount = Number(hot.getDataAtCell(row, 8))
+                if(discount > 0 && discount<=100)
+                {
+                    saleRate = saleRate - (saleRate * discount / 100)
+                }
+                var value = Number(saleRate.toFixed(2)) * Number(saleQty)
+                var revisedSaleRate = calculateGST(saleRate, gstPercentage);
+                var gstAmount = (value * gstPercentage / 100);
+                hot.setDataAtCell(row, 6, revisedSaleRate.toFixed(2));
                 hot.setDataAtCell(row, 10, gstAmount.toFixed(2));
-                hot.setDataAtCell(row, 11, Number(saleRate.toFixed(2)) * Number(saleQty));
+                hot.setDataAtCell(row, 11, value.toFixed(2));
 
                 if (stateId === '${session.getAttribute('stateId')}') {
                     hot.setDataAtCell(row, 12, Number(gstAmount / 2).toFixed(2)); //SGST

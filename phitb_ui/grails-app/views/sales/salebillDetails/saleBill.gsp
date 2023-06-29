@@ -440,7 +440,7 @@
 
                         if (json.data[i].billStatus !== "DRAFT" && json.data[i].invoiceNumber !== undefined && ${session.getAttribute("financialYearValid")}) {
                             cloneInvoice =
-                                '<a class="dropdown-item" title="Clone"  href="/sale-entry/clone-invoice?saleBillId='
+                                '<a class="dropdown-item" title="Clone"  href="/sale-entry-clone?saleBillId='
                                 + json.data[i].id + '&type=CLONE" target="_blank"><i class="fa fa-clone"></i> Clone</a>';
                         } else {
                             cloneInvoice = ""
