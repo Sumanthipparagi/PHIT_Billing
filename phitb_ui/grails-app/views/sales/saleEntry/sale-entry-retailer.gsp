@@ -572,7 +572,7 @@
     var customers = [];
     var readOnly = false;
     var scheme = null;
-    var stateId = null;
+    var stateId = ${session.getAttribute("stateId")};
     var seriesId = null;
 
     $(document).ready(function () {
@@ -780,104 +780,6 @@
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
                         if (sqty && sqty > 0) {
-                            // var tmpStockId = hot.getDataAtCell(row, 16);
-                            %{--if (tmpStockId == null) {--}%
-                            %{--    var batchId = hot.getCellMeta(row, 2)?.batchId; //batch--}%
-                            %{--    var dt = hot.getDataAtRow(row);--}%
-                            %{--    dt.push(batchId);--}%
-                            %{--    var json = JSON.stringify(dt);--}%
-                            %{--    var type = 'POST';--}%
-                            %{--    var url = '/tempstockbook';--}%
-                            %{--    var draftEdit = false;--}%
-                            %{--    <g:if test="${customer != null}">--}%
-                            %{--    draftEdit = true;--}%
-                            %{--    </g:if>--}%
-                            %{--    var beforeSendSwal;--}%
-                            %{--    $.ajax({--}%
-                            %{--        type: type,--}%
-                            %{--        url: url,--}%
-                            %{--        dataType: 'json',--}%
-                            %{--        beforeSend: function () {--}%
-                            %{--            beforeSendSwal = Swal.fire({--}%
-                            %{--                // title: "Loading",--}%
-                            %{--                html:--}%
-                            %{--                    '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',--}%
-                            %{--                showDenyButton: false,--}%
-                            %{--                showCancelButton: false,--}%
-                            %{--                showConfirmButton: false,--}%
-                            %{--                allowOutsideClick: false,--}%
-                            %{--                background: 'transparent'--}%
-
-                            %{--            });--}%
-                            %{--            // document.addEventListener('keypress', function (e) {--}%
-                            %{--            //     if (e.keyCode === 13 || e.which === 13) {--}%
-                            %{--            //         e.preventDefault();--}%
-                            %{--            //         return false;--}%
-                            %{--            //     }--}%
-                            %{--            // });--}%
-                            %{--            // hot.deselectCell()--}%
-                            %{--        },--}%
-                            %{--        data: {--}%
-                            %{--            rowData: json,--}%
-                            %{--            uuid: self.crypto.randomUUID(),--}%
-                            %{--            draftEdit: draftEdit--}%
-                            %{--        },--}%
-                            %{--        success: function (data) {--}%
-                            %{--            beforeSendSwal.close();--}%
-                            %{--            console.log("Data saved");--}%
-                            %{--            /* if(draftEdit){--}%
-                            %{--                 if(data?.temp_stock){--}%
-                            %{--                     Swal.fire({--}%
-                            %{--                         icon: 'error',--}%
-                            %{--                         title: 'Please delete temp stock',--}%
-                            %{--                         text: 'Please delete temp stock for this product',--}%
-                            %{--                         // footer: '<a href="">Why do I have this issue?</a>'--}%
-                            %{--                     });--}%
-                            %{--                    deleteTempStockRow(null, row)--}%
-                            %{--                 }--}%
-                            %{--             }*/--}%
-                            %{--            batchHot.updateSettings({--}%
-                            %{--                data: []--}%
-                            %{--            });--}%
-                            %{--            var id = hot.getDataAtCell(row, 16);--}%
-                            %{--            hot.setDataAtCell(row, 16, data.id);--}%
-                            %{--            for (var i = 0; i < 16; i++) {--}%
-                            %{--                hot.setCellMeta(row, i, 'readOnly', true);--}%
-                            %{--            }--}%
-                            %{--            --}%%{--                                    <g:if test="${settings?.ALLOW_SAME_BATCH!="YES" && settings!=null}">--}%
-                            %{--            if (id !== data.id) {--}%
-                            %{--                mainTableRow = row + 1;--}%
-                            %{--                hot.alter('insert_row');--}%
-                            %{--                hot.selectCell(mainTableRow, 1);--}%
-                            %{--                hot.render();--}%
-                            %{--                calculateTotalAmt();--}%
-                            %{--            }--}%
-                            %{--            --}%%{--                                        </g:if>--}%
-                            %{--            hot.render();--}%
-
-                            %{--        },--}%
-                            %{--        error: function (jqXHR, textStatus, errorThrown) {--}%
-                            %{--            beforeSendSwal.close();--}%
-                            %{--            console.log("Failed");--}%
-                            %{--            if (jqXHR.status === 400){--}%
-                            %{--                if(draftEdit)--}%
-                            %{--                    alert("Please delete temp stock of this product and try again!");--}%
-                            %{--                else--}%
-                            %{--                    alert("Unable to save the row, please delete it and add again.");--}%
-                            %{--            }--}%
-                            %{--            else if (jqXHR.status === 404) {--}%
-                            %{--                batchSelection(batchId, mainTableRow, false);--}%
-                            %{--                alert("Requested quantity not available in stocks.");--}%
-                            %{--            }--}%
-                            %{--        }--}%
-                            %{--    });--}%
-                            %{--} else {--}%
-                            %{--    mainTableRow = row + 1;--}%
-                            %{--    hot.alter('insert_row');--}%
-                            %{--    hot.selectCell(mainTableRow, 1);--}%
-                            %{--    hot.render();--}%
-                            %{--}--}%
-
                             for (var j = 0; j < 19; j++) {
                                 hot.setCellMeta(row, j, 'readOnly', true);
                                 // hot.setCellMeta(row,j,'disableVisualSelection', true)
@@ -1082,12 +984,6 @@
             if (col === 2) {
                 batchSelection(hot.getDataAtCell(row, 1), row, false);
             }
-        });
-
-
-        stateId = $('#customerSelect option:selected').attr('data-state');
-        $('#customerSelect').change(function () {
-            stateId = $('#customerSelect option:selected').attr('data-state');
         });
 
         function checkUnsavedTemp() {
@@ -1394,128 +1290,6 @@
         })
     }
 
-    function loadDraftProducts() {
-        var beforeSendSwal;
-        $.ajax({
-            type: "GET",
-            url: "/sale-product-details/sale-bill?id=${saleBillDetail?.id}",
-            dataType: 'json',
-            beforeSend: function () {
-                beforeSendSwal= Swal.fire({
-                    // title: "Loading",
-                    html:
-                        '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                    showDenyButton: false,
-                    showCancelButton: false,
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    background: 'transparent'
-
-                });
-                // document.addEventListener('keypress', function (e) {
-                //     if (e.keyCode === 13 || e.which === 13) {
-                //         e.preventDefault();
-                //         return false;
-                //     }
-                // });
-                // hot.deselectCell()
-            },
-            success: function (data) {
-                saleData = data;
-                console.log(data);
-                for (var i = 0; i < saleData.length; i++) {
-                    hot.selectCell(i, 1);
-                    var sRate = saleData[i].sRate;
-                    var sQty = saleData[i].sqty;
-                    var fQty = saleData[i].freeQty;
-                    batchSelection(saleData[i].productId, null, false);
-                    var batchId = saleData[i][12];
-                    hot.setDataAtCell(i, 1, saleData[i].productId.id);
-                    hot.setDataAtCell(i, 2, saleData[i].batchNumber);
-                    hot.setCellMeta(i, 2, "batchId", batchId);
-                    hot.setDataAtCell(i, 3, saleData[i].expiryDate.split("T")[0]);
-                    hot.setDataAtCell(i, 6, sRate);
-                    hot.setDataAtCell(i, 4, sQty);
-                    hot.setDataAtCell(i, 5, fQty);
-                    hot.setDataAtCell(i, 7, saleData[i].mrp);
-                    hot.setDataAtCell(i, 8, saleData[i].discount);
-                    hot.setDataAtCell(i, 9, saleData[i].productId.unitPacking);
-                    gst = saleData[i]?.gstPercentage;
-                    %{--if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {--}%
-                    %{--    sgst = saleData[i].sgstPercentage;--}%
-                    %{--    cgst = saleData[i].cgstPercentage;--}%
-                    %{--    igst = saleData[i].igstPercentage;--}%
-                    %{--} else {--}%
-                    %{--    igst = gst;--}%
-                    %{--    sgst = 0;--}%
-                    %{--    cgst = 0;--}%
-                    %{--}--}%
-                    sgst = saleData[i]?.sgstPercentage;
-                    cgst = saleData[i]?.cgstPercentage;
-                    igst = saleData[i]?.igstPercentage;
-                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * saleData[i].discount) / 100;
-                    var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-
-                    hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
-                    if (gst !== 0) {
-                        hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
-                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
-                        hot.setDataAtCell(i, 13, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
-                    } else {
-                        hot.setDataAtCell(i, 10, 0); //GST
-                        hot.setDataAtCell(i, 12, 0); //SGST
-                        hot.setDataAtCell(i, 13, 0); //CGST
-                    }
-                    if (igst !== "0")
-                        hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
-                    else
-                        hot.setDataAtCell(i, 14, 0);
-                    <g:if test="${customer != null}">
-                    hot.setDataAtCell(i, 16, 0);
-                    </g:if>
-                    <g:else>
-                    hot.setDataAtCell(i, 16, saleData[i].id);
-                    </g:else>
-                    hot.setDataAtCell(i, 15, saleData[i].replacement);
-                    hot.setDataAtCell(i, 17, gst);
-                    hot.setDataAtCell(i, 18, sgst);
-                    hot.setDataAtCell(i, 19, cgst);
-                    hot.setDataAtCell(i, 20, igst);
-                    hot.setDataAtCell(i, 21, saleData[i]["originalSqty"]);
-                    hot.setDataAtCell(i, 22, saleData[i]["originalFqty"]);
-                    <g:if test="${customer != null}">
-                    hot.setDataAtCell(i, 23, sQty); //draft sqty
-                    hot.setDataAtCell(i, 24, fQty); //draft fqty
-                    hot.setDataAtCell(i, 25, saleData[i]["id"]); //saved draft product id
-                    </g:if>
-
-                    for (var j = 0; j < 16; j++) {
-                        hot.setCellMeta(i, j, 'readOnly', true);
-                    }
-                }
-                beforeSendSwal.close();
-                setTimeout(function () {
-                    hot.selectCell(0, 1);
-                    calculateTotalAmt();
-                }, 1000);
-            },
-            error:function (data) {
-                beforeSendSwal.close();
-                Swal.fire("No products found")
-            }
-        });
-
-        //to load temp stock pool in sidebar
-        var userId = "${session.getAttribute("userId")}";
-        $.ajax({
-            type: "GET",
-            url: "tempstockbook/user/" + userId,
-            dataType: 'json',
-            success: function (data) {
-                //do nothing
-            }
-        });
-    }
 
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
@@ -1837,18 +1611,18 @@
             var sgstAmount = Number(hot.getDataAtCell(row, 12));
             var cgstAmount = Number(hot.getDataAtCell(row, 13));
             var igstAmount = Number(hot.getDataAtCell(row, 14));
-            var gstPercentage = hot.getDataAtCell(row, 17);
-            var sgstPercentage = hot.getDataAtCell(row, 18);
-            var cgstPercentage = hot.getDataAtCell(row, 19);
+            var gstPercentage = hot.getDataAtCell(row, 21);
+            var sgstPercentage = hot.getDataAtCell(row, 22);
+            var cgstPercentage = hot.getDataAtCell(row, 23);
             if (stateId === '${session.getAttribute('stateId')}') {
                 if (igstAmount !== 0) {
                     hot.setDataAtCell(row, 12, Number(igstAmount / 2).toFixed(2)); //SGST
                     hot.setDataAtCell(row, 13, Number(igstAmount / 2).toFixed(2)); //CGST
                     hot.setDataAtCell(row, 14, 0); //IGST
 
-                    hot.setDataAtCell(row, 18, sgstPercentage);
-                    hot.setDataAtCell(row, 19, cgstPercentage);
-                    hot.setDataAtCell(row, 20, 0);
+                    hot.setDataAtCell(row, 22, sgstPercentage);
+                    hot.setDataAtCell(row, 23, cgstPercentage);
+                    hot.setDataAtCell(row, 23, 0);
                 }
             } else {
                 if (sgstAmount !== 0 && cgstAmount !== 0) {
@@ -1856,9 +1630,9 @@
                     hot.setDataAtCell(row, 13, 0); //CGST
                     hot.setDataAtCell(row, 14, (sgstAmount + cgstAmount).toFixed(2)); //IGST
 
-                    hot.setDataAtCell(row, 18, 0);
-                    hot.setDataAtCell(row, 19, 0);
-                    hot.setDataAtCell(row, 20, sgstPercentage + cgstPercentage);
+                    hot.setDataAtCell(row, 22, 0);
+                    hot.setDataAtCell(row, 23, 0);
+                    hot.setDataAtCell(row, 24, sgstPercentage + cgstPercentage);
                 }
             }
         }
@@ -2403,11 +2177,11 @@
         var data = hot.getData();
         for (var row = 0; row < data.length; row++) {
             hot.setDataAtCell(row, 8, discount)
-            var gstPercentage = Number(hot.getDataAtCell(row, 17));
+            var gstPercentage = Number(hot.getDataAtCell(row, 21));
             var saleQty = Number(hot.getDataAtCell(row, 4));
             var saleRate = Number(hot.getDataAtCell(row, 6));
-            var sgstPercentage = hot.getDataAtCell(row, 18);
-            var cgstPercentage = hot.getDataAtCell(row, 19);
+            var sgstPercentage = hot.getDataAtCell(row, 22);
+            var cgstPercentage = hot.getDataAtCell(row, 23);
 
             var value = saleRate * saleQty;
             var priceBeforeGst = value - (value * discount / 100);
@@ -2421,13 +2195,14 @@
                 hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
                 hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
             } else {
+                alert(gstPercentage);
                 hot.setDataAtCell(row, 10, 0); //GST
                 hot.setDataAtCell(row, 12, 0); //SGST
                 hot.setDataAtCell(row, 13, 0); //CGST
             }
 
         }
-        calculateTaxes()
+       // calculateTaxes()
         calculateTotalAmt()
     }
 
@@ -2557,7 +2332,7 @@
                 {
                     continue;
                 }
-                var gstPercentage = Number(hot.getDataAtCell(row, 17));
+                var gstPercentage = Number(hot.getDataAtCell(row, 21));
                 var saleQty = Number(hot.getDataAtCell(row, 4));
                 var saleRate = Number(hot.getDataAtCell(row, 6));
                 if (hot.getActiveEditor())
@@ -2578,13 +2353,13 @@
                     hot.setDataAtCell(row, 12, Number(gstAmount / 2).toFixed(2)); //SGST
                     hot.setDataAtCell(row, 13, Number(gstAmount / 2).toFixed(2)); //CGST
                     hot.setDataAtCell(row, 14, 0); //IGST
-                    hot.setDataAtCell(row, 20, 0);
+                    hot.setDataAtCell(row, 24, 0);
                 } else {
                     hot.setDataAtCell(row, 12, 0); //SGST
                     hot.setDataAtCell(row, 13, 0); //CGST
                     hot.setDataAtCell(row, 14, (gstAmount).toFixed(2)); //IGST
-                    hot.setDataAtCell(row, 18, 0);
-                    hot.setDataAtCell(row, 19, 0);
+                    hot.setDataAtCell(row, 22, 0);
+                    hot.setDataAtCell(row, 23, 0);
                 }
             }
 
