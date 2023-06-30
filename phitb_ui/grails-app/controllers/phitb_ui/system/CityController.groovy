@@ -70,7 +70,6 @@ class CityController {
     {
         try
         {
-            println(params)
             String pincode = params.pincode
             if(pincode!="")
             {

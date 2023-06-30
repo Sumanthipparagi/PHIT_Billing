@@ -2219,12 +2219,12 @@
             url: '/getcitybypincode',
             dataType: 'json',
             delay: 250,
-            data: function (data) {
+            data: function (term) {
                 return {
-                    pincode: data.term // search term
+                    pincode: term // search term
                 };
             },
-            processResults: function (response) {
+            results: function (response) {
                 var data = [];
                 response.forEach(function (response, index) {
                     data.push({"pincode": response.pincode, "text": response.areaName, "id": response.id});
