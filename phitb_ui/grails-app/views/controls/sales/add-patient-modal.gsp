@@ -3,8 +3,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-%{--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}%
-%{--                        <span aria-hidden="true">&times;</span></button>--}%
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
                     <h4 class="schemeTitle">Patient Registration</h4>
                 </div>
                 <form  id="patientRegistrationForm" method="post" role="form" class="patientRegistrationForm"
@@ -61,6 +61,18 @@
                                 <input type="text" id="drConsultation" class="form-control drConsultation" name="drConsultation"
                                        placeholder="Dr Consultation"
                                 />
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="pinCode">
+                                    PIN Code
+                                </label>
+
+                                <div>
+                                    <input style="width: 100%" type="hidden" class="pinCode" id="pinCode"/>
+                                    <input type="hidden" name="pinCode" id="pc">
+                                </div>
+
                             </div>
 
                             <input type="hidden" class="parentEntityType" name="parentEntityType"  value="${session.getAttribute('entityTypeId')}">

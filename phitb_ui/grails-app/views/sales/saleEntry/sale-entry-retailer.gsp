@@ -355,9 +355,9 @@
                 <div class="card" style="margin-bottom:10px;">
                     <div class="body">
                         <div class="table-responsive">
-                            <p class="loadTable">Loading...<img src="${assetPath(src: '/themeassets/images/3.gif')}"
+                           %{-- <p class="loadTable">Loading...<img src="${assetPath(src: '/themeassets/images/3.gif')}"
                                                                 width="25" height="25"/>
-                            </p>
+                            </p>--}%
 
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
@@ -1204,128 +1204,6 @@
         }
     }
 
-
-    function loadTempStockBookData() {
-        var userId = "${session.getAttribute("userId")}";
-        var beforeSendSwal;
-        $.ajax({
-            type: "GET",
-            url: "/tempstockbook/user/" + userId,
-            dataType: 'json',
-            beforeSend: function () {
-                beforeSendSwal = Swal.fire({
-                    // title: "Loading",
-                    html:
-                        '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                    showDenyButton: false,
-                    showCancelButton: false,
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    background: 'transparent'
-                });
-            },
-            success: function (data) {
-                saleData = data;
-                // tempArray = [];
-                for (var i = 0; i < saleData.length; i++) {
-                    hot.selectCell(i, 1);
-                    var sRate = saleData[i]["saleRate"];
-                    var sQty = saleData[i]["userOrderQty"];
-                    var fQty = saleData[i]["userOrderFreeQty"];
-                    // tempArray.push(saleData[i].id);
-                    batchSelection(saleData[i]["productId"], null, false);
-                    var batchId = saleData[i][12];
-                    hot.setDataAtCell(i, 1, saleData[i]["productId"]);
-                    hot.setDataAtCell(i, 2, saleData[i]["batchNumber"]);
-                    hot.setCellMeta(i, 2, "batchId", batchId);
-                    hot.setDataAtCell(i, 3, saleData[i]["expDate"].split("T")[0]);
-                    hot.setDataAtCell(i, 5, 0);
-                    hot.setDataAtCell(i, 6, sRate);
-                    hot.setDataAtCell(i, 4, sQty);
-                    hot.setDataAtCell(i, 5, fQty);
-                    hot.setDataAtCell(i, 7, saleData[i]["mrp"]);
-                    hot.setDataAtCell(i, 8, saleData[i]["discount"]);
-                    hot.setDataAtCell(i, 9, saleData[i]["packingDesc"]);
-                    gst = saleData[i]["gst"];
-                    sgst = saleData[i]["sgst"];
-                    cgst = saleData[i]["cgst"];
-                    igst = saleData[i]["igst"];
-                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * saleData[i].discount) / 100;
-                    var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                    hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
-                    if (gst !== 0) {
-                        hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
-                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
-                        hot.setDataAtCell(i, 13, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
-                    } else {
-                        hot.setDataAtCell(i, 10, 0); //GST
-                        hot.setDataAtCell(i, 12, 0); //SGST
-                        hot.setDataAtCell(i, 13, 0); //CGST
-                    }
-                    if (igst !== "0")
-                        hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
-                    else
-                        hot.setDataAtCell(i, 14, 0);
-
-                    hot.setDataAtCell(i, 15, saleData[i].replacement);
-                    hot.setDataAtCell(i, 16, saleData[i].id);
-                    hot.setDataAtCell(i, 17, gst);
-                    hot.setDataAtCell(i, 18, sgst);
-                    hot.setDataAtCell(i, 19, cgst);
-                    hot.setDataAtCell(i, 20, igst);
-
-                    hot.setDataAtCell(i, 21, saleData[i]["originalSqty"]);
-                    hot.setDataAtCell(i, 22, saleData[i]["originalFqty"]);
-
-                    for (var j = 0; j < 16; j++) {
-                        hot.setCellMeta(i, j, 'readOnly', true);
-                    }
-                }
-                setTimeout(function () {
-                    hot.selectCell(0, 1);
-                    calculateTotalAmt();
-                }, 1000);
-                beforeSendSwal.close();
-            }
-        })
-    }
-
-
-    function deleteTempStockRow(id, row) {
-        if (!readOnly) {
-            if (id) {
-                $.ajax({
-                    type: "POST",
-                    url: "/tempstockbook/delete/" + id,
-                    dataType: 'json',
-                    success: function (data) {
-                        hot.alter("remove_row", row);
-                        if (!hot.isEmptyRow(0)) {
-                            customerLock(true)
-                        } else {
-                            customerLock(false)
-                        }
-                        Swal.fire({
-                            title: "Success",
-                            text: "Product removed."
-                        });
-                        batchHot.updateSettings({
-                            data: []
-                        });
-                        calculateTotalAmt();
-                    }
-                });
-            } else
-                hot.alter("remove_row", row);
-            if (!hot.isEmptyRow(0)) {
-                customerLock(true)
-            } else {
-                customerLock(false)
-            }
-        } else
-            alert("Can't change this now, invoice has been saved already.")
-    }
-
     function deleteSaleBillRow(id, row) {
         if (!readOnly) {
             if (id) {
@@ -1709,42 +1587,8 @@
 
     function seriesChanged() {
         seriesId = $("#series").val();
-        loadProducts(seriesId);
     }
 
-
-    function loadProducts(series) {
-        $('.loadTable').show();
-        products.length = 0;//remove all elements
-        $.ajax({
-            type: "GET",
-            url: "/product/series/" + series,
-            dataType: 'json',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].saleType === '${Constants.SALEABLE}') {
-                        products.push({id: data[i].id, text: data[i].productName});
-                    }
-                }
-                <g:if test="${params.saleBillId && params.type!="CLONE"}">
-                loadDraftProducts();
-                console.log("Drafts Products loaded")
-                </g:if>
-                <g:elseif test="${params.type == "CLONE"}">
-                loadTempStockBookData();
-                console.log("tempstock Products loaded")
-                </g:elseif>
-                <g:else>
-                loadTempStockBookData();
-                console.log("tempstock Products loaded")
-                </g:else>
-            },
-            error: function () {
-                products.length = 0; //remove all elements
-            }
-        });
-        $('.loadTable').hide();
-    }
 
     function checkSchemes(productId, batchNumber) {
         scheme = null;
@@ -2366,6 +2210,32 @@
             calculateTotalAmt();
         }
     }
+
+    $('.pinCode').select2({
+        placeholder: 'Enter Pincode',
+        minimumInputLength: 3,
+        required: true,
+        ajax: {
+            url: '/getcitybypincode',
+            dataType: 'json',
+            delay: 250,
+            data: function (data) {
+                return {
+                    pincode: data.term // search term
+                };
+            },
+            processResults: function (response) {
+                var data = [];
+                response.forEach(function (response, index) {
+                    data.push({"pincode": response.pincode, "text": response.areaName, "id": response.id});
+                });
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
