@@ -917,9 +917,9 @@ class SaleEntryController
                 String mrp = sale.get("7")
                 String presQty = sale.get("15")
                 String noOfDays = sale.get("16")
-                String morning = sale.get("17")
-                String afternoon = sale.get("17")
-                String night = sale.get("18")
+                String morning = sale.get("19").toString().split("-")[0]
+                String afternoon = sale.get("19").toString().split("-")[1]
+                String night = sale.get("19").toString().split("-")[2]
                 double discount = UtilsService.round(Double.parseDouble(sale.get("8").toString()), 2)
                 String packDesc = sale.get("9")
                 double gst = UtilsService.round(Double.parseDouble(sale.get("10").toString()), 2)

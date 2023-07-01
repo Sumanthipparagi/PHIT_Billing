@@ -69,8 +69,7 @@
                                 </label>
 
                                 <div>
-                                    <input style="width: 100%" type="hidden" class="pinCode" id="pinCode"/>
-                                    <input type="hidden" name="pinCode" id="pc">
+                                    <input style="width: 100%" type="hidden" class="pinCode" id="pinCode" name="cityId"/>
                                 </div>
 
                             </div>

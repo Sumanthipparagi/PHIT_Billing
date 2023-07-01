@@ -614,10 +614,11 @@ class EntityRegisterService {
         entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
         entityRegister.parentEntityType = Long.parseLong(jsonObject.get("parentEntityType").toString())
-        entityRegister.countryId = 0
-        entityRegister.stateId = 0
-        entityRegister.cityId = 0
-        entityRegister.pinCode = "0"
+        //entityRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
+        entityRegister.countryId = 1
+        entityRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
+        entityRegister.cityId = Long.parseLong(jsonObject.get("cityId").toString())
+        entityRegister.pinCode = jsonObject.get("pinCode").toString()
         entityRegister.mobileNumber = jsonObject.get('phoneNumber').toString()
         entityRegister.email = "0"
         entityRegister.contactName = "0"

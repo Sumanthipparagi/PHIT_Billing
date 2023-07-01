@@ -755,7 +755,7 @@
     // })
     $('.pinCode').select2({
         placeholder: 'Enter Pincode',
-        minimumInputLength: 3,
+        minimumInputLength: 6,
         required: true,
         ajax: {
             url: '/getcitybypincode',

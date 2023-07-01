@@ -618,6 +618,10 @@ class EntityRegisterController {
         try{
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put('entityId', session.getAttribute('entityId'))
+            String cityId = jsonObject.get("cityId")
+            JSONObject city = new SystemService().getCityById(cityId)
+            jsonObject.put("stateId", city.get("state")["id"])
+            jsonObject.put("pinCode", city.get("pincode"))
             def entityService = new EntityService().savePatientDetails(jsonObject)
             if(entityService?.status == 200){
                 JSONObject jsonObject1 = new JSONObject(entityService.readEntity(String.class))

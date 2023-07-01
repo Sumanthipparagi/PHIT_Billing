@@ -249,14 +249,16 @@ class CityMasterService {
             {
                 ArrayList<CityMaster> cityMasters =  CityMaster.findAllByPincodeIlike(pincode) as ArrayList
                 if (cityMasters) {
-//                    JSONArray cityDetails = new JSONArray((cityMasters as JSON).toString())
-//                    println(cityDetails)
                     return cityMasters
+                }
+                else
+                {
+                    throw new ResourceNotFoundException()
                 }
             }
             else
             {
-                return null
+                throw new BadRequestException()
             }
         }
         catch(Exception ex)

@@ -79,6 +79,7 @@
                             <div class="col-md-4">
                                 <label>Patient:</label>
                                 <input type="hidden" class="customerId"/>
+                                <input type="hidden" class="stateId"/>
                                 <span id="patientDetails"></span>
                             </div>
                             <div class="col-md-2">
@@ -530,11 +531,11 @@
         'SGST',
         'CGST',
         'IGST',
-        'Prev. qty',
+        'Prisc. Qty',
         'No. of days',
         'M',
         'A',
-        'N',
+        'Schedule',
         'id'];
 
     var batchHeaderRow = [
@@ -572,7 +573,7 @@
     var customers = [];
     var readOnly = false;
     var scheme = null;
-    var stateId = ${session.getAttribute("stateId")};
+    var stateId = null;
     var seriesId = null;
 
     $(document).ready(function () {
@@ -666,9 +667,13 @@
                 {type: 'text', readOnly: true},
                 {type: 'numeric'},
                 {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
+                {type: 'numeric'}, //17 M
+                {type: 'numeric'}, //18 A
+                {
+                    type: 'dropdown',
+                    source: ['1-1-1','1-1-0','1-0-1','1-0-0','0-1-1','0-1-0','0-0-1','0-0-0']
+                }, //19 N
+               // {type: 'numeric'}, //19 N
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}, //GST Percentage
                 {type: 'text', readOnly: true}, //SGST Percentage
@@ -684,7 +689,7 @@
             ],
            hiddenColumns: true,
             hiddenColumns: {
-                columns: [20,21,22,23,24,25,26]
+                columns: [17,18,20,21,22,23,24,25,26]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -788,6 +793,7 @@
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 0);
                             hot.render();
+                            calculateTotalAmt();
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
 
@@ -847,9 +853,10 @@
                             discount = hot.getDataAtCell(row, 8);
                         }
 
-                        if(selection === 15 || selection === 16 || selection === 17 || selection === 18 || selection
-                            === 19){
-                            this.selectCell(row, selection + 1);
+                        /*if(selection === 15 || selection === 16 || selection === 17 || selection === 18 || selection
+                            === 19){*/
+                        if(selection === 15 || selection === 16){
+                                this.selectCell(row, selection + 1);
                         }
 
                         var allowEntry = false;
@@ -1202,6 +1209,18 @@
                 }
             });
         }
+    }
+
+    function deleteTempStockRow(id, row) {
+        if (!readOnly) {
+            hot.alter("remove_row", row);
+            if (!hot.isEmptyRow(0)) {
+                customerLock(true)
+            } else {
+                customerLock(false)
+            }
+        } else
+            alert("Can't change this now, invoice has been saved already.")
     }
 
     function deleteSaleBillRow(id, row) {
@@ -2072,11 +2091,12 @@
                 console.log(data);
                 if(data.status === false){
                     $('#addPatientModal').modal('hide');
-                    var html= '<p>'+data.obj.phoneNumber+'</p>';
+                    var html= '<p>'+data.obj.phoneNumber+' ('+data.obj.entityName+')</p>';
                     $('#patientDetails').html(html);
                     $('.customerId').val(data.obj.id);
                     $('#phoneNumberModal').modal('hide')
                     hot.selectCell(0, 1);
+                    stateId = data.obj.stateId + "";
                 }else{
                     // alert("Phone Number Not exists.");
                     $('#phoneNumberModal').modal('hide');
@@ -2110,7 +2130,7 @@
                 $('#patientDetails').html(html);
                 $('.customerId').val(data.id);
                 hot.selectCell(0, 1);
-
+                stateId = data.stateId + "";
             },
             error: function () {
                 Swal.fire("Error!", "Something went wrong", "error");
@@ -2192,7 +2212,6 @@
                 hot.setDataAtCell(row, 6, revisedSaleRate.toFixed(2));
                 hot.setDataAtCell(row, 10, gstAmount.toFixed(2));
                 hot.setDataAtCell(row, 11, value.toFixed(2));
-
                 if (stateId === '${session.getAttribute('stateId')}') {
                     hot.setDataAtCell(row, 12, Number(gstAmount / 2).toFixed(2)); //SGST
                     hot.setDataAtCell(row, 13, Number(gstAmount / 2).toFixed(2)); //CGST
@@ -2213,7 +2232,7 @@
 
     $('.pinCode').select2({
         placeholder: 'Enter Pincode',
-        minimumInputLength: 3,
+        minimumInputLength: 6,
         required: true,
         ajax: {
             url: '/getcitybypincode',
