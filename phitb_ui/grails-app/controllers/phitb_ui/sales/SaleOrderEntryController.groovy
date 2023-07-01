@@ -28,7 +28,7 @@ class SaleOrderEntryController {
     def index() {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        /*ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         String id = params.id
@@ -40,8 +40,8 @@ class SaleOrderEntryController {
             saleOrder.put("products", saleOrderProducts)
 
         }*/
-        render(view: '/sales/saleOrderEntry/sale-order',model: [divisions:divisions,customers:customers,
-                                                                /*saleOrder: saleOrder,*/
+        render(view: '/sales/saleOrderEntry/sale-order',model: [divisions:divisions,/*customers:customers,
+                                                                saleOrder: saleOrder,*/
                                                                 priorityList:priorityList,series:series])
     }
 

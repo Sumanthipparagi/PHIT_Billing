@@ -100,7 +100,8 @@
 
                             <div class="col-md-4">
                                 <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect"
+                                <input type="hidden" id="customerSelect" style="width: 100%"/>
+                                %{--<select class="form-control show-tick" id="customerSelect"
                                         onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
@@ -109,7 +110,7 @@
                                             <option data-state="${cs.stateId}" value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
-                                </select>
+                                </select>--}%
                             </div>
 
                             <div class="col-md-2">
@@ -322,8 +323,54 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
+    var seriesId = null;
     $(document).ready(function () {
-        $("#customerSelect").select2();
+        seriesId = $("#series").val()
+        $("#customerSelect").select2({
+            placeholder: "Select Customer",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                            "id": entity.id,
+                            "state":entity.stateId,
+                            "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin":entity.gstn,
+                            "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                        if(!customers.some(cust => cust.id === entity.id))
+                            customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function(container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
+
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
@@ -349,10 +396,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        /*data: products,*/
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/" + seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                                        if (!products.some(element => element.id === data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -1203,7 +1275,7 @@
     }
 
     function seriesChanged() {
-        var series = $("#series").val();
+        seriesId = $("#series").val();
         loadProducts(series);
     }
 
@@ -1573,6 +1645,64 @@
         $('.loadTable').remove();
         // }, 5000);
     });
+
+    $("#customerSelect").on('change', function(e) {
+        var data = $(this).select2('data');
+        if(data === null)
+            return;
+        var customerId = $("#customerSelect").val();
+        stateId = data.state + "";
+        var address = data.address
+        var shippingAddress = data.shippingaddress;
+        var gstin = data.gstin;
+        var noOfCrDays = 0;
+        if (customers.length > 0) {
+            for (var i = 0; i < customers.length; i++) {
+                if (customerId === customers[i].id) {
+                    noOfCrDays = customers[i].noOfCrDays;
+                }
+            }
+            if (!hot.isEmptyRow(0)) {
+                customerLock(true)
+            } else {
+                customerLock(false)
+            }
+            if (customerId != null && customerId != '') {
+                $('#address').html('Customer Address: ' +
+                    '  <span style="font-size: 12px">' + address + '</span><br>GSTIN: ' + gstin + '<br>Shipping Address: ' + shippingAddress)
+            } else {
+                $('#address').html('')
+            }
+        } else {
+            <g:if test="${customer != null}">
+            noOfCrDays = ${customer.noOfCrDays};
+            </g:if>
+        }
+
+        $('#duedate').prop("readonly", false);
+        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        $('#duedate').prop("readonly", true);
+        calculateTaxes(); //this is to change IGST if in case out of state
+        calculateTotalAmt();
+    });
+
+
+
+    function customerLock(lock) {
+        var selectedId = $('#customerSelect').val();
+        if (selectedId != null && selectedId !== '') {
+            $('#customerSelect').prop('disabled', lock);
+            if (lock) {
+                $('#freezeContent').html('<small style="color: red;">Customer locked, clear products to unlock.</small>')
+            } else {
+                $('#freezeContent').html('')
+            }
+        } else {
+            $('#customerSelect').prop('disabled', false);
+            $('#freezeContent').html('')
+
+        }
+    }
 
 </script>
 <g:include view="controls/footer-content.gsp"/>
