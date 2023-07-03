@@ -1127,80 +1127,108 @@
         }
 
         var saleData = JSON.stringify(hot.getSourceData());
+        Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: `No`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/sale-order-entry",
+                    dataType: 'json',
+                    data: {
+                        saleData: saleData,
+                        customer: customer,
+                        series: series,
+                        duedate: duedate,
+                        refno: refno,
+                        refDate: refDate,
+                        priority: priority,
+                        billStatus: billStatus,
+                        seriesCode: seriesCode,
+                        uuid: self.crypto.randomUUID()
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            // title: "Loading",
+                            html:
+                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background: 'transparent'
 
-        $.ajax({
-            type: "POST",
-            url: "/sale-order-entry",
-            dataType: 'json',
-            data: {
-                saleData: saleData,
-                customer: customer,
-                series: series,
-                duedate: duedate,
-                refno: refno,
-                refDate: refDate,
-                priority: priority,
-                billStatus: billStatus,
-                seriesCode: seriesCode,
-                uuid: self.crypto.randomUUID()
-            },
-            success: function (data) {
-                console.log(data)
-                readOnly = true;
-                var rowData = hot.getData();
-                for (var j = 0; j < rowData.length; j++) {
-                    for (var i = 0; i < 16; i++) {
-                        hot.setCellMeta(j, i, 'readOnly', true);
-                    }
-                }
-                saleOrderDetail = data.saleOrderDetail.id;
-                var datepart = data.saleOrderDetail.entryDate.split("T")[0];
-                var month = datepart.split("-")[1];
-                var year = datepart.split("-")[0];
-                var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.saleOrderDetail.invoiceNumber;
-                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
-                var message = "";
-                var draftInvNo = "";
-                if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.saleOrderDetail.entityId + "/DR/SO/" + month + year + "/"
-                        + seriesCode + "/__" + '<p><strong>';
-                    $("#invNo").html(draftInvNo);
-                }
-                if (billStatus !== "DRAFT") {
-                    message = 'Sale Order Generated: ' + invoiceNumber;
-                } else {
-                    message = 'Draft Sale Order Generated: ' + data.saleOrderDetail.entityId + "/DR/SO/" + month + year + "/"
-                        + seriesCode + "/__";
-                }
-                waitingSwal.close();
-                Swal.fire({
-                    title: message,
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: 'Print',
-                    denyButtonText: 'New Entry',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        printInvoice();
-                    } else if (result.isDenied) {
-                        resetData();
+                        });
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        readOnly = true;
+                        var rowData = hot.getData();
+                        for (var j = 0; j < rowData.length; j++) {
+                            for (var i = 0; i < 16; i++) {
+                                hot.setCellMeta(j, i, 'readOnly', true);
+                            }
+                        }
+                        saleOrderDetail = data.saleOrderDetail.id;
+                        var datepart = data.saleOrderDetail.entryDate.split("T")[0];
+                        var month = datepart.split("-")[1];
+                        var year = datepart.split("-")[0];
+                        var seriesCode = data.series.seriesCode;
+                        var invoiceNumber = data.saleOrderDetail.invoiceNumber;
+                        $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+                        var message = "";
+                        var draftInvNo = "";
+                        if (billStatus === "DRAFT") {
+                            draftInvNo = '<p><strong>' + data.saleOrderDetail.entityId + "/DR/SO/" + month + year + "/"
+                                + seriesCode + "/__" + '<p><strong>';
+                            $("#invNo").html(draftInvNo);
+                        }
+                        if (billStatus !== "DRAFT") {
+                            message = 'Sale Order Generated: ' + invoiceNumber;
+                        } else {
+                            message = 'Draft Sale Order Generated: ' + data.saleOrderDetail.entityId + "/DR/SO/" + month + year + "/"
+                                + seriesCode + "/__";
+                        }
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: message,
+                            showDenyButton: true,
+                            showCancelButton: false,
+                            confirmButtonText: 'Print',
+                            denyButtonText: 'New Entry',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                printInvoice();
+                            } else if (result.isDenied) {
+                                resetData();
+                            }
+                        });
+
+                    },
+                    error: function () {
+                        $("#saveBtn").prop("disabled", false);
+                        $("#saveDraftBtn").prop("disabled", false);
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Unable to generate Invoice at the moment.",
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            resetData();
+                        });
                     }
                 });
-
-            },
-            error: function () {
+            }
+            else if (result.isDenied) {
                 $("#saveBtn").prop("disabled", false);
-                $("#saveDraftBtn").prop("disabled", false);
-                waitingSwal.close();
-                Swal.fire({
-                    title: "Unable to generate Invoice at the moment.",
-                    confirmButtonText: 'OK',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    resetData();
-                });
+                /*$("#saveDraftBtn").prop("disabled", false);*/
+                Swal.fire('Changes are not saved', '', 'info')
             }
         });
 

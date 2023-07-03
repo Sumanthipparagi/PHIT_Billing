@@ -255,7 +255,10 @@ class EntityRegisterController
             {
                 println("Getting Affiliates: " + id)
                 long affiliateId = Long.parseLong(id)
-                respond entityRegisterService.getAllByAffiliateId(affiliateId)
+                String search = params.search
+                String page = params.page
+                def entities = entityRegisterService.getAllByAffiliateId(affiliateId, page, search)
+                respond entities
             }
         }
         catch (ResourceNotFoundException ex)

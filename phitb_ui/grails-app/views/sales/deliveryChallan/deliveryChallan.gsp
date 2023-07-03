@@ -100,27 +100,8 @@
 
                             <div class="col-md-4">
                                 <label for="customerSelect">Customer:</label>
-%{--                                                                <select class="form-control show-tick" id="customerSelect"--}%
-%{--                                                                        onchange="customerSelectChanged()">--}%
-%{--                                                                    <option selected disabled>--SELECT--</option>--}%
-%{--                                                                    <g:each in="${customers}" var="cs">--}%
-%{--                                                                        <g:if test="${session.getAttribute("entityTypeName").toString() == Constants.ENTITY_MANUFACTURER}">--}%
-%{--                                                                            <g:if test="${cs.entityType.name == Constants.ENTITY_C_F ||--}%
-%{--                                                                                    cs.entityType.name == Constants.ENTITY_SUPER_STOCKIST}">--}%
-%{--                                                                                <g:if test="${cs.id != session.getAttribute("entityId")}">--}%
-%{--                                                                                    <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>--}%
-%{--                                                                                </g:if>--}%
-%{--                                                                            </g:if>--}%
-%{--                                                                        </g:if>--}%
-%{--                                                                                                            <g:else>--}%
-%{--                                                                                                                <g:if test="${cs.id != session.getAttribute("entityId")}">--}%
-%{--                                                                                                                    <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>--}%
-%{--                                                                                                                </g:if>--}%
-%{--                                                                                                            </g:else>--}%
-%{--                                                                    </g:each>--}%
-%{--                                                                </select>--}%
-
-                                <select class="form-control show-tick" id="customerSelect"
+                                <input type="hidden" id="customerSelect" style="width: 100%"/>
+                                %{--<select class="form-control show-tick" id="customerSelect"
                                         onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
@@ -130,7 +111,7 @@
                                             (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
-                                </select>
+                                </select>--}%
                             </div>
 
                             <div class="col-md-2">
@@ -330,8 +311,53 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
+    var seriesId = null;
     $(document).ready(function () {
-        $("#customerSelect").select2();
+        seriesId = $("#series").val()
+        $("#customerSelect").select2({
+            placeholder: "Select Customer",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " (" + entity.entityType.name + ") - " + entity?.city?.districtName + " " + entity?.city?.pincode,
+                            "id": entity.id,
+                            "state": entity.stateId,
+                            "address": entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin": entity.gstn,
+                            "shippingaddress": entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                        if (!customers.some(cust => cust.id === entity.id))
+                            customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function (container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
@@ -357,10 +383,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        /*data: products,*/
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/" + seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                                        if (!products.some(element => element.id === data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -449,7 +500,12 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 14 || selection === 7) {
+                }
+                else if (selection === 0) {
+                    if (e.keyCode === 13)
+                        deleteTempStockRow(null, row);
+                }
+                else if (selection === 14 || selection === 7) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -950,7 +1006,7 @@
 
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
-            if (id) {
+            /*if (id) {
                 $.ajax({
                     type: "POST",
                     url: "tempstockbook/delete/" + id,
@@ -960,7 +1016,7 @@
                         swal("Success", "Row Deleted", "").fire();
                     }
                 });
-            } else
+            } else*/
                 hot.alter("remove_row", row);
         } else
             alert("Can't change this now, invoice has been saved already.")
@@ -983,6 +1039,13 @@
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
+        if (!duedate) {
+            alert("Please select due date.");
+            waitingSwal.close();
+            $("#saveBtn").prop("disabled", false);
+            $("#saveDraftBtn").prop("disabled", false);
+            return;
+        }
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
@@ -1037,7 +1100,7 @@
                 var message = "";
                 var draftInvNo = "";
                 if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.sale.entityId + "/DR/GTN/" + month + year + "/"
+                    draftInvNo = '<p><strong>' + data.deliveryChallan.entityId + "/DR/GTN/" + month + year + "/"
                         + seriesCode + "/__" + '<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
@@ -1155,7 +1218,7 @@
     }
 
     function loadProducts(series) {
-        products.length = 0;//remove all elements
+       /* products.length = 0;//remove all elements
         $.ajax({
             type: "GET",
             url: "/product/series/" + series,
@@ -1169,7 +1232,7 @@
             error: function () {
                 products.length = 0; //remove all elements
             }
-        });
+        });*/
     }
 
     function checkSchemes(productId, batchNumber) {

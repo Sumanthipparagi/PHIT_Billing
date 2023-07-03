@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -115,7 +116,8 @@
 
                             <div class="col-md-4">
                                 <label for="customer">Customer:</label>
-                                <select class="form-control show-tick" id="customer"
+                                <input type="hidden" id="customer" style="width: 100%"/>
+                                %{--<select class="form-control show-tick" id="customer"
                                         onchange="customerChanged()">
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
@@ -124,7 +126,7 @@
                                                     .name})</option>
                                         </g:if>
                                     </g:each>
-                                </select>
+                                </select>--}%
                             </div>
 
 
@@ -431,7 +433,6 @@
         '<strong>igst_p</strong>',
         'id'];
 
-
     const batchContainer = document.getElementById('batchTable');
     const billsContainer = document.getElementById('billsTable');
     var batchHot;
@@ -458,8 +459,55 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
-
+    var salereturnbillid = 0;
+    var seriesId = null;
     $(document).ready(function () {
+        seriesId = $("#series").val()
+        $("#customer").select2({
+            placeholder: "Select Customer",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " (" + entity.entityType.name + ") - " + entity?.city?.districtName + " " + entity?.city?.pincode,
+                            "id": entity.id,
+                            "state": entity.stateId,
+                            "address": entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin": entity.gstn,
+                            "shippingaddress": entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                        if (!customers.some(cust => cust.id === entity.id))
+                            customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function (container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
+
         var isCheckedYes = "YES";
         // var isCheckedNo = $('.prev_sales_no').prop('checked');
         if (isCheckedYes === "YES") {
@@ -475,11 +523,8 @@
             $('.prev_sales_no').prop('checked', false);
             isCheckedYes = "YES"
         });
-        $("#customer").select2();
-         stateId = $('#customer option:selected').attr('data-stateId')
-        $('#customer').change(function () {
-            stateId = $('#customer option:selected').attr('data-stateId')
-        });
+        stateId = $('#customer option:selected').attr('data-stateId')
+
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
@@ -525,10 +570,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        /*data: products,*/
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/" + seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                                        if (!products.some(element => element.id === data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -724,7 +794,12 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 15 || selection === 8 || selection === 13 || selection === 17) {
+                }
+                else if (selection === 0) {
+                    if (e.keyCode === 13)
+                        deleteTempStockRow(null, row);
+                }
+                else if (selection === 15 || selection === 8 || selection === 13 || selection === 17) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var fqty = hot.getDataAtCell(row, 6);
@@ -1039,7 +1114,7 @@
                                 var igstAmount = priceBeforeGst * (igst / 100);
                                 hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
                                 calculateTotalAmt();
-                            } else{
+                            } else {
                                 hot.setDataAtCell(row, 14, 0); //SGST
                                 hot.setDataAtCell(row, 15, 0); //CGST
                                 hot.setDataAtCell(row, 16, 0);
@@ -1130,9 +1205,9 @@
                         hot.setDataAtCell(mainTableRow, 11, rowData[9].toFixed(2));
                         hot.setDataAtCell(mainTableRow, 17, "NA");
                         gst = rowData[9];
-                       /* sgst = rowData[10];
-                        cgst = rowData[11];
-                        igst = rowData[12];*/
+                        /* sgst = rowData[10];
+                         cgst = rowData[11];
+                         igst = rowData[12];*/
                         if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
                             sgst = rowData[10];
                             cgst = rowData[11];
@@ -1311,7 +1386,6 @@
         }
     }
 
-
     function saleSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId !== null && selectedId !== "") {
             var customer = Number($("#customer").val());
@@ -1412,7 +1486,6 @@
         }
     }
 
-
     function customerChanged() {
         hot.updateSettings({
             data: []
@@ -1467,7 +1540,6 @@
         $("#totalFQty").text(totalFQty.toFixed(2));
     }
 
-
     function checkForDuplicateEntry(batchNumber) {
         var productId = hot.getDataAtCell(mainTableRow, 2);
         var saleReturnTableData = hot.getData();
@@ -1479,7 +1551,6 @@
         }
         return false;
     }
-
 
     function checkForDuplicateEntryBill(batchNumber, saleBillId) {
         var productId = hot.getDataAtCell(mainTableRow, 2);
@@ -1494,9 +1565,10 @@
         return false;
     }
 
-
     function loadTempStockBookData() {
         /*  var userId = "
+
+
 
 
 
@@ -1567,7 +1639,7 @@
         })*/
     }
 
-    function deleteTempStockRow(id, row) {
+    function deleteTempStockRow(id=null,row) {
         if (!readOnly) {
             /*  if(id) {
                   $.ajax({
@@ -1588,8 +1660,6 @@
         } else
             alert("Can't change this now, invoice has been saved already.")
     }
-
-    var salereturnbillid = 0;
 
     function saveReturnInvoice(billStatus) {
         var waitingSwal = Swal.fire({
@@ -1641,94 +1711,122 @@
             }
         }
         var saleReturnData = JSON.stringify(hot.getSourceData());
-        $.ajax({
-            type: "POST",
-            url: "/sale-return",
-            dataType: 'json',
-            data: {
-                saleReturnData: saleReturnData,
-                customer: customer,
-                series: series,
-                lrno: lrno,
-                lrDate: lrDate,
-                // duedate:duedate,
-                // priority:priority,
-                billStatus: billStatus,
-                seriesCode: seriesCode,
-                uuid: self.crypto.randomUUID()
-            },
-            success: function (data) {
-                readOnly = true;
-                var rowData = hot.getData();
-                for (var j = 0; j < rowData.length; j++) {
-                    for (var i = 0; i < 16; i++) {
-                        hot.setCellMeta(j, i, 'readOnly', true);
-                    }
-                }
-                billHot.updateSettings({
-                    data: []
-                });
-                batchHot.updateSettings({
-                    data: []
-                });
-                salereturnbillid = data.saleReturnDetail.id;
-                var datepart = data.saleReturnDetail.entryDate.split("T")[0];
-                var month = datepart.split("-")[1];
-                var year = datepart.split("-")[0];
-                var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.saleReturnDetail.invoiceNumber;
-                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
-                var message = "";
-                var draftInvNo = "";
-                if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__" + '<p><strong>';
-                    $("#invNo").html(draftInvNo);
-                }
-                if (billStatus !== "DRAFT") {
-                    message = 'Sale Return Generated: ' + invoiceNumber;
-                } else {
-                    message = 'Draft Invoice Generated: ' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__";
-                }
-                waitingSwal.close();
-                Swal.fire({
-                    title: message,
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: 'Print',
-                    denyButtonText: 'New Entry',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        printInvoice();
-                    } else if (result.isDenied) {
-                        // resetPage();
-                        location.reload();
-                        resetData();
-                        hot.updateSettings({
+        Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: `No`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/sale-return",
+                    dataType: 'json',
+                    data: {
+                        saleReturnData: saleReturnData,
+                        customer: customer,
+                        series: series,
+                        lrno: lrno,
+                        lrDate: lrDate,
+                        // duedate:duedate,
+                        // priority:priority,
+                        billStatus: billStatus,
+                        seriesCode: seriesCode,
+                        uuid: self.crypto.randomUUID()
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            // title: "Loading",
+                            html:
+                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background: 'transparent'
+
+                        });
+                    },
+                    success: function (data) {
+                        readOnly = true;
+                        var rowData = hot.getData();
+                        for (var j = 0; j < rowData.length; j++) {
+                            for (var i = 0; i < 16; i++) {
+                                hot.setCellMeta(j, i, 'readOnly', true);
+                            }
+                        }
+                        billHot.updateSettings({
                             data: []
                         });
                         batchHot.updateSettings({
                             data: []
                         });
-                        billHot.updateSettings({
-                            data: []
+                        salereturnbillid = data.saleReturnDetail.id;
+                        var datepart = data.saleReturnDetail.entryDate.split("T")[0];
+                        var month = datepart.split("-")[1];
+                        var year = datepart.split("-")[0];
+                        var seriesCode = data.series.seriesCode;
+                        var invoiceNumber = data.saleReturnDetail.invoiceNumber;
+                        $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+                        var message = "";
+                        var draftInvNo = "";
+                        if (billStatus === "DRAFT") {
+                            draftInvNo = '<p><strong>' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
+                                + seriesCode + "/__" + '<p><strong>';
+                            $("#invNo").html(draftInvNo);
+                        }
+                        if (billStatus !== "DRAFT") {
+                            message = 'Sale Return Generated: ' + invoiceNumber;
+                        } else {
+                            message = 'Draft Invoice Generated: ' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
+                                + seriesCode + "/__";
+                        }
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: message,
+                            showDenyButton: true,
+                            showCancelButton: false,
+                            confirmButtonText: 'Print',
+                            denyButtonText: 'New Entry',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                printInvoice();
+                            } else if (result.isDenied) {
+                                // resetPage();
+                                location.reload();
+                                resetData();
+                                hot.updateSettings({
+                                    data: []
+                                });
+                                batchHot.updateSettings({
+                                    data: []
+                                });
+                                billHot.updateSettings({
+                                    data: []
+                                });
+                            }
+                        });
+
+
+                    },
+                    error: function () {
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Unable to generate Sale Return at the moment.",
+                            confirmButtonText: 'OK'
                         });
                     }
                 });
-
-
-            },
-            error: function () {
-                waitingSwal.close();
-                Swal.fire({
-                    title: "Unable to generate Invoice at the moment.",
-                    confirmButtonText: 'OK'
-                });
+            }
+            else if (result.isDenied) {
+                $("#saveBtn").prop("disabled", false);
+                /*$("#saveDraftBtn").prop("disabled", false);*/
+                Swal.fire('Changes are not saved', '', 'info')
             }
         });
-
     }
 
     function printInvoice() {
@@ -1904,6 +2002,44 @@
         }
     }
 
+    /*  $("#customer").on('change', function(e) {
+          var data = $(this).select2('data');
+          if(data === null)
+              return;
+          var customerId = $("#customer").val();
+          stateId = data.state + "";
+          var address = data.address
+          var shippingAddress = data.shippingaddress;
+          var gstin = data.gstin;
+          var noOfCrDays = 0;
+          if (customers.length > 0) {
+              for (var i = 0; i < customers.length; i++) {
+                  if (customerId === customers[i].id) {
+                      noOfCrDays = customers[i].noOfCrDays;
+                  }
+              }
+              if (!hot.isEmptyRow(0)) {
+                  customerLock(true)
+              } else {
+                  customerLock(false)
+              }
+              if (customerId != null && customerId != '') {
+                  $('#address').html('Customer Address: ' +
+                      '  <span style="font-size: 12px">' + address + '</span><br>GSTIN: ' + gstin + '<br>Shipping Address: ' + shippingAddress)
+              } else {
+                  $('#address').html('')
+              }
+          } else {
+<g:if test="${customer != null}">
+            noOfCrDays = ${customer.noOfCrDays};
+            </g:if>
+        }
+
+        $('#duedate').prop("readonly", false);
+        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        $('#duedate').prop("readonly", true);
+        calculateTotalAmt();
+    });*/
 
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
@@ -1938,11 +2074,6 @@
         }
     });
 
-
-    // $(document).ready(function () {
-    //     row
-    //
-    // });
 
     /// select2 plugin
     (function (Handsontable) {
@@ -2158,15 +2289,11 @@
 
     })(Handsontable);
 
-    // window.onbeforeunload = function() {
-    //     return "Data will be lost if you leave the page, are you sure?";
-    // };
-
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("sale-menu");
+    selectSideMenu("sales-menu");
 </script>
 </body>
 </html>

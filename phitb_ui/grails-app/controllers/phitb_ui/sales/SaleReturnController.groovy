@@ -30,7 +30,7 @@ class SaleReturnController {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+       // ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def allReasons =  new SystemService().getReason()
@@ -50,7 +50,7 @@ class SaleReturnController {
                 reasons.add(reason)
             }
         }
-        render(view: '/sales/saleRetrun/sale-returns', model: [customers   : customers, divisions: divisions, series: series,
+        render(view: '/sales/saleRetrun/sale-returns', model: [/*customers   : customers,*/ divisions: divisions, series: series,
                                                                salesmanList: salesmanList, priorityList:
                                                                        priorityList, reason: reasons, taxRegister:
                                                                        taxRegister,settings:settings,entityConfigs:entityConfigs])
