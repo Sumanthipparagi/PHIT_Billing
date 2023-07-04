@@ -165,7 +165,8 @@
                                 <label for="receivedFrom">
                                     Customer
                                 </label><br>
-                                <select class=" show-tick receivedFrom" name="receivedFrom"
+                                <input style="width: 460px;" id="receivedFrom" type="hidden" class="receivedFrom" onchange="getAddress(this.value)" required/>
+                                %{--<select class=" show-tick receivedFrom" name="receivedFrom"
                                         id="receivedFrom" onchange="getAddress(this.value)" required
                                         style="width: 460px;">
                                     <option value="">-- Please select --</option>
@@ -175,7 +176,7 @@
                                                     data-type="${e.entityType.id}">${e.entityName}  (${e.entityType.name})</option>
                                         </g:if>
                                     </g:each>
-                                </select>
+                                </select>--}%
 
                                 <div id="caddress" class="mt-2"></div>
                             </div>
@@ -343,7 +344,48 @@
     var today = year + "-" + month + "-" + day;
     document.getElementById("date").value = moment(today).format('DD/MM/YYYY');
 
-    $('.receivedFrom').select2()
+/*    $('.receivedFrom').select2()*/
+    $(".receivedFrom").select2({
+        placeholder: "Select Customer",
+        ajax: {
+            url: "/entity-register/getentities",
+            dataType: 'json',
+            quietMillis: 250,
+            data: function (term, page) {
+                return {
+                    search: term,
+                    page: page || 1
+                };
+            },
+            results: function (response, page) {
+                var entities = response.entities
+                var data = [];
+                entities.forEach(function (entity) {
+                    data.push({
+                        "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                        "id": entity.id,
+                        "state":entity.stateId,
+                        "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                        "gstin":entity.gstn,
+                        "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                    });
+                });
+
+                return {
+                    results: data,
+                    more: (page * 10) < response.totalCount
+                };
+            },
+            templateSelection: function(container) {
+                $(container.element).attr("data-state", container.state);
+                $(container.element).attr("data-address", container.address);
+                $(container.element).attr("data-gstin", container.gstin);
+                $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                return container.text;
+            }
+        }
+    });
+
     $('.depositTo').select2()
     var $demoMaskedInput = $('.demo-masked-input');
     $demoMaskedInput.find('.credit-card').inputmask('9999 9999 9999 9999', {placeholder: '____ ____ ____ ____'});

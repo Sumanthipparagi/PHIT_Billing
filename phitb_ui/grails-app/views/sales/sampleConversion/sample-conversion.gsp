@@ -72,14 +72,15 @@
 
                                     <div class="form-group">
                                         <label for="salebleitem">Item</label>
-                                        <select id="salebleitem" name="salebleitem" class="form-control"  onchange="getSaleableBatch()">
+                                        <input id="salebleitem" name="salebleitem" type="hidden" style="width: 100%;"/>
+                                      %{--  <select id="salebleitem" name="salebleitem" class="form-control"  onchange="getSaleableBatch()">
                                             <option value="">--Please Select--</option>
                                             <g:each in="${productList}" var="p">
                                                 <g:if test="${p.saleType == Constants.SALEABLE}">
                                                 <option value="${p.id}">${p.productName}</option>
                                                 </g:if>
                                             </g:each>
-                                        </select>
+                                        </select>--}%
                                     </div>
                                 </div>
 
@@ -112,6 +113,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sampleitem">Item</label>
+                                      %{--  <input id="sampleitem" name="sampleitem" type="hidden" style="width: 100%;">--}%
                                         <select id="sampleitem" name="sampleitem" class="form-control"  onchange="getSampleBatch()">
                                             <option value="">--Please Select--</option>
                                             <g:each in="${productList}" var="p">
@@ -188,8 +190,38 @@
 <asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 
 <script>
-    $("#salebleitem").select2();
     $("#sampleitem").select2();
+    /*$("#salebleitem").select2();*/
+   $("#salebleitem").select2({
+        dropdownAutoWidth: true,
+        allowClear: true,
+        width: '0',
+        ajax: {
+            url: "/product/entity/",
+            dataType: 'json',
+            quietMillis: 250,
+            data: function (data) {
+                return {
+                    search: data.term,
+                    page: data.page || 1
+                };
+            },
+            processResults: function (response, page) {
+                products = [];
+                var data = response.products
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                        if (!products.some(element => element.id === data[i].id))
+                            products.push({id: data[i].id, text: data[i].productName});
+                    }
+                }
+                return {
+                    results: products,
+                    more: (page * 10) < response.totalCount
+                };
+            },
+        }
+    });
 
     $("#saleblebatch").select2();
     $("#samplebatch").select2();

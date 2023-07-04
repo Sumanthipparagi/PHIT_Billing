@@ -346,12 +346,37 @@ class ProductRegisterService {
         }
     }
 
-    def getByEntityId(long entityId){
+    def getByEntityId(long entityId, String page = null, String search = null){
         if(entityId){
-            return ProductRegister.createCriteria().list(){
-                eq('entityId',entityId)
-                eq('deleted', false)
-                order("productName", "asc")
+
+            if(!page) {
+                JSONObject productsJson = new JSONObject()
+                long max = 10
+                long offset = 0
+                if (page && page != "1")
+                    offset = Long.parseLong(page) * max
+
+                def products =  ProductRegister.createCriteria().list(max:max, offset: offset){
+                    if(search)
+                    {
+                        ilike("productName", "%"+search+"%")
+                    }
+                    eq('deleted', false)
+                    order("productName", "asc")
+                }
+
+                long totalCount = products.totalCount
+                productsJson.put("totalCount",totalCount)
+                productsJson.put("products",products)
+                return productsJson
+            }
+            else {
+
+                return ProductRegister.createCriteria().list() {
+                    eq('entityId', entityId)
+                    eq('deleted', false)
+                    order("productName", "asc")
+                }
             }
         }
     }

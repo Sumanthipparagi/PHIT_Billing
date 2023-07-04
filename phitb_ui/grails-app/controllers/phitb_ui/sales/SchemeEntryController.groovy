@@ -40,12 +40,12 @@ class SchemeEntryController {
         ArrayList<String> productList = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
         ArrayList<String> batchList = new BatchRegisterController().show() as ArrayList<String>
         ArrayList<String> distributorList = []
-        entityList.each {
+      /*  entityList.each {
             if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_DISTRIBUTOR))
             {
                 distributorList.add(it)
             }
-        }
+        }*/
         render(view: '/sales/schemeEntry/add-scheme',model: [zoneList       :zoneList, stateList:stateList,
                                                              cityList       :cityList,
                                                              distributorList:distributorList,

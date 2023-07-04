@@ -411,6 +411,7 @@ class UrlMappings {
         "/product/add-product"(controller: "product", action: 'addProduct')
         "/product/division/$id"(controller: "product", action: 'getProductByDivision')
         "/product/series/$id"(controller: "product", action: 'getProductBySeries')
+        "/product/entity"(controller: "product", action: 'getProductByEntity')
         "/product/update-product/$id"(controller: "product", action: 'updateProduct')
         "/product/datatable"(controller: "product", action: "dataTable")
         "/product/update/$id"(controller:"product",action:"update")

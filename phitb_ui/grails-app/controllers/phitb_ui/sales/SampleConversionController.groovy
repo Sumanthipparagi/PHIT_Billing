@@ -48,8 +48,8 @@ class SampleConversionController
         try
         {
             String entityId = session.getAttribute("entityId")?.toString()
-            JSONArray productList = new ProductService().getProductsByEntityId(entityId)
-            render(view: '/sales/sampleConversion/sample-conversion', model: [productList: productList])
+            /*JSONArray productList = new ProductService().getProductsByEntityId(entityId)*/
+            render(view: '/sales/sampleConversion/sample-conversion', model: [/*productList: productList*/])
         }
         catch (Exception ex)
         {

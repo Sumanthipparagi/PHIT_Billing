@@ -380,6 +380,25 @@ class ProductController {
         }
     }
 
+    def getProductByEntity() {
+        try {
+            String search = params.search
+            String page = params.page
+            JSONObject jsonObject = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString(), page, search)
+            if (jsonObject) {
+                respond jsonObject, formats: ['json']
+            }
+            else
+                response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
 
     def productByEntityId(){
         JSONArray productArray = new ProductService().getProductByEntity(session.getAttribute('entityId').toString())

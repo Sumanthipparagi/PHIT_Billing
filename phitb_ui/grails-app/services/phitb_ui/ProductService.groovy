@@ -1713,6 +1713,31 @@ class ProductService {
 
     }
 
+    def getProductsByEntityId(String id, String page, String search) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_REGISTER_BY_ENTITY + "/" + id)
+                    .queryParam("page", page)
+                    .queryParam("search", search)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200) {
+                def txt = apiResponse.readEntity(String.class)
+                JSONObject obj = new JSONObject(txt)
+                return obj
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
+        }
+
+    }
+
     def getProductsByDivision(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)

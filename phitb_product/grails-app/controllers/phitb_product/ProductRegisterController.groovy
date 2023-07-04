@@ -106,7 +106,6 @@ class ProductRegisterController
         {
             if (params.id)
             {
-                def check = request.getParameterMap()
                 String search = params.search
                 String page = params.page
                 JSONObject products = productRegisterService.getAllByDivision(params.id, page, search)
@@ -317,10 +316,13 @@ class ProductRegisterController
     {
         try
         {
+
             long entityId = Long.parseLong(params.id)
             if (entityId)
             {
-                respond productRegisterService.getByEntityId(entityId)
+                String search = params.search
+                String page = params.page
+                respond productRegisterService.getByEntityId(entityId, page, search)
             }
         }
         catch (ResourceNotFoundException ex)
