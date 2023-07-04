@@ -346,10 +346,9 @@ class ProductRegisterService {
         }
     }
 
-    def getByEntityId(long entityId, String page = null, String search = null){
+    def getByEntityId(long entityId, String page = null, String search = null, String type=null){
         if(entityId){
-
-            if(!page) {
+            if(page) {
                 JSONObject productsJson = new JSONObject()
                 long max = 10
                 long offset = 0
@@ -361,7 +360,11 @@ class ProductRegisterService {
                     {
                         ilike("productName", "%"+search+"%")
                     }
+                    if(type != null && !type.equalsIgnoreCase("ALL"))
+                        eq('saleType', type)
+
                     eq('deleted', false)
+                    eq('entityId', entityId)
                     order("productName", "asc")
                 }
 

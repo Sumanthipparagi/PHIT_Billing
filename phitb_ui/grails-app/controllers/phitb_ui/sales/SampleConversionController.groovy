@@ -32,13 +32,13 @@ class SampleConversionController
         String entityId = session.getAttribute("entityId")?.toString()
         String userId = session.getAttribute("userId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+       /* ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def users = new UserRegisterController().getByEntity()
         Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         ArrayList<String> salesmanList = []
-        render(view: '/sales/sampleConversion/sampleInvoicing', model: [customers   : customers, divisions: divisions, series: series,
+        render(view: '/sales/sampleConversion/sampleInvoicing', model: [/*customers   : customers,*/ divisions: divisions, series: series,
                                                                         salesmanList: salesmanList, priorityList:
                                                                                 priorityList,users:users,transporter:transporter])
     }

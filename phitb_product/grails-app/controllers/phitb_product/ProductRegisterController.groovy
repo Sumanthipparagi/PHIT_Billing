@@ -308,21 +308,22 @@ class ProductRegisterController
     }
 
     /**
-     * Get requested product by div
+     * Get requested product by entity
      * @param id
-     * @return get product by div
+     * @return get product by entity
      */
     def getProductByEntity()
     {
         try
         {
-
             long entityId = Long.parseLong(params.id)
             if (entityId)
             {
                 String search = params.search
                 String page = params.page
-                respond productRegisterService.getByEntityId(entityId, page, search)
+                String type = params.type
+                def products = productRegisterService.getByEntityId(entityId, page, search, type)
+                respond products
             }
         }
         catch (ResourceNotFoundException ex)

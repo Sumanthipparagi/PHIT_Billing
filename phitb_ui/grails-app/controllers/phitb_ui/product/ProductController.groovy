@@ -384,7 +384,8 @@ class ProductController {
         try {
             String search = params.search
             String page = params.page
-            JSONObject jsonObject = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString(), page, search)
+            String type = params.type
+            JSONObject jsonObject = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString(), page, search, type)
             if (jsonObject) {
                 respond jsonObject, formats: ['json']
             }

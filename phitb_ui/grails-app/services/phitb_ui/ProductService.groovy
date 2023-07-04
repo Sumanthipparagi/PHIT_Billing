@@ -1713,7 +1713,7 @@ class ProductService {
 
     }
 
-    def getProductsByEntityId(String id, String page, String search) {
+    def getProductsByEntityId(String id, String page, String search, String type) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -1721,6 +1721,7 @@ class ProductService {
                     .path(new Links().PRODUCT_REGISTER_BY_ENTITY + "/" + id)
                     .queryParam("page", page)
                     .queryParam("search", search)
+                    .queryParam("type", type)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse?.status == 200) {

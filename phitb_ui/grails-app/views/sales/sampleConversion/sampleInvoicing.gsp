@@ -100,7 +100,8 @@
 
                             <div class="col-md-4">
                                 <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect"
+                                <input type="hidden" id="customerSelect" style="width: 100%"/>
+                                %{--<select class="form-control show-tick" id="customerSelect"
                                         onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${users}" var="u">
@@ -109,23 +110,23 @@
                                             (${u?.name})</option>
                                         </g:if>
                                     </g:each>
-                                </select>
+                                </select>--}%
                             </div>
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="refNum">Ref. Number:</label>
                                 <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"
                                        />
                             </div>
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <label for="refDate">Ref. Date:</label>
                                 <input type="date" class="form-control date" name="refDate" id="refDate"/>
                             </div>
 
 
 
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-2">
                                 <br>
                                 <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
                                    href="#shipmentDetails" aria-expanded="false"
@@ -133,7 +134,7 @@
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mt-2">
+                            <div class="col-md-1">
                                 <br>
                                 <a class="btn btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
@@ -404,8 +405,53 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
+    var seriesId = null;
     $(document).ready(function () {
-        $("#customerSelect").select2();
+        seriesId = $("#series").val()
+        $("#customerSelect").select2({
+            placeholder: "Select Customer",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                            "id": entity.id,
+                            "state":entity.stateId,
+                            "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin":entity.gstn,
+                            "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                       /* if(!customers.some(cust => cust.id === entity.id))
+                            customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});*/
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function(container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${users}" var="u">
@@ -431,10 +477,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        /*data: products,*/
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/" + seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                                        if (!products.some(element => element.id === data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
