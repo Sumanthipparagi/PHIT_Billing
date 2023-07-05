@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -22,7 +23,8 @@
     <asset:stylesheet src="/themeassets/plugins/handsontable/handsontable.full.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
-    <asset:stylesheet src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+    <asset:stylesheet
+            src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     %{--    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
     <asset:stylesheet src="/themeassets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet"/>
@@ -87,17 +89,17 @@
 
                             <div class="col-md-4">
                                 <label for="supplier">Supplier:</label>
-                                <select class="form-control show-tick" id="supplier"
-                                        onchange="supplierChanged()">
-%{--                                    <option value="">--Please select --</option>--}%
-                                    <g:each in="${customers}" var="cs">
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option
-                                                value="${cs.id}"
-                                                data-state="${cs.stateId}" <g:if test="${purchaseBillDetail?.supplierId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
-                                        </g:if>
-                                    </g:each>
-                                </select>
+                                <input type="hidden" id="supplier" style="width: 100%;"/>
+                                %{-- <select class="form-control show-tick" id="supplier"
+                                         onchange="supplierChanged()">
+                                     <g:each in="${customers}" var="cs">
+                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                             <option
+                                                 value="${cs.id}"
+                                                 data-state="${cs.stateId}" <g:if test="${purchaseBillDetail?.supplierId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
+                                         </g:if>
+                                     </g:each>
+                                 </select>--}%
                             </div>
                         </div>
 
@@ -106,7 +108,8 @@
                                 <label for="priority">Priority:</label>
                                 <select class="form-control" id="priority" name="priority">
                                     <g:each in="${priorityList}" var="pr">
-                                        <option value="${pr.id}" <g:if test="${purchaseBillDetail?.priorityId == pr.id}">selected</g:if>>${pr.priority}</option>
+                                        <option value="${pr.id}"
+                                                <g:if test="${purchaseBillDetail?.priorityId == pr.id}">selected</g:if>>${pr.priority}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -148,14 +151,16 @@
                                             <div class="form-group">
                                                 <label for="lrNumber">LR No.</label>
                                                 <input type="text" maxlength="150" id="lrNumber" name="lrNumber"
-                                                       class="form-control" value="${purchaseTransportDetail?.lrNumber}"/>
+                                                       class="form-control"
+                                                       value="${purchaseTransportDetail?.lrNumber}"/>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="lrDate">LR Date</label>
-                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"  class="form-control"/>
+                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"
+                                                       class="form-control"/>
                                             </div>
                                         </div>
 
@@ -166,7 +171,8 @@
                                                         class="form-control">
                                                     <option value="">--Please Select--</option>
                                                     <g:each in="${transporter}" var="t">
-                                                        <option value="${t.id}"  <g:if test="${purchaseTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
+                                                        <option value="${t.id}"
+                                                                <g:if test="${purchaseTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -230,8 +236,8 @@
             </div>
 
             <div class="col-lg-4" style="margin-bottom: 10px;">
-%{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
-%{--                </p>--}%
+                %{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
+                %{--                </p>--}%
             </div>
         </div>
 
@@ -292,7 +298,8 @@
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="schemeModalTitle">Scheme Entry</h4>
                 </div>
-                <form action="" id="schemeForm" method="post" role="form"  class="schemeForm"
+
+                <form action="" id="schemeForm" method="post" role="form" class="schemeForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row clearfix">
@@ -312,7 +319,7 @@
                                                         </label>
                                                         <input type="number" id="slab1MinQty"
                                                                class="form-control slab1MinQty"
-                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               onblur="setTwoNumberDecimal" value="0"
                                                                name="slab1MinQty" placeholder="Slab 1 Min Quantity"
                                                                required/>
                                                     </div>
@@ -323,8 +330,9 @@
                                                         </label>
                                                         <input type="number" id="slab1SchemeQty"
                                                                class="form-control slab1SchemeQty"
-                                                               onblur="setTwoNumberDecimal" value ="0"
-                                                               name="slab1SchemeQty" placeholder="Slab 1 Scheme Quantity"
+                                                               onblur="setTwoNumberDecimal" value="0"
+                                                               name="slab1SchemeQty"
+                                                               placeholder="Slab 1 Scheme Quantity"
                                                                required/>
                                                     </div>
 
@@ -333,7 +341,7 @@
                                                             Slab 1 Bulk Status
                                                         </label>
                                                         <input type="number" id="slab1BulkStatus"
-                                                               class="form-control slab1BulkStatus" value ="0"
+                                                               class="form-control slab1BulkStatus" value="0"
                                                                name="slab1BulkStatus" placeholder=" Slab 1 bulk Status"
                                                                required/>
                                                     </div>
@@ -342,8 +350,9 @@
                                                         <label for="slab1Status">
                                                             Slab 1 Status
                                                         </label>
-                                                        <input type="number" id="slab1Status" class="form-control slab1Status"
-                                                               name="slab1Status" placeholder="Slab 1 Status" value ="0"
+                                                        <input type="number" id="slab1Status"
+                                                               class="form-control slab1Status"
+                                                               name="slab1Status" placeholder="Slab 1 Status" value="0"
                                                                required/>
                                                     </div>
                                                 </div>
@@ -372,7 +381,7 @@
                                                         </label>
                                                         <input type="number" id="slab2MinQty"
                                                                class="form-control slab2MinQty"
-                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               onblur="setTwoNumberDecimal" value="0"
                                                                name="slab2MinQty" placeholder="Slab 2 Min Quantity"/>
                                                     </div>
 
@@ -382,8 +391,9 @@
                                                         </label>
                                                         <input type="number" id="slab2SchemeQty"
                                                                class="form-control slab2SchemeQty"
-                                                               onblur="setTwoNumberDecimal" value ="0"
-                                                               name="slab2SchemeQty" placeholder="Slab 2 Scheme Quantity"/>
+                                                               onblur="setTwoNumberDecimal" value="0"
+                                                               name="slab2SchemeQty"
+                                                               placeholder="Slab 2 Scheme Quantity"/>
                                                     </div>
 
                                                     <div class="col-lg-6 form-group  form-float">
@@ -391,7 +401,7 @@
                                                             Slab 2 Bulk Status
                                                         </label>
                                                         <input type="number" id="slab2BulkStatus"
-                                                               class="form-control slab2BulkStatus" value ="0"
+                                                               class="form-control slab2BulkStatus" value="0"
                                                                name="slab2BulkStatus" placeholder="Slab 2 Bulk Status"/>
                                                     </div>
 
@@ -400,7 +410,7 @@
                                                             Slab 2 Status
                                                         </label>
                                                         <input type="number" id="slab2Status"
-                                                               class="form-control slab2Status" value ="0"
+                                                               class="form-control slab2Status" value="0"
                                                                name="slab2Status" placeholder="Slab 2 Status"/>
                                                     </div>
                                                 </div>
@@ -429,7 +439,7 @@
                                                         </label>
                                                         <input type="number" id="slab3MinQty"
                                                                class="form-control slab3MinQty"
-                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               onblur="setTwoNumberDecimal" value="0"
                                                                name="slab3MinQty" placeholder="Slab 3 Min Quantity"/>
                                                     </div>
 
@@ -439,8 +449,9 @@
                                                         </label>
                                                         <input type="number" id="slab3SchemeQty"
                                                                class="form-control slab3SchemeQty"
-                                                               onblur="setTwoNumberDecimal" value ="0"
-                                                               name="slab3SchemeQty" placeholder="Slab 3 Scheme Quantity"/>
+                                                               onblur="setTwoNumberDecimal" value="0"
+                                                               name="slab3SchemeQty"
+                                                               placeholder="Slab 3 Scheme Quantity"/>
                                                     </div>
 
                                                     <div class="col-lg-6 form-group  form-float">
@@ -448,7 +459,7 @@
                                                             Slab 3 Bulk Status
                                                         </label>
                                                         <input type="number" id="slab3BulkStatus"
-                                                               class="form-control slab3BulkStatus" value ="0"
+                                                               class="form-control slab3BulkStatus" value="0"
                                                                name="slab3BulkStatus" placeholder="Slab 3 Bulk Status"/>
                                                     </div>
 
@@ -457,7 +468,7 @@
                                                             Slab 3 Status
                                                         </label>
                                                         <input type="number" id="slab3Status"
-                                                               class="form-control slab3Status" value ="0"
+                                                               class="form-control slab3Status" value="0"
                                                                name="slab3Status" placeholder="Slab 3 Status"/>
                                                     </div>
                                                 </div>
@@ -486,7 +497,8 @@
                                                         </label>
                                                         <input type="text" id="slabValidityFrom"
                                                                class="form-control slabValidityFrom date"
-                                                               name="slabValidityFrom" placeholder="Slab Validity From"/>
+                                                               name="slabValidityFrom"
+                                                               placeholder="Slab Validity From"/>
                                                     </div>
 
                                                     <div class="col-lg-6 form-group  form-float">
@@ -503,7 +515,8 @@
                                                             Special Discount
                                                         </label>
                                                         <input type="text" id="specialDiscount"
-                                                               class="form-control specialDiscount" value ="0" onblur="setTwoNumberDecimal()"
+                                                               class="form-control specialDiscount" value="0"
+                                                               onblur="setTwoNumberDecimal()"
                                                                name="specialDiscount" placeholder="Special Discount"/>
                                                     </div>
 
@@ -532,7 +545,8 @@
                                                             Special Rate
                                                         </label>
                                                         <input type="number" id="specialRate"
-                                                               class="form-control specialRate" onblur="setTwoNumberDecimal()" value ="0"
+                                                               class="form-control specialRate"
+                                                               onblur="setTwoNumberDecimal()" value="0"
                                                                name="specialRate" placeholder="Special Rate"/>
                                                     </div>
 
@@ -556,14 +570,18 @@
                                                                placeholder="Special Rate Valid to"/>
                                                     </div>
                                                     <input type="hidden" name="schemeStatus" value="1">
-                                                    <input type="hidden" class="hotRow" name="row" >
+                                                    <input type="hidden" class="hotRow" name="row">
                                                     <input type="hidden" name="status" value="1">
-                                                    <input type="hidden" name="entityId" value="${session.getAttribute('entityId')}">
-                                                    <input type="hidden" name="entityTypeId" value="${session.getAttribute('entityTypeId')}">
+                                                    <input type="hidden" name="entityId"
+                                                           value="${session.getAttribute('entityId')}">
+                                                    <input type="hidden" name="entityTypeId"
+                                                           value="${session.getAttribute('entityTypeId')}">
                                                     <input type="hidden" name="distributorId" value="0">
                                                     <input type="hidden" name="syncStatus" value="1">
-                                                    <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
-                                                    <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
+                                                    <input type="hidden" name="createdUser"
+                                                           value="${session.getAttribute('userId')}">
+                                                    <input type="hidden" name="modifiedUser"
+                                                           value="${session.getAttribute('userId')}">
                                                 </div>
                                             </div>
                                         </div>
@@ -578,8 +596,11 @@
                         <input name="id" id="id" class="id" type="hidden"/>
                         <input name="type" class="type" value="add" type="hidden"/>
                         <button type="submit" class="btn btn-default btn-round waves-effect" name="submituser"><font
-                                style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font></font></button>
-                        <button type="button" class="btn btn-danger btn-simple btn-round waves-effect" data-dismiss="modal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CLOSE</font></font></button>
+                                style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font>
+                        </font></button>
+                        <button type="button" class="btn btn-danger btn-simple btn-round waves-effect"
+                                data-dismiss="modal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">CLOSE</font></font></button>
                     </div>
                 </form>
             </div>
@@ -684,11 +705,57 @@
     var customers = [];
     var readOnly = false;
     var scheme = null;
+    var seriesId = null;
     var stateId = null;
     $(document).ready(function () {
         window.localStorage.clear();
         console.log(localStorage);
-        $("#supplier").select2();
+        seriesId = $("#series").val()
+        $("#supplier").select2({
+            placeholder: "Select Supplier",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " (" + entity.entityType.name + ") - " + entity?.city?.districtName + " " + entity?.city?.pincode,
+                            "id": entity.id,
+                            "state": entity.stateId,
+                            "address": entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin": entity.gstn,
+                            "shippingaddress": entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                        if (!customers.some(cust => cust.id === entity.id))
+                            customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function (container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
+
         $("#purTransportlogId").val(${purchaseTransportDetail?.id});
         $('#supplierBillDate').val(moment('${purchaseBillDetail?.supplierBillDate}').format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${purchaseTransportDetail?.lrDate}').format('YYYY-MM-DD'));
@@ -721,10 +788,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        /*data: products,*/
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/" + seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                                        if (!products.some(element => element.id === data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -763,7 +855,7 @@
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [19,20,21,22,23,24]
+                columns: [19, 20, 21, 22, 23, 24]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -803,7 +895,7 @@
 
                 if (coords.col === 18) {
                     var tId = hot.getDataAtCell(coords.row, 19);
-                    addScheme(tId,coords.row);
+                    addScheme(tId, coords.row);
                 }
             },
 
@@ -825,8 +917,7 @@
                     };
                 }
 
-                if(col === 18)
-                {
+                if (col === 18) {
                     cellPrp.readOnly = true;
                     cellPrp.renderer = function (
                         instance,
@@ -840,32 +931,26 @@
                         Handsontable.renderers.TextRenderer.apply(this, arguments);
                         var pid;
                         var batch;
-                        if(row!=='' || row!== null)
-                        {
-                            if(hot!==undefined)
-                            {
+                        if (row !== '' || row !== null) {
+                            if (hot !== undefined) {
                                 // console.log(hot.getDataAtCell(row,1))
-                                pid = hot.getDataAtCell(row,1);
-                                batch = hot.getDataAtCell(row,2);
-                                if(pid==null)
-                                {
-                                    pid=""
+                                pid = hot.getDataAtCell(row, 1);
+                                batch = hot.getDataAtCell(row, 2);
+                                if (pid == null) {
+                                    pid = ""
                                 }
-                                if(batch==null)
-                                {
-                                    batch=''
+                                if (batch == null) {
+                                    batch = ''
                                 }
                             }
                             // var batch = hot.getDataAtCell(row,2);
-                           if(localStorage.getItem(pid+"-"+batch)===null)
-                           {
-                               td.innerHTML =
-                                   '<button class="btn-success schBtn"  id="'+"sch"+pid+batch+'" style="margin: 2px;width: 33px;"><i class="fa fa-plus" aria-hidden="true"></i></button>';
-                           }else
-                           {
-                               td.innerHTML =
-                                   '<button class="btn-danger"  id="'+"sch"+pid+batch+'" style="margin: 3px;width: 33px;"><i class="fa fa-edit" aria-hidden="true"></i></button>';
-                           }
+                            if (localStorage.getItem(pid + "-" + batch) === null) {
+                                td.innerHTML =
+                                    '<button class="btn-success schBtn"  id="' + "sch" + pid + batch + '" style="margin: 2px;width: 33px;"><i class="fa fa-plus" aria-hidden="true"></i></button>';
+                            } else {
+                                td.innerHTML =
+                                    '<button class="btn-danger"  id="' + "sch" + pid + batch + '" style="margin: 3px;width: 33px;"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+                            }
                         }
 
                     };
@@ -912,45 +997,44 @@
                                 // hot.setCellMeta(row,j,'disableVisualSelection', true)
                             }
                             //
-                            if(selection === 18)
-                            {
-                                addScheme("",row)
+                            if (selection === 18) {
+                                addScheme("", row)
                             }
-                                // Swal.fire({
-                                //     title: 'Are you sure?',
-                                //     text: "Do you want to enter a scheme for this product?",
-                                //     showCancelButton: true,
-                                //     confirmButtonColor: '#3085d6',
-                                //     cancelButtonColor: '#d33',
-                                //     confirmButtonText: 'Yes'
-                                // }).then((result) => {
-                                //     if (result.isConfirmed) {
-                                //         $("#addSchemeModal").modal("show");
-                                //         $('#addSchemeModal').modal({
-                                //             backdrop: 'static',
-                                //             keyboard: false
-                                //         });
-                                //         $("#schemeForm").submit(function(e){
-                                //             e.preventDefault();
-                                //             const data = new FormData(e.target);
-                                //             const formJSON = Object.fromEntries(data.entries());
-                                //             formJSON.productId = hot.getDataAtCell(row, 1);
-                                //             formJSON.batch = hot.getDataAtCell(row, 2);
-                                //             $("#addSchemeModal").modal("hide");
-                                //         });
-                                //         mainTableRow = row + 1;
-                                //         calculateTotalAmt();
-                                //         hot.alter('insert_row');
-                                //         hot.selectCell(mainTableRow, 0);
-                                //     }
-                                //     else
-                                //     {
-                                //         mainTableRow = row + 1;
-                                //         calculateTotalAmt();
-                                //         hot.alter('insert_row');
-                                //         hot.selectCell(mainTableRow, 0);
-                                //     }
-                                // });
+                            // Swal.fire({
+                            //     title: 'Are you sure?',
+                            //     text: "Do you want to enter a scheme for this product?",
+                            //     showCancelButton: true,
+                            //     confirmButtonColor: '#3085d6',
+                            //     cancelButtonColor: '#d33',
+                            //     confirmButtonText: 'Yes'
+                            // }).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         $("#addSchemeModal").modal("show");
+                            //         $('#addSchemeModal').modal({
+                            //             backdrop: 'static',
+                            //             keyboard: false
+                            //         });
+                            //         $("#schemeForm").submit(function(e){
+                            //             e.preventDefault();
+                            //             const data = new FormData(e.target);
+                            //             const formJSON = Object.fromEntries(data.entries());
+                            //             formJSON.productId = hot.getDataAtCell(row, 1);
+                            //             formJSON.batch = hot.getDataAtCell(row, 2);
+                            //             $("#addSchemeModal").modal("hide");
+                            //         });
+                            //         mainTableRow = row + 1;
+                            //         calculateTotalAmt();
+                            //         hot.alter('insert_row');
+                            //         hot.selectCell(mainTableRow, 0);
+                            //     }
+                            //     else
+                            //     {
+                            //         mainTableRow = row + 1;
+                            //         calculateTotalAmt();
+                            //         hot.alter('insert_row');
+                            //         hot.selectCell(mainTableRow, 0);
+                            //     }
+                            // });
 
                             mainTableRow = row + 1;
                             calculateTotalAmt();
@@ -1200,20 +1284,19 @@
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
                         if (stateId === '${session.getAttribute('stateId')}') {
-                            if (taxId[1]!== 0) {
+                            if (taxId[1] !== 0) {
                                 gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (data.purchaseSgst / 100);
                                 var cgstAmount = priceBeforeGst * (data.purchaseCgst / 100);
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
                                 hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
                                 hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
-                                hot.setDataAtCell(row, 20,gst); //GST
-                                hot.setDataAtCell(row, 21,sgst); //SGST
-                                hot.setDataAtCell(row, 22,cgst); //CGST
-                                hot.setDataAtCell(row, 23,igst); //IGST
+                                hot.setDataAtCell(row, 20, gst); //GST
+                                hot.setDataAtCell(row, 21, sgst); //SGST
+                                hot.setDataAtCell(row, 22, cgst); //CGST
+                                hot.setDataAtCell(row, 23, igst); //IGST
                                 calculateTotalAmt();
-                            }
-                            else {
+                            } else {
                                 // hot.setDataAtCell(row, 12, 0); //GST
                                 // hot.setDataAtCell(row, 14, 0); //SGST
                                 // hot.setDataAtCell(row, 15, 0); //CGST
@@ -1393,6 +1476,11 @@
     }
 
     function supplierChanged() {
+        var data = $("#supplier").select2('data');
+        if(data === null)
+            return;
+        stateId = data.state + "";
+
         var noOfCrDays = 0;
         var customerId = $("#supplier").val();
         for (var i = 0; i < customers.length; i++) {
@@ -1405,9 +1493,13 @@
         $('#duedate').prop("readonly", true);
 
         calculateTaxes();
+        calculateTotalAmt();
     }
 
     function calculateTotalAmt() {
+        if (hot == null)
+            return;
+
         totalAmt = 0;
         totalGst = 0;
         totalCgst = 0;
@@ -1456,6 +1548,7 @@
 
     function loadTempStockBookData() {
         /*  var userId = "
+
         ${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
@@ -1530,9 +1623,10 @@
             dataType: 'json',
             success: function (data) {
                 purchaseData = data;
-               console.log(purchaseData);
                 for (var i = 0; i < purchaseData.length; i++) {
                     hot.selectCell(i, 1);
+                    if (!products.some(element => element.id === purchaseData[i].productId))
+                        products.push({id: purchaseData[i].productId.id, text: purchaseData[i].productId.productName});
                     var pRate = purchaseData[i].pRate;
                     var sRate = purchaseData[i].sRate;
                     var pQty = purchaseData[i].sqty;
@@ -1607,11 +1701,11 @@
                     hot.setDataAtCell(i, 23, igst);
                     // hot.setDataAtCell(i, 20, purchaseData[i]["originalSqty"]);
                     // hot.setDataAtCell(i, 21, purchaseData[i]["originalFqty"]);
-%{--                    <g:if test="${supplier != null}">--}%
-%{--                    hot.setDataAtCell(i, 22, pQty); //draft sqty--}%
-%{--                    hot.setDataAtCell(i, 23, fQty); //draft fqty--}%
-%{--                    hot.setDataAtCell(i, 24, purchaseData[i]["id"]); //saved draft product id--}%
-%{--                    </g:if>--}%
+                    %{--                    <g:if test="${supplier != null}">--}%
+                    %{--                    hot.setDataAtCell(i, 22, pQty); //draft sqty--}%
+                    %{--                    hot.setDataAtCell(i, 23, fQty); //draft fqty--}%
+                    %{--                    hot.setDataAtCell(i, 24, purchaseData[i]["id"]); //saved draft product id--}%
+                    %{--                    </g:if>--}%
                     for (var j = 0; j < 15; j++) {
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
@@ -1636,8 +1730,6 @@
     }
 
 
-
-
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
             /*  if(id) {
@@ -1652,10 +1744,10 @@
                   });
               }
               else*/
-            var productId = hot.getDataAtCell(row,1);
-            var batch = hot.getDataAtCell(row,2);
-            if(localStorage.getItem(productId+"-"+batch)!=null){
-                localStorage.removeItem(productId+"-"+batch)
+            var productId = hot.getDataAtCell(row, 1);
+            var batch = hot.getDataAtCell(row, 2);
+            if (localStorage.getItem(productId + "-" + batch) != null) {
+                localStorage.removeItem(productId + "-" + batch)
             }
             hot.alter("remove_row", row);
             hot.selectCell(row, 0);
@@ -1689,127 +1781,117 @@
     }
 
 
-    function addScheme(id,row){
-       if(id==='' || id=== null)
-       {
-           Swal.fire({
-               title: 'Are you sure?',
-               text: "Do you want to enter a scheme for this product?",
-               showDenyButton: true,
-               showCancelButton: false,
-               confirmButtonText: 'Yes'
-           }).then((result) => {
-               if (result.isConfirmed) {
-                   $("#addSchemeModal").modal("show");
-                   $('.hotRow').val(row);
-                   $('.date').bootstrapMaterialDatePicker({
-                       format: 'DD/MM/YYYY',
-                       clearButton: true,
-                       time: false,
-                       weekStart: 1
-                   });
-                   $('#schemeForm').trigger("reset");
-                   jQuery("#schemeForm").submit(function(e){
-                       e.preventDefault();
-                       $("#addSchemeModal").modal("hide");
-                       const data = new FormData(e.target);
-                       const formJSON = Object.fromEntries(data.entries());
-                       var productId = hot.getDataAtCell(formJSON?.row, 1);
-                       var batch = hot.getDataAtCell(formJSON?.row, 2);
-                       formJSON.productId = productId;
-                       formJSON.batch = batch;
-                       formJSON.customerIds = $("#supplier").val();
-                       if(formJSON?.batch!==null && formJSON?.productId!==null)
-                       {
-                           localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
-                           // console.log("sch"+productId+batch === "sch115CB21003");
-                           // console.log( $("#sch"+productId+batch));
-                       }
-                       return true;
-                   });
-                   // mainTableRow = row + 1;
-                   // calculateTotalAmt();
-                   // hot.alter('insert_row');
-                   // hot.selectCell(mainTableRow, 0);
-                   // console.log("nothing!")
-               }
-               else
-               {
-                   console.log("nothing!")
-               }
-           });
-       }
-       else
-       {
-           $("#addSchemeModal").modal("show");
-           $('.hotRow').val(row);
-           $('.date').bootstrapMaterialDatePicker({
-               format: 'DD/MM/YYYY',
-               clearButton: true,
-               time: false,
-               weekStart: 1
-           });
-           if(localStorage.getItem(hot.getDataAtCell(row, 1)+"-"+hot.getDataAtCell(row, 2))!==null)
-           {
-               // var values = Object.values();
-               var data = JSON.parse(localStorage.getItem(hot.getDataAtCell(row, 1)+"-"+hot.getDataAtCell(row,2)));
-               console.log(data);
-               $('#schemeForm').trigger("reset");
+    function addScheme(id, row) {
+        if (id === '' || id === null) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to enter a scheme for this product?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#addSchemeModal").modal("show");
+                    $('.hotRow').val(row);
+                    $('.date').bootstrapMaterialDatePicker({
+                        format: 'DD/MM/YYYY',
+                        clearButton: true,
+                        time: false,
+                        weekStart: 1
+                    });
+                    $('#schemeForm').trigger("reset");
+                    jQuery("#schemeForm").submit(function (e) {
+                        e.preventDefault();
+                        $("#addSchemeModal").modal("hide");
+                        const data = new FormData(e.target);
+                        const formJSON = Object.fromEntries(data.entries());
+                        var productId = hot.getDataAtCell(formJSON?.row, 1);
+                        var batch = hot.getDataAtCell(formJSON?.row, 2);
+                        formJSON.productId = productId;
+                        formJSON.batch = batch;
+                        formJSON.customerIds = $("#supplier").val();
+                        if (formJSON?.batch !== null && formJSON?.productId !== null) {
+                            localStorage.setItem(formJSON.productId + "-" + formJSON.batch, JSON.stringify(formJSON));
+                            // console.log("sch"+productId+batch === "sch115CB21003");
+                            // console.log( $("#sch"+productId+batch));
+                        }
+                        return true;
+                    });
+                    // mainTableRow = row + 1;
+                    // calculateTotalAmt();
+                    // hot.alter('insert_row');
+                    // hot.selectCell(mainTableRow, 0);
+                    // console.log("nothing!")
+                } else {
+                    console.log("nothing!")
+                }
+            });
+        } else {
+            $("#addSchemeModal").modal("show");
+            $('.hotRow').val(row);
+            $('.date').bootstrapMaterialDatePicker({
+                format: 'DD/MM/YYYY',
+                clearButton: true,
+                time: false,
+                weekStart: 1
+            });
+            if (localStorage.getItem(hot.getDataAtCell(row, 1) + "-" + hot.getDataAtCell(row, 2)) !== null) {
+                // var values = Object.values();
+                var data = JSON.parse(localStorage.getItem(hot.getDataAtCell(row, 1) + "-" + hot.getDataAtCell(row, 2)));
+                console.log(data);
+                $('#schemeForm').trigger("reset");
 
-               // //Slab 1
-               $('#slab1MinQty').val(data.slab1MinQty);
-               $('#slab1SchemeQty').val(data.slab1SchemeQty);
-               $('#slab1BulkStatus').val(data.slab1BulkStatus);
-               $('#slab1Status').val(data.slab1Status);
+                // //Slab 1
+                $('#slab1MinQty').val(data.slab1MinQty);
+                $('#slab1SchemeQty').val(data.slab1SchemeQty);
+                $('#slab1BulkStatus').val(data.slab1BulkStatus);
+                $('#slab1Status').val(data.slab1Status);
 
-               //Slab2
-               $('#slab2MinQty').val(data.slab2MinQty);
-               $('#slab2SchemeQty').val(data.slab2SchemeQty);
-               $('#slab2BulkStatus').val(data.slab2BulkStatus);
-               $('#slab2Status').val(data.slab2Status);
+                //Slab2
+                $('#slab2MinQty').val(data.slab2MinQty);
+                $('#slab2SchemeQty').val(data.slab2SchemeQty);
+                $('#slab2BulkStatus').val(data.slab2BulkStatus);
+                $('#slab2Status').val(data.slab2Status);
 
-               //Slab3
-               $('#slab3MinQty').val(data.slab3MinQty);
-               $('#slab3SchemeQty').val(data.slab3SchemeQty);
-               $('#slab3BulkStatus').val(data.slab3BulkStatus);
-               $('#slab3Status').val(data.slab3Status);
+                //Slab3
+                $('#slab3MinQty').val(data.slab3MinQty);
+                $('#slab3SchemeQty').val(data.slab3SchemeQty);
+                $('#slab3BulkStatus').val(data.slab3BulkStatus);
+                $('#slab3Status').val(data.slab3Status);
 
-               //Other information
-               $('#slabValidityFrom').val(data.slabValidityFrom);
-               $('#slabValidityTo').val(data.slabValidityTo);
-               $('#specialDiscount').val(data.specialDiscount);
-               $('#specialDiscountValidFrom').val(data.specialDiscountValidFrom);
-               $('#specialDiscountValidTo').val(data.specialDiscountValidTo);
-               $('#specialRate').val(data.specialRate);
-               $('#specialRateValidFrom').val(data.specialRateValidFrom);
-               $('#specialRateValidTo').val(data.specialRateValidTo);
-           }
-           else
-           {
-               $('#schemeForm').trigger("reset");
+                //Other information
+                $('#slabValidityFrom').val(data.slabValidityFrom);
+                $('#slabValidityTo').val(data.slabValidityTo);
+                $('#specialDiscount').val(data.specialDiscount);
+                $('#specialDiscountValidFrom').val(data.specialDiscountValidFrom);
+                $('#specialDiscountValidTo').val(data.specialDiscountValidTo);
+                $('#specialRate').val(data.specialRate);
+                $('#specialRateValidFrom').val(data.specialRateValidFrom);
+                $('#specialRateValidTo').val(data.specialRateValidTo);
+            } else {
+                $('#schemeForm').trigger("reset");
 
-           }
-           jQuery("#schemeForm").submit(function(e){
-               e.preventDefault();
-               $("#addSchemeModal").modal("hide");
-               const data = new FormData(e.target);
-               const formJSON = Object.fromEntries(data.entries());
-               var productId = hot.getDataAtCell(formJSON?.row, 1);
-               var batch = hot.getDataAtCell(formJSON?.row, 2);
+            }
+            jQuery("#schemeForm").submit(function (e) {
+                e.preventDefault();
+                $("#addSchemeModal").modal("hide");
+                const data = new FormData(e.target);
+                const formJSON = Object.fromEntries(data.entries());
+                var productId = hot.getDataAtCell(formJSON?.row, 1);
+                var batch = hot.getDataAtCell(formJSON?.row, 2);
 
-               formJSON.productId = productId;
-               formJSON.batch = batch;
-               formJSON.customerIds = $("#supplier").val();
-               if(formJSON?.batch!==null && formJSON?.productId!==null)
-               {
-                   localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
-                   // console.log("sch"+productId+batch === "sch115CB21003");
-                   // console.log( $("#sch"+productId+batch));
-               }
-               hot.render();
-               return true;
-           });
-       }
+                formJSON.productId = productId;
+                formJSON.batch = batch;
+                formJSON.customerIds = $("#supplier").val();
+                if (formJSON?.batch !== null && formJSON?.productId !== null) {
+                    localStorage.setItem(formJSON.productId + "-" + formJSON.batch, JSON.stringify(formJSON));
+                    // console.log("sch"+productId+batch === "sch115CB21003");
+                    // console.log( $("#sch"+productId+batch));
+                }
+                hot.render();
+                return true;
+            });
+        }
     }
 
     var purchasebillid = 0;
@@ -1839,16 +1921,16 @@
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
-        var lrNumber =  $("#lrNumber").val();
-        var lrDate =  $("#lrDate").val();
-        var transporter=  $("#transportType").val();
+        var lrNumber = $("#lrNumber").val();
+        var lrDate = $("#lrDate").val();
+        var transporter = $("#transportType").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         supplierBillDate = moment(supplierBillDate, 'YYYY-MM-DD').toDate();
         supplierBillDate = moment(supplierBillDate).format('DD/MM/YYYY');
-        var schemeData =[];
+        var schemeData = [];
         var keys = Object.keys(localStorage);
-        keys.forEach((e) =>{
+        keys.forEach((e) => {
             console.log(JSON.parse(localStorage.getItem(e.toString())));
             schemeData.push(JSON.parse(localStorage.getItem(e.toString())));
         });
@@ -1867,13 +1949,13 @@
         }
 
         var purchaseData = JSON.stringify(hot.getSourceData());
-              var url = "";
-            <g:if test="${supplier != null}">
-                url = "/edit-purchase-entry?id=" + '${purchaseBillDetail.id}';
-            </g:if>
-            <g:else>
-            url = "/purchase-entry";
-           </g:else>
+        var url = "";
+        <g:if test="${supplier != null}">
+        url = "/edit-purchase-entry?id=" + '${purchaseBillDetail.id}';
+        </g:if>
+        <g:else>
+        url = "/purchase-entry";
+        </g:else>
         Swal.fire({
             title: 'Do you want to save the changes?',
             showDenyButton: true,
@@ -1898,9 +1980,9 @@
                         schemeData: JSON.stringify(schemeData),
                         supplierBillDate: supplierBillDate,
                         supplierBillId: supplierBillId,
-                        lrNumber:lrNumber,
-                        lrDate:lrDate,
-                        transporter:transporter,
+                        lrNumber: lrNumber,
+                        lrDate: lrDate,
+                        transporter: transporter,
                         uuid: self.crypto.randomUUID()
                     },
                     beforeSend: function () {
@@ -1964,7 +2046,7 @@
                             if (result.isConfirmed) {
                                 printInvoice();
                             } else if (result.isDenied) {
-                                $('#supplier').prop('selectedIndex',0);
+                                $('#supplier').prop('selectedIndex', 0);
                                 resetData();
                                 location.reload();
                             }
@@ -1985,82 +2067,94 @@
             }
         })
 
-}
-
-function printInvoice() {
-    if (readOnly) {
-        window.open(
-            '/purchase-entry/print-invoice?id=' + purchasebillid,
-            '_blank'
-        );
-        resetData();
     }
-}
 
-function resetPage() {
-    Swal.fire({
-        title: "Reset Contents?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'OK',
-    }).then((result) => {
-        if (result) {
+    function printInvoice() {
+        if (readOnly) {
+            window.open(
+                '/purchase-entry/print-invoice?id=' + purchasebillid,
+                '_blank'
+            );
             resetData();
         }
-    });
-}
+    }
 
-function resetData() {
-    $("#invNo").html("");
-    purchaseData.length = 0;
-    batchData.length = 0;
-    mainTableRow = 0;
-    gst = 0;
-    cgst = 0;
-    sgst = 0;
-    igst = 0;
-    totalQty = 0;
-    totalFQty = 0;
-    remainingQty = 0;
-    remainingFQty = 0;
-    totalAmt = 0;
-    readOnly = false;
-    scheme = null;
-
-    batchHot.updateSettings({
-        data: []
-    });
-    hot.updateSettings({
-        data: []
-    });
-
-    calculateTotalAmt();
-}
-
-function seriesChanged() {
-    var series = $("#series").val();
-    loadProducts(series);
-
-}
-
-function loadProducts(series) {
-    products.length = 0;//remove all elements
-    $.ajax({
-        type: "GET",
-        url: "/product/series/" + series,
-        dataType: 'json',
-        success: function (data) {
-            for (var i = 0; i < data.length; i++) {
-                products.push({id: data[i].id, text: data[i].productName});
+    function resetPage() {
+        Swal.fire({
+            title: "Reset Contents?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+        }).then((result) => {
+            if (result) {
+                resetData();
             }
-                <g:if test="${params.purchaseBillId}">
+        });
+    }
+
+    function resetData() {
+        $("#invNo").html("");
+        purchaseData.length = 0;
+        batchData.length = 0;
+        mainTableRow = 0;
+        gst = 0;
+        cgst = 0;
+        sgst = 0;
+        igst = 0;
+        totalQty = 0;
+        totalFQty = 0;
+        remainingQty = 0;
+        remainingFQty = 0;
+        totalAmt = 0;
+        readOnly = false;
+        scheme = null;
+
+        batchHot.updateSettings({
+            data: []
+        });
+        hot.updateSettings({
+            data: []
+        });
+
+        calculateTotalAmt();
+    }
+
+    function seriesChanged() {
+        seriesId = $("#series").val();
+        loadProducts();
+
+    }
+
+    $("#supplier").on("change", function () {
+        supplierChanged();
+    });
+
+    function loadProducts() {
+        products.length = 0;//remove all elements
+
+        <g:if test="${params.purchaseBillId}">
+        loadDraftProducts();
+
+        </g:if>
+
+     /*   $.ajax({
+            type: "GET",
+            url: "/product/series/" + series,
+            dataType: 'json',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    products.push({id: data[i].id, text: data[i].productName});
+                }
+
+        <g:if test="${params.purchaseBillId}">
                 loadDraftProducts();
-                </g:if>
+
+        </g:if>
             },
             error: function () {
                 products.length = 0; //remove all elements
             }
-        });
+        });*/
     }
 
     function checkSchemes(productId, batchNumber) {
@@ -2436,16 +2530,16 @@ function loadProducts(series) {
         this.value = parseFloat(this.value);
     }
 
-    $(document).on('keydown', function ( e ) {
+    $(document).on('keydown', function (e) {
         // You may replace `m` with whatever key you want
-        if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'b') ) {
+        if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'b')) {
             $('#addbatchModal').modal('show')
         }
 
     });
 
     $('.manfDate').bootstrapMaterialDatePicker({
-        time:false,
+        time: false,
         format: 'DD/MM/YYYY',
         clearButton: true,
         shortTime: true,
@@ -2453,7 +2547,7 @@ function loadProducts(series) {
     });
 
     $('.expiryDate').bootstrapMaterialDatePicker({
-        time:false,
+        time: false,
         format: 'DD/MM/YYYY',
         clearButton: true,
         shortTime: true,
@@ -2483,7 +2577,7 @@ function loadProducts(series) {
             data: formData,
             contentType: false,
             processData: false,
-            beforeSend: function() {
+            beforeSend: function () {
                 beforeSendSwal = Swal.fire({
                     // title: "Loading",
                     html:
@@ -2492,7 +2586,7 @@ function loadProducts(series) {
                     showCancelButton: false,
                     showConfirmButton: false,
                     allowOutsideClick: false,
-                    background:'transparent'
+                    background: 'transparent'
                 });
             },
             success: function () {

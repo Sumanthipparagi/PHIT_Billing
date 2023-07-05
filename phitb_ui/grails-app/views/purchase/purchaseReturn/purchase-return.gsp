@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -115,16 +116,17 @@
 
                             <div class="col-md-4">
                                 <label for="supplier">Supplier:</label>
-                                <select class="form-control show-tick" id="supplier"
-                                        onchange="supplierChanged()">
-                                    <g:each in="${supplier}" var="cs">
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}"
-                                                    data-stateId="${cs.stateId}">${cs.entityName} (${cs.entityType
-                                                    .name})</option>
-                                        </g:if>
-                                    </g:each>
-                                </select>
+                                <input type="hidden" id="supplier" style="width: 100%"/>
+                                %{--  <select class="form-control show-tick" id="supplier"
+                                          onchange="supplierChanged()">
+                                      <g:each in="${supplier}" var="cs">
+                                          <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                              <option value="${cs.id}"
+                                                      data-stateId="${cs.stateId}">${cs.entityName} (${cs.entityType
+                                                      .name})</option>
+                                          </g:if>
+                                      </g:each>
+                                  </select>--}%
                             </div>
 
 
@@ -457,6 +459,8 @@
     var taxRegister = [];
     var readOnly = false;
     var scheme = null;
+    var seriesId = null;
+    var stateId = null;
     $(document).ready(function () {
         var isCheckedYes = "YES";
         // var isCheckedNo = $('.prev_sales_no').prop('checked');
@@ -473,8 +477,50 @@
             $('.prev_sales_no').prop('checked', false);
             isCheckedYes = "YES"
         });
-        $("#supplier").select2();
-        var stateId = $('#supplier option:selected').attr('data-stateId')
+        seriesId = $("#series").val()
+        $("#supplier").select2({
+            placeholder: "Select Supplier",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " (" + entity.entityType.name + ") - " + entity?.city?.districtName + " " + entity?.city?.pincode,
+                            "id": entity.id,
+                            "state": entity.stateId,
+                            "address": entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin": entity.gstn,
+                            "shippingaddress": entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function (container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
+
+        stateId = $('#supplier option:selected').attr('data-stateId')
         $('#supplier').change(function () {
             stateId = $('#supplier option:selected').attr('data-stateId')
         });
@@ -523,10 +569,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        /*data: products,*/
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/" + seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${Constants.SALEABLE}') {
+                                        if (!products.some(element => element.id === data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -729,8 +800,8 @@
                         // calculateTotalAmt();
                         // hot.alter('insert_row');
                         // hot.selectCell(mainTableRow, 1);
-                        if (selection === 13 || selection === 17 ) {
-                            if ((sqty > 0 || fqty > 0) && (taxslab!==null && taxslab!=="")) {
+                        if (selection === 13 || selection === 17) {
+                            if ((sqty > 0 || fqty > 0) && (taxslab !== null && taxslab !== "")) {
                                 console.log("Data added");
                                 for (var j = 0; j < 16; j++) {
                                     hot.setCellMeta(row, j, 'readOnly', true);
@@ -741,13 +812,11 @@
                                 calculateTotalAmt();
                             }
                         } else {
-                            if(sqty===0 || fqty===0)
-                            {
+                            if (sqty === 0 || fqty === 0) {
                                 alert("Invalid Quantity, please enter quantity greater than 0");
                             }
 
-                            if(taxslab===null || taxslab==="")
-                            {
+                            if (taxslab === null || taxslab === "") {
                                 alert("Please select any tax slab");
                             }
                         }
@@ -1111,9 +1180,9 @@
                         hot.setDataAtCell(mainTableRow, 11, rowData[9].toFixed(2));
                         hot.setDataAtCell(mainTableRow, 17, "NA");
                         gst = rowData[9];
-                       /* sgst = rowData[10];
-                        cgst = rowData[11];
-                        igst = rowData[12];*/
+                        /* sgst = rowData[10];
+                         cgst = rowData[11];
+                         igst = rowData[12];*/
                         if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
                             sgst = rowData[10];
                             cgst = rowData[11];
@@ -1393,6 +1462,10 @@
         }
     }
 
+    $("#supplier").on("change", function () {
+        supplierChanged();
+    });
+
 
     function supplierChanged() {
         hot.updateSettings({
@@ -1478,6 +1551,7 @@
 
     function loadTempStockBookData() {
         /*  var userId = "
+
 
 
 
@@ -1762,13 +1836,13 @@
     }
 
     function seriesChanged() {
-        var series = $("#series").val();
+        seriesId = $("#series").val();
         loadProducts(series);
 
     }
 
     function loadProducts(series) {
-        products.length = 0;//remove all elements
+        /*products.length = 0;//remove all elements
         $.ajax({
             type: "GET",
             url: "/product/series/" + series,
@@ -1782,7 +1856,7 @@
             error: function () {
                 products.length = 0; //remove all elements
             }
-        });
+        });*/
     }
 
 

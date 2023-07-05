@@ -31,7 +31,7 @@ class PurchaseReturnController
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
-        ArrayList<String> supplier = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+       /* ArrayList<String> supplier = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         JSONArray allReasons = new SystemService().getReason()
@@ -49,7 +49,7 @@ class PurchaseReturnController
                 reasons.add(reason)
             }
         }
-        render(view: '/purchase/purchaseReturn/purchase-return', model: [supplier: supplier,
+        render(view: '/purchase/purchaseReturn/purchase-return', model: [/*supplier: supplier,*/
                                                                          divisions: divisions, series:series,
                                                                          salesmanList: salesmanList,
                                                                          priorityList:priorityList, reason: reasons,

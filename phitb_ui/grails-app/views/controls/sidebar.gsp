@@ -4,7 +4,7 @@
 @media (min-width: 1281px) {
 
     .menu_sm .sidebar .list {
-       display: none!important;
+        display: none !important;
     }
 
 }
@@ -18,7 +18,7 @@
 
     /* CSS */
     .menu_sm .sidebar .list {
-        display: none!important;
+        display: none !important;
     }
 
 }
@@ -96,9 +96,9 @@
         <li>
             <a href="javascript:void(0);" class="bars"></a>
             <a class="navbar-brand" href="/dashboard"><img src="${assetPath(src: '/themeassets/images/sidebar.jpeg')}"
-                                                  alt="PharmIT"></a>
+                                                           alt="PharmIT"></a>
         </li>
-%{--                <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
+        %{--                <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
         <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>
 
         <li><a href="javascript:void(0);" class="fullscreen" data-provide="fullscreen"><i
@@ -182,8 +182,6 @@
                 </div>
             </div>
 
-
-
         </div>
     </div>
 
@@ -194,19 +192,20 @@
                     <div class="user-info m-b-20">
 
                         <div class="detail">
-                        <h6><a href="/user/update-details/${session.getAttribute('userId')}">${session.getAttribute("userName")}</a></h6>
+                            <h6><a href="/user/update-details/${session.getAttribute('userId')}">${session.getAttribute("userName")}</a>
+                            </h6>
 
                             <g:if test="${session.getAttribute('role') != Constants.SUPER_USER}">
                                 <p class="m-b-0">${session.getAttribute("entityName")}</p>
                             </g:if>
                             <g:if test="${session.getAttribute("financialYearValid")}">
-                            <small>Financial Year: ${session.getAttribute("financialYear")}</small>
+                                <small>Financial Year: ${session.getAttribute("financialYear")}</small>
                             </g:if>
                             <g:else>
                                 <small style="color: red;font-weight: 800;">Financial Year: ${session.getAttribute("financialYear")}</small>
                             </g:else>
 
-                    </div>
+                        </div>
                     </div>
                 </li>
                 %{--<li class="header">MAIN</li>--}%
@@ -253,8 +252,10 @@
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/sale-entry">Sale Entry</a></li>
                                 <li><a href="/sale-bill-list">My Invoices</a></li>
-                                <li><a href="/sale-entry-retailer">Retailer Sale Entry</a></li>
-                                <li><a href="/retailer-bill-list">Retailer Invoices</a></li>
+                                <g:if test="${session.getAttribute('role').toString() == 'RETAILER'}">
+                                    <li><a href="/sale-entry-retailer">Retailer Sale Entry</a></li>
+                                    <li><a href="/retailer-bill-list">Retailer Invoices</a></li>
+                                </g:if>
                             %{-- <g:if test="${session.getAttribute('role').toString()=='RETAILER'}">
                                     <li><a href="/sale-entry-retailer">Sale Entry Retailer</a></li>
                                     <li><a href="/retailer-bill-list">Invoices</a></li>
@@ -295,7 +296,7 @@
                                 <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_STOCK_ADJUSTEMENT", session.getAttribute("permittedFeatures").toString())}">
-%{--                                <li><a href="#">Stock Adjustment</a></li>--}%
+                            %{--                                <li><a href="#">Stock Adjustment</a></li>--}%
 
                                 <li><a href="javascript:void(0);" class="menu-toggle">Stock Adjustment</span> <span
                                         class="badge badge-success float-right"></span></a>
@@ -306,9 +307,10 @@
                                 </li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_DEBIT_SETTLEMENT", session.getAttribute("permittedFeatures").toString())}">
-%{--                                <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>--}%
-                                <li><a href="javascript:void(0);" class="menu-toggle">Credit Debit Settlement</span> <span
-                                        class="badge badge-success float-right"></span></a>
+                            %{--                                <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>--}%
+                                <li><a href="javascript:void(0);"
+                                       class="menu-toggle">Credit Debit Settlement</span> <span
+                                            class="badge badge-success float-right"></span></a>
                                     <ul class="ml-menu">
                                         <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>
                                         <li><a href="/credit-debit-settlement/crdb-list">CR DB Settlement List</a></li>

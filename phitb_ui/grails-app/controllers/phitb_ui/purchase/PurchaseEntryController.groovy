@@ -66,18 +66,18 @@ class PurchaseEntryController {
     def index() {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        /*ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def taxRegister = new EntityService().getTaxesByEntity(entityId)
         Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
-        ArrayList<String> productlist = new ProductService().getProductByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+        /*ArrayList<String> productlist = new ProductService().getProductByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>*/
         ArrayList<String> productcatList = new ProductCategoryController().getByEntity() as ArrayList<String>
 
-        render(view: '/purchase/purchaseEntry/purchaseEntry', model: [divisions   : divisions, customers: customers,
+        render(view: '/purchase/purchaseEntry/purchaseEntry', model: [divisions   : divisions, /*customers: customers,*/
                                                                       priorityList: priorityList, series: series,
                                                                       taxRegister:taxRegister,transporter:transporter,
-                                                                      productlist:productlist,productcatList:productcatList
+                                                                     /* productlist:productlist,*/productcatList:productcatList
         ])
     }
 
@@ -2144,7 +2144,7 @@ class PurchaseEntryController {
     def editPurchaseBillDetails() {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+       /* ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def purchaseBillId = params.purchaseBillId
@@ -2155,7 +2155,7 @@ class PurchaseEntryController {
         JSONObject supplier = new EntityService().getEntityById(purchaseBillDetail.supplierId.toString())
         if (purchaseBillDetail != null && purchaseBillDetail.billStatus == 'DRAFT') {
             JSONArray purchaseProductDetails = new PurchaseService().getPurchaseProductDetailsByBill(purchaseBillId)
-            render(view: '/purchase/purchaseEntry/purchaseEntry', model: [customers             : customers, divisions: divisions,
+            render(view: '/purchase/purchaseEntry/purchaseEntry', model: [/*customers             : customers, */divisions: divisions,
                                                                           series                : series,
                                                                           priorityList          : priorityList, purchaseBillDetail: purchaseBillDetail,
                                                                           purchaseProductDetails: purchaseProductDetails,

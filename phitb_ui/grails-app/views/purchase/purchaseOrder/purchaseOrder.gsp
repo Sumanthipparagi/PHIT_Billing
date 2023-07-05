@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -80,14 +81,15 @@
 
                             <div class="col-md-3">
                                 <label for="supplier">Supplier:</label>
-                                <select class="form-control show-tick" id="supplier"
+                                <input type="hidden" id="supplier" style="width: 100%;"/>
+                               %{-- <select class="form-control show-tick" id="supplier"
                                         onchange="supplierChanged()">
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}"><option value="${cs.id}"  data-state="${cs.stateId}"  >${cs.entityName} (${cs.entityType
                                                 .name})</option>
                                         </g:if>
                                     </g:each>
-                                </select>
+                                </select>--}%
                             </div>
                             <div class="col-md-3">
                                 <label for="priority">Priority:</label>
@@ -329,8 +331,53 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
+    var seriesId = null;
     $(document).ready(function () {
-        $("#supplier").select2();
+        seriesId = $("#series").val()
+        $("#supplier").select2({
+            placeholder: "Select Supplier",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                            "id": entity.id,
+                            "state":entity.stateId,
+                            "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin":entity.gstn,
+                            "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                        if(!customers.some(cust => cust.id === entity.id))
+                            customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function(container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
@@ -360,10 +407,35 @@
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
-                        data: products,
+                        /*data: products,*/
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '0'
+                        width: '0',
+                        ajax: {
+                            url: "/product/series/" + seriesId,
+                            dataType: 'json',
+                            quietMillis: 250,
+                            data: function (term, page) {
+                                return {
+                                    search: term,
+                                    page: page || 1
+                                };
+                            },
+                            results: function (response, page) {
+                                products = [];
+                                var data = response.products
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].saleType === '${phitb_ui.Constants.SALEABLE}') {
+                                        if (!products.some(element => element.id === data[i].id))
+                                            products.push({id: data[i].id, text: data[i].productName});
+                                    }
+                                }
+                                return {
+                                    results: products,
+                                    more: (page * 10) < response.totalCount
+                                };
+                            },
+                        }
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -929,6 +1001,10 @@
     }
 
     function supplierChanged() {
+        var data = $("#supplier").select2('data');
+        if(data === null)
+            return;
+        stateId = data.state + "";
         var noOfCrDays = 0;
         var customerId = $("#supplier").val();
         for (var i = 0; i < customers.length; i++) {
@@ -941,6 +1017,7 @@
         $('#duedate').prop("readonly", true);
 
         calculateTaxes();
+        calculateTotalAmt()
     }
 
     function calculateTotalAmt() {
@@ -1257,8 +1334,8 @@
 
     function seriesChanged()
     {
-        var series = $("#series").val();
-        loadProducts(series);
+        seriesId = $("#series").val();
+        //loadProducts(series);
 
     }
 
@@ -1429,6 +1506,10 @@
             }
 
         }
+    });
+
+    $("#supplier").on("change", function (){
+        supplierChanged();
     });
 
 
