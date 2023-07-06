@@ -36,10 +36,10 @@ class SchemeEntryController {
         ArrayList<String> stateList = new StateController().show() as ArrayList<String>
         ArrayList<String> cityList = new CityController().show() as ArrayList<String>
         ArrayList<String> hqAreaList = new HQAreasController().getByEntity() as ArrayList<String>
-        def entityList = new EntityRegisterController().getByAffiliateById(entityId)
-        ArrayList<String> productList = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
-        ArrayList<String> batchList = new BatchRegisterController().show() as ArrayList<String>
-        ArrayList<String> distributorList = []
+     //   def entityList = new EntityRegisterController().getByAffiliateById(entityId)
+      //  ArrayList<String> productList = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
+       // ArrayList<String> batchList = new BatchRegisterController().show() as ArrayList<String>
+      //  ArrayList<String> distributorList = []
       /*  entityList.each {
             if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_DISTRIBUTOR))
             {
@@ -47,10 +47,10 @@ class SchemeEntryController {
             }
         }*/
         render(view: '/sales/schemeEntry/add-scheme',model: [zoneList       :zoneList, stateList:stateList,
-                                                             cityList       :cityList,
-                                                             distributorList:distributorList,
+                                                             cityList       :cityList, hqAreaList:hqAreaList,
+                                                             /*distributorList:distributorList,
                                                              productList    :productList, batchList:batchList,
-                                                             entityList     :entityList,hqAreaList:hqAreaList])
+                                                             entityList     :entityList*/])
     }
 
     def updateScheme()

@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -182,10 +183,10 @@
                                                     </label>
                                                     <select class="form-control show-tick productId" name="productId"
                                                             id="productId" onchange="getBatches(this.value)">
-                                                        <option value="">--Please Select--</option>
+                                                       %{-- <option value="">--Please Select--</option>
                                                         <g:each var="p" in="${productList}">
                                                             <option value="${p.id}">${p.productName}</option>
-                                                        </g:each>
+                                                        </g:each>--}%
                                                     </select>
                                                 </div>
 
@@ -627,10 +628,10 @@
                     "                                                    </label>\n" +
                     "                                                    <select class=\"form-control show-tick customer\" name=\"customerIds\"\n" +
                     "                                                            id=\"customer\">\n" +
-                    "                                                        <option value=\"\">--Please Select--</option>\n" +
+/*                    "                                                        <option value=\"\">--Please Select--</option>\n" +
                     "                                                        <g:each var="e" in="${entityList}">\n" +
                     "                                                            <option value=\"${e.id}\">${e.entityName}</option>\n" +
-                    "                                                        </g:each>\n" +
+                    "                                                        </g:each>\n" +*/
                     "                                                    </select>"
             } else if (this.value === "") {
                 selectors = "";
@@ -640,7 +641,49 @@
             $('#zone').select2();
             $('#state').select2();
             $('.hqarea').select2();
-            $('#customer').select2();
+            $('#customer').select2({
+                placeholder: "Select Customer",
+                ajax: {
+                    url: "/entity-register/getentities",
+                    dataType: 'json',
+                    quietMillis: 250,
+                    data: function (data) {
+                        return {
+                            search: data.term,
+                            page: data.page || 1
+                        };
+                    },
+                    processResults: function (response, params) {
+                        params.page = params.page || 1
+                        var entities = response.entities
+                        var data = [];
+                        entities.forEach(function (entity) {
+                            data.push({
+                                "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                                "id": entity.id,
+                                "state":entity.stateId,
+                                "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                                "gstin":entity.gstn,
+                                "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                            });
+                        });
+
+                        return {
+                            results: data,
+                            pagination: {
+                                more: (params.page * 10) < response.totalCount
+                            }
+                        };
+                    },
+                    templateSelection: function(container) {
+                        $(container.element).attr("data-state", container.state);
+                        $(container.element).attr("data-address", container.address);
+                        $(container.element).attr("data-gstin", container.gstin);
+                        $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                        return container.text;
+                    }
+                }
+            });
             $('#city').select2({
                 ajax: {
                     url: '/city/get',
@@ -686,8 +729,37 @@
             placeholder: 'Search for cities',
             minimumInputLength: 2
         });
-        $('#productId').select2();
-        $('#customer').select2();
+        $('#productId').select2({
+            dropdownAutoWidth: true,
+            allowClear: true,
+            ajax: {
+                url: "/product/entity?type=ALL",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (data) {
+                    return {
+                        search: data.term,
+                        page: data.page || 1
+                    };
+                },
+                processResults: function (response, params) {
+                    params.page = params.page || 1;
+                    var products = [];
+                    var data = response.products
+                    for (var i = 0; i < data.length; i++) {
+                        if (!products.some(element => element.id === data[i].id))
+                            products.push({id: data[i].id, text: data[i].productName});
+                    }
+                    return {
+                        results: products,
+                        pagination: {
+                            more: (params.page * 10) < response.totalCount
+                        }
+                    };
+                },
+            }
+        });
+       // $('#customer').select2();
         $('#distributor').select2()
 
         // $('#batch').select2()
