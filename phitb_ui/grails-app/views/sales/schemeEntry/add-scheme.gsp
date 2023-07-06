@@ -607,10 +607,10 @@
                     "                                                    City\n" +
                     "                                                </label>\n" +
                     "                                                <select class=\"form-control show-tick city\" name=\"cityIds\" id=\"city\">\n" +
-                    "                                                    <option value=\"\">--Please Select--</option>\n" +
+/*                    "                                                    <option value=\"\">--Please Select--</option>\n" +
                     "                                                    <g:each var="c" in="${cityList}">\n" +
                     "                                                        <option value=\"${c.id}\">${c.name}</option>\n" +
-                    "                                                    </g:each>\n" +
+                    "                                                    </g:each>\n" +*/
                     "                                                </select>"
             } else if (this.value === "HQAREA" && this.checked) {
                 selectors = "<label for=\"hqarea\">\n" +

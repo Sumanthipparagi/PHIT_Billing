@@ -29,7 +29,7 @@ class ProductRegisterService {
 
     }
 
-    def getAllByDivision(String divisionIds, String page, String search=null) {
+    def getAllByDivision(String divisionIds, String page, String search=null, String type=null) {
         JSONObject productsOfDivisions = new JSONObject()
         long max = 10
         long offset = 0
@@ -48,6 +48,10 @@ class ProductRegisterService {
             if(search)
             {
                 ilike("productName", "%"+search+"%")
+            }
+            if(type)
+            {
+                eq("saleType", type)
             }
             eq('deleted', false)
             order("productName", "asc")

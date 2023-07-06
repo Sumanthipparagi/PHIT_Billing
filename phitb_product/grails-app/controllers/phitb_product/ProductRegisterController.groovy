@@ -108,7 +108,8 @@ class ProductRegisterController
             {
                 String search = params.search
                 String page = params.page
-                JSONObject products = productRegisterService.getAllByDivision(params.id, page, search)
+                String type = params.type
+                JSONObject products = productRegisterService.getAllByDivision(params.id, page, search, type)
                 respond products
             }
         }

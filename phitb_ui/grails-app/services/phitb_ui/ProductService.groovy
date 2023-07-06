@@ -1871,7 +1871,7 @@ class ProductService {
 
     }
 
-    def getProductsBySeries(String seriesId, String entityId, String page = null, String search = null) {
+    def getProductsBySeries(String seriesId, String entityId, String page = null, String search = null, String type = null) {
         try {
             JSONArray divisions = getDivisionsByEntityId(entityId)
             JSONObject obj = new JSONObject()
@@ -1891,6 +1891,7 @@ class ProductService {
                         .path(new Links().PRODUCT_REGISTER_BY_DIVISION + "/" + divisionId)
                         .queryParam("search", search)
                         .queryParam("page", page)
+                        .queryParam("type", type)
                         .request(MediaType.APPLICATION_JSON_TYPE)
                         .get()
                 if (apiResponse?.status == 200) {

@@ -124,15 +124,15 @@
                         <li class="breadcrumb-item active">Receipt</li>
                     </ul>
                 </div>
-%{--
-                <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>--}%
+                %{--
+                                <div class="col-lg-7 col-md-7 col-sm-12">
+                                    <div class="input-group m-b-0">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                        <span class="input-group-addon">
+                                            <i class="zmdi zmdi-search"></i>
+                                        </span>
+                                    </div>
+                                </div>--}%
             </div>
         </div>
 
@@ -169,17 +169,18 @@
                                 <label for="receivedFrom">
                                     Customer
                                 </label><br>
-                                <select class=" show-tick receivedFrom" name="receivedFrom"
+                                <input class=" show-tick receivedFrom" id="receivedFrom" name="receivedFrom" type="hidden" style="width: 100%;" required/>
+                               %{-- <select class=" show-tick receivedFrom" name="receivedFrom"
                                         id="receivedFrom" onchange="getAddress(this.value)" required
-                                        style="width: 460px;">
-                                    <option value="">-- Please select --</option>
+                                        style="width: 460px;">--}%
+                                    %{--<option value="">-- Please select --</option>
                                     <g:each var="e" in="${entity}">
                                         <g:if test="${e.id != session.getAttribute("entityId")}">
                                             <option value="${e.id}"
                                                     data-type="${e.entityType.id}">${e.entityName}  (${e.entityType.name})</option>
                                         </g:if>
-                                    </g:each>
-                                </select>
+                                    </g:each>--}%
+                               %{-- </select>--}%
 
                                 <div id="caddress" class="mt-2"></div>
                             </div>
@@ -286,29 +287,29 @@
                             %{--                            <div class="col-lg-6">--}%
                             %{--                                <div class="row">--}%
                             <div class="col-lg-2 form-group  form-float">
-%{--                                <label for="amountPaid">--}%
-%{--                                    Amount--}%
-%{--                                </label>--}%
-%{--                                <input type="text" id="amountPaid" class="note form-control "--}%
-%{--                                       name="amountPaid"--}%
-%{--                                       placeholder="Amount" value="0" style="border-radius: 0;" autocomplete="off"--}%
-%{--                                       required/>--}%
-%{--                                <button type="button" class="btn btn-secondary" id="autoAdj">Auto Adjust</button>--}%
+                                %{--                                <label for="amountPaid">--}%
+                                %{--                                    Amount--}%
+                                %{--                                </label>--}%
+                                %{--                                <input type="text" id="amountPaid" class="note form-control "--}%
+                                %{--                                       name="amountPaid"--}%
+                                %{--                                       placeholder="Amount" value="0" style="border-radius: 0;" autocomplete="off"--}%
+                                %{--                                       required/>--}%
+                                %{--                                <button type="button" class="btn btn-secondary" id="autoAdj">Auto Adjust</button>--}%
 
 
-                                                        <label for="amountPaid">
-                                                            Amount
-                                                        </label>
-                                                        <input type="text" id="amountPaid" class="note form-control "
-                                                               name="amountPaid"
-                                                               placeholder="Amount" value="0" style="border-radius: 0;" autocomplete="off"
-                                                               required/>
+                                <label for="amountPaid">
+                                    Amount
+                                </label>
+                                <input type="text" id="amountPaid" class="note form-control "
+                                       name="amountPaid"
+                                       placeholder="Amount" value="0" style="border-radius: 0;" autocomplete="off"
+                                       required/>
 
-                                                        <button type="button" class="btn btn-secondary" id="autoAdj"
-                                                                style="    margin-left: 100%;margin-top: -40%;width:
-                                                                58%;padding-left: 3px;padding-right: 3px;">Auto Adjust</button>
+                                <button type="button" class="btn btn-secondary" id="autoAdj"
+                                        style="    margin-left: 100%;margin-top: -40%;width:
+                                        58%;padding-left: 3px;padding-right: 3px;">Auto Adjust</button>
 
-                    </div>
+                            </div>
                             %{--                                <div class="col-lg-3 form-group  form-float">--}%
                             %{--                                <button type="button" class="btn btn-secondary" id="autoAdj"--}%
                             %{--                                        style="margin-top: 29px;margin-left: -31px;--}%
@@ -416,7 +417,47 @@
     var today = year + "-" + month + "-" + day;
     document.getElementById("date").value = moment(today).format('DD/MM/YYYY');
 
-    $('.receivedFrom').select2()
+    $('.receivedFrom').select2({
+            placeholder: "Select Customer",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " (" + entity.entityType.name + ") - " + entity?.city?.districtName + " " + entity?.city?.pincode,
+                            "id": entity.id,
+                            "state": entity.stateId,
+                            "address": entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin": entity.gstn,
+                            "shippingaddress": entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                    });
+
+                    return {
+                        results: data,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+                templateSelection: function (container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        });
     $('.depositTo').select2()
     var $demoMaskedInput = $('.demo-masked-input');
     $demoMaskedInput.find('.credit-card').inputmask('9999 9999 9999 9999', {placeholder: '____ ____ ____ ____'});
@@ -493,6 +534,10 @@
     let gtnIdArray = [];
     let crntIdArray = [];
 
+    $("#receivedFrom").on("change", function (){
+        var id = $("#receivedFrom").val();
+        getAddress(id);
+    });
     function getAddress(id) {
         if (id) {
             $.ajax({

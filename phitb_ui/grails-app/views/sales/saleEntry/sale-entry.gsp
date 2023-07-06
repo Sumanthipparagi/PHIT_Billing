@@ -76,7 +76,7 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="customerSelect">Customer:</label>
+                                <label for="customerSelect">Customer: <span id="gstNumber"></span></label>
                                 <input style="width: 100%" type="hidden" id="customerSelect" />
                                 %{-- <select class="form-control show-tick" id="customerSelect"
                                          onchange="customerSelectChanged()">
@@ -285,8 +285,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    %{--<div class="well">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica,
-                                    craft beer labore wes anderson cred nesciunt sapiente ea proident.</div>--}%
                                 </div>
                             </div>
                         </div>
@@ -1827,10 +1825,11 @@
                 customerLock(false)
             }
             if (customerId != null && customerId != '') {
-                $('#address').html('Customer Address: ' +
-                    '  <span style="font-size: 12px">' + address + '</span><br>GSTIN: ' + gstin + '<br>Shipping Address: ' + shippingAddress)
+                $('#address').html('<span style="font-size: 12px"><strong>Customer Address:</strong> '+ address+ '<br><strong>Shipping Address:</strong> ' + shippingAddress + '</span>')
+                $("#gstNumber").html('- <strong>GSTIN:</strong> '+gstin);
             } else {
                 $('#address').html('')
+                $("#gstNumber").html('');
             }
         } else {
             <g:if test="${customer != null}">

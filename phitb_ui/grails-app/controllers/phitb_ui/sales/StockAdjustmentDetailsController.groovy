@@ -20,7 +20,7 @@ class StockAdjustmentDetailsController {
         String entityId = session.getAttribute("entityId")?.toString()
         String userId = session.getAttribute("userId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        //ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def taxRegister = new EntityService().getTaxesByEntity(entityId)
@@ -30,7 +30,7 @@ class StockAdjustmentDetailsController {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/stockAdjustment/stockAdjustment', model: [customers   : customers, divisions: divisions, series: series,
+        render(view: '/sales/stockAdjustment/stockAdjustment', model: [/*customers   : customers,*/ divisions: divisions, series: series,
                                                                        salesmanList: salesmanList, priorityList: priorityList,
                                                                        taxRegister:taxRegister])
     }

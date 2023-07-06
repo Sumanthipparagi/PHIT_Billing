@@ -340,20 +340,26 @@
                                                         <label for="slab1BulkStatus">
                                                             Slab 1 Bulk Status
                                                         </label>
-                                                        <input type="number" id="slab1BulkStatus"
-                                                               class="form-control slab1BulkStatus" value="0"
-                                                               name="slab1BulkStatus" placeholder=" Slab 1 bulk Status"
-                                                               required/>
+                                                        <select type="number" id="slab1BulkStatus"
+                                                                class="form-control slab1BulkStatus"
+                                                                name="slab1BulkStatus"
+                                                                required>
+                                                            <option value="1">ACTIVE</option>
+                                                            <option value="0">INACTIVE</option>
+                                                        </select>
                                                     </div>
 
                                                     <div class="col-lg-6 form-group  form-float">
                                                         <label for="slab1Status">
                                                             Slab 1 Status
                                                         </label>
-                                                        <input type="number" id="slab1Status"
-                                                               class="form-control slab1Status"
-                                                               name="slab1Status" placeholder="Slab 1 Status" value="0"
-                                                               required/>
+                                                        <select type="number" id="slab1Status"
+                                                                class="form-control slab1Status"
+                                                                name="slab1Status"
+                                                                required>
+                                                            <option value="1">ACTIVE</option>
+                                                            <option value="0">INACTIVE</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -400,18 +406,24 @@
                                                         <label for="slab2BulkStatus">
                                                             Slab 2 Bulk Status
                                                         </label>
-                                                        <input type="number" id="slab2BulkStatus"
-                                                               class="form-control slab2BulkStatus" value="0"
-                                                               name="slab2BulkStatus" placeholder="Slab 2 Bulk Status"/>
+                                                        <select type="number" id="slab2BulkStatus"
+                                                                class="form-control slab2BulkStatus"
+                                                                name="slab2BulkStatus">
+                                                            <option value="1">ACTIVE</option>
+                                                            <option value="0">INACTIVE</option>
+                                                        </select>
                                                     </div>
 
                                                     <div class="col-lg-6 form-group  form-float">
                                                         <label for="slab2Status">
                                                             Slab 2 Status
                                                         </label>
-                                                        <input type="number" id="slab2Status"
-                                                               class="form-control slab2Status" value="0"
-                                                               name="slab2Status" placeholder="Slab 2 Status"/>
+                                                        <select type="number" id="slab2Status"
+                                                                class="form-control slab2Status"
+                                                                name="slab2Status">
+                                                            <option value="1">ACTIVE</option>
+                                                            <option value="0">INACTIVE</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -458,18 +470,24 @@
                                                         <label for="slab3BulkStatus">
                                                             Slab 3 Bulk Status
                                                         </label>
-                                                        <input type="number" id="slab3BulkStatus"
-                                                               class="form-control slab3BulkStatus" value="0"
-                                                               name="slab3BulkStatus" placeholder="Slab 3 Bulk Status"/>
+                                                        <select type="number" id="slab3BulkStatus"
+                                                                class="form-control slab3BulkStatus"
+                                                                name="slab3BulkStatus">
+                                                            <option value ="1">ACTIVE</option>
+                                                            <option value ="0">INACTIVE</option>
+                                                        </select>
                                                     </div>
 
                                                     <div class="col-lg-6 form-group  form-float">
                                                         <label for="slab3Status">
                                                             Slab 3 Status
                                                         </label>
-                                                        <input type="number" id="slab3Status"
-                                                               class="form-control slab3Status" value="0"
-                                                               name="slab3Status" placeholder="Slab 3 Status"/>
+                                                        <select type="number" id="slab3Status"
+                                                                class="form-control slab3Status"
+                                                                name="slab3Status">
+                                                            <option value="1">ACTIVE</option>
+                                                            <option value="0">INACTIVE</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>

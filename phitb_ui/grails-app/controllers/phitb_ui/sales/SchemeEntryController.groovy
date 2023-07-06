@@ -17,8 +17,8 @@ import phitb_ui.system.ZoneController
 class SchemeEntryController {
 
     def index() {
-        JSONArray products = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
-        render(view: "/sales/schemeEntry/index", model: [products:products])
+        //JSONArray products = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
+        render(view: "/sales/schemeEntry/index", model: [/*products:products*/])
     }
 
 
@@ -34,7 +34,7 @@ class SchemeEntryController {
             }
         }
         ArrayList<String> stateList = new StateController().show() as ArrayList<String>
-        ArrayList<String> cityList = new CityController().show() as ArrayList<String>
+        //ArrayList<String> cityList = new CityController().show() as ArrayList<String>
         ArrayList<String> hqAreaList = new HQAreasController().getByEntity() as ArrayList<String>
      //   def entityList = new EntityRegisterController().getByAffiliateById(entityId)
       //  ArrayList<String> productList = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
@@ -47,7 +47,7 @@ class SchemeEntryController {
             }
         }*/
         render(view: '/sales/schemeEntry/add-scheme',model: [zoneList       :zoneList, stateList:stateList,
-                                                             cityList       :cityList, hqAreaList:hqAreaList,
+                                                             /*cityList       :cityList,*/ hqAreaList:hqAreaList,
                                                              /*distributorList:distributorList,
                                                              productList    :productList, batchList:batchList,
                                                              entityList     :entityList*/])

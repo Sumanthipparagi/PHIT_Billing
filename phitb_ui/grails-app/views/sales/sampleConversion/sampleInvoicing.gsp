@@ -488,17 +488,16 @@
                             data: function (term, page) {
                                 return {
                                     search: term,
-                                    page: page || 1
+                                    page: page || 1,
+                                    type: "${Constants.SAMPLE}"
                                 };
                             },
                             results: function (response, page) {
                                 products = [];
                                 var data = response.products
                                 for (var i = 0; i < data.length; i++) {
-                                    if (data[i].saleType === '${Constants.SALEABLE}') {
-                                        if (!products.some(element => element.id === data[i].id))
-                                            products.push({id: data[i].id, text: data[i].productName});
-                                    }
+                                    if (!products.some(element => element.id === data[i].id))
+                                        products.push({id: data[i].id, text: data[i].productName});
                                 }
                                 return {
                                     results: products,
@@ -827,11 +826,11 @@
         });
 
 
-        stateId = $('#customerSelect option:selected').attr('data-state');
+        /*stateId = $('#customerSelect option:selected').attr('data-state');
         $('#customerSelect').change(function () {
             stateId = $('#customerSelect option:selected').attr('data-state');
         });
-
+*/
 
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -988,8 +987,16 @@
         }
     }
 
+    $("#customerSelect").on("change", function (){
+        customerSelectChanged();
+    })
+
     function customerSelectChanged() {
-        var noOfCrDays = 0;
+        var data = $("#customerSelect").select2('data');
+        if(data === null)
+            return;
+        stateId = data.state + "";
+        //var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
         // for (var i = 0; i < users.length; i++) {
         //     if (customerId == users[i].id) {

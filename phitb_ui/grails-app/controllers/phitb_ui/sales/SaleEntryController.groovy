@@ -41,7 +41,7 @@ class SaleEntryController
         String userId = session.getAttribute("userId")?.toString()
         def users = new UserRegisterController().getByEntity()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+      //  ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
