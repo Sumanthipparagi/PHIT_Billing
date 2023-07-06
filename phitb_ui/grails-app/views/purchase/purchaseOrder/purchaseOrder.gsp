@@ -724,8 +724,8 @@
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (Number(gst) / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
-                        var supplierState = $('#supplier').find(':selected').data('state');
-                        if(supplierState === ${session.getAttribute('stateId')})
+                        //var supplierState = $('#supplier').find(':selected').data('state');
+                        if(stateId === "${session.getAttribute('stateId')}")
                         {
                             if (gst !== 0) {
                                 gstAmount = priceBeforeGst * (gst / 100);

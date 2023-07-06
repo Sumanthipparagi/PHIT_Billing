@@ -713,10 +713,10 @@
             }
         });
 
-        stateId = $('#customerSelect option:selected').attr('data-state');
+       /* stateId = $('#customerSelect option:selected').attr('data-state');
         $('#customerSelect').change(function () {
             stateId = $('#customerSelect option:selected').attr('data-state');
-        });
+        });*/
 
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -872,7 +872,17 @@
         }
     }
 
+    $("#customerSelect").on("change",function (){
+       seriesId = $("#series").val();
+       customerSelectChanged()
+    });
+
     function customerSelectChanged() {
+        var data = $("#customerSelect").select2('data');
+        if(data === null)
+            return;
+        stateId = data.state + "";
+
         var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
         for (var i = 0; i < customers.length; i++) {

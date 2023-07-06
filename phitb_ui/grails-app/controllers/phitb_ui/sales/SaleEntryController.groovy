@@ -87,7 +87,7 @@ class SaleEntryController
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         def users = new UserRegisterController().getByEntity()
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        /*ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def saleBillId = params.saleBillId
@@ -97,7 +97,7 @@ class SaleEntryController
         def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
         def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
-        JSONArray customerArray = new JSONArray(customers)
+        /*JSONArray customerArray = new JSONArray(customers)
         for (JSONObject c : customerArray)
         {
             if (c?.cityId != 0)
@@ -105,11 +105,11 @@ class SaleEntryController
                 def city = new SystemService().getCityById(c?.cityId?.toString())
                 c.put("city", city)
             }
-        }
+        }*/
         if(entityConfigs?.REGEN_NEW_DOC?.saleEntry == true)
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
-            render(view: '/sales/saleEntry/sale-entry', model: [customers         : customerArray, divisions: divisions, series: series,
+            render(view: '/sales/saleEntry/sale-entry', model: [/*customers         : customerArray,*/ divisions: divisions, series: series,
                                                                 priorityList      : priorityList, saleBillDetail: saleBillDetail,
                                                                 saleProductDetails: saleProductDetails,
                                                                 transporter       : transporter,
@@ -120,7 +120,7 @@ class SaleEntryController
             if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT')
             {
                 JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
-                render(view: '/sales/saleEntry/sale-entry', model: [customers         : customerArray, divisions: divisions, series: series,
+                render(view: '/sales/saleEntry/sale-entry', model: [/*customers         : customerArray,*/ divisions: divisions, series: series,
                                                                     priorityList      : priorityList, saleBillDetail: saleBillDetail,
                                                                     saleProductDetails: saleProductDetails,
                                                                     transporter       : transporter,

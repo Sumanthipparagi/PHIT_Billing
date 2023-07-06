@@ -520,10 +520,10 @@
             }
         });
 
-        stateId = $('#supplier option:selected').attr('data-stateId')
+        /*stateId = $('#supplier option:selected').attr('data-stateId')
         $('#supplier').change(function () {
             stateId = $('#supplier option:selected').attr('data-stateId')
-        });
+        });*/
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${supplier}" var="cs">
@@ -984,8 +984,8 @@
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
-                        var supplierState = $('#supplier').find(':selected').data('stateId');
-                        if (gst !== 0) {
+                       // var supplierState = $('#supplier').find(':selected').data('stateId');
+                       /* if (gst !== 0) {
                             var gstAmount = priceBeforeGst * (gst / 100);
                             var sgstAmount = priceBeforeGst * (sgst / 100);
                             var cgstAmount = priceBeforeGst * (cgst / 100);
@@ -1001,7 +1001,37 @@
                             var igstAmount = priceBeforeGst * (igst / 100);
                             hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
                         } else
+                            hot.setDataAtCell(row, 16, 0);*/
+
+                        if(stateId === "${session.getAttribute('stateId')}")
+                        {
+                            if (gst !== 0) {
+                                var gstAmount = priceBeforeGst * (gst / 100);
+                                var sgstAmount = priceBeforeGst * (sgst / 100);
+                                var cgstAmount = priceBeforeGst * (cgst / 100);
+                                hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
+                                hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
+                                hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                            } else {
+                                hot.setDataAtCell(row, 12, 0); //GST
+                                hot.setDataAtCell(row, 14, 0); //SGST
+                                hot.setDataAtCell(row, 15, 0); //CGST
+                            }
                             hot.setDataAtCell(row, 16, 0);
+                            // if (igst !== "0") {
+                            //     var igstAmount = priceBeforeGst * (igst / 100);
+                            //     hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                            // } else{hot.setDataAtCell(row, 16, 0);}
+                        }
+                        else
+                        {
+                            //setting up igst
+                            var gstAmount = priceBeforeGst * (gst / 100);
+                            hot.setDataAtCell(row, 12, gstAmount.toFixed(2)); //GST
+                            hot.setDataAtCell(row, 14, 0); //SGST
+                            hot.setDataAtCell(row, 15, 0); //CGST
+                            hot.setDataAtCell(row, 16, gstAmount.toFixed(2))
+                        }
                     }
                 }
             }
@@ -1468,6 +1498,12 @@
 
 
     function supplierChanged() {
+
+        var data = $("#supplier").select2('data');
+        if(data === null)
+            return;
+        stateId = data.state + "";
+
         hot.updateSettings({
             data: []
         });

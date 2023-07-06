@@ -602,7 +602,6 @@ class UrlMappings {
 //        Scheme Entry
         "/scheme-entry" (controller: "schemeEntry", action: "index")
         "/scheme-entry/datatable" (controller: "schemeEntry", action: "dataTable")
-//        "/sale-return"(controller: "saleEntry",action:"saleRetrun")
         "/add-scheme-entry"(controller: "schemeEntry") {
             action = [GET: "addScheme", POST: 'saveScheme']
         }

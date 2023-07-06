@@ -1191,8 +1191,8 @@
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (Number(gst) / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
-                        var supplierState = $('#supplier').find(':selected').data('state');
-                        if (supplierState === ${session.getAttribute('stateId')}) {
+                       // var supplierState = $('#supplier').find(':selected').data('state');
+                        if (stateId === "${session.getAttribute('stateId')}") {
                             if (gst !== 0) {
                                 gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (sgst / 100);
@@ -1234,10 +1234,10 @@
             }
         });
 
-        stateId = $('#supplier option:selected').attr('data-state');
+       /* stateId = $('#supplier option:selected').attr('data-state');
         $('#supplier').change(function () {
             stateId = $('#supplier option:selected').attr('data-state');
-        });
+        });*/
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
