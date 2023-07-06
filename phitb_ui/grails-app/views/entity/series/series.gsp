@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="PharmIT">
 
-    <title>:: PharmIt :: Series Regitser</title>
+    <title>:: PharmIt :: Series Register</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -63,7 +63,7 @@
                     <h2>Series Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Series Regitser</li>
+                        <li class="breadcrumb-item active">Series Register</li>
                     </ul>
                 </div>
 %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%

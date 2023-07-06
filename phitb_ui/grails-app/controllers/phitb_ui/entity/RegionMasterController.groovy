@@ -17,11 +17,11 @@ class RegionMasterController {
         try
         {
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+            //ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
-            ArrayList<String> managerList = []
+           /* ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
                 {
@@ -34,12 +34,12 @@ class RegionMasterController {
                 {
                     salesmanList.add(it)
                 }
-            }
+            }*/
 
             render(view: '/entity/regionMaster/regionMaster',model: [entity:entity,
                                                                statelist:statelist,countrylist:countrylist,
-                                                               salesmanList:salesmanList,
-                                                               managerList:managerList,zoneList:zoneList])
+                                                               /*salesmanList:salesmanList,
+                                                               managerList:managerList,*/zoneList:zoneList])
         }
         catch (Exception ex)
         {

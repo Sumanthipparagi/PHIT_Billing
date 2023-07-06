@@ -22,7 +22,7 @@ class DivisionController {
 
     def index() {
         try {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            //ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> series = new SeriesController().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
@@ -36,15 +36,15 @@ class DivisionController {
                     managerList.add(it)
                 }
             }
-            entity.each {
+            /*entity.each {
                 if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_CUSTOMER)) {
                     println(it)
                     customerList.add(it)
                 }
-            }
+            }*/
 
 
-            render(view: '/product/division/division', model: [entitylist  : entity, statelist: statelist,
+            render(view: '/product/division/division', model: [/*entitylist  : entity,*/ statelist: statelist,
                                                                countrylist : countrylist,
                                                                zoneList    : zoneList,
                                                                customerList: customerGroup, series: series,

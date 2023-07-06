@@ -20,7 +20,7 @@ class SeriesController
         try
         {
             ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+           // ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
@@ -41,7 +41,7 @@ class SeriesController
                 }
             }
 
-            render(view: '/entity/series/series',model: [entity:entity,
+            render(view: '/entity/series/series',model: [/*entity:entity,*/
                                                        statelist:statelist,countrylist:countrylist,
                                                        citylist:citylist,salesmanList:salesmanList,
                                                        managerList:managerList,zoneList:zoneList,ccm:ccm])

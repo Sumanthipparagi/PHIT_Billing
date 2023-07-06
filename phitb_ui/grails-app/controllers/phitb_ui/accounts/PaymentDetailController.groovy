@@ -18,14 +18,14 @@ class PaymentDetailController {
 
     def index() {
         String entityId = session.getAttribute('entityId')
-        ArrayList<String> entity = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+       /* ArrayList<String> entity = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
         ArrayList<String> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
         ArrayList<String> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
         ArrayList<String> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
         ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
-        render(view: "/accounts/payments/payments", model: [entity         : entity,
+        render(view: "/accounts/payments/payments", model: [/*entity         : entity,*/
                                                             bank           : bank,
                                                             accountMode    : accountMode,
                                                             wallet         : wallet,

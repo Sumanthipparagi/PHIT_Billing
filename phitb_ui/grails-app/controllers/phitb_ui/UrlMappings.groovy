@@ -302,12 +302,12 @@ class UrlMappings {
 
 
         //   Route Register
-        "/route-regitser"(controller: "route") {
+        "/route-register"(controller: "route") {
             action = [GET: "index", POST: "save"]
         }
-        "/route-regitser/datatable"(controller: "route", action: "dataTable")
-        "/route-regitser/update/$id"(controller:"route",action:"update")
-        "/route-regitser/delete/$id"(controller: "route",action:"delete")
+        "/route-register/datatable"(controller: "route", action: "dataTable")
+        "/route-register/update/$id"(controller:"route",action:"update")
+        "/route-register/delete/$id"(controller: "route",action:"delete")
 
         //   Account Register
         "/accounts"(controller: "accountRegister") {

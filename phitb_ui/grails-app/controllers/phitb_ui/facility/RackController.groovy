@@ -20,7 +20,7 @@ class RackController {
     {
         try
         {
-            JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
+            /*JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
             ArrayList<String> company = new EntityRegisterController().show() as ArrayList
             println(company)
             ArrayList<String> companyList = []
@@ -30,8 +30,8 @@ class RackController {
                 {
                     companyList.add(it)
                 }
-            }
-            render(view: '/facility/rack/rack', model: [entity: entity,companyList:companyList])
+            }*/
+            render(view: '/facility/rack/rack', /*model: [entity: entity,companyList:companyList]*/)
         }
         catch (Exception ex)
         {

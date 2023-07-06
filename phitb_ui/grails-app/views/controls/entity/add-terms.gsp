@@ -11,18 +11,7 @@
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="termCondition">
-                                    Term Condition
-                                </label>
-                                <textarea  id="termCondition" class="form-control termCondition"
-                                   name="termCondition"
-                                       placeholder="Term Condition"
-                                          required></textarea>
-                            </div>
-
-
-                            <div class="col-lg-6 form-group  form-float">
+                            <div class="col-lg-12 form-group  form-float">
                                 <label for="formId">
                                     Form
                                 </label>
@@ -34,7 +23,20 @@
                             </div>
 
 
-                            <div class="col-lg-6 form-group  form-float">
+                        </div>
+                        <div class="row">
+
+                            <div class="col-lg-12 form-group  form-float">
+                                <label for="termCondition">
+                                    Term Condition
+                                </label>
+                                <textarea  id="termCondition" class="form-control termCondition"
+                                           name="termCondition"
+                                           placeholder="Term Condition"
+                                           required></textarea>
+                            </div>
+
+                           %{-- <div class="col-lg-6 form-group  form-float">
                                 <label for="entity">
                                     Entity
                                 </label>
@@ -45,7 +47,7 @@
                                         <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
                                     </g:each>
                                 </select>
-                            </div>
+                            </div>--}%
 
 
 %{--                            <div class="col-lg-6 form-group  form-float">--}%
@@ -60,6 +62,7 @@
 %{--                            </div>--}%
 
                             <input type="hidden" name="createdUser" value="1">
+                            <input type="hidden" id="entity" class="entity" name="entity" value="${session.getAttribute("entityId")}">
                             <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
                             <input type="hidden" name="modifiedUser" value="1">
                             <input type="hidden" name="regionStateIds" value="1">

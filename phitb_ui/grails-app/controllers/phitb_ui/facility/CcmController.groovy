@@ -15,9 +15,9 @@ class CcmController {
     {
         try
         {
-            JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
+           // JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
             ArrayList<String> fridgeArrayList = new FridgeController().show() as ArrayList<String>
-            render(view: '/facility/ccm/ccm',model: [entity:entity,fridgeArrayList:fridgeArrayList])
+            render(view: '/facility/ccm/ccm',model: [/*entity:entity,*/fridgeArrayList:fridgeArrayList])
         }
         catch (Exception ex)
         {

@@ -559,8 +559,8 @@ class SystemService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :systemService , action :  show  , Ex:' + ex)
+            log.error('Service :systemService , action :  show  , Ex:' + ex)
         }
 
     }
@@ -576,11 +576,30 @@ class SystemService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :systemService , action :  getFormMaster  , Ex:' + ex)
+            log.error('Service :systemService , action :  getFormMaster  , Ex:' + ex)
         }
 
     }
+
+    def getFormMaster(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().FORM_MASTER_GET_BY_ENTITY+"/"+entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :systemService , action :  getFormMaster  , Ex:' + ex)
+            log.error('Service :systemService , action :  getFormMaster  , Ex:' + ex)
+        }
+
+    }
+
+
 
     def saveForm(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();

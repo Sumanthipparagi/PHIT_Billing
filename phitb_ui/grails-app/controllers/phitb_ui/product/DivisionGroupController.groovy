@@ -22,7 +22,8 @@ class DivisionGroupController {
     {
         try
         {
-            ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
+            ArrayList<String> division = new DivisionController().getByEntity() as ArrayList<String>
+            /*ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> series = new SeriesController().show() as ArrayList<String>
@@ -43,6 +44,8 @@ class DivisionGroupController {
                                                                                  zoneList   :zoneList,
                                                                                   customer:customer, series:series,
                                                                                  managerList:managerList, divisionList:division])
+        */
+            render(view: '/product/divisionGroup/divisionGroup', model: [divisionList:division])
         }
         catch (Exception ex)
         {

@@ -24,8 +24,8 @@ class ProductGroupController {
         try
         {
             ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+          //  ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+          //  ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> series = new SeriesController().show() as ArrayList<String>
             ArrayList<String> division = new DivisionController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
@@ -33,13 +33,13 @@ class ProductGroupController {
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> managerList = []
-            userregister.each {
+           /* userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
                 {
                     managerList.add(it)
                 }
-            }
-            render(view: '/product/productGroup/productGroup',model: [entity     :entity, statelist:statelist,
+            }*/
+            render(view: '/product/productGroup/productGroup',model: [/*entity     :entity,*/ statelist:statelist,
                                                                                countrylist:countrylist, citylist:citylist,
                                                                                zoneList   :zoneList,
                                                                                customer:customer, series:series,

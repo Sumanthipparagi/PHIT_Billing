@@ -14,7 +14,7 @@ class EntityIRNController {
     {
         try
         {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+           /* ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
@@ -32,12 +32,14 @@ class EntityIRNController {
                 {
                     salesmanList.add(it)
                 }
-            }
+            }*/
 
-            render(view: '/entity/entityIRN/entityIRN',model: [entity:entity,
+           /* render(view: '/entity/entityIRN/entityIRN',model: [entity:entity,
                                                            statelist:statelist,countrylist:countrylist,
                                                            salesmanList:salesmanList,
-                                                           managerList:managerList,zoneList:zoneList])
+                                                           managerList:managerList,zoneList:zoneList])*/
+
+            render(view: '/entity/entityIRN/entityIRN')
         }
         catch (Exception ex)
         {

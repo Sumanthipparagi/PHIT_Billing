@@ -711,7 +711,7 @@
                                                        onblur="setTwoNumberDecimal()" step="0.25" value="0.00"/>
                                             </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
+                                           %{-- <div class="col-lg-6 form-group  form-float">
                                                 <label for="entityRoute">
                                                     Route
                                                 </label>
@@ -722,7 +722,7 @@
                                                         <option value="${route?.id}">${route?.routeName}</option>
                                                     </g:each>
                                                 </select>
-                                            </div>
+                                            </div>--}%
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="repName">
@@ -1449,7 +1449,7 @@
                                                        value="${entity.salesmanCommission}"/>
                                             </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
+                                          %{--  <div class="col-lg-6 form-group  form-float">
                                                 <label for="entityRoute">
                                                     Route
                                                 </label>
@@ -1460,7 +1460,7 @@
                                                                 <g:if test="${route?.id == entity?.entityRoute?.id}">selected</g:if>>${route?.routeName}</option>
                                                     </g:each>
                                                 </select>
-                                            </div>
+                                            </div>--}%
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="repName">

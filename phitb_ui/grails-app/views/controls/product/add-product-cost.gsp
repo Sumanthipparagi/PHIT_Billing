@@ -39,7 +39,7 @@
                             </div>
 
 
-                            <div class="col-lg-6 form-group  form-float">
+                        %{--    <div class="col-lg-6 form-group  form-float">
                                 <label for="entityId">
                                     Entity
                                 </label>
@@ -50,7 +50,7 @@
                                         <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
                                     </g:each>
                                 </select>
-                            </div>
+                            </div>--}%
 
 
 %{--                            <div class="col-lg-6 form-group  form-float">--}%
@@ -65,6 +65,7 @@
 %{--                            </div>--}%
 
                             <input type="hidden" class="entityType" name="entityTypeId">
+                            <input type="hidden" name="entityId" value="${session.getAttribute('entityId')}">
                             <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
                             <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
                             <input type="hidden" name="status" value="1">

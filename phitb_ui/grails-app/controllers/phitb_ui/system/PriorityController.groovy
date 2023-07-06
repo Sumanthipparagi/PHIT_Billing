@@ -11,9 +11,9 @@ class PriorityController {
     {
         try
         {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-            ArrayList<String> stateArrayList = new StateController().show() as ArrayList<String>
-            render(view: '/system/priority/priority',model: [entity:entity, stateArrayList:stateArrayList])
+            /*ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            ArrayList<String> stateArrayList = new StateController().show() as ArrayList<String>*/
+            render(view: '/system/priority/priority'/*,model: [entity:entity, stateArrayList:stateArrayList]*/)
         }
         catch (Exception ex)
         {

@@ -171,9 +171,81 @@
     var stockentrytable;
     var id = null;
     $(function () {
-       $("#product").select2();
+       $("#product").select2({
+           /*data: products,*/
+           dropdownAutoWidth: true,
+           allowClear: true,
+           ajax: {
+               url: "/product/entity/",
+               dataType: 'json',
+               quietMillis: 250,
+               data: function (data) {
+                   return {
+                       search: data.term,
+                       page: data.page || 1
+                   };
+               },
+               processResults: function (response, params) {
+                   params.page = params.page || 1
+                   products = [];
+                   var data = response.products
+                   for (var i = 0; i < data.length; i++) {
+                       if (!products.some(element => element.id === data[i].id))
+                           products.push({id: data[i].id, text: data[i].productName});
+                   }
+                   return {
+                       results: products,
+                       pagination: {
+                           more: (params.page * 10) < response.totalCount
+                       }
+                   };
+               },
+           }
+       });
        $("#batchNumber").select2();
-       $("#supplierId").select2();
+       $("#supplierId").select2({
+           placeholder: "Select Supplier",
+           ajax: {
+               url: "/entity-register/getentities",
+               dataType: 'json',
+               quietMillis: 250,
+               data: function (data) {
+                   return {
+                       search: data.term,
+                       page: data.page || 1
+                   };
+               },
+               processResults: function (response, params) {
+                   params.page = params.page || 1
+                   var entities = response.entities
+                   var data = [];
+                   entities.forEach(function (entity) {
+                       data.push({
+                           "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                           "id": entity.id,
+                           "state":entity.stateId,
+                           "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                           "gstin":entity.gstn,
+                           "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                       });
+                   });
+
+                   return {
+                       results: data,
+                       pagination: {
+                           more: (params.page * 10) < response.totalCount
+                       }
+                   };
+               },
+               templateSelection: function(container) {
+                   $(container.element).attr("data-state", container.state);
+                   $(container.element).attr("data-address", container.address);
+                   $(container.element).attr("data-gstin", container.gstin);
+                   $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                   return container.text;
+               }
+           }
+       });
         stockTable();
 
     });

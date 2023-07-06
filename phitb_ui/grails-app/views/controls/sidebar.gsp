@@ -508,7 +508,7 @@
                             <li><a href="/region-master">Region Master</a></li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_ROUTE", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="/route-regitser">Route Register</a></li>
+                            <li><a href="/route-register">Route Register</a></li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_ROLE", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/role">Role</a></li>

@@ -14,8 +14,8 @@ class FormController {
     {
         try
         {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-            render(view: '/system/form/formmaster',model: [entity:entity])
+            //ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            render(view: '/system/form/formmaster'/*,model: [entity:entity]*/)
         }
         catch (Exception ex)
         {
@@ -144,7 +144,8 @@ class FormController {
     {
         try
         {
-            def apiResponse = new SystemService().getFormMaster()
+            String entityId = session.getAttribute("entityId")
+            def apiResponse = new SystemService().getFormMaster(entityId)
             if (apiResponse.status == 200)
             {
 

@@ -176,6 +176,51 @@
             minimumInputLength: 2
         });
 
+        $('#entity').select2({
+            placeholder: "Select Entity",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (data) {
+                    return {
+                        search: data.term,
+                        page: data.page || 1
+                    };
+                },
+                processResults: function (response, params) {
+                    params.page = params.page || 1
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                            "id": entity.id,
+                            "state":entity.stateId,
+                            "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin":entity.gstn,
+                            "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                        });
+
+                    });
+
+                    return {
+                        results: data,
+                        pagination: {
+                            more: (params.page * 10) < response.totalCount
+                        }
+                    };
+                },
+                templateSelection: function(container) {
+                    $(container.element).attr("data-state", container.state);
+                    $(container.element).attr("data-address", container.address);
+                    $(container.element).attr("data-gstin", container.gstin);
+                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                    return container.text;
+                }
+            }
+        })
+
     });
 
     function routeTable() {
@@ -197,7 +242,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/route-regitser/datatable',
+                url: '/route-register/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -262,10 +307,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/route-regitser/update/' + id;
+            url = '/route-register/update/' + id;
             type = 'POST'
         } else {
-            url = '/route-regitser';
+            url = '/route-register';
             type = 'POST'
         }
 
@@ -332,7 +377,7 @@
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/route-regitser/delete/' + id,
+            url: '/route-register/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');

@@ -153,11 +153,11 @@
                             <label for="entity">
                                 Entity
                             </label>
-                            <select class="form-control show-tick entity" name="entity" id="entity" >
-                                <option value="">-- Please select --</option>
+                            <select class="form-control show-tick entity" name="entity" id="entity" style="width: 100%;">
+                               %{-- <option value="">-- Please select --</option>
                                 <g:each var="e" in="${entity}">
                                     <option value="${e.id}"  data-type="${e.entityType.id}s">${e.entityName}</option>
-                                </g:each>
+                                </g:each>--}%
                             </select>
                         </div>
 

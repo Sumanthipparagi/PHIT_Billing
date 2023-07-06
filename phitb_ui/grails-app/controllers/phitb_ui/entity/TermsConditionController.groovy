@@ -21,9 +21,9 @@ class TermsConditionController {
     {
         try
         {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> form = new FormController().show() as ArrayList<String>
+            /*ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
@@ -41,11 +41,13 @@ class TermsConditionController {
                 {
                     salesmanList.add(it)
                 }
-            }
-            render(view: '/entity/termsCondition/termsCondition',model: [entity:entity,
+            }*/
+         /*   render(view: '/entity/termsCondition/termsCondition',model: [entity:entity,
                                                                statelist:statelist,countrylist:countrylist,
                                                                citylist:citylist,salesmanList:salesmanList,
-                                                               managerList:managerList,zoneList:zoneList,form:form])
+                                                               managerList:managerList,zoneList:zoneList,form:form])*/
+
+            render(view: '/entity/termsCondition/termsCondition',model: [form:form])
         }
         catch (Exception ex)
         {

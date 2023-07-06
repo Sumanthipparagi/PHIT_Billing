@@ -19,7 +19,7 @@
                                        required/>
                             </div>
 
-                            <div class="col-lg-6 form-group  form-float">
+                            %{--<div class="col-lg-6 form-group  form-float">
 
                                 <label for="entity">
                                     Entity
@@ -28,13 +28,14 @@
                             <g:each var="e" in="${entity}">
                                     <option value="${e.id}">${e.entityName}</option>
                             </g:each>
-                                </select>
+                                </select>--}%
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <input name="id" id="id" class="id" type="hidden"/>
+                        <input name="entity" class="entity" value="${session.getAttribute("entityId")}" type="hidden"/>
                         <input name="type" class="type" value="add" type="hidden"/>
                         <button type="submit" class="btn btn-default btn-round waves-effect" name="submituser"><font
                                 style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font></font></button>

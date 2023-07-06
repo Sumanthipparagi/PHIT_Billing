@@ -24,7 +24,7 @@ class ProductCategoryController {
         try
         {
             ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+           // ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> series = new SeriesController().show() as ArrayList<String>
             ArrayList<String> division = new DivisionController().show() as ArrayList<String>
@@ -39,7 +39,7 @@ class ProductCategoryController {
                     managerList.add(it)
                 }
             }
-            render(view: '/product/productCategory/productCategory',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/productCategory/productCategory',model: [/*entity     :entity,*/ statelist:statelist,
                                                                                      countrylist:countrylist, citylist:citylist,
                                                                                      zoneList   :zoneList,
                                                                                      customer:customer, series:series,

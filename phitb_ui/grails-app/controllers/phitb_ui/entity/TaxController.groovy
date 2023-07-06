@@ -18,7 +18,7 @@ class TaxController {
     {
         try
         {
-            ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
+            /*ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
@@ -41,7 +41,8 @@ class TaxController {
             render(view: '/entity/tax/tax',model: [entity:entity,
                                                      statelist:statelist,countrylist:countrylist,
                                                      salesmanList:salesmanList,
-                                                     managerList:managerList,zoneList:zoneList,ccm:ccm])
+                                                     managerList:managerList,zoneList:zoneList,ccm:ccm])*/
+            render(view: '/entity/tax/tax')
         }
         catch (Exception ex)
         {
@@ -236,8 +237,7 @@ class TaxController {
     }
 
     def getTaxByTaxValueAndEntity(){
-        def tax = new EntityService().getTaxRegisterByValueAndEntity(params.taxValue.toString(),session.getAttribute
-        ('entityId').toString())
+        def tax = new EntityService().getTaxRegisterByValueAndEntity(params.taxValue.toString(),session.getAttribute ('entityId').toString())
         if(tax!=null){
             respond tax, formats: ['json'], status: 200
         }

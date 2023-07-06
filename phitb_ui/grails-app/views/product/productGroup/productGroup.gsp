@@ -260,7 +260,7 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".productGroupTitle").text("Add Product Type")
+        $(".productGroupTitle").text("Add Product Group")
         $(".productGroupForm")[0].reset();
         id = null
     });
@@ -271,7 +271,7 @@
         $(".groupDescription").val($(this).attr('data-groupDescription')).change();
         $(".entityId").val($(this).attr('data-entityId')).change();
         $(".entityType").val($(this).attr('data-entityType')).change();
-        $(".productGroupTitle").text("Update Product Schedule");
+        $(".productGroupTitle").text("Update Product Group");
     });
 
 

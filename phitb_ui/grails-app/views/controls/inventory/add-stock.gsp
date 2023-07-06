@@ -26,10 +26,10 @@
                                     Product
                                 </label>
                                 <select style="width: 100%" onchange="getBatch()" class="form-control show-tick product" name="productId" id="product">
-                                    <option selected disabled>SELECT</option>
+                                   %{-- <option selected disabled>SELECT</option>
                                     <g:each var="p" in="${productList}">
                                         <option value="${p.id}">${p.productName}</option>
-                                    </g:each>
+                                    </g:each>--}%
                                 </select>
                             </div>
 
@@ -165,11 +165,11 @@
                                     Supplier
                                 </label>
                                 <select style="width:100%;" class="form-control show-tick supplierId" name="supplierId" id="supplierId" required>
-                                    <option value="">-- Please select --</option>
+                                    %{--<option value="">-- Please select --</option>
 
                                     <g:each var="e" in="${entityList}">
                                         <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
-                                    </g:each>
+                                    </g:each>--}%
                                 </select>
                             </div>
 

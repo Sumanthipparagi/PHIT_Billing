@@ -25,10 +25,10 @@ class StockBookController
     def index()
     {
         def entityId = session.getAttribute("entityId").toString()
-        JSONArray productList = new ProductService().getProductsByEntityId(entityId)
-        def entityList = new EntityRegisterController().show()
+       /* JSONArray productList = new ProductService().getProductsByEntityId(entityId)
+        def entityList = new EntityRegisterController().show()*/
         def taxList = new EntityService().getTaxesByEntity(session.getAttribute("entityId").toString())
-        render(view: "/inventory/stock-entry", model: [productList: productList, entityList: entityList, taxList: taxList])
+        render(view: "/inventory/stock-entry", model: [/*productList: productList, entityList: entityList,*/ taxList: taxList])
     }
 
     def save()

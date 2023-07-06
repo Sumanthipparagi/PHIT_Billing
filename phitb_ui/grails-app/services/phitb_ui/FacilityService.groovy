@@ -260,8 +260,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  delete  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  delete  , Ex:' + ex)
         }
     }
 
@@ -277,8 +277,8 @@ class FacilityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  getProducts  , Ex:' + ex)
         }
 
     }
@@ -304,8 +304,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :Facility , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  save  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  save  , Ex:' + ex)
         }
 
     }
@@ -332,8 +332,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  show  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  show  , Ex:' + ex)
         }
 
     }
@@ -356,8 +356,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : Godown , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : FacilityService , action :  put  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  put  , Ex:' + ex)
         }
 
     }
@@ -383,8 +383,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  delete  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  delete  , Ex:' + ex)
         }
 
     }
@@ -409,8 +409,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :Facility , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  save  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  save  , Ex:' + ex)
         }
 
     }
@@ -439,8 +439,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  show  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  show  , Ex:' + ex)
         }
 
     }
@@ -463,8 +463,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : Godown , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : FacilityService , action :  put  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  put  , Ex:' + ex)
         }
 
     }
@@ -490,8 +490,8 @@ class FacilityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  delete  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  delete  , Ex:' + ex)
         }
 
     }
@@ -517,8 +517,8 @@ class FacilityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  getProductSchedules  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  getProductSchedules  , Ex:' + ex)
         }
 
     }
@@ -544,8 +544,8 @@ class FacilityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
+            System.err.println('Service :FacilityService , action :  getProductSchedules  , Ex:' + ex)
+            log.error('Service :FacilityService , action :  getProductSchedules  , Ex:' + ex)
         }
 
     }

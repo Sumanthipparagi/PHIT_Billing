@@ -59,6 +59,7 @@ public class Links
 
     //Form Master
     public static String FORM_MASTER_SHOW = APP_CONTEXT_PATH + "system/form";
+    public static String FORM_MASTER_GET_BY_ENTITY = APP_CONTEXT_PATH + "system/formbyentity";
     public static String FORM_MASTER_SAVE = APP_CONTEXT_PATH + "system/form";
     public static String FORM_MASTER_DATATABLE = APP_CONTEXT_PATH + "system/form/datatable";
     public static String FORM_MASTER_UPDATE = APP_CONTEXT_PATH + "system/form/{id}";

@@ -22,7 +22,7 @@ class ProductTypeController {
     {
         try
         {
-            ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
+          /*  ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> series = new SeriesController().show() as ArrayList<String>
@@ -42,7 +42,8 @@ class ProductTypeController {
                                                                              countrylist:countrylist, citylist:citylist,
                                                                              zoneList   :zoneList,
                                                                              customer:customer, series:series,
-                                                                             managerList:managerList])
+                                                                             managerList:managerList])*/
+            render(view: '/product/productType/productType')
         }
         catch (Exception ex)
         {

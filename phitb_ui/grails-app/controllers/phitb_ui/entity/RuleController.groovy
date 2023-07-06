@@ -17,7 +17,7 @@ class RuleController {
     {
         try
         {
-            ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
+           /* ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
@@ -37,11 +37,11 @@ class RuleController {
                 {
                     salesmanList.add(it)
                 }
-            }
-            render(view: '/entity/rule/rule',model: [entity:entity,
+            }*/
+            render(view: '/entity/rule/rule'/*,model: [entity:entity,
                                                      statelist:statelist,countrylist:countrylist,
                                                      citylist:citylist,salesmanList:salesmanList,
-                                                     managerList:managerList,zoneList:zoneList,ccm:ccm])
+                                                     managerList:managerList,zoneList:zoneList,ccm:ccm]*/)
         }
         catch (Exception ex)
         {

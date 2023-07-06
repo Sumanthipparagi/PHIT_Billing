@@ -14,8 +14,8 @@ class FridgeController {
     {
         try
         {
-            JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
-            render(view: '/facility/fridge/fridge',model: [entity:entity])
+          //  JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
+            render(view: '/facility/fridge/fridge'/*,model: [entity:entity]*/)
         }
         catch (Exception ex)
         {

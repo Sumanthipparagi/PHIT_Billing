@@ -20,7 +20,7 @@ class GodownController
     {
         try
         {
-            JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
+            //JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> userregsiterList = []
             userregister.each {
@@ -29,7 +29,7 @@ class GodownController
                     userregsiterList.add(it)
                 }
             }
-            render(view: '/facility/godown/godown', model: [entity: entity, userregsiterList: userregsiterList])
+            render(view: '/facility/godown/godown', model: [/*entity: entity, */userregsiterList: userregsiterList])
         }
         catch (Exception ex)
         {

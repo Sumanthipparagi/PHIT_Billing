@@ -15,8 +15,8 @@ class AccountModeController
     def index()
     {
 
-        ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-        render(view: '/system/accountMode/accountmodes',model: [entity:entity])
+        //ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+        render(view: '/system/accountMode/accountmodes'/*,model: [entity:entity]*/)
     }
 
     def save()
