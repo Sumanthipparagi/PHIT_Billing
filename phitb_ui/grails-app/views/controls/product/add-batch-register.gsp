@@ -20,7 +20,7 @@
                                     <option value="${p.id}">${p.productName}</option>
                                 </g:each>
                             </select>--}%
-                            <select class="form-control productSelect" style="width: 100%" name="product" id="productSelect"></select>
+                            <input type="hidden" class="productSelect" style="width: 100%" name="product" id="productSelect"/>
                             <input type="hidden" class="productId" name="productId"/>
                         </div>
 
