@@ -76,8 +76,13 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="customerSelect">Customer: <span id="gstNumber"></span></label>
-                                <input style="width: 100%" type="hidden" id="customerSelect" />
+                                <label for="customerSelect">Customer: <span
+                                        id="gstNumber"></span></label>
+                                <g:if test="${customer}">
+                                    <p>${customer.entityName}</p>
+                                </g:if>
+                                <g:else>
+                                    <input style="width: 100%" type="hidden" id="customerSelect"/>
                                 %{-- <select class="form-control show-tick" id="customerSelect"
                                          onchange="customerSelectChanged()">
                                      <option selected disabled>--SELECT--</option>
@@ -92,6 +97,7 @@
                                          </g:if>
                                      </g:each>
                                  </select>--}%
+                                </g:else>
                                 <span id="freezeContent"></span>
                             </div>
 
@@ -588,6 +594,30 @@
 
     $(document).ready(function () {
         seriesId = $("#series").val()
+        <g:if test="${customer}">
+        var customerId = ${customer.id};
+        stateId = "${customer.stateId}";
+        var address = "${customer.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "")} ${customer.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")} , ${customer?.city?.stateName} , ${customer?.city?.districtName} - ${customer?.city?.pincode}";
+        var shippingAddress = "${customer.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', "")}";
+        var gstin = "${customer.gstn}";
+        var noOfCrDays = ${customer.noOfCrDays};
+        if (customerId != null && customerId != '') {
+            $('#address').html('<span style="font-size: 12px"><strong>Customer Address:</strong> ' + address + '<br><strong>Shipping Address:</strong> ' + shippingAddress + '</span>')
+            $("#gstNumber").html('- <strong>GSTIN:</strong> ' + gstin);
+
+            if (!customers.some(cust => cust.id === ${customer.id}))
+                customers.push({"id": customerId, "noOfCrDays": noOfCrDays});
+
+        } else {
+            $('#address').html('')
+            $("#gstNumber").html('');
+        }
+
+        $('#duedate').prop("readonly", false);
+        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        $('#duedate').prop("readonly", true);
+        </g:if>
+
         $("#customerSelect").select2({
             placeholder: "Select Customer",
             ajax: {
@@ -605,15 +635,15 @@
                     var data = [];
                     entities.forEach(function (entity) {
                         data.push({
-                            "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
+                            "text": entity.entityName + " (" + entity.entityType.name + ") - " + entity?.city?.districtName + " " + entity?.city?.pincode,
                             "id": entity.id,
-                            "state":entity.stateId,
-                            "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
-                            "gstin":entity.gstn,
-                            "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                            "state": entity.stateId,
+                            "address": entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                            "gstin": entity.gstn,
+                            "shippingaddress": entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
                         });
 
-                        if(!customers.some(cust => cust.id === entity.id))
+                        if (!customers.some(cust => cust.id === entity.id))
                             customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});
 
                     });
@@ -623,7 +653,7 @@
                         more: (page * 10) < response.totalCount
                     };
                 },
-                templateSelection: function(container) {
+                templateSelection: function (container) {
                     $(container.element).attr("data-state", container.state);
                     $(container.element).attr("data-address", container.address);
                     $(container.element).attr("data-gstin", container.gstin);
@@ -1117,16 +1147,16 @@
             }
         });
 
-       /* var data = $("#customerSelect").select2('data')
-        if(data) {
-            //stateId = $('#customerSelect option:selected').attr('data-state');
-            stateId = data.state;
-            $('#customerSelect').change(function () {
-                //stateId = $('#customerSelect option:selected').attr('data-state');
-                data = $("#customerSelect").select2('data')
-                stateId = data.state;
-            });
-        }*/
+        /* var data = $("#customerSelect").select2('data')
+         if(data) {
+             //stateId = $('#customerSelect option:selected').attr('data-state');
+             stateId = data.state;
+             $('#customerSelect').change(function () {
+                 //stateId = $('#customerSelect option:selected').attr('data-state');
+                 data = $("#customerSelect").select2('data')
+                 stateId = data.state;
+             });
+         }*/
 
         function checkUnsavedTemp() {
             var data = hot.getData();
@@ -1466,6 +1496,10 @@
                     if (!products.some(element => element.id === saleData[i].productId))
                         products.push({id: saleData[i].productId.id, text: saleData[i].productId.productName});
 
+                    /* if (!customers.some(cust => cust.id === saleData[i].customer.id))
+                         customers.push({"id": saleData[i].customer.id, "noOfCrDays": saleData[i].customer.noOfCrDays});
+ */
+
                     var sRate = saleData[i].sRate;
                     var sQty = saleData[i].sqty;
                     var fQty = saleData[i].freeQty;
@@ -1631,6 +1665,9 @@
         });
 
         var customer = $("#customerSelect").val();
+        <g:if test="${customer}">
+            customer = ${customer.id};
+        </g:if>
         var publicNote = $("#publicNote").val();
         var privateNote = $("#privateNote").val();
         var refNum = $("#refNum").val();
@@ -1803,9 +1840,9 @@
 
     }
 
-    $("#customerSelect").on('change', function(e) {
+    $("#customerSelect").on('change', function (e) {
         var data = $(this).select2('data');
-        if(data === null)
+        if (data === null)
             return;
         var customerId = $("#customerSelect").val();
         stateId = data.state + "";
@@ -1825,8 +1862,8 @@
                 customerLock(false)
             }
             if (customerId != null && customerId != '') {
-                $('#address').html('<span style="font-size: 12px"><strong>Customer Address:</strong> '+ address+ '<br><strong>Shipping Address:</strong> ' + shippingAddress + '</span>')
-                $("#gstNumber").html('- <strong>GSTIN:</strong> '+gstin);
+                $('#address').html('<span style="font-size: 12px"><strong>Customer Address:</strong> ' + address + '<br><strong>Shipping Address:</strong> ' + shippingAddress + '</span>')
+                $("#gstNumber").html('- <strong>GSTIN:</strong> ' + gstin);
             } else {
                 $('#address').html('')
                 $("#gstNumber").html('');
@@ -1998,26 +2035,47 @@
                   var data = resp.results
                   for (var i = 0; i < data.length; i++) {
                       if (data[i].saleType === '
+
+
+
         ${Constants.SALEABLE}') {
                         products.push({id: data[i].id, text: data[i].productName});
                     }
                 }
 
+
+
+
         <g:if test="${params.saleBillId && params.type!="CLONE"}">
                 loadDraftProducts();
                 console.log("Drafts Products loaded")
 
+
+
+
         </g:if>
+
+
+
 
         <g:elseif test="${params.type == "CLONE"}">
                 loadTempStockBookData();
                 console.log("tempstock Products loaded")
 
+
+
+
         </g:elseif>
+
+
+
 
         <g:else>
                 loadTempStockBookData();
                 console.log("tempstock Products loaded")
+
+
+
 
         </g:else>
             },
@@ -2466,8 +2524,7 @@
         </g:else>
     });
 
-    function setMassDiscount()
-    {
+    function setMassDiscount() {
         var discount = Number($('.discount').val())
         var data = hot.getData();
         for (var row = 0; row < data.length; row++) {
@@ -2545,8 +2602,7 @@
                 if (hot.getActiveEditor())
                     saleRate = Number(hot.getActiveEditor().TEXTAREA.value);
                 var discount = Number(hot.getDataAtCell(row, 8))
-                if(discount > 0 && discount<=100)
-                {
+                if (discount > 0 && discount <= 100) {
                     saleRate = saleRate - (saleRate * discount / 100)
                 }
                 var value = Number(saleRate.toFixed(2)) * Number(saleQty)

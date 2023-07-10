@@ -97,6 +97,10 @@ class SaleEntryController
         def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
         def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
+        if(customer)
+        {
+            customer.put("city", new SystemService().getCityById(customer.cityId.toString()))
+        }
         /*JSONArray customerArray = new JSONArray(customers)
         for (JSONObject c : customerArray)
         {
@@ -4644,7 +4648,6 @@ class SaleEntryController
                 if(saleProductDetails!=null){
                     def saleBillResponse = new SalesService().getSaleBillDetailsById(params.id.toString())
                     saleProductDetails.each {
-                        println(it.batchNumber)
                         def stockResponse = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(),
                                 it.batchNumber.toString(), session.getAttribute('entityId').toString())
                         if (it.batchNumber == stockResponse.batchNumber)
