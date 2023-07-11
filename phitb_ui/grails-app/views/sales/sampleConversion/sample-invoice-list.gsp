@@ -244,11 +244,11 @@
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
                             invoiceNumber = "";
-                        if(json.data[i].billStatus=== "DRAFT" && ${session.getAttribute("financialYearValid")})
+                       /* if(json.data[i].billStatus=== "DRAFT" && ${session.getAttribute("financialYearValid")})
                         {
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
-                        }
+                        }*/
                         var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
                         return_data.push({
                             'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,

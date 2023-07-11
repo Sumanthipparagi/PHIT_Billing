@@ -56,7 +56,8 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Purchase Entry</li>
+                        <li class="breadcrumb-item active"><g:if
+                                test="${purchaseBillDetail}">Edit</g:if>Purchase Entry</li>
                     </ul>
                 </div>
             </div>
@@ -72,6 +73,23 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-md-4">
+                                <label for="supplier">Supplier:</label>
+                                <g:if test="${supplier}"><br><strong>${supplier.entityName}</strong></g:if>
+                                <g:else><input type="hidden" id="supplier" style="width: 100%;"/></g:else>
+
+                            %{-- <select class="form-control show-tick" id="supplier"
+                                     onchange="supplierChanged()">
+                                 <g:each in="${customers}" var="cs">
+                                     <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                         <option
+                                             value="${cs.id}"
+                                             data-state="${cs.stateId}" <g:if test="${purchaseBillDetail?.supplierId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
+                                     </g:if>
+                                 </g:each>
+                             </select>--}%
+                            </div>
+
+                            <div class="col-md-4">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
@@ -85,21 +103,6 @@
                                                 sr.id}">selected</g:if>>${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="supplier">Supplier:</label>
-                                <input type="hidden" id="supplier" style="width: 100%;"/>
-                                %{-- <select class="form-control show-tick" id="supplier"
-                                         onchange="supplierChanged()">
-                                     <g:each in="${customers}" var="cs">
-                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                             <option
-                                                 value="${cs.id}"
-                                                 data-state="${cs.stateId}" <g:if test="${purchaseBillDetail?.supplierId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
-                                         </g:if>
-                                     </g:each>
-                                 </select>--}%
                             </div>
                         </div>
 
@@ -473,8 +476,8 @@
                                                         <select type="number" id="slab3BulkStatus"
                                                                 class="form-control slab3BulkStatus"
                                                                 name="slab3BulkStatus">
-                                                            <option value ="1">ACTIVE</option>
-                                                            <option value ="0">INACTIVE</option>
+                                                            <option value="1">ACTIVE</option>
+                                                            <option value="0">INACTIVE</option>
                                                         </select>
                                                     </div>
 
@@ -728,6 +731,16 @@
     $(document).ready(function () {
         window.localStorage.clear();
         seriesId = $("#series").val()
+        <g:if test="${supplier}">
+        var noOfCrDays = ${supplier.noOfCrDays};
+        stateId = "${supplier.stateId}";
+        $('#duedate').prop("readonly", false);
+        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        $('#duedate').prop("readonly", true);
+        if (!customers.some(cust => cust.id === ${supplier.id}))
+            customers.push({"id": ${supplier.id}, "noOfCrDays": ${supplier.noOfCrDays}});
+        </g:if>
+        <g:else>
         $("#supplier").select2({
             placeholder: "Select Supplier",
             ajax: {
@@ -772,7 +785,7 @@
                 }
             }
         });
-
+        </g:else>
         $("#productSelect").select2({
             dropdownAutoWidth: true,
             allowClear: true,
@@ -807,13 +820,13 @@
         $('#lrDate').val(moment('${purchaseTransportDetail?.lrDate}').format('YYYY-MM-DD'));
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
-        <g:each in="${customers}" var="cs">
+        %{--<g:each in="${customers}" var="cs">
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
-        </g:each>
+        </g:each>--}%
         <g:each in="${taxRegister}" var="tr">
         taxRegister.push({"id": '${tr.id+"|"+tr.taxValue}', "text": '${tr.taxName+" | "+tr.taxValue}'});
         </g:each>
-        supplierChanged();
+        //supplierChanged();
         const container = document.getElementById('purchaseTable');
         hot = new Handsontable(container, {
             data: purchaseData,
@@ -1237,7 +1250,7 @@
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (Number(gst) / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
-                       // var supplierState = $('#supplier').find(':selected').data('state');
+                        // var supplierState = $('#supplier').find(':selected').data('state');
                         if (stateId === "${session.getAttribute('stateId')}") {
                             if (gst !== 0) {
                                 gstAmount = priceBeforeGst * (gst / 100);
@@ -1280,10 +1293,10 @@
             }
         });
 
-       /* stateId = $('#supplier option:selected').attr('data-state');
-        $('#supplier').change(function () {
-            stateId = $('#supplier option:selected').attr('data-state');
-        });*/
+        /* stateId = $('#supplier option:selected').attr('data-state');
+         $('#supplier').change(function () {
+             stateId = $('#supplier option:selected').attr('data-state');
+         });*/
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -1472,6 +1485,15 @@
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
+            var sid = selectedId.id;
+            if (sid === undefined)
+                sid = selectedId;
+            if (sid == null) {
+                batchHot.updateSettings({
+                    data: []
+                });
+                return;
+            }
             var url = "/stockbook/purchase/product/" + selectedId;
             $.ajax({
                 type: "GET",
@@ -1500,7 +1522,6 @@
                             else
                                 batchdt.push(data[i].id);
                             batchData.push(batchdt);
-                            console.log(batchData)
                         }
                         batchHot.updateSettings({
                             data: []
@@ -1523,7 +1544,7 @@
 
     function supplierChanged() {
         var data = $("#supplier").select2('data');
-        if(data === null)
+        if (data === null)
             return;
         stateId = data.state + "";
 
@@ -1594,6 +1615,9 @@
 
     function loadTempStockBookData() {
         /*  var userId = "
+
+
+
 
         ${session.getAttribute("userId")}";
         $.ajax({
@@ -1682,7 +1706,6 @@
                     hot.setDataAtCell(i, 1, purchaseData[i].productId.id);
                     hot.setDataAtCell(i, 2, purchaseData[i].batchNumber);
                     hot.setCellMeta(i, 2, "batchId", batchId);
-                    console.log(purchaseData[i].expiryDate)
                     hot.setDataAtCell(i, 3, purchaseData[i].expiryDate.split("T")[0]);
                     hot.setDataAtCell(i, 4, pQty);
                     hot.setDataAtCell(i, 5, fQty);
@@ -1711,13 +1734,13 @@
                     if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
                         sgst = purchaseData[i].sgst;
                         cgst = purchaseData[i].cgst;
-                        igst = purchaseData[i].igst;
+                        igst = 0;
                     } else {
                         igst = gst;
                         sgst = 0;
                         cgst = 0;
                     }
-                    var discount = 0; //TODO: discount to be set
+                    var discount = purchaseData[i].discount;
                     var priceBeforeGst = (pRate * pQty) - ((pRate * pQty) * discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                     hot.setDataAtCell(i, 13, Number(finalPrice).toFixed(2));
@@ -1730,7 +1753,7 @@
                         hot.setDataAtCell(i, 14, 0); //SGST
                         hot.setDataAtCell(i, 15, 0); //CGST
                     }
-                    if (igst !== "0")
+                    if (igst !== 0)
                         hot.setDataAtCell(i, 16, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
                     else
                         hot.setDataAtCell(i, 16, 0);
@@ -1758,6 +1781,7 @@
                 }
                 setTimeout(function () {
                     hot.selectCell(0, 1);
+                    /* calculateTaxes();*/
                     calculateTotalAmt();
                 }, 1000);
             }
@@ -1884,7 +1908,6 @@
             if (localStorage.getItem(hot.getDataAtCell(row, 1) + "-" + hot.getDataAtCell(row, 2)) !== null) {
                 // var values = Object.values();
                 var data = JSON.parse(localStorage.getItem(hot.getDataAtCell(row, 1) + "-" + hot.getDataAtCell(row, 2)));
-                console.log(data);
                 $('#schemeForm').trigger("reset");
 
                 // //Slab 1
@@ -1964,6 +1987,9 @@
             return;
         }
         var supplier = $("#supplier").val();
+        <g:if test="${supplier}">
+        supplier = ${supplier.id};
+        </g:if>
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
@@ -1977,7 +2003,6 @@
         var schemeData = [];
         var keys = Object.keys(localStorage);
         keys.forEach((e) => {
-            console.log(JSON.parse(localStorage.getItem(e.toString())));
             schemeData.push(JSON.parse(localStorage.getItem(e.toString())));
         });
         var priority = $("#priority").val();
@@ -2052,7 +2077,6 @@
                         // hot.deselectCell()
                     },
                     success: function (data) {
-                        console.log(data);
                         readOnly = true;
                         var rowData = hot.getData();
                         for (var j = 0; j < rowData.length; j++) {
@@ -2183,17 +2207,23 @@
 
         </g:if>
 
-     /*   $.ajax({
-            type: "GET",
-            url: "/product/series/" + series,
-            dataType: 'json',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    products.push({id: data[i].id, text: data[i].productName});
-                }
+        /*   $.ajax({
+               type: "GET",
+               url: "/product/series/" + series,
+               dataType: 'json',
+               success: function (data) {
+                   for (var i = 0; i < data.length; i++) {
+                       products.push({id: data[i].id, text: data[i].productName});
+                   }
+
+
+
 
         <g:if test="${params.purchaseBillId}">
                 loadDraftProducts();
+
+
+
 
         </g:if>
             },
@@ -2609,14 +2639,11 @@
 
         //grab all form data
         var formData = new FormData(this);
-        console.log(formData);
         var url = '';
         var type = '';
         url = '/batch-register';
         type = 'POST';
         var beforeSendSwal;
-        console.log(type);
-        console.log(formData)
         $.ajax({
             url: url,
             type: type,

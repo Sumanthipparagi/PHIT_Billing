@@ -236,8 +236,8 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            <button id="saveDraftBtn" onclick="saveGTN('DRAFT')"
-                                    class="btn btn-primary">Save Draft</button>
+                           %{-- <button id="saveDraftBtn" onclick="saveGTN('DRAFT')"
+                                    class="btn btn-primary">Save Draft</button>--}%
                             <button id="saveBtn" onclick="saveGTN('ACTIVE')"
                                     class="btn btn-primary">Save</button>
                             %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
