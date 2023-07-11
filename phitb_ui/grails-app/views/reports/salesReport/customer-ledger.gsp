@@ -88,14 +88,14 @@
 
                             <div class="col-lg-3">
                                 <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect">
-                                    <option value="">ALL</option>
+                                <select style="width: 100%;" id="customerSelect">
+                                   %{-- <option value="">ALL</option>
                                     <g:each in="${customerArray}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option data-state="${cs.stateId}"
                                                     value="${cs.id}">${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
                                         </g:if>
-                                    </g:each>
+                                    </g:each>--}%
                                 </select>
                             </div>
 
@@ -283,7 +283,53 @@
         }
     });
 
-    $('#customerSelect').select2();
+    $('#customerSelect').select2({
+        placeholder: "Select Customer",
+        ajax: {
+            url: "/entity-register/getentities",
+            dataType: 'json',
+            quietMillis: 250,
+            data: function (data) {
+                return {
+                    search: data.term,
+                    page: data.page || 1
+                };
+            },
+            processResults: function (response, params) {
+                params.page = params.page || 1;
+                var entities = response.entities
+                var data = [];
+                entities.forEach(function (entity) {
+                    data.push({
+                        "text": entity.entityName + " (" + entity.entityType.name + ") - " + entity?.city?.districtName + " " + entity?.city?.pincode,
+                        "id": entity.id,
+                        "state": entity.stateId,
+                        "address": entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "") + " ," + entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
+                        "gstin": entity.gstn,
+                        "shippingaddress": entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
+                    });
+
+                    /*if (!customers.some(cust => cust.id === entity.id))
+                        customers.push({"id": entity.id, "noOfCrDays": entity.noOfCrDays});*/
+
+                });
+
+                return {
+                    results: data,
+                    pagination: {
+                        more: (params.page * 10) < response.totalCount
+                    }
+                };
+            },
+            templateSelection: function (container) {
+                $(container.element).attr("data-state", container.state);
+                $(container.element).attr("data-address", container.address);
+                $(container.element).attr("data-gstin", container.gstin);
+                $(container.element).attr("data-shippingaddress", container.shippingaddress);
+                return container.text;
+            }
+        }
+    });
 
     function getReport() {
         var loading = Swal.fire({

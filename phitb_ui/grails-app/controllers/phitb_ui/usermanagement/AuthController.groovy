@@ -122,8 +122,8 @@ class AuthController {
                         Date startDate = sdf.parse(jsonObject.get("startDate").toString())
                         Date endDate = sdf.parse(jsonObject.get("endDate").toString())
                         session.setAttribute("financialYear", startDate.toCalendar().get(Calendar.YEAR) + "-" + endDate.toCalendar().get(Calendar.YEAR))
-                        session.setAttribute("startDate", startDate)
-                        session.setAttribute("endDate", endDate)
+                        session.setAttribute("startDate", startDate.format("dd/MM/yyyy"))
+                        session.setAttribute("endDate", endDate.format("dd/MM/yyyy"))
                         boolean financialYearValid = new UtilsService().isDateWithinRange(currentDate, startDate, endDate)
                         session.setAttribute("financialYearValid", financialYearValid)
 

@@ -21,6 +21,10 @@ import java.text.SimpleDateFormat
 
 class SalesReportController {
 
+    static SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
+    static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+    static SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy/MM/dd")
+
     ReportsService reportsService
     private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
@@ -461,15 +465,15 @@ class SalesReportController {
 
 
     def customerLedger() {
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(session.getAttribute('entityId').toString()) as ArrayList<String>
+       /* ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(session.getAttribute('entityId').toString()) as ArrayList<String>
         JSONArray customerArray = new JSONArray(customers)
         for (JSONObject c : customerArray) {
             if (c?.cityId != 0) {
                 def city = new SystemService().getCityById(c?.cityId?.toString())
                 c.put("city", city)
             }
-        }
-        render(view: '/reports/salesReport/customer-ledger', model: [customerArray: customerArray])
+        }*/
+        render(view: '/reports/salesReport/customer-ledger', model: [/*customerArray: customerArray*/])
     }
 
     def getCustomerLedger() {
@@ -742,7 +746,7 @@ class SalesReportController {
           for (Object gtn : goodsTransferNotes) {
               if (gtn?.billStatus == "ACTIVE" && gtn?.deleted == false) {
                   JSONObject customerLedgerEntry = new JSONObject()
-                  customerLedgerEntry.put("transactionDate", gtn?.orderDate)
+                  customerLedgerEntry.put("transactionDate", convertDate(gtn?.orderDate))
                   customerLedgerEntry.put("transactionNumber", gtn?.invoiceNumber)
                   customerLedgerEntry.put("transactionDescription", "GTN")
                   customerLedgerEntry.put("amount", gtn?.invoiceTotal)
@@ -785,7 +789,8 @@ class SalesReportController {
                   String transactionDetails = "Payments ," + "" + transType + ", Doc No. :" + transId;
                   paymentAmount += pd?.amountPaid
                   JSONObject customerLedgerEntry = new JSONObject()
-                  customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(pd?.dateCreated)))
+                  //customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(pd?.dateCreated)))
+                  customerLedgerEntry.put("transactionDate", convertDate(pd?.dateCreated))
                   customerLedgerEntry.put("transactionNumber", pd?.paymentId)
                   customerLedgerEntry.put("transactionDescription", transactionDetails)
                   customerLedgerEntry.put("amount", pd?.amountPaid)
@@ -834,7 +839,7 @@ class SalesReportController {
                 def paymentDate = rd.paymentDate.split("\\s");
                 String transactionDetails = "Receipt ," + "" + transType + ",Date:" + paymentDate[0] + ", Doc No. :" + transId;
                 JSONObject customerLedgerEntry = new JSONObject()
-                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(rd?.dateCreated)))
+                customerLedgerEntry.put("transactionDate", convertDate(rd?.dateCreated))
                 customerLedgerEntry.put("transactionNumber", rd?.receiptId)
                 customerLedgerEntry.put("transactionDescription", transactionDetails)
                 customerLedgerEntry.put("amount", rd?.amountPaid)
@@ -865,7 +870,7 @@ class SalesReportController {
             if (sr?.returnStatus == "ACTIVE" && sr?.balance > 0) {
                 saleReturnBalance += sr?.totalAmount
                 JSONObject customerLedgerEntry = new JSONObject()
-                customerLedgerEntry.put("transactionDate", sr?.dateCreated)
+                customerLedgerEntry.put("transactionDate", convertDate(sr?.dateCreated))
                 customerLedgerEntry.put("transactionNumber", sr?.invoiceNumber)
                 customerLedgerEntry.put("transactionDescription", "Sale Return")
                 customerLedgerEntry.put("amount", sr?.totalAmount)
@@ -896,7 +901,7 @@ class SalesReportController {
             if (pb?.billStatus == "ACTIVE" && pb?.cancelledDate == null) {
                 purchaseAmount += pb?.totalAmount
                 JSONObject customerLedgerEntry = new JSONObject()
-                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(pb?.dateCreated)))
+                customerLedgerEntry.put("transactionDate", convertDate(pb?.dateCreated))
                 customerLedgerEntry.put("transactionNumber", pb?.invoiceNumber)
                 customerLedgerEntry.put("transactionDescription", "Purchase Invoice")
                 customerLedgerEntry.put("amount", pb?.totalAmount)
@@ -927,7 +932,7 @@ class SalesReportController {
             if (po?.billStatus == "ACTIVE" && po?.cancelledDate == null) {
                 purchaseOrderAmount += po?.totalAmount
                 JSONObject customerLedgerEntry = new JSONObject()
-                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(po?.dateCreated)))
+                customerLedgerEntry.put("transactionDate", convertDate(po?.dateCreated))
                 customerLedgerEntry.put("transactionNumber", po?.invoiceNumber)
                 customerLedgerEntry.put("transactionDescription", "Purchase Order")
                 customerLedgerEntry.put("amount", po?.totalAmount)
@@ -1174,5 +1179,41 @@ class SalesReportController {
         }
         else
             response.status = 400
+    }
+
+
+    static convertDate(String date, Boolean isExpiry = false) {
+        try {
+
+            if (date.contains("T")) {
+                date = date.replaceAll("T", " ")
+                date = date.replaceAll("Z", "")
+                if(!isExpiry)
+                    return dateFormat2.parse(date).format("dd/MM/yyyy hh:mm:ss")
+                else
+                    return dateFormat2.parse(date).format("MMM-yyyy")
+            }
+            else if(date.contains("-"))
+            {
+                date = date.replaceAll("-", "/")
+                if(!isExpiry) {
+                    return date
+                }
+                else
+                {
+                    return dateFormat3.parse(date).format("MMM-yyyy")
+                }
+            }
+            else {
+                if(!isExpiry)
+                    return dateFormat1.parse(date).format("dd/MM/yyyy hh:mm:ss")
+                else
+                    return dateFormat1.parse(date).format("MMM-yyyy")
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace()
+            return date
+        }
     }
 }
