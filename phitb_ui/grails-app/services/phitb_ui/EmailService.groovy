@@ -182,9 +182,11 @@ class EmailService {
                     return new PasswordAuthentication(smtpUsername, smtpPassword);
                 }
             }
-            return Session.getDefaultInstance(props, auth)
+            //return Session.getDefaultInstance(props, auth)
+            return Session.getInstance(props, auth)
         } else {
-            return Session.getDefaultInstance(props, null)
+            //return Session.getDefaultInstance(props, null)
+            return Session.getInstance(props, null)
         }
     }
 
