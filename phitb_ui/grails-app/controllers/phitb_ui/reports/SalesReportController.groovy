@@ -404,8 +404,8 @@ class SalesReportController {
     }
 
     def invoicePaymentReports() {
-        def entities = new EntityRegisterController().getByAffiliateById(session.getAttribute("entityId").toString())
-        render(view: '/reports/salesReport/invoice-payment-report', model: [entities: entities])
+        //def entities = new EntityRegisterController().getByAffiliateById(session.getAttribute("entityId").toString())
+        render(view: '/reports/salesReport/invoice-payment-report', model: [/*entities: entities*/])
     }
 
     def getInvoicePaymentReport() {

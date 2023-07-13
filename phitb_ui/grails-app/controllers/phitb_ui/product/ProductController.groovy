@@ -58,7 +58,7 @@ class ProductController {
 
     def addProduct() {
         try {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            //ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> tax = new EntityService().getTaxesByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> productTypes = new ProductTypeController().getByEntity() as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
@@ -71,7 +71,7 @@ class ProductController {
             ArrayList<String> unittype = new UnitTypeController().getByEntity() as ArrayList<String>
             ArrayList<String> manufacturerList = []
             ArrayList<String> companyList = []
-            entity.each {
+          /*  entity.each {
                 if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER)
                         || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER_AND_MARKETING)) {
                     manufacturerList.add(it)
@@ -82,7 +82,7 @@ class ProductController {
                         || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER)) {
                     companyList.add(it)
                 }
-            }
+            }*/
             render(view: '/product/productRegister/add-product', model: [productTypes     : productTypes,
                                                                          productGroups    : productGroups,
                                                                          productCategories: productCategories,
@@ -90,12 +90,12 @@ class ProductController {
                                                                          racks            : racks,
                                                                          compositions     : compositions,
                                                                          divisions        : divisions,
-                                                                         entity           : entity,
+                                                                        /* entity           : entity,*/
                                                                          productcost      : productcost,
                                                                          unittype         : unittype,
                                                                          tax              : tax,
-                                                                         manufacturerList : manufacturerList,
-                                                                         companyList      : companyList
+                                                                        /* manufacturerList : manufacturerList,
+                                                                         companyList      : companyList*/
             ])
 
         }

@@ -99,9 +99,9 @@
                                     <div class="input-group">
                                         <select class="customerSelect" name="customer"
                                                 style="margin-top: 10px; width: 100%;">
-                                            <g:each in="${entities}" var="entity">
-                                                <option value="${entity.id}">${entity.entityName} (${entity.entityType.name})</option>
-                                            </g:each>
+%{--                                            <g:each in="${entities}" var="entity">--}%
+%{--                                                <option value="${entity.id}">${entity.entityName} (${entity.entityType.name})</option>--}%
+%{--                                            </g:each>--}%
                                         </select>
                                         <button class="input-group-btn btn btn-info btn-sm"
                                                 onclick="getReport()">Get Report</button>
@@ -163,7 +163,38 @@
         }
     });
 
-    $('.customerSelect').select2();
+    $('.customerSelect').select2({
+        placeholder: "Select Company",
+        ajax: {
+            url: "/entity-register/getentities",
+            dataType: 'json',
+            quietMillis: 250,
+            data: function (data) {
+                return {
+                    search: data.term,
+                    page: data.page || 1
+                };
+            },
+            processResults: function (response, params) {
+                params.page = params.page ||1;
+                var entities = response.entities
+                var data = [];
+                entities.forEach(function (entity) {
+                    data.push({
+                        "text": entity.entityName + " (" + entity.entityType.name + ")",
+                        "id": entity.id
+                    });
+
+                });
+                return {
+                    results: data,
+                    pagination: {
+                        more: (params.page * 10) < response.totalCount
+                    }
+                };
+            }
+        }
+    });
 
     function getReport() {
         var loading = Swal.fire({

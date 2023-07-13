@@ -98,11 +98,11 @@
 
                                     <div class="input-group">
                                         <select id="productSelect" type="text" name="productSelect"
-                                                style="height: 100%;">
-                                            <option disabled selected>--SELECT--</option>
+                                                style="height: 100%; width: 80%;">
+                                          %{--  <option disabled selected>--SELECT--</option>
                                             <g:each in="${products}" var="product">
                                                 <option value="${product.id}">${product.productName}</option>
-                                            </g:each>
+                                            </g:each>--}%
                                         </select>
                                         <button class="input-group-btn btn btn-sm btn-info"
                                                 onclick="getReport()" style="margin: 0 0 0 2px;">Get Report</button>
@@ -172,7 +172,37 @@
         }
     });
 
-    $("#productSelect").select2();
+    $("#productSelect").select2({
+        placeholder: "Select Product",
+        dropdownAutoWidth: true,
+        allowClear: true,
+        ajax: {
+            url: "/product/entity",
+            dataType: 'json',
+            quietMillis: 250,
+            data: function (data) {
+                return {
+                    search: data.term,
+                    page: data.page || 1
+                };
+            },
+            processResults: function (response, params) {
+                params.page = params.page || 1;
+                var products = [];
+                var data = response.products
+                for (var i = 0; i < data.length; i++) {
+                    if (!products.some(element => element.id === data[i].id))
+                        products.push({id: data[i].id, text: data[i].productName});
+                }
+                return {
+                    results: products,
+                    pagination: {
+                        more: (params.page * 10) < response.totalCount
+                    }
+                };
+            },
+        }
+    });
     /*$("#productSelect").on("change", function () {
         var prdName = $("#productSelect option:selected").text();
         $("#productName").text(prdName);

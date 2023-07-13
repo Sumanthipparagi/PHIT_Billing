@@ -23,7 +23,7 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
-    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.css"/>
 
 </head>
 
@@ -118,10 +118,10 @@
                                             </label>
                                             <select class="form-control show-tick manufacturerId"
                                                     name="manufacturerId" id="manufacturerId" style="border: 0">
-                                                <option value="0">Please Select</option>
-                                                <g:each var="c" in="${manufacturerList}">
+                                               %{-- <option value="0">Please Select</option>--}%
+                                               %{-- <g:each var="c" in="${manufacturerList}">
                                                     <option value="${c.id}">${c.entityName}</option>
-                                                </g:each>
+                                                </g:each>--}%
                                             </select>
                                         </div>
 
@@ -131,10 +131,10 @@
                                             </label>
                                             <select class="form-control show-tick mktCompanyId" name="mktCompanyId"
                                                     id="mktCompanyId" style="border: 0;">
-                                                <option value="0">Please Select</option>
-                                                <g:each var="c" in="${companyList}">
+                                               %{-- <option value="0">Please Select</option>--}%
+                                               %{-- <g:each var="c" in="${companyList}">
                                                     <option value="${c.id}">${c.entityName}</option>
-                                                </g:each>
+                                                </g:each>--}%
                                             </select>
                                         </div>
 
@@ -673,19 +673,88 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
+%{--<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>--}%
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.js"/>
 
 <script>
 
     $(function () {
 
-        $('#manufacturerId').select2()
-        $('#mktCompanyId').select2()
+       /* $('#manufacturerId').select2()
+        $('#mktCompanyId').select2()*/
+
+        $("#manufacturerId").select2({
+            placeholder: "Select Company",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (data) {
+                    return {
+                        search: data.term,
+                        page: data.page || 1
+                    };
+                },
+                processResults: function (response, params) {
+                    params.page = params.page ||1;
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " (" + entity.entityType.name + ")",
+                            "id": entity.id
+                        });
+
+                    });
+                    return {
+                        results: data,
+                        pagination: {
+                            more: (params.page * 10) < response.totalCount
+                        }
+                    };
+                }
+            }
+        });
+
+        $("#mktCompanyId").select2({
+            placeholder: "Select Company",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (data) {
+                    return {
+                        search: data.term,
+                        page: data.page || 1
+                    };
+                },
+                processResults: function (response, params) {
+                    params.page = params.page ||1;
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        //if((entity.entityType.name === "${Constants.ENTITY_MANUFACTURER}") || (entity.entityType.name === "${Constants.ENTITY_MANUFACTURER_AND_MARKETING}")) {
+                            data.push({
+                                "text": entity.entityName + " (" + entity.entityType.name + ")",
+                                "id": entity.id
+                            });
+                       // }
+
+                    });
+                    return {
+                        results: data,
+                        pagination: {
+                            more: (params.page * 10) < response.totalCount
+                        }
+                    };
+                }
+            }
+        });
     });
 
 

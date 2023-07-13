@@ -73,21 +73,21 @@ class ProductReportController {
                             }
                         } else {
                             JSONObject prd = new JSONObject()
-                            prd.put("batchNumber", product.batchNumber)
-                            prd.put("expiryDate", product.expiryDate)
-                            prd.put("mrp", product.mrp)
-                            prd.put("saleSqty", product.sqty)
-                            prd.put("saleFreeQty", product.freeQty)
+                            prd.put("batchNumber", product?.batchNumber)
+                            prd.put("expiryDate", product?.expiryDate)
+                            prd.put("mrp", product?.mrp)
+                            prd.put("saleSqty", product?.sqty)
+                            prd.put("saleFreeQty", product?.freeQty)
                             prd.put("saleReturn", 0)
                             prd.put("saleReturnBreakage", 0)
                             prd.put("purchaseSqty", 0)
                             prd.put("purchaseFreeQty", 0)
                             prd.put("purchaseReturn", 0)
                             prd.put("purchaseReturnBreakage", 0)
-                            JSONObject productJson = new ProductService().getProductById(product.productId.toString())
-                            prd.put("productName", productJson.productName)
-                            prd.put("productId", productJson.id)
-                            productDetails.put(product.productId, new JSONArray().put(prd))
+                            JSONObject productJson = new ProductService().getProductById(product?.productId?.toString())
+                            prd.put("productName", productJson?.productName)
+                            prd.put("productId", productJson?.id)
+                            productDetails.put(product?.productId, new JSONArray().put(prd))
                         }
                     }
                 }
@@ -330,8 +330,8 @@ class ProductReportController {
     }
 
     def batchStatement() {
-        JSONArray products = new ProductService().getProductByEntity(session.getAttribute("entityId").toString())
-        render(view: '/reports/productReport/batchStatement', model: [products: products])
+        /*JSONArray products = new ProductService().getProductByEntity(session.getAttribute("entityId").toString())*/
+        render(view: '/reports/productReport/batchStatement', model: [/*products: products*/])
     }
     def getBatchStatement() {
         try {

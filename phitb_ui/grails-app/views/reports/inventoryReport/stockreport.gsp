@@ -175,7 +175,7 @@
  */
                     var val = (value?.remainingQty + value?.remainingFreeQty) * value?.saleRate;
                     stockDetails = "<tr>" +
-                        "<td>" + value?.product.productName + "</td>" +
+                        "<td>" + value?.product?.productName + "</td>" +
                         "<td>" + value?.packingDesc + "</td>" +
                         "<td>" + value?.batchNumber + "</td>" +
                         "<td>" + dateFormat(value?.expDate) + "</td>" +
