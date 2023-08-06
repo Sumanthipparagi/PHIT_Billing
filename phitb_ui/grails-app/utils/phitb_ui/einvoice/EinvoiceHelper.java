@@ -109,8 +109,9 @@ public class EinvoiceHelper {
     public static String getCurrTs() {
         System.out.println("@@inside getCurrTs...");
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat format1 = new SimpleDateFormat("ddMMyyyyHHmmssSSS111");
-        return format1.format(cal.getTime());
+        //SimpleDateFormat format1 = new SimpleDateFormat("ddMMyyyyHHmmssSSS111");
+        SimpleDateFormat format1 = new SimpleDateFormat("YYYYMMDDHHMMSS");
+        return format1.format(cal.getTime()) + "+0530";
     }
 
     public static byte[] createAESKey() {

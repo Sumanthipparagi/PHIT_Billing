@@ -799,8 +799,8 @@ public class Links
 
 
     //e-Invoice
-    public static String E_INVOICE_BASE_URL = "https://nsdlgsp.co.in";
-    //public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
+    //public static String E_INVOICE_BASE_URL = "https://nsdlgsp.co.in";
+    public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
     public static String E_INVOICE_VERSION = "/ewb_v1.04";
    // public static String E_INVOICE_VERSION = "/ewb_v1.03";
     public static String E_INVOICE_GET_KEY = E_INVOICE_BASE_URL + "/GSPUtility/getKey";
@@ -811,6 +811,19 @@ public class Links
 
     public static String E_WAYBILL_GEN = E_INVOICE_BASE_URL + E_INVOICE_VERSION + "/einv/gen-ewb-irn";
     public static String E_WAYBILL_CANCEL = E_INVOICE_BASE_URL + E_INVOICE_VERSION + "/einv/can-ewb";
+
+    //e-invoice-v2
+    //public static String E_INVOICE_V2_BASE_URL = "https://test.proteangsp.co.in/gus/irp/nic";
+    public static String E_INVOICE_V2_BASE_URL = "https://test.proteangsp.co.in/gus/irp/nic";
+    public static String E_INVOICE_V2_GET_KEY = E_INVOICE_V2_BASE_URL + "/GSPUtility/getKey";
+    public static String E_INVOICE_V2_AUTH_TOKEN = E_INVOICE_V2_BASE_URL + "/eivital/v1.04/auth";
+    public static String E_INVOICE_V2_GEN_IRN = E_INVOICE_V2_BASE_URL  + "/eicore/v1.03/Invoice";
+    public static String E_INVOICE_V2_CANCEL_IRN = E_INVOICE_V2_BASE_URL  + "/eicore/v1.03/Invoice/Cancel";
+    public static String E_INVOICE_V2_GET_IRN = E_INVOICE_V2_BASE_URL  + "/eicore/v1.03/Invoice/irn";
+
+    public static String E_WAYBILL_V2_GEN = E_INVOICE_V2_BASE_URL  + "/eiewb/v1.03/ewaybill";
+    public static String E_WAYBILL_V2_GET = E_INVOICE_V2_BASE_URL  + "/eiewb/v1.03/ewaybill/irn/";
+    public static String E_WAYBILL_V2_CANCEL = E_INVOICE_V2_BASE_URL  + "/ewaybillapi/v1.03/ewayapi";
 
     //    Bill detail log
     public static String BILL_DETAIL_LOG = APP_CONTEXT_PATH + "accounts/reciptdetaillog";

@@ -6,6 +6,7 @@ import org.glassfish.jersey.logging.LoggingFeature
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.einvoice.AESEncryption
+import phitb_ui.einvoice.EInvoiceTokenGenerator
 import phitb_ui.einvoice.EinvoiceHelper
 import phitb_ui.einvoice.NICEncryption
 import phitb_ui.einvoice.NicV4TokenPayloadGen
@@ -18,6 +19,9 @@ import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.Feature
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
+import java.security.KeyStore
+import java.security.PrivateKey
+import java.security.PublicKey
 import java.text.SimpleDateFormat
 import java.util.logging.Level
 import java.util.logging.Logger;
@@ -25,6 +29,92 @@ import java.util.logging.Logger;
 @Transactional
 class EInvoiceService {
     private static JSONObject entityIrnDetails = new JSONObject()
+
+    private generateAuthToken(HttpSession session)
+    {
+        SimpleDateFormat tokenDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        String entityId = session.getAttribute("entityId").toString()
+        entityIrnDetails = new EntityService().getEntityIrnByEntity(entityId)
+        //don't proceed if null
+        if (entityIrnDetails == null) {
+            println("Entity IRN Details NULL")
+            return null
+        }
+        //don't proceed if inactive
+        if (!entityIrnDetails.get("active")) {
+            println("Entity IRN Details Inactive")
+            return null
+        }
+        boolean isAuthTokenValid = false
+        if (entityIrnDetails && entityIrnDetails.has("authToken")) {
+            Date currentDate = new Date()
+            Date authTokenExpiryDate = tokenDateFormat.parse(entityIrnDetails.get("tokenExpiry").toString())
+            if (currentDate.before(authTokenExpiryDate))
+                isAuthTokenValid = false
+        }
+        if(!isAuthTokenValid) {
+            String ts = new EinvoiceHelper().getCurrTs();
+            String transId = entityId + new EInvoiceTokenGenerator().generateTransactionId()
+            String authToken = "v2.0:" + Constants.E_INVOICE_ASP_ID + "::"+transId+":" + ts + ":" + entityIrnDetails.get("irnGSTIN") + ":EINV_GEN"
+            String signedToken = ""
+            String publicKeyPath = Objects.requireNonNull(this.class.classLoader.getResource("KeyStore/test-publickey.pem")).getPath();
+            String privateKeyPath = Objects.requireNonNull(this.class.classLoader.getResource("KeyStore/test-privatekey.pem")).getPath();
+            PrivateKey privateKey = new EInvoiceTokenGenerator().readPemPrivateKey(privateKeyPath)
+            PublicKey publicKey = new EInvoiceTokenGenerator().readPemPublicKey(publicKeyPath)
+            try {
+                signedToken = new EInvoiceTokenGenerator().signAndVerify(authToken,privateKey, publicKey)
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            if(signedToken)
+            {
+                String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
+                String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
+
+                JSONObject authPayload = new JSONObject()
+                authPayload.put("UserName", entityIrnDetails.get("irnUsername"))
+                authPayload.put("Password", entityIrnDetails.get("irnPassword"))
+                authPayload.put("AppKey", base64EncodedAppKey)
+                authPayload.put("ForceRefreshAccessToken", true)
+
+                Client client = ClientBuilder.newClient();
+                WebTarget target = client.target(new Links().E_INVOICE_V2_AUTH_TOKEN)
+                try {
+                    Response apiResponse = target
+                            .request(MediaType.APPLICATION_JSON_TYPE)
+                            .header("Gstin", entityIrnDetails.get("irnGSTIN"))
+                            .header("X-Asp-Auth-Token", authToken)
+                            .header("X-Asp-Auth-Signature", signedToken)
+                            .post(Entity.entity(authPayload.toString(), MediaType.APPLICATION_JSON_TYPE))
+                    if (apiResponse.status == 200) {
+                        JSONObject sessionData = new JSONObject(apiResponse.readEntity(String.class))
+                        if(sessionData == null)
+                        {
+                            println("Auth Token Null")
+                        }
+                        return authToken
+                    }
+                    else {
+                        def resp = apiResponse.readEntity(String.class)
+                        println(resp)
+                        log.error(resp)
+                        return null
+                    }
+                }
+                catch (Exception ex) {
+                    System.err.println('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
+                    log.error('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
+                    return null
+                }
+            }
+
+            return authToken
+        }
+        else
+            return null
+    }
+
 
     private generateSignatureAndAuthToken(HttpSession session) {
         try {
@@ -171,6 +261,7 @@ class EInvoiceService {
 
     def generateIRN(HttpSession session, JSONObject saleBillDetail, JSONArray saleProductDetails) {
 
+        JSONObject authData1 = generateAuthToken(session)
         JSONObject authData = generateSignatureAndAuthToken(session)
         if (authData == null) {
             println("AUTH DATA is NULL")
@@ -678,4 +769,69 @@ class EInvoiceService {
         }
     }
 
+
+
+    private generateAuthTokenV2(JSONObject jsonObject) {
+        println("Inside generateAuthToken")
+        //To encrypt auth-token payload payload
+        String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
+        String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
+
+        JSONObject authPayload = new JSONObject()
+        authPayload.put("UserName", entityIrnDetails.get("irnUsername"))
+        authPayload.put("Password", entityIrnDetails.get("irnPassword"))
+        authPayload.put("AppKey", base64EncodedAppKey)
+        authPayload.put("ForceRefreshAccessToken", true)
+
+        println(authPayload.toString())
+
+        String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().getBytes());
+        //byte[] b = new NicV4TokenPayloadGen().readFile(this.class.classLoader.getResource('KeyStore/publicKey-prod').file)
+        byte[] b = new NicV4TokenPayloadGen().readFile(this.class.classLoader.getResource('KeyStore/publicKey-test').file)
+        NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
+        String encData = gen.encryptPayload(base64EncodedPayload);
+        JSONObject finalPayLoad = new JSONObject()
+        finalPayLoad.put("Data", encData)
+        String encAspSecret = new AESEncryption().encryptAspSecret(jsonObject.get("enc_key").toString(), Constants.E_INVOICE_ASP_SECRET)
+        Logger logger = Logger.getLogger(getClass().getName())
+        Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
+        Client client = ClientBuilder.newClient();
+        client.register(feature)
+        WebTarget target = client.target(new Links().E_INVOICE_AUTH_TOKEN)
+        try {
+            Response apiResponse = target
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("aspid", new Constants().E_INVOICE_ASP_ID)
+                    .header("asp_secret_key", encAspSecret)
+                    .header("session_id", jsonObject.get("session_id"))
+                    .header("gstin", entityIrnDetails.get("irnGSTIN"))
+                    .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject authToken = new JSONObject(apiResponse.readEntity(String.class))
+                //update entityIrnDetails
+                entityIrnDetails.put("sessionId", jsonObject.get("session_id").toString())
+                entityIrnDetails.put("appKey", randomAppKey)
+                entityIrnDetails.put("aspSecretKey", encAspSecret)
+                entityIrnDetails.put("authToken", authToken.get("authtoken").toString())
+                entityIrnDetails.put("sek", authToken.get("sek").toString())
+                entityIrnDetails.put("tokenExpiry", authToken.get("tokenExp").toString())
+
+                entityIrnDetails.put("entity",  entityIrnDetails.get("entity").id)
+                entityIrnDetails.put("entityType",  entityIrnDetails.get("entityType").id)
+                entityIrnDetails.put("isActive", entityIrnDetails.get("active"))
+
+                new EntityService().updateEntityIRN(entityIrnDetails)
+                return entityIrnDetails
+            } else {
+                def resp = apiResponse.readEntity(String.class)
+                println(resp)
+                log.error(resp)
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EInvoiceService , action :  generateAuthToken  , Ex:' + ex)
+            log.error('Service :EInvoiceService , action :  generateAuthToken  , Ex:' + ex)
+        }
+    }
 }
