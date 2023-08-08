@@ -11,6 +11,7 @@ import phitb_ui.einvoice.EinvoiceHelper
 import phitb_ui.einvoice.NICEncryption
 import phitb_ui.einvoice.NicV4TokenPayloadGen
 
+import javax.crypto.Cipher
 import javax.servlet.http.HttpSession
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
@@ -19,6 +20,7 @@ import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.Feature
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
+import java.nio.charset.StandardCharsets
 import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.PublicKey
@@ -55,7 +57,8 @@ class EInvoiceService {
         if(!isAuthTokenValid) {
             String ts = new EinvoiceHelper().getCurrTs();
             String transId = entityId + new EInvoiceTokenGenerator().generateTransactionId()
-            String authToken = "v2.0:" + Constants.E_INVOICE_ASP_ID + "::"+transId+":" + ts + ":" + entityIrnDetails.get("irnGSTIN") + ":EINV_GEN"
+           // String authToken = "v2.0:" + Constants.E_INVOICE_ASP_ID + "::"+transId+":" + ts + ":" + entityIrnDetails.get("irnGSTIN") + ":EINV_GEN"
+            String authToken = "v2.0:" + Constants.E_INVOICE_ASP_ID + "::"+transId+":" + ts + ":27ABFPD4021L002:EINV_GEN"
             String signedToken = ""
             String publicKeyPath = Objects.requireNonNull(this.class.classLoader.getResource("KeyStore/test-publickey.pem")).getPath();
             String privateKeyPath = Objects.requireNonNull(this.class.classLoader.getResource("KeyStore/test-privatekey.pem")).getPath();
@@ -69,14 +72,24 @@ class EInvoiceService {
 
             if(signedToken)
             {
-                String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
-                String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
+                //String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
+                //String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
+                String base64EncodedAppKey = new EInvoiceTokenGenerator().generateAppKey()
 
                 JSONObject authPayload = new JSONObject()
                 authPayload.put("UserName", entityIrnDetails.get("irnUsername"))
                 authPayload.put("Password", entityIrnDetails.get("irnPassword"))
                 authPayload.put("AppKey", base64EncodedAppKey)
                 authPayload.put("ForceRefreshAccessToken", true)
+
+                String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().getBytes());
+                Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+                cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+                byte[] cipherData = cipher.doFinal(base64EncodedPayload.getBytes(StandardCharsets.UTF_8))
+                String encData = Base64.getEncoder().encodeToString(cipherData)
+
+                JSONObject finalPayLoad = new JSONObject()
+                finalPayLoad.put("Data", encData)
 
                 Client client = ClientBuilder.newClient();
                 WebTarget target = client.target(new Links().E_INVOICE_V2_AUTH_TOKEN)
@@ -86,7 +99,7 @@ class EInvoiceService {
                             .header("Gstin", entityIrnDetails.get("irnGSTIN"))
                             .header("X-Asp-Auth-Token", authToken)
                             .header("X-Asp-Auth-Signature", signedToken)
-                            .post(Entity.entity(authPayload.toString(), MediaType.APPLICATION_JSON_TYPE))
+                            .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
                     if (apiResponse.status == 200) {
                         JSONObject sessionData = new JSONObject(apiResponse.readEntity(String.class))
                         if(sessionData == null)

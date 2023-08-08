@@ -68,7 +68,6 @@ public class EInvoiceTokenGenerator {
         String temp = new String(keyBytes);
         String privKeyPEM = temp.replace("-----BEGIN RSA PRIVATE KEY-----", "");
         privKeyPEM = temp.replace("-----BEGIN PRIVATE KEY-----", "");
-        privKeyPEM = privKeyPEM.replace("-----END RSA PRIVATE KEY-----", "");
         privKeyPEM = privKeyPEM.replace("-----END PRIVATE KEY-----", "");
         privKeyPEM = privKeyPEM.replace("\n", "");
         Base64.Decoder b64 = Base64.getDecoder();
@@ -81,7 +80,7 @@ public class EInvoiceTokenGenerator {
     private Boolean verify(String message, String signature, PublicKey publicKey)
             throws NoSuchAlgorithmException, InvalidKeyException, SignatureException,
             IOException {
-        Signature sig = Signature.getInstance("SHA1withRSA");
+        Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initVerify(publicKey);
         sig.update(message.getBytes());
         Boolean verified = sig.verify(Base64.getDecoder().decode(signature));
@@ -91,7 +90,7 @@ public class EInvoiceTokenGenerator {
 
     private String sign(String message, PrivateKey privateKey) throws
             NoSuchAlgorithmException, InvalidKeyException, SignatureException {
-        Signature sig = Signature.getInstance("SHA1WithRSA");
+        Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initSign(privateKey);
         sig.update(message.getBytes());
         byte[] signatureBytes = sig.sign();
@@ -126,5 +125,32 @@ public class EInvoiceTokenGenerator {
         Date date = new Date();
         // Format the date and time and return the string
         return sdf.format(date);
+    }
+
+    public static byte[] generateRandomBytes() {
+        // Create a new Random object
+        Random random = new Random();
+        // Create a new byte array of size 32
+        byte[] bytes = new byte[32];
+        // Fill the array with random bytes
+        random.nextBytes(bytes);
+        // Return the array
+        return bytes;
+    }
+
+    // A function that converts a byte array to a String using base 64 encoding
+    public static String convertToBase64String(byte[] bytes) {
+        // Get the base 64 encoder
+        Base64.Encoder encoder = Base64.getEncoder();
+        // Encode the byte array to a String
+        // Return the encoded String
+        return encoder.encodeToString(bytes);
+    }
+
+    public String generateAppKey() {
+        // Generate a random 32 bytes array
+        byte[] randomBytes = generateRandomBytes();
+        // Convert it to a base 64 encoded String
+        return convertToBase64String(randomBytes);
     }
 }
