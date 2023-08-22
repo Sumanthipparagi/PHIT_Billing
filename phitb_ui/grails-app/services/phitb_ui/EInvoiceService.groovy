@@ -1,7 +1,7 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
-import org.bouncycastle.util.encoders.Base64Encoder
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.glassfish.jersey.logging.LoggingFeature
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -12,6 +12,7 @@ import phitb_ui.einvoice.NICEncryption
 import phitb_ui.einvoice.NicV4TokenPayloadGen
 
 import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
 import javax.servlet.http.HttpSession
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
@@ -24,12 +25,14 @@ import java.nio.charset.StandardCharsets
 import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.PublicKey
+import java.security.Security
 import java.text.SimpleDateFormat
 import java.util.logging.Level
 import java.util.logging.Logger;
 
 @Transactional
 class EInvoiceService {
+
     private static JSONObject entityIrnDetails = new JSONObject()
 
     private generateAuthToken(HttpSession session)
@@ -57,8 +60,8 @@ class EInvoiceService {
         if(!isAuthTokenValid) {
             String ts = new EinvoiceHelper().getCurrTs();
             String transId = entityId + new EInvoiceTokenGenerator().generateTransactionId()
-           // String authToken = "v2.0:" + Constants.E_INVOICE_ASP_ID + "::"+transId+":" + ts + ":" + entityIrnDetails.get("irnGSTIN") + ":EINV_GEN"
-            String authToken = "v2.0:" + Constants.E_INVOICE_ASP_ID + "::"+transId+":" + ts + ":27ABFPD4021L002:EINV_GEN"
+            String authToken = "v2.0:" + Constants.E_INVOICE_ASP_ID + "::"+transId+":" + ts + ":" + entityIrnDetails.get("irnGSTIN") + ":EINV_GEN"
+            //String authToken = "v2.0:" + Constants.E_INVOICE_ASP_ID + "::"+transId+":" + ts + ":27ABFPD4021L002:EINV_GEN"
             String signedToken = ""
             String publicKeyPath = Objects.requireNonNull(this.class.classLoader.getResource("KeyStore/test-publickey.pem")).getPath();
             String privateKeyPath = Objects.requireNonNull(this.class.classLoader.getResource("KeyStore/test-privatekey.pem")).getPath();
@@ -72,26 +75,25 @@ class EInvoiceService {
 
             if(signedToken)
             {
-                //String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
-                //String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
                 String base64EncodedAppKey = new EInvoiceTokenGenerator().generateAppKey()
-
                 JSONObject authPayload = new JSONObject()
                 authPayload.put("UserName", entityIrnDetails.get("irnUsername"))
                 authPayload.put("Password", entityIrnDetails.get("irnPassword"))
                 authPayload.put("AppKey", base64EncodedAppKey)
-                authPayload.put("ForceRefreshAccessToken", true)
-
-                String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().getBytes());
-                Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+                authPayload.put("ForceRefreshAccessToken", false)
+                String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().bytes)
+                Cipher cipher = Cipher.getInstance("RSA/None/PKCS1Padding");
                 cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-                byte[] cipherData = cipher.doFinal(base64EncodedPayload.getBytes(StandardCharsets.UTF_8))
+                byte[] cipherData = cipher.doFinal(base64EncodedPayload.bytes)
                 String encData = Base64.getEncoder().encodeToString(cipherData)
 
                 JSONObject finalPayLoad = new JSONObject()
                 finalPayLoad.put("Data", encData)
+                println(finalPayLoad.toString())
 
-                Client client = ClientBuilder.newClient();
+                Logger logger = Logger.getLogger(getClass().getName());
+                Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
+                Client client = ClientBuilder.newBuilder().register(feature).build();
                 WebTarget target = client.target(new Links().E_INVOICE_V2_AUTH_TOKEN)
                 try {
                     Response apiResponse = target
@@ -99,14 +101,18 @@ class EInvoiceService {
                             .header("Gstin", entityIrnDetails.get("irnGSTIN"))
                             .header("X-Asp-Auth-Token", authToken)
                             .header("X-Asp-Auth-Signature", signedToken)
-                            .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
+                            .post(Entity.entity(finalPayLoad, MediaType.APPLICATION_JSON_TYPE))
                     if (apiResponse.status == 200) {
                         JSONObject sessionData = new JSONObject(apiResponse.readEntity(String.class))
                         if(sessionData == null)
                         {
                             println("Auth Token Null")
                         }
-                        return authToken
+                        else
+                        {
+                            println(sessionData.toString())
+                        }
+                        return null
                     }
                     else {
                         def resp = apiResponse.readEntity(String.class)
@@ -275,6 +281,7 @@ class EInvoiceService {
     def generateIRN(HttpSession session, JSONObject saleBillDetail, JSONArray saleProductDetails) {
 
         JSONObject authData1 = generateAuthToken(session)
+        return
         JSONObject authData = generateSignatureAndAuthToken(session)
         if (authData == null) {
             println("AUTH DATA is NULL")
