@@ -2,6 +2,7 @@ package phitb_ui
 
 import grails.gorm.transactions.Transactional
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.util.encoders.Base64Encoder
 import org.glassfish.jersey.logging.LoggingFeature
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -10,6 +11,7 @@ import phitb_ui.einvoice.EInvoiceTokenGenerator
 import phitb_ui.einvoice.EinvoiceHelper
 import phitb_ui.einvoice.NICEncryption
 import phitb_ui.einvoice.NicV4TokenPayloadGen
+import sun.misc.BASE64Encoder
 
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -91,10 +93,12 @@ class EInvoiceService {
                 keyGen.init(128);
                 SecretKey aesKey = keyGen.generateKey();
 
-                Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "BC");
-                cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+                Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+                cipher.init(Cipher.ENCRYPT_MODE, publicKey);
                 byte[] cipherData = cipher.doFinal(base64EncodedPayload.bytes)
-                String encData = Base64.getEncoder().encodeToString(cipherData)
+
+                BASE64Encoder encoder = new BASE64Encoder();
+                String encData = encoder.encode(cipherData)
 
                 JSONObject finalPayLoad = new JSONObject()
                 finalPayLoad.put("Data", encData)
