@@ -12,6 +12,8 @@ import phitb_ui.einvoice.NICEncryption
 import phitb_ui.einvoice.NicV4TokenPayloadGen
 
 import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 import javax.servlet.http.HttpSession
 import javax.ws.rs.client.Client
@@ -37,6 +39,7 @@ class EInvoiceService {
 
     private generateAuthToken(HttpSession session)
     {
+        Security.addProvider(new BouncyCastleProvider());
         SimpleDateFormat tokenDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         String entityId = session.getAttribute("entityId").toString()
         entityIrnDetails = new EntityService().getEntityIrnByEntity(entityId)
@@ -82,8 +85,14 @@ class EInvoiceService {
                 authPayload.put("AppKey", base64EncodedAppKey)
                 authPayload.put("ForceRefreshAccessToken", false)
                 String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().bytes)
-                Cipher cipher = Cipher.getInstance("RSA/None/PKCS1Padding");
-                cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+                // Generate a 128-bit AES key
+                KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+                keyGen.init(128);
+                SecretKey aesKey = keyGen.generateKey();
+
+                Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "BC");
+                cipher.init(Cipher.ENCRYPT_MODE, aesKey);
                 byte[] cipherData = cipher.doFinal(base64EncodedPayload.bytes)
                 String encData = Base64.getEncoder().encodeToString(cipherData)
 

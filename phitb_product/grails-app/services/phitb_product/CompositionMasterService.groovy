@@ -28,7 +28,7 @@ class CompositionMasterService {
     }
 
     ArrayList<CompositionMaster> getByEntity(String id) {
-        return CompositionMaster.findAllByEntityId(Long.parseLong(id))
+        return CompositionMaster.findAllByEntityId(Long.parseLong(id), [sort: 'compositionName',  order: 'asc'])
     }
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")

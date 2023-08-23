@@ -110,7 +110,7 @@ class ProductController {
     def updateProduct() {
         try {
             ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+           // ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> tax = new EntityService().getTaxesByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
             ArrayList<String> divisions = new ProductService().getDivisionsByEntityId(session.getAttribute("entityId").toString()) as ArrayList<String>
@@ -123,7 +123,7 @@ class ProductController {
             ArrayList<String> unittype = new UnitTypeController().getByEntity() as ArrayList<String>
             ArrayList<String> manufacturerList = []
             ArrayList<String> companyList = []
-            entity.each {
+          /*  entity.each {
                 if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER)) {
                     manufacturerList.add(it)
                 }
@@ -132,15 +132,18 @@ class ProductController {
                         || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_C_F)) {
                     companyList.add(it)
                 }
-            }
+            }*/
             def product = new ProductService().getProductById(params.id)
+            JSONObject marketingCompany = new EntityService().getEntityById(product.get("mktCompanyId").toString())
+            JSONObject manufacturingCompany = new EntityService().getEntityById(product.get("manufacturerId").toString())
             render(view: '/product/productRegister/update-product', model: [productTypes     : productTypes,
                                                                             productGroups    : productGroups,
                                                                             productCategories: productCategories,
                                                                             productSchedules : productSchedules,
                                                                             racks            : racks,
                                                                             compositions     : compositions,
-                                                                            divisions        : divisions, entity: entity,
+                                                                            divisions        : divisions,
+                                                                            //entity: entity,
                                                                             // entitytype       : entitytype,
                                                                             producttype      : producttype,
                                                                             product          : product,
@@ -148,7 +151,9 @@ class ProductController {
                                                                             unittype         : unittype,
                                                                             tax              : tax,
                                                                             manufacturerList : manufacturerList,
-                                                                            companyList      : companyList
+                                                                            companyList      : companyList,
+                                                                            marketingCompany: marketingCompany,
+                                                                            manufacturingCompany: manufacturingCompany
             ])
 
         }

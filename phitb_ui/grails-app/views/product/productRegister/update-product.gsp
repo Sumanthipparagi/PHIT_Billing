@@ -23,7 +23,7 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
-    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.css"/>
 
 
 </head>
@@ -116,9 +116,12 @@
                                             <select class="form-control show-tick manufacturerId"
                                                     name="manufacturerId" id="manufacturerId" style="border: 0">
                                                 <option value="0">Please Select</option>
-                                                <g:each var="c" in="${manufacturerList}">
+                                                <g:if test="${manufacturingCompany != null}">
+                                                    <option value="${manufacturingCompany.id}" selected>${manufacturingCompany.entityName}</option>
+                                                </g:if>
+                                             %{--   <g:each var="c" in="${manufacturerList}">
                                                     <option value="${c.id}"  <g:if test="${c.id == product.manufacturerId}">selected</g:if>>${c.entityName}</option>
-                                                </g:each>
+                                                </g:each>--}%
                                             </select>
                                         </div>
                                         <div class="col-md-6 form-group">
@@ -128,9 +131,12 @@
                                             <select class="form-control show-tick mktCompanyId" name="mktCompanyId"
                                                     id="mktCompanyId" style="border: 0;">
                                                 <option value="0">Please Select</option>
-                                                <g:each var="c" in="${companyList}" >
+                                                <g:if test="${marketingCompany != null}">
+                                                    <option value="${marketingCompany.id}" selected>${marketingCompany.entityName}</option>
+                                                </g:if>
+                                                %{--<g:each var="c" in="${companyList}" >
                                                     <option value="${c.id}" <g:if test="${c.id == product.mktCompanyId}">selected</g:if>>${c.entityName}</option>
-                                                </g:each>
+                                                </g:each>--}%
                                             </select>
                                         </div>
                                         <div class="col-md-6 form-group  form-float">
@@ -167,11 +173,11 @@
                                     <div class="row">
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="composition">
-                                                Composition
+                                                Composition  <span class="required-indicator" style="color: red;">*</span>
                                             </label>
 
                                             <select class="form-control show-tick composition" name="composition"
-                                                    id="composition">
+                                                    id="composition" required>
                                                 <option value="0">Please Select</option>
                                                 <g:each var="c" in="${compositions}">
                                                     <option value="${c?.id}" <g:if test="${c?.id ==
@@ -625,19 +631,86 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
+%{--<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>--}%
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.js"/>
 
 <script>
 
     $(function () {
 
-        $('#manufacturerId').select2()
-        $('#mktCompanyId').select2()
+        $('#composition').select2();
+        $("#manufacturerId").select2({
+            placeholder: "Select Company",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (data) {
+                    return {
+                        search: data.term,
+                        page: data.page || 1
+                    };
+                },
+                processResults: function (response, params) {
+                    params.page = params.page ||1;
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        data.push({
+                            "text": entity.entityName + " (" + entity.entityType.name + ")",
+                            "id": entity.id
+                        });
+
+                    });
+                    return {
+                        results: data,
+                        pagination: {
+                            more: (params.page * 10) < response.totalCount
+                        }
+                    };
+                }
+            }
+        });
+
+        $("#mktCompanyId").select2({
+            placeholder: "Select Company",
+            ajax: {
+                url: "/entity-register/getentities",
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (data) {
+                    return {
+                        search: data.term,
+                        page: data.page || 1
+                    };
+                },
+                processResults: function (response, params) {
+                    params.page = params.page ||1;
+                    var entities = response.entities
+                    var data = [];
+                    entities.forEach(function (entity) {
+                        //if((entity.entityType.name === "${Constants.ENTITY_MANUFACTURER}") || (entity.entityType.name === "${Constants.ENTITY_MANUFACTURER_AND_MARKETING}")) {
+                        data.push({
+                            "text": entity.entityName + " (" + entity.entityType.name + ")",
+                            "id": entity.id
+                        });
+                        // }
+
+                    });
+                    return {
+                        results: data,
+                        pagination: {
+                            more: (params.page * 10) < response.totalCount
+                        }
+                    };
+                }
+            }
+        });
     });
 
 

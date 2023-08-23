@@ -117,7 +117,7 @@
                                                 <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick manufacturerId"
-                                                    name="manufacturerId" id="manufacturerId" style="border: 0">
+                                                    name="manufacturerId" id="manufacturerId" style="border: 0" required>
                                                %{-- <option value="0">Please Select</option>--}%
                                                %{-- <g:each var="c" in="${manufacturerList}">
                                                     <option value="${c.id}">${c.entityName}</option>
@@ -127,10 +127,10 @@
 
                                         <div class="col-md-6 form-group">
                                             <label for="mktCompanyId">
-                                                Marketing Company
+                                                Marketing Company <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick mktCompanyId" name="mktCompanyId"
-                                                    id="mktCompanyId" style="border: 0;">
+                                                    id="mktCompanyId" style="border: 0;" required>
                                                %{-- <option value="0">Please Select</option>--}%
                                                %{-- <g:each var="c" in="${companyList}">
                                                     <option value="${c.id}">${c.entityName}</option>
@@ -179,8 +179,8 @@
                                             </label>
 
                                             <select class="form-control show-tick composition" name="composition"
-                                                    id="composition">
-                                                <option value="0">Please Select</option>
+                                                    id="composition" required>
+                                                <option value="" disabled selected>Please Select</option>
                                                 <g:each var="c" in="${compositions}">
                                                     <option value="${c.id}">${c.compositionName}</option>
                                                 </g:each>
@@ -494,12 +494,12 @@
                                         </div>
 
                                         <div class="col-lg-6 form-group  form-float">
-                                            <label for="category1">
+                                            <label for="category">
                                                 Product Category <span class="required-indicator" style="color: red;">*</span>
                                             </label>
-                                            <select class="form-control show-tick category1" name="category"
-                                                    id="category1" required>
-                                                <option value="0">--Please Select--</option>
+                                            <select class="form-control show-tick category" name="category"
+                                                    id="category" required>
+                                                <option value="" disabled selected>--Please Select--</option>
                                                 <g:each var="c" in="${productCategories}">
                                                     <option value="${c.id}">${c.categoryName}</option>
                                                 </g:each>
@@ -688,6 +688,7 @@
        /* $('#manufacturerId').select2()
         $('#mktCompanyId').select2()*/
 
+        $("#composition").select2();
         $("#manufacturerId").select2({
             placeholder: "Select Company",
             ajax: {
