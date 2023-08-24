@@ -3069,8 +3069,7 @@ class EntityService {
      */
     def getEntityByUserRoute(String id) {
         Client client = ClientBuilder.newClient()
-       // WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8088/")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_GET_BY_USER_ROUTE + "/" + id)
