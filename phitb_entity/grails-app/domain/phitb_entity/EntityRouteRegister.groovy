@@ -2,6 +2,7 @@ package phitb_entity
 
 import gorm.logical.delete.LogicalDelete
 
+///TODO: to be removed
 class EntityRouteRegister implements LogicalDelete<EntityRouteRegister> {
 
     String routeName

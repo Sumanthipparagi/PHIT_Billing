@@ -369,7 +369,19 @@ class EntityRegisterController
             String userId = params.id
             if(userId) {
                 UserRegister user = UserRegister.findById(Long.parseLong(userId))
-                respond entityRegisterService.getEntitiesByUserRoute(user)
+                //Get user Routes
+                def routes = user.getRoute()
+                //Get ZoneIds
+                def zoneIds = routes.zoneIds
+                ArrayList<Long> zId = new ArrayList<>()
+                for (String z : zoneIds) {
+                    ArrayList<String> zoneIdList = z.split(",")
+                    for (String zoneId : zoneIdList) {
+                        zId.add(Long.parseLong(zoneId))
+                    }
+                }
+                //Get entities of Zone Ids
+                respond entityRegisterService.getEntitiesByZoneIds(zId)
             }
             else
             {
@@ -410,6 +422,29 @@ class EntityRegisterController
                 JSONObject entities = entityRegisterService.getByParentEntity(Long.parseLong(id), page, search)
                 respond entities
             }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getCityIdsOfEntity(){
+        try
+        {
+            String entityId = params.entityId
+            def result = entityRegisterService.getCityIdsOfEntity(entityId)
+            respond result
         }
         catch (ResourceNotFoundException ex)
         {

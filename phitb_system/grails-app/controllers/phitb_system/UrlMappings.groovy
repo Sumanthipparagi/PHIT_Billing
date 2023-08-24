@@ -78,6 +78,7 @@ class UrlMappings {
             "/city/$id(.$format)?"(controller: 'cityMaster') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/countrybyentity/$id(.$format)?"(controller: 'cityMaster') { action = [GET: 'getAllByEntityId'] }
             "/citybyentity/$id(.$format)?"(controller: 'cityMaster') { action = [GET: 'getAllByEntityId'] }
+            "/citesbyids(.$format)?"(controller: 'cityMaster') { action = [GET: 'getCitiesByIds'] }
 
 
 

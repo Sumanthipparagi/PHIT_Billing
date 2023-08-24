@@ -54,6 +54,14 @@ class PaymentCollectionController {
             jsonObject.put("customerIds", customerIds.toString())
 
             JSONObject saleInvoices = new SalesService().getSaleBillDetailsByPendingPayment(jsonObject)
+            JSONArray modifiedData = new JSONArray()
+            JSONArray data = saleInvoices.get("data")
+            for (JSONObject saleInvoice : data) {
+                JSONObject customer = new EntityService().getEntityById(saleInvoice.customerId.toString())
+                saleInvoice.put("customer", customer)
+                modifiedData.put(saleInvoice)
+            }
+            saleInvoices.put("data", modifiedData)
             respond saleInvoices, formats: ['json']
         }
         else

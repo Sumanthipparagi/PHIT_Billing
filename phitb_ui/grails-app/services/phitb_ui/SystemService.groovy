@@ -281,6 +281,28 @@ class SystemService {
 
     }
 
+    def getZonesByEntity(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().ZONE_MASTER_BY_ENTITY + "/" +id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray zones = new JSONArray(apiResponse.readEntity(String.class))
+                return zones
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :systemService , action :  getZonesByEntity  , Ex:' + ex)
+            log.error('Service :systemService , action :  getZonesByEntity  , Ex:' + ex)
+        }
+
+    }
+
     def getCountryList() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -832,6 +854,28 @@ class SystemService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+
+    }
+
+    def getCityByIds(String ids) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_CITY_BY_IDS)
+                    .queryParam("ids", ids)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            } else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SystemService , action :  getCityByIds  , Ex:' + ex)
+            log.error('Service :SystemService , action :  getCityByIds  , Ex:' + ex)
         }
 
     }

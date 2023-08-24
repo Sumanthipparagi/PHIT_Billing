@@ -130,7 +130,7 @@ class InventoryService {
     {
         String productIds = StringUtils.join(pids, ',')
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-         WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try
         {
             Gson gson = new Gson()

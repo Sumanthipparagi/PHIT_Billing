@@ -202,6 +202,16 @@
                                                                             />
                                                                         </div>
 
+                                                                        <div class="col-lg-6 form-group  form-float">
+                                                                            <label for="route">
+                                                                                Route
+                                                                            </label>
+                                                                            <select multiple="multiple" class="form-control show-tick route routeSelect" name="route" id="route">
+                                                                                <g:each var="route" in="${routes}">
+                                                                                    <option value="${route.id}" <g:if test="${user?.route?.id?.contains(route.id)}">selected</g:if>>${route.routeName}</option>
+                                                                                </g:each>
+                                                                            </select>
+                                                                        </div>
 
 
                                                                     </div>
@@ -545,17 +555,6 @@
                                                                                 Select---</option>
                                                                                 <g:each var="d" in="${division}">
                                                                                     <option value="${d.id}"  <g:if test="${d.id == user.division}">selected</g:if>>${d.divisionName}</option>
-                                                                                </g:each>
-                                                                            </select>
-                                                                        </div>
-
-                                                                        <div class="col-lg-6 form-group  form-float">
-                                                                            <label for="entityRoute">
-                                                                                Route
-                                                                            </label>
-                                                                            <select multiple="multiple" class="form-control show-tick entityRoute routeSelect" name="entityRoute" id="entityRoute">
-                                                                                <g:each var="route" in="${routes}">
-                                                                                    <option value="${route.id}" <g:if test="${user?.entityRoute?.id?.contains(route.id)}">selected</g:if>>${route.routeName}</option>
                                                                                 </g:each>
                                                                             </select>
                                                                         </div>

@@ -4,6 +4,7 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.EntityService
+import phitb_ui.SystemService
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
 import phitb_ui.system.DistrictController
@@ -16,11 +17,25 @@ class HQAreasController {
     {
         try
         {
+            ArrayList<String> cityIds = new EntityService().getCityIdsByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+
+            // create a StringBuilder object
+            StringBuilder sb = new StringBuilder();
+            // iterate over the list and append each element with a comma
+            for (String s : cityIds) {
+                sb.append(s).append(",");
+            }
+            // remove the last comma
+            sb.deleteCharAt(sb.length() - 1);
+            // convert the StringBuilder to a String
+            String cityIdsString = sb.toString();
+
+            ArrayList<String> cities = new SystemService().getCityByIds(cityIdsString) as ArrayList<String>
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> districts = new DistrictController().show() as ArrayList<String>
+            //ArrayList<String> districts = new DistrictController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> managerList = []
             userregister.each {
@@ -39,7 +54,8 @@ class HQAreasController {
 
             render(view: '/entity/HQAreas/hqAreas',model: [entity:entity,
                                                                statelist:statelist,countrylist:countrylist,
-                                                                districts:districts,salesmanList:salesmanList,
+                                                           cities:cities,
+                                                                /*districts:districts,*/salesmanList:salesmanList,
                                                                managerList:managerList,zoneList:zoneList])
         }
         catch (Exception ex)

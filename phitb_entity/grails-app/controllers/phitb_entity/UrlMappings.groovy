@@ -441,6 +441,8 @@ class UrlMappings
 
             "/check-phone-exists"(controller: 'entityRegister', action: 'checkPhoneNumberExists')
             "/registerPatient"(controller: 'entityRegister', action: 'registerPatient')
+
+            "/getCityIds"(controller: 'entityRegister', action: 'getCityIdsOfEntity')
         }
     }
 }

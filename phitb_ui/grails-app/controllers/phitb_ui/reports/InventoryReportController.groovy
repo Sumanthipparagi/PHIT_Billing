@@ -74,7 +74,6 @@ class InventoryReportController {
                 for (Object product : saleInvoice.products) {
                     long productId = product.productId
                     if (productList.containsKey(productId)) {
-                        println("exists: " + productId)
                         inventoryStatement = productList.get(productId) as InventoryStatement
                         saleQty = inventoryStatement.saleQty + (product.sqty + product.freeQty)
                         saleAmt = UtilsService.round(inventoryStatement.saleAmt + (product.amount - product.gstAmount), 2)
@@ -112,14 +111,12 @@ class InventoryReportController {
                 for (Object product : saleReturn.products) {
                     long productId = product.productId
                     if (productList.containsKey(productId)) {
-                        println("return exists: " + productId)
                         inventoryStatement = productList.get(productId) as InventoryStatement
                         saleQty = inventoryStatement.saleQty + (product.sqty + product.freeQty)
                         saleAmt = UtilsService.round(inventoryStatement.saleAmt + (product.amount - product.gstAmount), 2)
                         inventoryStatement.saleQty = saleQty
                         inventoryStatement.saleAmt = saleAmt
                     } else {
-                        println("return not exists: " + productId)
                         JSONObject productDetail = new ProductService().getProductById(productId.toString())
                         saleQty = product.sqty + product.freeQty
                         saleAmt = UtilsService.round((product.amount - product.gstAmount), 2)
@@ -151,7 +148,6 @@ class InventoryReportController {
                 for (Object product : purchaseInvoice.products) {
                     long productId = product.productId
                     if (productList.containsKey(productId)) {
-                        println("purchase exists: " + productId)
                         inventoryStatement = productList.get(productId) as InventoryStatement
                         purchaseQty = inventoryStatement.purchaseQty + (product.sqty + product.freeQty)
                         purchaseAmt = UtilsService.round(inventoryStatement.purchaseAmt + (product.amount - product.gstAmount), 2)
@@ -188,7 +184,6 @@ class InventoryReportController {
                 for (Object product : purchaseReturn.products) {
                     long productId = product.productId
                     if (productList.containsKey(productId)) {
-                        println("purchase return exists: " + productId)
                         inventoryStatement = productList.get(productId) as InventoryStatement
                         purchaseQty = inventoryStatement.purchaseQty - (product.sqty + product.freeQty)
                         purchaseAmt = UtilsService.round(inventoryStatement.purchaseAmt + (product.amount - product.gstAmount), 2)
@@ -257,10 +252,13 @@ class InventoryReportController {
                 }
             }
             inventoryStatements.addAll(productList.values())
-
             //sort alphabetically
             Collections.sort(inventoryStatements, new Comparator<InventoryStatement>() {
                 public int compare(InventoryStatement i1, InventoryStatement i2) {
+                    if(i1.getProductName() == null)
+                    {
+                        println(i1)
+                    }
                     return i1.getProductName().compareTo(i2.getProductName())
                 }
             });

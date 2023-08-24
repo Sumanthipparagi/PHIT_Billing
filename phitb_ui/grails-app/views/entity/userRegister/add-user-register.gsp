@@ -187,6 +187,18 @@
                                                        name="referenceRelation" placeholder="Reference Relation"/>
                                             </div>
 
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="route">
+                                                    Route
+                                                </label>
+                                                <select multiple="multiple" class="form-control show-tick route routeSelect" name="entityRoute"
+                                                        id="route">
+                                                    <g:each var="route" in="${routes}">
+                                                        <option value="${route.id}">${route.routeName}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -516,17 +528,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
-                                                <label for="entityRoute">
-                                                    Route
-                                                </label>
-                                                <select multiple="multiple" class="form-control show-tick entityRoute routeSelect" name="entityRoute"
-                                                        id="entityRoute">
-                                                    <g:each var="route" in="${routes}">
-                                                        <option value="${route.id}">${route.routeName}</option>
-                                                    </g:each>
-                                                </select>
-                                            </div>
+
 
                                             %{--                                           <div class="col-lg-6 form-group  form-float">--}%
                                             %{--                                               <label for="zoneId">--}%

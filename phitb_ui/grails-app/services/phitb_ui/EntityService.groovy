@@ -324,13 +324,13 @@ class EntityService {
 
     def putUser(JSONObject jsonObject) {
 
-        if (jsonObject.has("entityRoute")) {
+        if (jsonObject.has("route")) {
             JSONArray rIds = new JSONArray()
-            def routeIds = jsonObject.get("entityRoute")
+            def routeIds = jsonObject.get("route")
             for (Object rt : routeIds) {
                 rIds.put(rt)
             }
-            jsonObject.put("entityRoute", rIds)
+            jsonObject.put("route", rIds)
         }
 
         Client client = ClientBuilder.newClient()
@@ -981,6 +981,31 @@ class EntityService {
 
 
     //Route Master
+
+    def getRouteByEntity(String id) {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().ROUTE_REGISTER_GET_BY_ENTITY + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+               JSONArray array = new JSONArray(apiResponse.readEntity(String.class))
+                return array
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getRouteByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getRouteByEntity  , Ex:' + ex)
+        }
+
+    }
+
     def saveRoute(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -2795,6 +2820,28 @@ class EntityService {
         }
     }
 
+    def getCityIdsByEntity(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_GET_CITY_IDS)
+                    .queryParam("entityId", id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            } else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getByEntity  , Ex:' + ex)
+        }
+    }
+
+
     def getByEntityPaginated(String id, String page = null, String search = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -2992,7 +3039,7 @@ class EntityService {
 
     }
 
-    JSONArray getRouteByEntity(String entityId) {
+   /* JSONArray getRouteByEntity(String entityId) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
@@ -3014,7 +3061,7 @@ class EntityService {
             return null
         }
 
-    }
+    }*/
 
 
     /**
@@ -3022,7 +3069,8 @@ class EntityService {
      */
     def getEntityByUserRoute(String id) {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+       // WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8088/")
         try {
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_GET_BY_USER_ROUTE + "/" + id)

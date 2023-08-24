@@ -22,13 +22,13 @@
 
 
                             <div class="col-lg-6">
-                                <label for="districtIds">
-                                    Districts
+                                <label for="cityIds">
+                                    Cities
                                 </label>
-                                <select style="width: 100%"  name="districtIds" id="districtIds"
+                                <select style="width: 100%"  name="cityIds" id="cityIds"
                                         required multiple>
-                                    <g:each var="d" in="${districts}">
-                                        <option value="${d.id}">${d.district}</option>
+                                    <g:each var="c" in="${cities}">
+                                        <option value="${c.id}">${c.areaName}</option>
                                     </g:each>
                                 </select>
                             </div>

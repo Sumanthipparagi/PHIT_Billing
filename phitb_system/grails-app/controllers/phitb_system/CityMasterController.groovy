@@ -214,4 +214,30 @@ class CityMasterController {
         }
     }
 
+    /**
+     * get cities by ids
+     * @param id
+     * @return cities list
+     */
+    def getCitiesByIds()
+    {
+        try {
+            String ids = params.ids
+            respond cityMasterService.getCitiesByIds(ids)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

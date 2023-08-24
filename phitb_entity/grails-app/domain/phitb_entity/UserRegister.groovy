@@ -48,7 +48,7 @@ class UserRegister implements LogicalDelete<UserRegister> {
     long createdUser
     long modifiedUser
 
-    static hasMany = [entityRoute: EntityRouteRegister]
+    static hasMany = [route: RouteRegister]
 
     Date dateCreated
     Date lastUpdated

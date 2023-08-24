@@ -47,6 +47,7 @@ public class Links
 
     //Zone Master
     public static String ZONE_MASTER_SHOW = APP_CONTEXT_PATH + "system/zone";
+    public static String ZONE_MASTER_BY_ENTITY = APP_CONTEXT_PATH + "system/zonebyentity";
 
 
     //Country Master
@@ -73,6 +74,7 @@ public class Links
     public static String CITY_MASTER_UPDATE = APP_CONTEXT_PATH + "system/city/{id}";
     public static String CITY_MASTER_DELETE = APP_CONTEXT_PATH + "system/city/{id}";
     public static String GET_CITY_BY_PINCODE = APP_CONTEXT_PATH + "system/getcitybypincode";
+    public static String GET_CITY_BY_IDS = APP_CONTEXT_PATH + "system/citesbyids";
 
 
     //    Priorty Master
@@ -164,7 +166,7 @@ public class Links
     public static String ENTITY_ROUTE_DATATABLE = APP_CONTEXT_PATH + "entity/entityroute/datatable";
     public static String ENTITY_ROUTE_UPDATE = APP_CONTEXT_PATH + "entity/entityroute/{id}";
     public static String ENTITY_ROUTE_DELETE = APP_CONTEXT_PATH + "entity/entityroute/{id}";
-    public static String ENTITY_ROUTE_SHOW_BY_ENTITY = APP_CONTEXT_PATH + "entity//entityroute/entity/";
+    public static String ENTITY_ROUTE_SHOW_BY_ENTITY = APP_CONTEXT_PATH + "entity/entityroute/entity/";
 
     public static String ENTITY_AUTH = APP_CONTEXT_PATH + "entity/authregister/username";
 
@@ -189,6 +191,7 @@ public class Links
     public static String ENTITY_REGISTER_AFFILIATE = APP_CONTEXT_PATH + "entity/entityregister/affiliate";
     public static String ENTITY_REGISTER_PARENT = APP_CONTEXT_PATH + "entity/entityregister/getparententities";
     public static String ENTITY_REGISTER_PARENT_DATATABLE = APP_CONTEXT_PATH + "entity/entityregister/parententity/datatable";
+    public static String ENTITY_REGISTER_GET_CITY_IDS = APP_CONTEXT_PATH + "entity/getCityIds";
 
 
     //Entity Settings
@@ -309,6 +312,7 @@ public class Links
     //Route Register
     public static String ROUTE_REGISTER_SHOW = APP_CONTEXT_PATH + "entity/routeregister";
     public static String ROUTE_REGISTER_SAVE = APP_CONTEXT_PATH + "entity/routeregister";
+    public static String ROUTE_REGISTER_GET_BY_ENTITY = APP_CONTEXT_PATH + "entity/routeregisterbyentity";
     public static String ROUTE_REGISTER_DATATABLE = APP_CONTEXT_PATH + "entity/routeregister/datatable";
     public static String ROUTE_REGISTER_UPDATE = APP_CONTEXT_PATH + "entity/routeregister/{id}";
     public static String ROUTE_REGISTER_DELETE = APP_CONTEXT_PATH + "entity/routeregister/{id}";

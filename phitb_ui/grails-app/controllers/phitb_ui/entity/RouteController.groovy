@@ -1,6 +1,8 @@
 package phitb_ui.entity
 
+import com.sun.org.apache.bcel.internal.generic.ALOAD
 import groovy.json.JsonSlurper
+import org.apache.commons.lang.StringUtils
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
@@ -25,7 +27,7 @@ class RouteController {
             ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
-            ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            ArrayList<String> zoneList = new SystemService().getZonesByEntity(session.getAttribute("entityId").toString())
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
@@ -33,18 +35,11 @@ class RouteController {
                     managerList.add(it)
                 }
             }
-            ArrayList<String> salesmanList = []
-            userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN))
-                {
-                    salesmanList.add(it)
-                }
-            }
 
             render(view: '/entity/route/route',model: [entity:entity,
                                                                      statelist:statelist,countrylist:countrylist,
-                                                                     citylist:citylist,salesmanList:salesmanList,
-                                                                     managerList:managerList,zoneList:zoneList,ccm:ccm])
+                                                                     citylist:citylist,zoneList:zoneList,
+                                                                     managerList:managerList,ccm:ccm])
         }
         catch (Exception ex)
         {
@@ -93,6 +88,11 @@ class RouteController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(jsonObject.get("zoneIds").toString().contains(",")) {
+                ArrayList<String> zoneIdList = jsonObject.get("zoneIds")
+                jsonObject.put("zoneIds", StringUtils.join(zoneIdList, ","))
+            }
+
             if(params.entity!=null || params.entity!="")
             {
                 jsonObject.put("entity", session.getAttribute("entityId"))
@@ -124,8 +124,11 @@ class RouteController {
     {
         try
         {
-            println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(jsonObject.get("zoneIds").toString().contains(",")) {
+                ArrayList<String> zoneIdList = jsonObject.get("zoneIds")
+                jsonObject.put("zoneIds", StringUtils.join(zoneIdList, ","))
+            }
             if(params.entity!=null || params.entity!="")
             {
                 jsonObject.put("entity", session.getAttribute("entityId"))

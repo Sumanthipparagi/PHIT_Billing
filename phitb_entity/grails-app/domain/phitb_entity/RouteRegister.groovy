@@ -6,28 +6,22 @@ class RouteRegister implements LogicalDelete<RouteRegister>
 {
 
     String routeName
-    long cityId
-    long stateId
-    long countryId
-    UserRegister areaManager
-    UserRegister salesman
+    String routeCode
+    String zoneIds
+    //long areaManagerId
     long ccmEnabled
-    String daysOfWeek
-    String ccmId
     double apprExpense
     String status
     long syncStatus
     EntityTypeMaster entityType
     EntityRegister entity
-    UserRegister createdUser
-    UserRegister modifiedUser
+    long createdUserId
+    long modifiedUserId
 
 
     Date dateCreated
     Date lastUpdated
     static constraints = {
-        salesman nullable: true
-        areaManager nullable: true
         apprExpense scale:2
     }
 

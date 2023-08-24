@@ -244,6 +244,27 @@
                                                        />
                                             </div>
 
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="pan">
+                                                    PAN
+                                                </label>
+                                                <input type="text" id="pan" class="form-control pan"
+                                                       name="pan" placeholder="PAN"/>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="zoneId">
+                                                    Zone <span class="required-indicator"
+                                                               style="color: red;">*</span>
+                                                </label>
+                                                <select class="form-control show-tick zoneId" name="zoneId" id="zoneId" required>
+                                                    <g:each var="zone" in="${zoneList}">
+                                                        <option value="${zone.id}">${zone.name}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -355,16 +376,6 @@
                                                        name="faxNumber" placeholder="Fax Number"/>
                                             </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
-                                                <label for="zoneId">
-                                                    Zone
-                                                </label>
-                                                <select class="form-control show-tick zoneId" name="zoneId" id="zoneId">
-                                                    <g:each var="zone" in="${zoneList}">
-                                                        <option value="${zone.id}">${zone.name}</option>
-                                                    </g:each>
-                                                </select>
-                                            </div>
 
                                             %{-- <div class="col-lg-6 form-group  form-float">
                                                  <label for="contact">
@@ -415,13 +426,6 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
-                                                <label for="pan">
-                                                    PAN
-                                                </label>
-                                                <input type="text" id="pan" class="form-control pan"
-                                                       name="pan" placeholder="PAN"/>
-                                            </div>
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="usdNumber">
@@ -956,6 +960,27 @@
                                                        value="${entity.shippingPhone}"/>
                                             </div>
 
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="pan">
+                                                    PAN
+                                                </label>
+                                                <input type="text" id="pan" class="form-control pan"
+                                                       name="pan" placeholder="PAN" value="${entity.pan}"/>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="zoneId">
+                                                    Zone <span class="required-indicator"
+                                                               style="color: red;">*</span>
+                                                </label>
+                                                <select class="form-control show-tick zoneId" name="zoneId" id="zoneId" required>
+                                                    <g:each var="zone" in="${zoneList}">
+                                                        <option value="${zone.id}" <g:if
+                                                                test="${zone.id == entity.zoneId}">selected</g:if>>${zone.name}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -1071,17 +1096,7 @@
                                                        value="${entity.faxNumber}"/>
                                             </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
-                                                <label for="zoneId">
-                                                    Zone
-                                                </label>
-                                                <select class="form-control show-tick zoneId" name="zoneId" id="zoneId">
-                                                    <g:each var="zone" in="${zoneList}">
-                                                        <option value="${zone.id}" <g:if
-                                                                test="${zone.id == entity.zoneId}">selected</g:if>>${zone.name}</option>
-                                                    </g:each>
-                                                </select>
-                                            </div>
+
 
                                             %{-- <div class="col-lg-6 form-group  form-float">
                                                  <label for="contact">
@@ -1134,13 +1149,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
-                                                <label for="pan">
-                                                    PAN
-                                                </label>
-                                                <input type="text" id="pan" class="form-control pan"
-                                                       name="pan" placeholder="PAN" value="${entity.pan}"/>
-                                            </div>
+
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="usdNumber">

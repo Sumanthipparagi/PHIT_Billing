@@ -173,14 +173,14 @@ class UserRegisterService {
             userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
 
-            if(jsonObject.has("entityRoute"))
+            if(jsonObject.has("route"))
             {
-                String[] routeIdArr = jsonObject.get("entityRoute")
+                String[] routeIdArr = jsonObject.get("route")
                 for (String routeId : routeIdArr) {
-                    EntityRouteRegister entityRouteRegister = EntityRouteRegister.findById(Long.parseLong(routeId))
-                    if(entityRouteRegister)
+                    RouteRegister routeRegister = RouteRegister.findById(Long.parseLong(routeId))
+                    if(routeRegister)
                     {
-                        userRegister.addToEntityRoute(entityRouteRegister)
+                        userRegister.addToRoute(routeRegister)
                     }
                 }
             }
@@ -292,14 +292,14 @@ class UserRegisterService {
             userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
 
-            if(jsonObject.has("entityRoute"))
+            if(jsonObject.has("route"))
             {
-                String[] routeIdArr = jsonObject.get("entityRoute")
+                String[] routeIdArr = jsonObject.get("route")
                 for (String routeId : routeIdArr) {
-                    EntityRouteRegister entityRouteRegister = EntityRouteRegister.findById(Long.parseLong(routeId))
-                    if(entityRouteRegister)
+                    RouteRegister routeRegister = RouteRegister.findById(Long.parseLong(routeId))
+                    if(routeRegister)
                     {
-                        userRegister.addToEntityRoute(entityRouteRegister)
+                        userRegister.addToRoute(routeRegister)
                     }
                 }
             }

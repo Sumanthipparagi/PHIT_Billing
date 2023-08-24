@@ -163,7 +163,7 @@
     var id = null;
     $(function () {
         hqareaTable();
-        $("#districtIds").select2()
+        $("#cityIds").select2()
     });
 
     function hqareaTable() {
@@ -193,7 +193,7 @@
                         console.log(json)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-hqname="' + json.data[i].hqName + '"' +
-                            'data-districtId="' + json.data[i].districtId + '"' +
+                            'data-cityId="' + json.data[i].cityId + '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addHqareaModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
@@ -258,8 +258,8 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".hqName").val($(this).attr('data-hqname'));
-        var districtId =$(this).attr('data-districtId');
-        $("#districtIds").val(districtId.split(",")).change();
+        var cityId =$(this).attr('data-cityId');
+        $("#cityIds").val(cityId.split(",")).change();
         $(".hqAreaTitle").text("Update HQ Area");
     });
 

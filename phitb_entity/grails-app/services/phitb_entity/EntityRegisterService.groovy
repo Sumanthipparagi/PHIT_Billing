@@ -512,6 +512,20 @@ class EntityRegisterService {
         }
     }
 
+    def getCityIdsOfEntity(String entityId)
+    {
+        def criteria = EntityRegister.createCriteria()
+        def cityIds = criteria.list {
+            projections {
+                distinct("cityId")
+            }
+            eq("affiliateId", Long.parseLong(entityId))
+            eq("deleted", false)
+        }
+
+        return cityIds
+    }
+
     def getByParentEntity(long entityId, String page, String search=null) {
         try {
             JSONObject entities = new JSONObject()
@@ -575,6 +589,12 @@ class EntityRegisterService {
             return null
         }
     }
+
+    def getEntitiesByZoneIds(ArrayList<Long> zoneIds)
+    {
+        return EntityRegister.findAllByZoneIdInList(zoneIds)
+    }
+
     def registerPatientDetails(JSONObject jsonObject){
         EntityRegister entityRegister2 = EntityRegister.findByPhoneNumberAndParentEntity(jsonObject.get('phoneNumber')
                 .toString(),Long.parseLong(jsonObject.get('entityId').toString()))

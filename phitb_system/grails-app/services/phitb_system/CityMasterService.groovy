@@ -268,4 +268,28 @@ class CityMasterService {
         }
     }
 
+    def getCitiesByIds(String ids)
+    {
+        try {
+            ArrayList<CityMaster> cities = new ArrayList<>()
+            String[] cityIds = ids.split(",")
+            for (String cId : cityIds) {
+                CityMaster city = CityMaster.findById(Long.parseLong(cId))
+                cities.add(city)
+            }
+
+            if(cities?.size() == 0)
+            {
+                throw new ResourceNotFoundException()
+            }
+
+            return cities
+        }
+        catch(Exception ex)
+        {
+            println(ex)
+            throw new BadRequestException()
+        }
+    }
+
 }

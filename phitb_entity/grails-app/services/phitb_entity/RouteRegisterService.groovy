@@ -100,54 +100,28 @@ class RouteRegisterService
     {
         RouteRegister routeRegister = new RouteRegister()
         routeRegister.routeName = jsonObject.get("routeName").toString()
-        routeRegister.cityId = Long.parseLong(jsonObject.get("cityId").toString())
-        routeRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
-        routeRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
-        if(jsonObject.get("salesman")!= "0")
-        {
-            routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("salesman").toString()))
-        }
-        else
-        {
-            routeRegister.salesman = null
-        }
+        routeRegister.routeCode = jsonObject.get("routeCode").toString()
+        routeRegister.zoneIds = jsonObject.get("zoneIds").toString()
 
-        if(jsonObject.get("areaManager")!= "0")
+       /* if(jsonObject.get("areaManager")!= "0")
         {
             routeRegister.areaManager = UserRegister.findById(Long.parseLong(jsonObject.get("areaManager").toString()))
         }
         else
         {
             routeRegister.areaManager = null
-        }
+        }*/
 
         routeRegister.ccmEnabled = Long.parseLong(jsonObject.get("ccmEnabled").toString())
-        routeRegister.daysOfWeek = StringUtils.join(jsonObject.get("daysOfWeek"), ",")
-        if(jsonObject.get("salesman")!= "0")
-        {
-            routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("salesman").toString()))
-        }
-        else
-        {
-            routeRegister.salesman = null
-        }
-
-        routeRegister.ccmId = jsonObject.get("ccmId").toString()
-        if(jsonObject.get("ccmId")!="0")
-        {
-            routeRegister.ccmId = jsonObject.get("ccmId").toString()
-        }
-        else
-        {
-            routeRegister.ccmId = 0
-        }
         routeRegister.apprExpense = Double.parseDouble(jsonObject.get("apprExpense").toString())
         routeRegister.status = jsonObject.get("status").toString()
         routeRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         routeRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
         routeRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
-        routeRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
-        routeRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+        routeRegister.createdUserId = Long.parseLong(jsonObject.get("createdUser").toString())
+        routeRegister.modifiedUserId = Long.parseLong(jsonObject.get("modifiedUser").toString())
+       /* routeRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
+        routeRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))*/
         routeRegister.save(flush: true)
         if (!routeRegister.hasErrors())
         {
@@ -166,21 +140,19 @@ class RouteRegisterService
         {
             routeRegister.isUpdatable = true
             routeRegister.routeName = jsonObject.get("routeName").toString()
-            routeRegister.cityId = Long.parseLong(jsonObject.get("cityId").toString())
-            routeRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
-            routeRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
-            routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("salesman").toString()))
-            routeRegister.areaManager = UserRegister.findById(Long.parseLong(jsonObject.get("areaManager").toString()))
+            routeRegister.routeCode = jsonObject.get("routeCode").toString()
+            routeRegister.zoneIds = jsonObject.get("zoneIds").toString()
+           // routeRegister.areaManager = UserRegister.findById(Long.parseLong(jsonObject.get("areaManager").toString()))
             routeRegister.ccmEnabled = Long.parseLong(jsonObject.get("ccmEnabled").toString())
-            routeRegister.daysOfWeek = jsonObject.get("daysOfWeek").toString()
-            routeRegister.ccmId = jsonObject.get("ccmId").toString()
             routeRegister.apprExpense = Double.parseDouble(jsonObject.get("apprExpense").toString())
             routeRegister.status = jsonObject.get("status").toString()
             routeRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             routeRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
             routeRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
-            routeRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
-            routeRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+            routeRegister.createdUserId = Long.parseLong(jsonObject.get("createdUser").toString())
+            routeRegister.modifiedUserId = Long.parseLong(jsonObject.get("modifiedUser").toString())
+            //routeRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
+           // routeRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
             routeRegister.save(flush: true)
             if (!routeRegister.hasErrors())
             {

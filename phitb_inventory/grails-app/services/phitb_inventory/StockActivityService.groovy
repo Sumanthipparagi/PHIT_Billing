@@ -158,7 +158,7 @@ class StockActivityService {
         }
     }
     
-    def getClosingStocksOfProduct(String date, String entityId, JSONObject productBatches)
+    def getClosingStocksOfProduct(String date, String entityId,  JSONObject productBatches)
     {
         try {
             ArrayList<StockActivity> stockActivities = new ArrayList<>()

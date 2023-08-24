@@ -64,34 +64,35 @@ class EntityRegisterController {
 
     def addEntity() {
         try {
+            String entityId = session.getAttribute("entityId").toString()
             ArrayList<String> hqareas = new HQAreasController().getByEntity() as ArrayList<String>
             //ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
             ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
-            ArrayList<String> account = new EntityService().getAllAccountByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
+            ArrayList<String> account = new EntityService().getAllAccountByEntity(entityId) as ArrayList<String>
             ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
 
-            JSONArray routes = new EntityService().getRouteByEntity(session.getAttribute("entityId").toString())
-            def priority = new SystemService().getAllPriority()
+            JSONArray routes = new EntityService().getRouteByEntity(entityId)
+            def priority = new SystemService().getPriorityByEntity(entityId)
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER) && it.entityId.toString() ==
-                        session.getAttribute('entityId').toString()) {
+                        entityId) {
                     managerList.add(it)
                 }
             }
             ArrayList<String> salesmanList = []
             userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN) && it.entityId.toString() ==
-                        session.getAttribute('entityId').toString()) {
+                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN) && it.entity.id.toString() ==
+                        entityId) {
                     salesmanList.add(it)
                 }
             }
             JSONArray parentEntities = new JSONArray()
-            def parentEntitiesResponse = new EntityService().getParentEntities(session.getAttribute("entityId").toString())
+            def parentEntitiesResponse = new EntityService().getParentEntities(entityId)
             if(parentEntitiesResponse.status == 200)
             {
                 parentEntities = new JSONArray(parentEntitiesResponse.readEntity(String.class))

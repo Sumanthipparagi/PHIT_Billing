@@ -56,9 +56,9 @@ class ZoneMasterController {
     }
 
     /**
-     * Get requested account mode
+     * Get requested zone
      * @param id
-     * @return get requested account mode
+     * @return get requested zone list
      */
     def getAllByEntityId() {
         try {

@@ -88,7 +88,7 @@
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover regionTable">
+                            <table class="table table-bordered table-striped table-hover routeTable">
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
@@ -149,82 +149,15 @@
 
 <script>
 
-    var regiontable;
+    var routeTable;
     var id = null;
     $(function () {
         routeTable();
-        $("#daysOfWeek").select2()
-        $("#stateId").select2()
-        $('#cityId').select2({
-            ajax: {
-                url: '/city/get',
-                dataType: 'json',
-                //delay: 250,
-                data: function (params) {
-                    return {
-                        search: params.term,
-                        type: 'select2'
-                    };
-                },
-                processResults: function (data, params) {
-                    return {
-                        results: data
-                    };
-                },
-            },
-            placeholder: 'Search for cities',
-            minimumInputLength: 2
-        });
-
-        $('#entity').select2({
-            placeholder: "Select Entity",
-            ajax: {
-                url: "/entity-register/getentities",
-                dataType: 'json',
-                quietMillis: 250,
-                data: function (data) {
-                    return {
-                        search: data.term,
-                        page: data.page || 1
-                    };
-                },
-                processResults: function (response, params) {
-                    params.page = params.page || 1
-                    var entities = response.entities
-                    var data = [];
-                    entities.forEach(function (entity) {
-                        data.push({
-                            "text": entity.entityName + " ("+entity.entityType.name+") - "+entity?.city?.districtName+" "+entity?.city?.pincode,
-                            "id": entity.id,
-                            "state":entity.stateId,
-                            "address":entity.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + "" + entity.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+ " ," +entity?.city?.stateName + ", " + entity?.city?.districtName + "-" + entity?.city?.pincode,
-                            "gstin":entity.gstn,
-                            "shippingaddress":entity.shippingAddress?.replaceAll("/'/g", "")?.replaceAll('/"/g', ""),
-                        });
-
-                    });
-
-                    return {
-                        results: data,
-                        pagination: {
-                            more: (params.page * 10) < response.totalCount
-                        }
-                    };
-                },
-                templateSelection: function(container) {
-                    $(container.element).attr("data-state", container.state);
-                    $(container.element).attr("data-address", container.address);
-                    $(container.element).attr("data-gstin", container.gstin);
-                    $(container.element).attr("data-shippingaddress", container.shippingaddress);
-                    return container.text;
-                }
-            }
-        })
-
+        $("#zoneIds").select2()
     });
 
     function routeTable() {
-        regiontable = $(".regionTable").DataTable({
+        $(".routeTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -250,15 +183,10 @@
                         console.log(json)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-routeName="' + json.data[i].routeName + '"' +
-                            '" data-cityId="' + json.data[i].cityId + '"' +
-                            '" data-cityName="' + json.data[i].city.areaName+ '"' +
-                            '" data-countryId="' + json.data[i].countryId + '"' +
-                            '" data-stateId="' + json.data[i].stateId + '"' +
-                            '" data-salesman="' + json.data[i]?.salesman?.id + '"' +
-                            '" data-areaManager="' + json.data[i]?.areaManager?.id + '"' +
+                            '" data-routeCode="' + json.data[i].routeCode + '"' +
+                            '" data-zoneIds="' + json.data[i].zoneIds + '"' +
+                           /* '" data-areaManager="' + json.data[i]?.areaManager?.id + '"' +*/
                             '" data-ccmEnabled="' + json.data[i].ccmEnabled + '"' +
-                            '" data-daysOfWeek="' + json.data[i].daysOfWeek + '"' +
-                            '" data-ccmId="' + json.data[i].ccmId + '"' +
                             '" data-apprExpense="' + json.data[i].apprExpense + '"' +
                             '" data-entitytype="' + json.data[i].entityType.id + '"' +
                             '" data-entityRegister="' + json.data[i].entity.id + '"' +
@@ -302,7 +230,6 @@
 
         //grab all form data
         var formData = new FormData(this);
-        console.log(formData);
 
         var url = '';
         var type = '';
@@ -313,8 +240,6 @@
             url = '/route-register';
             type = 'POST'
         }
-
-        console.log(type);
         $.ajax({
             url: url,
             type: type,
@@ -348,18 +273,12 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".routeName").val($(this).attr('data-routeName'));
+        $(".routeCode").val($(this).attr('data-routeCode'));
         $(".apprExpense").val($(this).attr('data-apprExpense'));
         $(".ccmEnabled").val($(this).attr('data-ccmEnabled')).change();
-        $('.cityId').append("<option value='" + $(this).attr('data-cityId') + "'>" + $(this).attr('data-cityName') + "</option>");
-        $("#cityId").val($(this).attr('data-cityId')).change();
-        $(".stateId").val($(this).attr('data-stateId')).change();
-        $(".countryId").val($(this).attr('data-countryId')).change();
-        $(".ccmId").val($(this).attr('data-ccmId')).change();
-        var daysOfWeek =$(this).attr('data-daysOfWeek');
-        $("#daysOfWeek").val(daysOfWeek.split(",")).change();
-        $(".entity").val($(this).attr('data-entityRegister')).change();
-        $("#entityTypeId").val($(this).attr('data-entitytype')).change();
-        $(".routeTitle").text("Update Region");
+        var zoneIds =$(this).attr('data-zoneIds');
+        $("#zoneIds").val(zoneIds.split(",")).change();
+        $(".routeTitle").text("Update Route");
     });
 
     $('.entity').change(function(){
@@ -388,65 +307,6 @@
             }
         });
     }
-
-    $('.pinCode').select2({
-        placeholder: 'Enter Pincode',
-        minimumInputLength: 3,
-        required: true,
-        ajax: {
-            url: '/getcitybypincode',
-            dataType: 'json',
-            delay: 250,
-            data: function (data) {
-                return {
-                    pincode: data.term // search term
-                };
-            },
-            processResults: function (response) {
-                var data = [];
-                response.forEach(function (response, index) {
-                    data.push({"pincode": response.pincode, "text": response.areaName, "id": response.id});
-                });
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        }
-    });
-
-
-    $('.pinCode').on('select2:selecting', function (e) {
-        var data = e.params.args.data;
-        var id = data.id;
-        // alert(id)
-        $.ajax({
-            method: 'GET',
-            url: '/getcitybyid',
-            data: {'id': id},
-            success: function (response) {
-                console.log(response);
-                $('.stateId').val(response.state.id).change();
-                $("input[name='stateId']").val(response.state.id);
-                $("input[name='cityId']").val(response.id);
-                $('.cityId').empty();
-                $('.cityId').append("<option value='" + response.id + "'>" + response.areaName + "</option>");
-                // $('.cityId').val(response.id).change();
-                $('.pinCode').val(response.pincode);
-                $("input[name='pinCode']").val(response.pincode);
-                if (response.state.alphaCode === "FC") {
-                    $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
-                    $("input[name='countryId']").val($('.countryId').val());
-                } else {
-                    $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
-                    $("input[name='countryId']").val($('.countryId').val());
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-            }
-        });
-
-    });
 
 </script>
 
