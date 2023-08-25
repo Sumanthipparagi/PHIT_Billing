@@ -105,43 +105,52 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-6">
-                        <p><strong>Customer Name: </strong></p>
+                        <p><strong>Customer Name:</strong></p>
                     </div>
+
                     <div class="col-6">
                         <p><span id="customerName"></span></p>
                     </div>
 
                 </div>
+
                 <div class="row">
                     <div class="col-6">
-                        <p><strong>Address: </strong></p>
+                        <p><strong>Address:</strong></p>
                     </div>
+
                     <div class="col-6">
                         <p><span id="address"></span></p>
                     </div>
 
                 </div>
+
                 <div class="row">
                     <div class="col-6">
-                        <p><strong>Invoice Number: </strong></p>
+                        <p><strong>Invoice Number:</strong></p>
                     </div>
+
                     <div class="col-6">
                         <p><span id="invoiceNumber"></span></p>
                     </div>
 
                 </div>
+
                 <div class="row">
                     <div class="col-6">
                         <p><strong>Invoice Amount</strong></p>
                     </div>
+
                     <div class="col-6">
                         <p><span id="invoiceTotal"></span></p>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-6">
                         <p><strong>Outstanding Amount</strong></p>
                     </div>
+
                     <div class="col-6">
                         <p><span id="balance" class="text-primary"></span></p>
                     </div>
@@ -151,8 +160,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="amount">Amount: <span style="color: red" class="required-indicator">*</span></label>
-                            <input class="form-control" %{--onblur="amoutFormat(this)" onkeyup="setTwoNumberDecimal(this)"--}% pattern="^\d*(\.\d{0,2})?$" type="number" step="0.01" min="0"
+                            <label for="amount">Amount: <span style="color: red" class="required-indicator">*</span>
+                            </label>
+                            <input class="form-control" %{--onblur="amoutFormat(this)" onkeyup="setTwoNumberDecimal(this)"--}%
+                                   pattern="^\d*(\.\d{0,2})?$" type="number" step="0.01" min="0"
                                    value="0.00" id="amount" name="amount" required/>
                         </div>
                     </div>
@@ -161,7 +172,8 @@
                         <div class="form-group">
                             <label for="paymentMode">Payment Mode: <span style="color: red"
                                                                          class="required-indicator">*</span></label>
-                            <select onchange="paymentModeChange()" class="form-control" id="paymentMode" name="paymentMode"
+                            <select onchange="paymentModeChange()" class="form-control" id="paymentMode"
+                                    name="paymentMode"
                                     required>
                                 <g:each in="${paymentModes}" var="pm">
                                     <option value="${pm.id}">${pm.name}</option>
@@ -169,8 +181,10 @@
                             </select>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12" id="chequeContainer">
                         <div class="form-group">
                             <label for="chequeNumber">Cheque Number:</label>
                             <input class="form-control" type="number" id="chequeNumber" name="chequeNumber"/>
@@ -179,25 +193,28 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6" id="paymentMethodContainer">
+                    <div class="col-md-12" id="depositToContainer">
+                        <div class="form-group">
+                            <label for="depositTo">Deposit To: <span style="color: red"
+                                                                     class="required-indicator">*</span>
+                            </label>
+                            <select class="form-control" id="depositTo" name="depositTo" required>
+                                <g:each in="${accountRegister}" var="ar">
+                                    <option value="${ar.id}">${ar.accountName}</option>
+                                </g:each>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" id="paymentMethodContainer">
                         <div class="form-group">
                             <label for="paymentMethod">Payment Method: <span style="color: red"
                                                                              class="required-indicator">*</span></label>
                             <select class="form-control" id="paymentMethod" name="paymentMethod" required>
                                 <g:each in="${accountMode}" var="am">
                                     <option value="${am.id}">${am.mode}</option>
-                                </g:each>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6" id="depositToContainer">
-                        <div class="form-group">
-                            <label for="depositTo">Deposit To: <span style="color: red" class="required-indicator">*</span>
-                            </label>
-                            <select class="form-control" id="depositTo" name="depositTo" required>
-                                <g:each in="${accountRegister}" var="ar">
-                                    <option value="${ar.id}">${ar.accountName}</option>
                                 </g:each>
                             </select>
                         </div>
@@ -249,8 +266,8 @@
                         <div class="form-group">
                             <label for="currentLocation">Current
                             Location:<small>(Click below load location)</small></label>
-                            <input  class="form-control" onclick="getLocation()" id="currentLocation"
-                                    name="currentLocation" readonly placeholder="Click here for location" />
+                            <input class="form-control" onclick="getLocation()" id="currentLocation"
+                                   name="currentLocation" readonly placeholder="Click here for location"/>
                         </div>
                     </div>
                 </div>
@@ -260,12 +277,11 @@
                         <div class="form-group">
                             <label for="remarks">Remarks: <small style="font-size: 10px;"><span
                                     id="remarksCharacters">0</span>/100</small></label>
-                            <textarea rows="2" class="form-control" id="remarks" name="remarks" maxlength="100"></textarea>
+                            <textarea rows="2" class="form-control" id="remarks" name="remarks"
+                                      maxlength="100"></textarea>
                         </div>
                     </div>
                 </div>
-
-
 
 
                 <div class="row">
@@ -317,18 +333,18 @@
 <g:include view="controls/footer-content.gsp"/>
 <script>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         paymentCollectionTable();
 
 
-        $('#remarks').on("input", function(){
+        $('#remarks').on("input", function () {
             var maxlength = $(this).attr("maxlength");
             var currentLength = $(this).val().length;
 
-            if( currentLength >= maxlength ){
+            if (currentLength >= maxlength) {
                 $("#remarksCharacters").addClass("danger");
                 console.log("You have reached the maximum number of characters.");
-            }else{
+            } else {
                 console.log(maxlength - currentLength + " chars left");
                 $("#remarksCharacters").removeClass("danger");
             }
@@ -351,8 +367,8 @@
             info: true,
             processing: true,
             serverSide: true,
-          //  dom: 'lfrtip',
-           // dom: '<"top"<"dt-left-col"l><"dt-center-col"B><"dt-right-col"f>>rt<"bottom"ip><"clear">',
+            //  dom: 'lfrtip',
+            // dom: '<"top"<"dt-left-col"l><"dt-center-col"B><"dt-right-col"f>>rt<"bottom"ip><"clear">',
             oLanguage: {
                 sLengthMenu: "_MENU_",
             },
@@ -384,33 +400,29 @@
             ajax: {
                 type: 'GET',
                 url: '/payment-collection/get-invoices',
-               /* data: {
-                    invoiceStatus: invoiceStatus
-                },*/
+                /* data: {
+                     invoiceStatus: invoiceStatus
+                 },*/
                 dataType: 'json',
                 dataSrc: function (json) {
-                   var return_data = [];
+                    var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var badgeContainer = ""
-                        if(json.data[i].balance === 0)
-                        {
+                        if (json.data[i].balance === 0) {
                             badgeContainer += "<div class=\"badge badge-success ml-2\">PAID</div>"
-                        }
-                        else if(json.data[i].balance === json.data[i].invoiceTotal)
-                        {
+                        } else if (json.data[i].balance === json.data[i].invoiceTotal) {
                             badgeContainer += "<div class=\"badge badge-danger ml-2\">UNPAID</div>"
-                        }
-                        else
-                        {
+                        } else {
                             badgeContainer += "<div class=\"badge badge-warning ml-2\">PARTIALLY PAID</div>"
                         }
 
-                        var invoiceDetails = "<div class='card'><div class='body'><div class='row'><div class='col-lg-9 col-6'><span class='h5'>#"+json.data[i].invoiceNumber+"</span></div><div class='col-lg-3 col-6'><span class='h5 text-primary pull-right'>₹"+ Number(json.data[i].balance).toFixed(2) + "</span></div>";
-                        invoiceDetails += "<div class='col-lg-12 col-12'><p><strong>"+ json.data[i].customer.entityName + "</strong></p></div>";
+                        var invoiceDetails = "<div class='card'><div class='body'><div class='row'><div class='col-lg-9 col-6'><span class='h5'>#" + json.data[i].invoiceNumber + "</span></div><div class='col-lg-3 col-6'><span class='h5 text-primary pull-right'>₹" + Number(json.data[i].balance).toFixed(2) + "</span></div>";
+                        invoiceDetails += "<div class='col-lg-12 col-12'><p><strong>" + json.data[i].customer.entityName + "</strong></p></div>";
                         /*invoiceDetails += "<div style='margin: 0;' class='col-lg-12 col-12'><p><strong>"+ json.data[i].customer.addressLine1 + "</strong></p></div>";
-                        */invoiceDetails += "<div class='col-lg-6 col-6'><p>Invoice Date: "+ dateFormat(json.data[i].orderDate) + "</p></div>";
-                        invoiceDetails += "<div class='col-lg-6 col-6'><p class='pull-right'>Due Date: "+  dateFormat(json.data[i].dueDate)+ "</p></div>";
-                        invoiceDetails += "<div class='col-lg-12 col-12 d-flex align-items-center'><p class='badge'>Invoice Amount: ₹"+Number(json.data[i].invoiceTotal).toFixed(2) +"</p>"+badgeContainer+"</div><div class='col-lg-12 col-12'><p><button type='button' style='width: 100%;' class='btn btn-sm btn-info btn-round viewbtn' onclick='viewBtnClick(this)' data-id='"+json.data[i].id+"'  data-invoicenumber='"+json.data[i].invoiceNumber+"'  data-invoicetotal='"+json.data[i].invoiceTotal+"'  data-balance='"+json.data[i].balance+"' data-customername='"+json.data[i].customer.entityName+"' data-address='"+removeQuote(json.data[i].customer.addressLine1)+"'><i class='zmdi zmdi-file'></i> View</button></p></div></div></div>";
+                        */
+                        invoiceDetails += "<div class='col-lg-6 col-6'><p>Invoice Date: " + dateFormat(json.data[i].orderDate) + "</p></div>";
+                        invoiceDetails += "<div class='col-lg-6 col-6'><p class='pull-right'>Due Date: " + dateFormat(json.data[i].dueDate) + "</p></div>";
+                        invoiceDetails += "<div class='col-lg-12 col-12 d-flex align-items-center'><p class='badge'>Invoice Amount: ₹" + Number(json.data[i].invoiceTotal).toFixed(2) + "</p>" + badgeContainer + "</div><div class='col-lg-12 col-12'><p><button type='button' style='width: 100%;' class='btn btn-sm btn-info btn-round viewbtn' onclick='viewBtnClick(this)' data-id='" + json.data[i].id + "'  data-invoicenumber='" + json.data[i].invoiceNumber + "'  data-invoicetotal='" + json.data[i].invoiceTotal + "'  data-balance='" + json.data[i].balance + "' data-customername='" + json.data[i].customer.entityName + "' data-address='" + removeQuote(json.data[i].customer.addressLine1) + "'><i class='zmdi zmdi-file'></i> View</button></p></div></div></div>";
                         return_data.push({
                             'col': invoiceDetails
                         });
@@ -426,22 +438,20 @@
         //paymentCollectionTable.buttons().container().appendTo('#saleInvoiceTable_wrapper .col-md-6:eq(0)');
     }
 
-    function removeQuote(str)
-    {
-        return str.replace("\"","");
+    function removeQuote(str) {
+        return str.replace("\"", "");
     }
-    function dateFormat(dt, time = false)
-    {
+
+    function dateFormat(dt, time = false) {
         dt = dt.replace("T", " ").replace("Z", '');
         var date = new Date(dt);
-        if(time)
+        if (time)
             return moment(date).format('DD/MM/YYYY hh:mm:ss a');
         else
             return moment(date).format('DD/MM/YYYY');
     }
 
-    function viewBtnClick(btn)
-    {
+    function viewBtnClick(btn) {
         var id = $(btn).data('id');
         var invoiceNumber = $(btn).data('invoicenumber');
         var invoiceTotal = $(btn).data('invoicetotal');
@@ -451,8 +461,8 @@
         $("#customerName").text(customername);
         $("#address").text(address);
         $("#invoiceNumber").text(invoiceNumber);
-        $("#invoiceTotal").text("₹" +invoiceTotal);
-        $("#balance").text("₹" +balance);
+        $("#invoiceTotal").text("₹" + invoiceTotal);
+        $("#balance").text("₹" + balance);
         $("#totalDueOfSelected").text(balance);
         $("#saleBillId").val(id);
         $(".detailsModal").modal('toggle');
@@ -460,35 +470,34 @@
 
     function paymentModeChange() {
         var paymentMode = $("#paymentMode :selected").text();
-        if(paymentMode === "CARD")
-        {
+        if (paymentMode === "CARD") {
+            $("#chequeContainer").addClass("hidden");
             $("#cardNumberContainer").removeClass("hidden");
             $("#instrumentIdContainer").addClass("hidden");
             $("#payeeBankerContainer").addClass("hidden");
             $("#depositToContainer").removeClass("hidden");
-            $("#paymentMethodContainer").removeClass("hidden");
+            $("#paymentMethodContainer").addClass("hidden");
 
             $("#paymentDateContainer").removeClass("col-md-6");
             $("#paymentDateContainer").addClass("col-md-12");
-        }
-        else if(paymentMode === "BANK")
-        {
+        } else if (paymentMode === "BANK") {
+
             $("#cardNumberContainer").addClass("hidden");
             $("#instrumentIdContainer").removeClass("hidden");
             $("#payeeBankerContainer").removeClass("hidden");
             $("#depositToContainer").removeClass("hidden");
             $("#paymentMethodContainer").removeClass("hidden");
 
+            $("#chequeContainer").removeClass("hidden");
             $("#paymentDateContainer").removeClass("col-md-12");
             $("#paymentDateContainer").addClass("col-md-6");
-        }
-        else
-        {
+        } else {
             //cash
+            $("#chequeContainer").addClass("hidden");
             $("#cardNumberContainer").addClass("hidden");
             $("#instrumentIdContainer").addClass("hidden");
             $("#payeeBankerContainer").addClass("hidden");
-            $("#depositToContainer").addClass("hidden");
+            $("#depositToContainer").removeClass("hidden");
             $("#paymentMethodContainer").addClass("hidden");
 
             $("#paymentDateContainer").removeClass("col-md-6");
@@ -499,8 +508,7 @@
 
     function recordPayment() {
         var totalDueOfSelected = parseFloat2Decimal($("#totalDueOfSelected").text());
-        if(totalDueOfSelected === 0)
-        {
+        if (totalDueOfSelected === 0) {
             Swal.fire({
                 title: "Invoice settled already!",
                 text: "There is no due for this invoice",
@@ -543,8 +551,20 @@
         var chequeNumber = $("#chequeNumber").val();
         var currentLocation = $('#currentLocation').val();
 
-        if(paymentDate == null || paymentDate === "")
+        var paymentModeName = $("#paymentMode :selected").text();
+        if(paymentModeName === "CASH")
         {
+            payeeBanker = null;
+            chequeNumber = null;
+            cardNumber = null;
+        }
+        else if(paymentModeName === "CARD")
+        {
+            payeeBanker = null;
+            chequeNumber = null;
+        }
+
+        if (paymentDate == null || paymentDate === "") {
             processingSwal.close();
 
             Swal.fire({
@@ -555,7 +575,7 @@
             return;
         }
 
-        if(currentLocation === ""){
+        if (currentLocation === "") {
             processingSwal.close();
             Swal.fire({
                 title: "Error",
@@ -565,8 +585,7 @@
             return;
         }
 
-        if((amount + creditsApplied) >totalDueOfSelected)
-        {
+        if ((amount + creditsApplied) > totalDueOfSelected) {
             processingSwal.close();
             Swal.fire({
                 title: "Error",
@@ -580,7 +599,7 @@
         $.ajax({
             url: "/sale-bill/record-payment",
             method: "POST",
-            data:{
+            data: {
                 amount: amount,
                 paymentMode: paymentMode,
                 paymentMethod: paymentMethod,
@@ -595,10 +614,9 @@
                 saleReturnIds: saleReturnIds,
                 creditsApplied: creditsApplied,
                 currentLocation: currentLocation,
-                type:type
+                type: type
             },
-            success: function(data)
-            {
+            success: function (data) {
                 processingSwal.close();
                 Swal.fire({
                     title: "Success!",
@@ -612,7 +630,7 @@
             error: function (data) {
                 processingSwal.close();
                 var text = "Please try later!";
-                if(data !== undefined)
+                if (data !== undefined)
                     text = data.responseText;
                 Swal.fire({
                     title: "Error!",
@@ -623,9 +641,8 @@
         })
     }
 
-    function parseFloat2Decimal(num)
-    {
-        if(!isNaN(num)) {
+    function parseFloat2Decimal(num) {
+        if (!isNaN(num)) {
             num = Number(num);
             num = Math.round(num * 1e2) / 1e2;
             return num;
@@ -635,7 +652,7 @@
 
     function getLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition,showError);
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
         } else {
             x.innerHTML = "Geolocation is not supported by this browser.";
         }
@@ -644,13 +661,13 @@
     function showPosition(position) {
         // x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
         // alert(position.coords.longitude+","+position.coords.latitude)
-        var cord = position.coords.latitude+","+position.coords.longitude
+        var cord = position.coords.latitude + "," + position.coords.longitude
         document.getElementById("currentLocation").value = cord;
 
     }
 
     function showError(error) {
-        switch(error.code) {
+        switch (error.code) {
             case error.PERMISSION_DENIED:
                 x.innerHTML = "User denied the request for Geolocation."
                 break;

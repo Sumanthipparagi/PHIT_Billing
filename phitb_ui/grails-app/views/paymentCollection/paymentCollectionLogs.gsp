@@ -127,11 +127,12 @@
                                 <tr>
                                     <th><span style="display: none;">check</span></th>
                                     <th>Status</th>
-                                    <th>Entity</th>
+                                    <th>Customer</th>
                                     <th>TranNo.</th>
                                     <th>Receipt Id</th>
                                     <th>Chq No</th>
-                                    <th>Bank</th>
+                                    <th>Pay. Mode</th>
+                                    <th>Account</th>
                                     <th>Inv Amt</th>
                                     <th>Collected Amount</th>
                                     <th>Balance</th>
@@ -373,17 +374,18 @@
                         return_data.push({
                             'checkbox': checkbox,
                             'dropdown': dropdown,
-                            'entityId': '<div style="white-space: initial">'+json.data[i].entityId.entityName+'</div>',
+                            'entityId': '<div style="white-space: initial">'+json.data[i]?.customer?.entityName+'</div>',
+                            'paymode':  json?.data[i]?.paymentMode?.name !== undefined ? json?.data[i]?.paymentMode?.name : "",
                             'documentNumber': json.data[i].documentNumber,
-                            'chqNo': json.data[i].receipt.chequeNumber,
-                            'receiptId': json.data[i].receipt.receiptId,
+                            'chqNo':  json?.data[i]?.receipt?.chequeNumber !== undefined ? json?.data[i]?.receipt?.chequeNumber : "",
+                            'receiptId': json?.data[i]?.receipt?.receiptId !== undefined ? json?.data[i]?.receipt?.receiptId : "",
                             'invoiceAmount': Number(json.data[i].invoiceAmount).toFixed(2),
                             'collectedAmount': Number(json.data[i].collectedAmount).toFixed(2),
                             'reason': reason,
                             'location':'<a class="btn btn-primary" href="#!" data-cord="' +
                             json.data[i].currentLocation +'" onclick="locationWindow(this)" style="background-color: #007bff;">View</a>\n',
                             'balance':  Number(json.data[i].balance).toFixed(2),
-                            'bank': json?.data[i]?.bank?.bankName !== undefined ? json?.data[i]?.bank?.bankName : "",
+                            'account': json?.data[i]?.account?.accountName !== undefined ? json?.data[i]?.account?.accountName : "",
                             'approvedDt': json?.data[i]?.approvedDate !== undefined ?
                                 moment(json?.data[i]?.approvedDate).format('DD-MM-YYYY') : "" ,
                             'action': status,
@@ -400,7 +402,8 @@
                 {'data': 'documentNumber', 'width': '10%'},
                 {'data': 'receiptId', 'width': '5%'},
                 {'data': 'chqNo', 'width': '5%'},
-                {'data': 'bank', 'width': '5%'},
+                {'data': 'paymode', 'width': '5%'},
+                {'data': 'account', 'width': '5%'},
                 {'data': 'invoiceAmount', 'width': '5%'},
                 {'data': 'collectedAmount', 'width': '5%'},
                 {'data': 'balance', 'width': '5%'},
@@ -412,7 +415,7 @@
             ],
 
             columnDefs: [
-                { targets: [ 14 ],
+                { targets: [ 15 ],
                     className: "hide_column"
                 }
             ]

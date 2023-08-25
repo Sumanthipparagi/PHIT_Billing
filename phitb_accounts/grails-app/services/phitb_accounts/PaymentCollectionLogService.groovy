@@ -73,6 +73,7 @@ class PaymentCollectionLogService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
+
         def recordsTotal = paymentCollectionArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
@@ -149,8 +150,7 @@ class PaymentCollectionLogService {
     }
 
     def getPaymentDetailsByReceiptId(String receiptId){
-       ArrayList<PaymentCollectionLog> paymentCollectionLog = PaymentCollectionLog.findAllByReceiptId(Long.parseLong
-               (receiptId))
+       ArrayList<PaymentCollectionLog> paymentCollectionLog = PaymentCollectionLog.findAllByReceiptId(Long.parseLong(receiptId))
         return paymentCollectionLog
 
     }

@@ -1066,7 +1066,6 @@ class AccountsService
         WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
-
             Response apiResponse = target
                     .path(new Links().RECIPT_DETAIL + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -1525,7 +1524,12 @@ class AccountsService
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            return apiResponse
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                return responseObject
+            }
+            else
+                return null
         }
         catch (Exception ex)
         {

@@ -92,34 +92,47 @@ class PaymentCollectionController {
                 jsonObject.put("fromDate","")
                 jsonObject.put("toDate","")
             }
-            def apiResponse = new AccountsService().showPaymentCollection(jsonObject)
-            if (apiResponse.status == 200) {
-                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-                if (responseObject) {
-                    JSONArray jsonArray = responseObject.data
-                    for(JSONObject jsonObject1:jsonArray){
-                        def entity = new EntityService().getEntityById(jsonObject1.entityId.toString())
-                        jsonObject1.put('entityId',entity)
-                        def receiptResponse = new AccountsService().getReciptById(jsonObject1.receiptId.toString())
-                        if(receiptResponse?.status == 200){
-                            JSONObject receiptObj = new JSONObject(receiptResponse.readEntity(String.class))
-                            jsonObject1.put('receipt',receiptObj)
-                            if(receiptObj?.depositTo!=null){
-                                def bank = new AccountsService().getBankById(receiptObj?.depositTo)
-                                if(bank?.status ==200){
-                                    JSONObject bankObj = new JSONObject(bank.readEntity(String.class))
-                                    jsonObject1.put("bank", bankObj)
+            JSONObject responseObject = new AccountsService().showPaymentCollection(jsonObject)
+            if (responseObject) {
+                JSONArray jsonArray = responseObject.data
+                for(JSONObject jsonObject1:jsonArray){
+                    def entity = new EntityService().getEntityById(jsonObject1.entityId.toString())
+                    jsonObject1.put('entityId',entity)
+                    def rId = jsonObject1.receiptId.toString()
+                    def receiptResponse = new AccountsService().getReciptById(rId)
+                    if(receiptResponse?.status == 200){
+                        JSONObject receiptObj = new JSONObject(receiptResponse.readEntity(String.class))
+                        jsonObject1.put('receipt',receiptObj)
+
+                        def customer = new EntityService().getEntityById(receiptObj.receivedFrom.toString())
+                        jsonObject1.put('customer',customer)
+
+                        if(receiptObj?.depositTo!=null){
+                            def account = new EntityService().getAccountById(receiptObj?.depositTo)
+                            jsonObject1.put("account", account)
+                        }
+
+                        if(receiptObj?.paymentModeId!=null){
+                            def paymentModesResponse = new SystemService().getPaymentModes()
+                            if (paymentModesResponse?.status == 200) {
+                                JSONArray paymentModes = new JSONArray(paymentModesResponse.readEntity(String.class))
+                                for (Object paymentMode : paymentModes) {
+                                    if(receiptObj?.paymentModeId == paymentMode.id)
+                                    {
+                                        jsonObject1.put("paymentMode", paymentMode)
+                                    }
                                 }
                             }
                         }
-
                     }
-                    responseObject.put("data", jsonArray)
+
                 }
+                responseObject.put("data", jsonArray)
                 respond responseObject, formats: ['json'], status: 200
-            } else {
-                response.status = 400
             }
+            else
+                response.status = 400
+
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

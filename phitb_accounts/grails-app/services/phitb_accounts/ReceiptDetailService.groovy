@@ -163,7 +163,7 @@ class ReceiptDetailService {
         else
             receiptDetail.chequeNumber = ""
 
-        if(!jsonObject.isNull("bank"))
+        if(!jsonObject.isNull("bank") && jsonObject.get("bank").toString() !="")
         {
             receiptDetail.bank = BankRegister.findById(Long.parseLong(jsonObject.get("bank").toString()))
         }
@@ -186,9 +186,9 @@ class ReceiptDetailService {
         receiptDetail.approvedStatus = "ACTIVE"
         receiptDetail.status = Long.parseLong("1")
         receiptDetail.syncStatus = Long.parseLong("1")
-        receiptDetail.entityTypeId = Long.parseLong("1")
+        receiptDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         receiptDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-        receiptDetail.modifiedUser = Long.parseLong("1")
+        receiptDetail.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         receiptDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         receiptDetail.save(flush: true)
         if (!receiptDetail.hasErrors())
