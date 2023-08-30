@@ -41,11 +41,18 @@ class UserRegisterService {
         return UserRegister.findByUserName(username)
     }
 
-    ArrayList<UserRegister> getByEntity(String entityId) {
+    ArrayList<UserRegister> getByEntity(String entityId, String roleId = null) {
         if(entityId) {
             EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(entityId))
-            if (entityRegister)
-                return UserRegister.findAllByEntity(entityRegister)
+            if (entityRegister) {
+                if(roleId != null)
+                {
+                    Role role = Role.findById(Long.parseLong(roleId))
+                    return UserRegister.findAllByEntityAndRole(entityRegister, role)
+                }
+                else
+                    return UserRegister.findAllByEntity(entityRegister)
+            }
             else
                 throw new ResourceNotFoundException()
         }

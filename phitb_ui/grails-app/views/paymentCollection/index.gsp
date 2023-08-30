@@ -685,5 +685,9 @@
 
 
 </script>
+
+<script>
+    selectSideMenu("accounts-menu");
+</script>
 </body>
 </html>

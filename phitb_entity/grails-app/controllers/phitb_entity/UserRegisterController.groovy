@@ -254,8 +254,9 @@ class UserRegisterController {
     def getUsersByEntity() {
         try {
             String id = params.id
+            String roleId = params.roleId
             if (id) {
-                respond userRegisterService.getByEntity(id)
+                respond userRegisterService.getByEntity(id, roleId)
             }
             else
                 response.status = 400

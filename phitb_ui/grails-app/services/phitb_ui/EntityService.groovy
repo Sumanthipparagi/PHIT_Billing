@@ -2028,17 +2028,29 @@ class EntityService {
 
     }
 
-    def getUserRegisterByEntity(String entityId) {
+    def getUserRegisterByEntity(String entityId, String roleId = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
 
-            Response apiResponse = target
-                    .path(new Links().USER_REGISTER_SHOW_BY_ENTITY + "/" + entityId)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
+            if(roleId == null) {
+                Response apiResponse = target
+                        .path(new Links().USER_REGISTER_SHOW_BY_ENTITY + "/" + entityId)
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .get()
 
-            return apiResponse
+                return apiResponse
+            }
+            else
+            {
+                Response apiResponse = target
+                        .path(new Links().USER_REGISTER_SHOW_BY_ENTITY + "/" + entityId)
+                        .queryParam("roleId", roleId)
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .get()
+
+                return apiResponse
+            }
         }
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getUserRegisterByEntity  , Ex:' + ex)

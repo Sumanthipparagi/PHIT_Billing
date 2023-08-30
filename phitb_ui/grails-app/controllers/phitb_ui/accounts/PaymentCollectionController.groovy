@@ -92,6 +92,10 @@ class PaymentCollectionController {
                 jsonObject.put("fromDate","")
                 jsonObject.put("toDate","")
             }
+            if(params.user != null && params.user.toString().length() > 0)
+            {
+                jsonObject.put("userId",params.user)
+            }
             JSONObject responseObject = new AccountsService().showPaymentCollection(jsonObject)
             if (responseObject) {
                 JSONArray jsonArray = responseObject.data
@@ -142,7 +146,22 @@ class PaymentCollectionController {
     }
 
     def paymentCollectionLogs(){
-        render(view:"/paymentCollection/paymentCollectionLogs")
+        long executiveRoleId = 0
+        JSONArray roles = new EntityService().getRoles()
+        for (JSONObject rl : roles) {
+            if(rl.name.toString().equalsIgnoreCase(Constants.EXECUTIVE))
+            {
+                executiveRoleId = rl.id
+            }
+        }
+        ArrayList<String> executives = new ArrayList<>()
+        def apiResponse = new EntityService().getUserRegisterByEntity(session.getAttribute("entityId").toString(), executiveRoleId.toString())
+        if (apiResponse?.status == 200) {
+            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+            executives = new ArrayList<>(jsonArray)
+        }
+
+        render(view:"/paymentCollection/paymentCollectionLogs", model: [executives: executives])
     }
 
     def paymentCollectionChangeStatus(){

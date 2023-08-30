@@ -44,6 +44,9 @@ class PaymentCollectionLogService {
         String status = paramsJsonObject.get("status")
         String fromDate = paramsJsonObject.get("fromDate").toString()
         String toDate = paramsJsonObject.get("toDate").toString()
+        String userId = null
+        if(paramsJsonObject.has("userId"))
+            userId = paramsJsonObject.get("userId")
 
         String orderColumn = "id"
         switch (orderColumnId) {
@@ -71,6 +74,11 @@ class PaymentCollectionLogService {
             }
             eq('entityId', Long.parseLong(entityId))
             eq('deleted', false)
+
+            if(userId != null && userId != "ALL")
+            {
+                eq("userId", Long.parseLong(userId))
+            }
             order(orderColumn, orderDir)
         }
 
