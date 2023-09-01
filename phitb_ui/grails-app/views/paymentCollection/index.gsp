@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <div class="row clearfix">
+       %{-- <div class="row clearfix">
             <div class="col-md-12">
                 <div class="card">
                     <div class="body">
@@ -67,13 +67,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}%
 
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12" id="listContainer">
                 <div class="card">
                     <div class="body">
-                        <div class="table-responsive">
+                       %{-- <div class="table-responsive">--}%
                             <table id="paymentCollectionTable"
                                    class="table paymentCollectionTable dataTable js-exportable">
                                 <thead>
@@ -416,12 +416,12 @@
                             badgeContainer += "<div class=\"badge badge-warning ml-2\">PARTIALLY PAID</div>"
                         }
 
-                        var invoiceDetails = "<div class='card'><div class='body'><div class='row'><div class='col-lg-9 col-6'><span class='h5'>#" + json.data[i].invoiceNumber + "</span></div><div class='col-lg-3 col-6'><span class='h5 text-primary pull-right'>₹" + Number(json.data[i].balance).toFixed(2) + "</span></div>";
+                        var invoiceDetails = "<div class='card'><div class='body' style='padding: 10px;'><div class='row'><div class='col-lg-9 col-6'><span class='h5'>#" + json.data[i].invoiceNumber + "</span></div><div class='col-lg-3 col-6'><span class='h5 text-primary pull-right'>₹" + Number(json.data[i].balance).toFixed(2) + "</span></div>";
                         invoiceDetails += "<div class='col-lg-12 col-12'><p><strong>" + json.data[i].customer.entityName + "</strong></p></div>";
                         /*invoiceDetails += "<div style='margin: 0;' class='col-lg-12 col-12'><p><strong>"+ json.data[i].customer.addressLine1 + "</strong></p></div>";
                         */
-                        invoiceDetails += "<div class='col-lg-6 col-6'><p>Invoice Date: " + dateFormat(json.data[i].orderDate) + "</p></div>";
-                        invoiceDetails += "<div class='col-lg-6 col-6'><p class='pull-right'>Due Date: " + dateFormat(json.data[i].dueDate) + "</p></div>";
+                        invoiceDetails += "<div class='col-lg-12 col-md-12 col-sm-12'><p>Invoice Date: " + dateFormat(json.data[i].orderDate) + "</p></div>";
+                        invoiceDetails += "<div class='col-lg-12 col-md-12 col-sm-12'><p class=''>Due Date: " + dateFormat(json.data[i].dueDate) + "</p></div>";
                         invoiceDetails += "<div class='col-lg-12 col-12 d-flex align-items-center'><p class='badge'>Invoice Amount: ₹" + Number(json.data[i].invoiceTotal).toFixed(2) + "</p>" + badgeContainer + "</div><div class='col-lg-12 col-12'><p><button type='button' style='width: 100%;' class='btn btn-sm btn-info btn-round viewbtn' onclick='viewBtnClick(this)' data-id='" + json.data[i].id + "'  data-invoicenumber='" + json.data[i].invoiceNumber + "'  data-invoicetotal='" + json.data[i].invoiceTotal + "'  data-balance='" + json.data[i].balance + "' data-customername='" + json.data[i].customer.entityName + "' data-address='" + removeQuote(json.data[i].customer.addressLine1) + "'><i class='zmdi zmdi-file'></i> View</button></p></div></div></div>";
                         return_data.push({
                             'col': invoiceDetails

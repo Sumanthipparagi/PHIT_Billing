@@ -40,6 +40,7 @@ class FormMasterService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        String entityId = paramsJsonObject.get("entityId").toString()
 
         String orderColumn = "id"
         switch (orderColumnId) {
@@ -62,6 +63,7 @@ class FormMasterService {
                 }
             }
             eq('deleted', false)
+            eq('entityId', Long.parseLong(entityId))
             order(orderColumn, orderDir)
         }
 //        def entity = []

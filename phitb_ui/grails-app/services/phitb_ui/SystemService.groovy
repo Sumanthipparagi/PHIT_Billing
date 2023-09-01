@@ -1,6 +1,7 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.glassfish.jersey.jackson.JacksonFeature
 import org.grails.web.json.JSONArray
 
 import javax.ws.rs.client.Entity
@@ -257,48 +258,6 @@ class SystemService {
         catch (Exception ex) {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
-        }
-
-    }
-
-    def getZoneList() {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-
-        try {
-
-            Response apiResponse = target
-                    .path(new Links().ZONE_MASTER_SHOW)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-
-            return apiResponse
-        }
-        catch (Exception ex) {
-            System.err.println('Service :systemService , action :  getZoneList  , Ex:' + ex)
-            log.error('Service :systemService , action :  getZoneList  , Ex:' + ex)
-        }
-
-    }
-
-    def getZonesByEntity(String id) {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        try {
-            Response apiResponse = target
-                    .path(new Links().ZONE_MASTER_BY_ENTITY + "/" +id)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-            if (apiResponse.status == 200) {
-                JSONArray zones = new JSONArray(apiResponse.readEntity(String.class))
-                return zones
-            }
-            else
-                return null
-        }
-        catch (Exception ex) {
-            System.err.println('Service :systemService , action :  getZonesByEntity  , Ex:' + ex)
-            log.error('Service :systemService , action :  getZonesByEntity  , Ex:' + ex)
         }
 
     }
@@ -1432,6 +1391,136 @@ class SystemService {
         catch (Exception ex) {
             System.err.println('Service :systemService , action :  getEntity  , Ex:' + ex)
             log.error('Service :systemService , action :  getEntity  , Ex:' + ex)
+        }
+
+    }
+
+
+
+    //Zone
+    def saveZone(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().ZONE_MASTER_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :systemService , action :  saveZone  , Ex:' + ex)
+            log.error('Service :systemService , action :  saveZone  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showZone(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().ZONE_MASTER_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :systemService , action :  showZone  , Ex:' + ex)
+            log.error('Service :systemService , action :  showZone  , Ex:' + ex)
+        }
+
+    }
+
+    def putZone(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ZONE_MASTER_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service : systemService, action :  putZone  , Ex:' + ex)
+            log.error('Service :systemService , action :  putZone  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteZone(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().ZONE_MASTER_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :systemService , action :  deleteZone  , Ex:' + ex)
+            log.error('Service :systemService , action :  deleteZone  , Ex:' + ex)
+        }
+
+    }
+
+    def getZoneList() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ZONE_MASTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :systemService , action :  getZoneList  , Ex:' + ex)
+            log.error('Service :systemService , action :  getZoneList  , Ex:' + ex)
+        }
+
+    }
+
+    def getZonesByEntity(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().ZONE_MASTER_BY_ENTITY + "/" +id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray zones = new JSONArray(apiResponse.readEntity(String.class))
+                return zones
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :systemService , action :  getZonesByEntity  , Ex:' + ex)
+            log.error('Service :systemService , action :  getZonesByEntity  , Ex:' + ex)
         }
 
     }

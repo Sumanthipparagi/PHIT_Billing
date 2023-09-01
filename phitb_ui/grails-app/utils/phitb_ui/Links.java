@@ -48,6 +48,10 @@ public class Links
     //Zone Master
     public static String ZONE_MASTER_SHOW = APP_CONTEXT_PATH + "system/zone";
     public static String ZONE_MASTER_BY_ENTITY = APP_CONTEXT_PATH + "system/zonebyentity";
+    public static String ZONE_MASTER_SAVE = APP_CONTEXT_PATH + "system/zone";
+    public static String ZONE_MASTER_DATATABLE = APP_CONTEXT_PATH + "system/zone/datatable";
+    public static String ZONE_MASTER_UPDATE = APP_CONTEXT_PATH + "system/zone/{id}";
+    public static String ZONE_MASTER_DELETE = APP_CONTEXT_PATH + "system/zone/{id}";
 
 
     //Country Master

@@ -444,6 +444,7 @@
                         <li><a href="/district">District</a></li>
                         <li><a href="/division-master">Division</a></li>
                         <li><a href="/region">Region</a></li>
+                        <li><a href="/zone">Zone</a></li>
                     %{--                        <g:if test="${UtilsService.isPermitted("VIEW_COUNTRY", session.getAttribute("permittedFeatures").toString())}">--}%
                     %{--                            <li><a href="/country">Country</a></li>--}%
                     %{--                        </g:if>--}%
@@ -487,7 +488,7 @@
                             <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN ||
                                     session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == 'RETAILER'}">
                                 <li><a href="/entity-register">Entity Register</a></li>
-                                <li><a href="/entity-route">Routes</a></li>
+                                %{--<li><a href="/entity-route">Routes</a></li>--}%
                             </g:if>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_USER_REGISTER", session.getAttribute("permittedFeatures").toString())}">

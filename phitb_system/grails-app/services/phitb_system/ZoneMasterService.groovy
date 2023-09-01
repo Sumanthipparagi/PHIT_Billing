@@ -106,6 +106,7 @@ class ZoneMasterService {
         if (name) {
             ZoneMaster zoneMaster = new ZoneMaster()
             zoneMaster.name = name
+            zoneMaster.entityId = Long.parseLong(jsonObject.get("entity").toString())
             zoneMaster.save(flush: true)
             if (!zoneMaster.hasErrors())
                 return zoneMaster

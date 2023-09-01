@@ -31,6 +31,7 @@ class FormController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId").toString())
             def apiResponse = new SystemService().showForm(jsonObject)
             if (apiResponse.status == 200)
             {

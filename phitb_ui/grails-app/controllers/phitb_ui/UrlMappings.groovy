@@ -915,5 +915,13 @@ class UrlMappings {
         "/payment-collection/finalize-approve"(controller: 'paymentCollection', action: 'approveAllPaymentCollection')
         "/payment-collection/bulk-update"(controller: 'paymentCollection',action: 'updateBulkPaymentCollection')
 
+
+        //zones
+        "/zone"(controller: "zone") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/zone/datatable"(controller: "zone", action: "dataTable")
+        "/zone/update/$id"(controller:"zone",action:"update")
+        "/zone/delete/$id"(controller: "zone",action:"delete")
     }
 }
