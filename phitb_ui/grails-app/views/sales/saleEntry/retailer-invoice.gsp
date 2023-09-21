@@ -4,6 +4,7 @@
 
 <head>
     <title>Tax Invoice</title>
+    <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <style>
 
 
@@ -80,7 +81,7 @@
         right: 0;
         top: 0;
         bottom: 0;
-        border: 2px solid black;
+        border: 0px solid black;
         padding: 10px;
         page-break-after: always;
     }
@@ -137,6 +138,13 @@
     }*/
 
     @media print {
+        body {
+            margin-top: 5px;
+            margin-left: 5px;
+            transform: scale(1);
+            transform-origin: 0 0;
+        }
+
         /* .pageNumber {
              counter-increment: page;
          }
@@ -145,198 +153,135 @@
          }*/
     }
 
+
+
     </style>
 </head>
 
 
 <body>
 
-%{--<div class="page-header">--}%
-
-%{--</div>--}%
 <div id="wrapper">
 
-    <table id="prodDetails" class="extended" style="width: 100%; padding: 5%;border: 1px solid #000;">
-        <div class="page-header">
-            <thead>
-            <tr>
-                <td colspan="4" style="vertical-align:top;font-size:8pt;">
-                    %{--            <img width="109" height="43"--}%
-                    %{--                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/>--}%
-                    %{--            <br><br>--}%
-                    <b>${entity.entityName}</b><br>
-                    <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
-                    <g:if test="${entity?.website && entity?.website != ''}">
-                        <li><b class="tab">Website</b>: <a href="${entity?.website}"
-                                                           target="_blank">${entity?.website}</a>
-                        </li>
-                    </g:if>
-                    <g:if test="${entity?.email && entity?.email != ''}">
-                        <li><b class="tab">Email</b>: <a href="mailto:${entity?.email}"
-                                                         target="_blank">${entity?.email}</a>
-                        </li>
-                    </g:if>
+    <table id="prodDetails" class="table table-bordered"
+           style="width: 100%; padding: 5%;border: 1px solid #000;">
+        <thead>
+        <tr>
+            <td colspan="10" style="vertical-align:top;font-size:8pt;">
+                %{--            <img width="109" height="43"--}%
+                %{--                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/>--}%
+                %{--            <br><br>--}%
+                <b>${entity.entityName}</b><br>
+                <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
+                <br>
 
+                <div style="float: left;">
+                    <li><b class="tab">Email</b>:
+                        <g:if test="${entity?.email && entity?.email != ''}">
+                            <a href="mailto:${entity?.email}"
+                               target="_blank">${entity?.email}</a>
+
+                        </g:if>
+                    </li>
                     <li><b class="tab">Location</b>: ${city?.districtName}</li>
                     <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
                     <li><b class="tab">GST No</b>: ${entity.gstn}</li>
                     <li><b class="tab">PAN No</b>: ${entity.pan}</li>
+
+                </div>
+
+                <div style="float: right;">
                     <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
                     <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
                     <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
-                    <g:if test="${customer?.website && customer?.website != ''}">
-                        <li><b class="tab">Website</b>: <a href="${customer?.website}"
-                                                           target="_blank">${customer?.website}</a></li>
-                    </g:if>
+                    <li><b class="tab">Website</b>:
+                        <g:if test="${entity?.website && entity?.website != ''}">
+                            <a href="${entity?.website}"
+                               target="_blank">${entity?.website}</a>
+
+                        </g:if>
+                    </li>
                     <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
+                </div>
 
-                </td>
-                <td colspan="12" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
-                    <b>${customer.entityName}</b><br>
-                    <sub>${customer.addressLine1}${customer.addressLine2}
-                    </sub>
-                    <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
-                        <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
-                                                          target="_blank">${customer?.phoneNumber}</a>
-                        </li>
-                    </g:if>
-                    <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
-                    <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
-                    <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                    <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                    <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
-                </td>
-                %{-- <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
-                     <b>${customer.entityName}</b><br>
-                     <sub>${customer.addressLine1}${customer.addressLine2}
-                     </sub>
-                     <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
-                         <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
-                                                           target="_blank">${customer?.phoneNumber}</a>
-                         </li>
-                     </g:if>
-                 </td>--}%
-                <td colspan="9" style="vertical-align:top;font-size:8pt;">
-                    <strong>TAX INVOICE</strong>
-                    <ul style="margin: 0;">
+                <div style="float: none;"></div>
 
-                        <li><b class="tab">Invoice No</b>:  <strong style="font-size: 16px;"><g:if
-                                test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else>
-                        </strong></li>
-                        <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate" style="font-size: 13px;"></span></li>
-                        <li><b class="tab">Dr Name</b>:&nbsp;<span>${saleBillDetail?.drname}</span>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-            %{--            <tr>--}%
-            %{--                <td colspan="4" style="vertical-align:top;">--}%
-            %{--                    <ul>--}%
-            %{--                        <li><b class="tab">Location</b>: ${city?.districtName}</li>--}%
-            %{--                        <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>--}%
-            %{--                        <li><b class="tab">GST No</b>: ${entity.gstn}</li>--}%
-            %{--                        <li><b class="tab">PAN No</b>: ${entity.pan}</li>--}%
-            %{--                        <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>--}%
-            %{--                        <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>--}%
-            %{--                        <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>--}%
-            %{--                        --}%%{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
-            %{--                        --}%%{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
-            %{--                        --}%%{--                </g:if>--}%
-            %{--                        <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>--}%
+            </td>
+            <td colspan="7" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
+                <b>${customer.entityName}</b><br>
+                <sub>${customer.addressLine1}${customer.addressLine2}
+                </sub>
+                <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
+                    <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
+                                                      target="_blank">${customer?.phoneNumber}</a>
+                    </li>
+                </g:if>
+                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
+                <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
+                <li><b class="tab">PAN</b>: ${customer.pan}</li>
+                %{--  <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
+                  <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
+            </td>
+            <td colspan="8" style="vertical-align:top;font-size:8pt;">
+                <strong>TAX INVOICE</strong>
+                <ul style="margin: 0;">
 
-            %{--                    </ul>--}%
-            %{--                </td>--}%
-            %{--                <td colspan="6" style="vertical-align:top;">--}%
-            %{--                    <ul>--}%
-            %{--                        --}%%{--                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>--}%
-            %{--                        <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
-            %{--                        <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>--}%
-            %{--                        <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
-            %{--                        <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
-            %{--                        <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
-            %{--                        <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>--}%
-            %{--                        <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>--}%
-            %{--                        --}%%{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
-            %{--                        --}%%{--                <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
-            %{--                        --}%%{--                </g:if>--}%
-            %{--                        <li><b class="tab">Transporter</b>:&nbsp;&nbsp;${transportDetails?.transporter?.name}</li>--}%
-            %{--                        <li><b class="tab">Place of Supply</b>: &nbsp;${custcity?.districtName}</li>--}%
-            %{--                        <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>--}%
-            %{--                        <li><b class="tab">Po Date.</b>:<span id="poDate2"></span></li>--}%
-            %{--                        --}%%{--                <li><b class="tab">State Code</b>: </li>--}%
-            %{--                    </ul>--}%
+                    <li><b class="tab">Invoice No</b>:  <strong style="font-size: 12px;"><g:if
+                            test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else>
+                    </strong></li>
+                    <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate" style="font-size: 13px;"></span></li>
+                    <li><b class="tab">Dr Name</b>:&nbsp;<span>${saleBillDetail?.drname}</span></li>
+                    <li><b class="tab">Printed By</b>: ${session.getAttribute("userName").toString()}</li>
+                    <li><b class="tab">Printed On</b>: <span id="date"></span></li>
 
-            %{--                </td>--}%
-            %{--                <td colspan="6" style="vertical-align:top;">--}%
-            %{--                    <ul>--}%
-            %{--                        --}%%{--                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>--}%
-            %{--                        <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
-            %{--                        <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>--}%
-            %{--                        <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
-            %{--                        <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
-            %{--                        <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
-            %{--                        <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>--}%
-            %{--                        <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>--}%
-            %{--                        --}%%{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
-            %{--                        --}%%{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
-            %{--                        --}%%{--                </g:if>--}%
-            %{--                        <li><b class="tab">Transporter</b>:&nbsp;&nbsp; ${transportDetails?.transporter?.name}</li>--}%
-            %{--                        <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity?.districtName}</li>--}%
-            %{--                        <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>--}%
-            %{--                        <li><b class="tab">Po Date.</b>:<span id="poDate1"></span></li>--}%
-            %{--                        --}%%{--                <li><b class="tab">State Code</b>: </li>--}%
-            %{--                    </ul>--}%
-            %{--                </td>--}%
-            %{--                <td colspan="5" class="center-align text-center" style="vertical-align:center;padding: 10px;">--}%
-            %{--                    <div class="qrCode"></div>--}%
-            %{--                </td>--}%
-            %{--            </tr>--}%
-            <g:if test="${irnDetails != null}">
-                <tr>
-                    <td colspan="4">
-                        <strong>Ack No</strong>:&nbsp;${irnDetails.AckNo}
-                    </td>
-                    <td colspan="5">
-                        <strong>Ack Dt</strong>:&nbsp;${irnDetails.AckDt}
-                    </td>
-                    <td colspan="9">
-                        <strong>IRN</strong>:&nbsp;${irnDetails.Irn}
-                    </td>
-                </tr>
-            </g:if>
-
+                </ul>
+            </td>
+        </tr>
+        <g:if test="${irnDetails != null}">
             <tr>
-                <th>Sl.No</th>
-                <th>Material HSN Code</th>
-                <th>Material Description</th>
-                <th>Pack(size)</th>
-                %{--                <th>C</th>--}%
-                <th>Batch no.</th>
-                <th>Exp Date</th>
-                %{--        <th>Mfg Date/ Use Before</th>--}%
-                <th>MRP</th>
-                %{-- <th>PTR</th>--}%
-                <th>PTS</th>
-                <th>Quantity</th>
-                <th>Discount Quantity</th>
-                %{--<th >Discount Repl Quantity</th>
-                <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Total Quantity</th>--}%
-                <th>Final Bill Quantity</th>
-                <th>pres.qty</th>
-                <th>No.of days</th>
-                <th>M</th>
-                <th>A</th>
-                <th>N</th>
-                <th>Amt After Disc.</th>
-                <th>Disc.Amt/Disc.%</th>
-                <th>Amt/CGST%</th>
-                <th>Amt/SGST%</th>
-                <th>Amt/IGST%</th>
-                <th>Net Amt</th>
-
+                <td colspan="4">
+                    <strong>Ack No</strong>:&nbsp;${irnDetails.AckNo}
+                </td>
+                <td colspan="5">
+                    <strong>Ack Dt</strong>:&nbsp;${irnDetails.AckDt}
+                </td>
+                <td colspan="9">
+                    <strong>IRN</strong>:&nbsp;${irnDetails.Irn}
+                </td>
             </tr>
-            </thead>
-        </div>
+        </g:if>
+
+        <tr>
+            <th>Sl.No</th>
+            <th>Material<br>HSN Code</th>
+            <th>Material<br>Description</th>
+            <th>Pack(size)</th>
+            %{--                <th>C</th>--}%
+            <th>Batch no.</th>
+            <th>Exp Date</th>
+            %{--        <th>Mfg Date/ Use Before</th>--}%
+            <th>MRP</th>
+            %{-- <th>PTR</th>--}%
+            <th>Rate</th>
+            <th>Qty</th>
+            <th>Disc. Qty</th>
+            %{--<th >Discount Repl Quantity</th>
+            <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Total Quantity</th>--}%
+            <th>Final Bill<br>Qty</th>
+            <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Prescription<br>Qty</th>
+            <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">No.of days</th>
+            <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">M</th>
+            <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">A</th>
+            <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">N</th>
+            <th>Amt After<br>Disc.</th>
+            <th>Disc.Amt<br>Disc.%</th>
+            <th>Amt<br>CGST%</th>
+            <th>Amt<br>SGST%</th>
+            <th>Amt<br>IGST%</th>
+            <th>Net Amt</th>
+
+        </tr>
+        </thead>
 
         <%
             ArrayList<Double> cgst = new ArrayList<>()
@@ -443,11 +388,11 @@
                     </g:else>
                     <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty + (long) pd.freeQty}</td>--}%
                         <td>${(long) pd.sqty}</td>
-                        <td>${pd.presqty}</td>
-                        <td>${pd.noOfDays}</td>
-                        <td>${pd.morning}</td>
-                        <td>${pd.afternoon}</td>
-                        <td>${pd.night}</td>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${pd.presqty}</td>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${pd.noOfDays}</td>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${pd.morning}</td>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${pd.afternoon}</td>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${pd.night}</td>
                         <%
                             //float amount = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
                             float amount = pd.sqty * pd.sRate
@@ -527,7 +472,7 @@
                     <td>${sp.night}</td>
                     <%
                         //float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
-                        float amount = sp.sqty * sp.sRate
+                        amount = sp.sqty * sp.sRate
                     %>
                     <td>${String.format("%.2f", amount)}</td>
                     <td>${String.format("%.2f", amount * (sp.discount / 100))}<br>${sp.discount}</td>
@@ -578,30 +523,40 @@
         </tr>
 
         </tbody>
+
+        <tfoot style="border: 1px solid #ffffff">
+        <tr style="border: 1px solid #ffffff">
+            <td style="border: 0;">
+                <!--place holder for the fixed-position footer-->
+                <div class="page-footer-space"></div>
+            </td>
+        </tr>
+        </tfoot>
+
     </table>
 
     <div id="postTableContent">
         <table class="table" style="width: 100%; margin-top: 10px;">
             <tbody>
             <tr style="border: 1px solid #ffffff">
-                <td colspan="14" style="border: 0"><g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
+                <td colspan="20" style="border: 0"><g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
                     <div id="watermark" class="print-watermark">CANCELLED</div>
                 </g:if>
                     <g:elseif test="${saleBillDetail.billStatus == 'DRAFT'}">
                         <div id="watermark" class="print-watermark">DRAFT</div>
                     </g:elseif>
-                    <p><u>Note:</u> <span>${saleBillDetail?.publicNote}</span></p>
+                %{--  <p><u>Note:</u> <span>${saleBillDetail?.publicNote}</span></p>
 
-                    <p>No of cases <br>
-                        Weight in Kgs :<br>
-                        Party Ref No. : <br>
-                        Rev-Charge :</p>
+                  <p>No of cases <br>
+                      Weight in Kgs :<br>
+                      Party Ref No. : <br>
+                      Rev-Charge :</p>--}%
                     <g:each var="t" in="${termsConditions}" status="i">
                         <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
                             <p>${raw(t?.termCondition)}</p>
                         </g:if>
                     </g:each></td>
-                <td colspan="11" style="border: 0"><table class="print" style="margin-top: 2%;width: 100%">
+                <td colspan="5" style="border: 0"><table class="print" style="margin-top: 2%;width: 100%">
                     <tr>
                         <th>Total</th>
                         <td>0.00</td>
@@ -724,25 +679,26 @@
     </div>
 
     <div class="page-footer">
-        <p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}
-        </p>
+        %{-- <p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}
+         </p>
 
-        <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
+         <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
 
-        <p style="float: left;margin-right: 24px;"><strong>Invoice No</strong>:  <g:if
-                test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else>
-        </p>
+         <p style="float: left;margin-right: 24px;"><strong>Invoice No</strong>:  <g:if
+                 test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else>
+         </p>--}%
 
         %{--<p style="float: right;margin-right: 24px;"><b>Page:</b><span class="pageNumber"></span></p>--}%
     </div>
 </div>
+
 </body>
 
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
+<asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/qr-code/jquery-qrcode-0.18.0.min.js"/>
-%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>--}%
-%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>--}%
+<asset:javascript src="https://printjs-4de6.kxcdn.com/print.min.js"/>
 
 <script>
     window.onload = function () {
@@ -770,7 +726,6 @@
 
           head.appendChild(style);*/
 
-        window.print();
         var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${saleBillDetail.dateCreated}');
@@ -864,7 +819,7 @@
         //     $("#prodDetails tr").slice(-data.length).remove();
         // }
 
-
+        window.print();
     };
 
     var qrText = '${saleBillDetail.invoiceNumber}';
