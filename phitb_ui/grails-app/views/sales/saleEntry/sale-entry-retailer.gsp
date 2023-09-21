@@ -71,10 +71,17 @@
             <div class="col-lg-12">
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="header" style="padding: 1px;">
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a title="Click to keep focus on Product and Batch Details" class="btn btn-sm btn-primary waves-effect" role="button"
+                                   data-toggle="collapse" href="#collapseTopBar" aria-expanded="false"
+                                   aria-controls="collapseTopBar" id="topBarCollapseButton"><i class="zmdi zmdi-long-arrow-down"></i> Top Bar Toggle
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="body">
+                    <div class="body" id="collapseTopBar">
                         <div class="row">
                             <div class="col-md-4">
                                 <label>Patient:</label>
@@ -82,6 +89,7 @@
                                 <input type="hidden" class="stateId"/>
                                 <span id="patientDetails"></span>
                             </div>
+
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date" <g:if
@@ -114,6 +122,7 @@
                                 <input type="text" class="form-control drname" name="drname" id="drname"/>
                             </div>
                         </div>
+
                         <div class="row">
 
                             <div class="col-md-2">
@@ -268,9 +277,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                    %{--<div class="well">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica,
-                                    craft beer labore wes anderson cred nesciunt sapiente ea proident.</div>--}%
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                %{--<div class="form-group">--}%
+                                <label><i class="fa fa-upload"></i> Attachment:</label> <input type="file"/>
+
+                                %{--</div>--}%
                             </div>
                         </div>
 
@@ -356,9 +372,9 @@
                 <div class="card" style="margin-bottom:10px;">
                     <div class="body">
                         <div class="table-responsive">
-                           %{-- <p class="loadTable">Loading...<img src="${assetPath(src: '/themeassets/images/3.gif')}"
-                                                                width="25" height="25"/>
-                            </p>--}%
+                            %{-- <p class="loadTable">Loading...<img src="${assetPath(src: '/themeassets/images/3.gif')}"
+                                                                 width="25" height="25"/>
+                             </p>--}%
 
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
@@ -419,8 +435,8 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-%{--                            <button id="saveDraftBtn" onclick="saveSaleInvoice('DRAFT')"--}%
-%{--                                    class="btn btn-primary">Save Draft</button>--}%
+                            %{--                            <button id="saveDraftBtn" onclick="saveSaleInvoice('DRAFT')"--}%
+                            %{--                                    class="btn btn-primary">Save Draft</button>--}%
                             <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')"
                                     class="btn btn-primary">Save</button>
                             %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
@@ -579,7 +595,7 @@
     $(document).ready(function () {
         seriesId = $("#series").val();
         $('#phoneNumberModal').modal({backdrop: 'static', keyboard: false}, 'show');
-        setTimeout(function(){
+        setTimeout(function () {
             document.getElementById("phono").focus();
         }, 6000);
         $("#customerSelect").select2();
@@ -671,9 +687,9 @@
                 {type: 'numeric'}, //18 A
                 {
                     type: 'dropdown',
-                    source: ['1-1-1','1-1-0','1-0-1','1-0-0','0-1-1','0-1-0','0-0-1','0-0-0']
+                    source: ['1-1-1', '1-1-0', '1-0-1', '1-0-0', '0-1-1', '0-1-0', '0-0-1', '0-0-0']
                 }, //19 N
-               // {type: 'numeric'}, //19 N
+                // {type: 'numeric'}, //19 N
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}, //GST Percentage
                 {type: 'text', readOnly: true}, //SGST Percentage
@@ -681,15 +697,15 @@
                 {type: 'text', readOnly: true}, //IGST Percentage
                 {type: 'text', readOnly: true},//originalSqty
                 {type: 'text', readOnly: true} //originalFqty
-              /*  <g:if test="${customer != null}">
+                /*  <g:if test="${customer != null}">
                 , {type: 'text', readOnly: true}, //draft sqty
                 {type: 'text', readOnly: true}, //draft fqty
                 {type: 'text', readOnly: true} //saved draft product id
                 </g:if>*/
             ],
-           hiddenColumns: true,
+            hiddenColumns: true,
             hiddenColumns: {
-                columns: [17,18,20,21,22,23,24,25,26]
+                columns: [17, 18, 20, 21, 22, 23, 24, 25, 26]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -774,8 +790,7 @@
                     var id = hot.getDataAtCell(row, 16);
                     if (e.keyCode === 13)
                         deleteTempStockRow(id, row);
-                }
-                else if (selection === 19) {
+                } else if (selection === 19) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         //   var typ = hot.getCellMeta(row,15).type;
@@ -855,8 +870,8 @@
 
                         /*if(selection === 15 || selection === 16 || selection === 17 || selection === 18 || selection
                             === 19){*/
-                        if(selection === 15 || selection === 16){
-                                this.selectCell(row, selection + 1);
+                        if (selection === 15 || selection === 16) {
+                            this.selectCell(row, selection + 1);
                         }
 
                         var allowEntry = false;
@@ -1961,7 +1976,7 @@
     })(Handsontable);
 
     $(document).on('keyup', '.discount', function (e) {
-        if($('.discount').val() > 100){
+        if ($('.discount').val() > 100) {
             Swal.fire({
                 icon: 'error',
                 title: 'Discount must be less than 100',
@@ -1970,7 +1985,7 @@
             $('.discount').val(0);
         }
 
-        if($('.discount').val() < 0){
+        if ($('.discount').val() < 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Discount must be greater than 0',
@@ -1984,10 +1999,10 @@
     $('#massDiscount').click(function (e) {
         var hotData = hot.getSourceData();
         var idArray = [];
-        for(var i=0;i<hotData.length;i++){
+        for (var i = 0; i < hotData.length; i++) {
             idArray.push(hotData[i][25])
         }
-        if($('.discount').val() > 100){
+        if ($('.discount').val() > 100) {
             Swal.fire({
                 icon: 'error',
                 title: 'Discount must be less than 100',
@@ -1996,7 +2011,7 @@
             $('.discount').val(0);
             return
         }
-        if($('.discount').val() < 0){
+        if ($('.discount').val() < 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Discount must be greater than 0',
@@ -2034,8 +2049,7 @@
 
     });
 
-    function setMassDiscount()
-    {
+    function setMassDiscount() {
         var discount = Number($('.discount').val())
         var data = hot.getData();
         for (var row = 0; row < data.length; row++) {
@@ -2065,14 +2079,14 @@
             }
 
         }
-       // calculateTaxes()
+        // calculateTaxes()
         calculateTotalAmt()
     }
 
 
     $(document).on('click', '#phoneNumber', function (e) {
         var phoneNumber = $('.phoneNumber').val();
-        if(phoneNumber.length < 10 || phoneNumber.length > 10){
+        if (phoneNumber.length < 10 || phoneNumber.length > 10) {
             Swal.fire({
                 icon: 'error',
                 title: 'Enter valid number',
@@ -2084,20 +2098,20 @@
             type: "GET",
             url: '/check-phone-exists',
             dataType: 'json',
-            data:{
-                phoneNumber:phoneNumber,
+            data: {
+                phoneNumber: phoneNumber,
             },
             success: function (data) {
                 console.log(data);
-                if(data.status === false){
+                if (data.status === false) {
                     $('#addPatientModal').modal('hide');
-                    var html= '<p>'+data.obj.phoneNumber+' ('+data.obj.entityName+')</p>';
+                    var html = '<p>' + data.obj.phoneNumber + ' (' + data.obj.entityName + ')</p>';
                     $('#patientDetails').html(html);
                     $('.customerId').val(data.obj.id);
                     $('#phoneNumberModal').modal('hide')
                     hot.selectCell(0, 1);
                     stateId = data.obj.stateId + "";
-                }else{
+                } else {
                     // alert("Phone Number Not exists.");
                     $('#phoneNumberModal').modal('hide');
                     $('#addPatientModal').modal({backdrop: 'static', keyboard: false}, 'show');
@@ -2105,7 +2119,7 @@
                     $('#phone').prop("readonly", true);
                 }
             },
-            error:function (data) {
+            error: function (data) {
 
             }
         });
@@ -2126,7 +2140,7 @@
             success: function (data) {
                 Swal.fire("Success!", "Patient added Successfully", "success");
                 $('#addPatientModal').modal('hide');
-                var html= '<p>'+data.phoneNumber+'</p>';
+                var html = '<p>' + data.phoneNumber + '</p>';
                 $('#patientDetails').html(html);
                 $('.customerId').val(data.id);
                 hot.selectCell(0, 1);
@@ -2140,21 +2154,21 @@
     });
 
 
-     $(document).on('keydown', function ( e ) {
-         // You may replace `m` with whatever key you want
-         if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'm') ) {
-             if($('#addPatientModal').hasClass('show')!==true){
-                 $("#phoneNumberModal").modal('show');
-             }
-         }
+    $(document).on('keydown', function (e) {
+        // You may replace `m` with whatever key you want
+        if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'm')) {
+            if ($('#addPatientModal').hasClass('show') !== true) {
+                $("#phoneNumberModal").modal('show');
+            }
+        }
 
-         if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'i') ) {
-             document.getElementById("phono").focus();
-         }
-     });
+        if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'i')) {
+            document.getElementById("phono").focus();
+        }
+    });
 
 
-    $("#gstInclusive").on("change", function (){
+    $("#gstInclusive").on("change", function () {
         //change amounts to include GST
         if ($(this).is(':checked')) {
             Swal.fire({
@@ -2168,7 +2182,7 @@
                 if (result.isConfirmed) {
                     $(this).prop('disabled', true);
                     console.log(hot.getData());
-                    if(hot.getData()[0][1] != null) {
+                    if (hot.getData()[0][1] != null) {
                         costInclusiveOfGST();
                     }
                 } else if (result.isDenied) {
@@ -2187,13 +2201,11 @@
     }
 
 
-    function costInclusiveOfGST(tableRow = null)
-    {
-        if($("#gstInclusive").is(':checked')) {
+    function costInclusiveOfGST(tableRow = null) {
+        if ($("#gstInclusive").is(':checked')) {
             var data = hot.getData();
             for (var row = 0; row < data.length; row++) {
-                if(tableRow != null && row !== tableRow)
-                {
+                if (tableRow != null && row !== tableRow) {
                     continue;
                 }
                 var gstPercentage = Number(hot.getDataAtCell(row, 21));
@@ -2202,8 +2214,7 @@
                 if (hot.getActiveEditor())
                     saleRate = Number(hot.getActiveEditor().TEXTAREA.value);
                 var discount = Number(hot.getDataAtCell(row, 8))
-                if(discount > 0 && discount<=100)
-                {
+                if (discount > 0 && discount <= 100) {
                     saleRate = saleRate - (saleRate * discount / 100)
                 }
                 var value = Number(saleRate.toFixed(2)) * Number(saleQty)

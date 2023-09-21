@@ -27,7 +27,12 @@ class AuthController {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
     def index() {
-        render(view: '/usermanagement/auth/index')
+        if(session.getAttribute("login"))
+        {
+            redirect(uri: "/dashboard")
+        }
+        else
+            render(view: '/usermanagement/auth/index')
     }
 
     def login() {
