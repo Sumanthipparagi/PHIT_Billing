@@ -786,7 +786,7 @@
             }
         });
         </g:else>
-        $("#productSelect").select2({
+/*        $("#productSelect").select2({
             dropdownAutoWidth: true,
             allowClear: true,
             ajax: {
@@ -814,7 +814,7 @@
                     };
                 },
             }
-        });
+        });*/
         $("#purTransportlogId").val(${purchaseTransportDetail?.id});
         $('#supplierBillDate').val(moment('${purchaseBillDetail?.supplierBillDate}').format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${purchaseTransportDetail?.lrDate}').format('YYYY-MM-DD'));
