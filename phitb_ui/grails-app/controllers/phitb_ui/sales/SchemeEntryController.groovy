@@ -109,6 +109,8 @@ class SchemeEntryController {
     def dataTable() {
         try {
             JSONObject jsonObject = new JSONObject(params)
+            String entityId = session.getAttribute("entityId").toString()
+            jsonObject.put("entityId", entityId)
             def apiResponse = new SalesService().showScheme(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))

@@ -62,6 +62,7 @@ class SchemeConfigurationService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        long entityId = Long.parseLong(paramsJsonObject.get("entityId").toString())
 
         String orderColumn = "id"
         switch (orderColumnId)
@@ -83,6 +84,7 @@ class SchemeConfigurationService {
                     ilike('zoneIds', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
