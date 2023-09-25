@@ -1503,7 +1503,7 @@ class SystemService {
 
     }
 
-    def getZonesByEntity(String id) {
+    JSONArray getZonesByEntity(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {

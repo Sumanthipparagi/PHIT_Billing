@@ -13,8 +13,9 @@ class StateController {
     {
         try
         {
+            String entityId = session.getAttribute("entityId").toString()
             ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-            ArrayList<String> zoneArrayList = new ZoneController().show()
+            JSONArray zoneArrayList = new SystemService().getZonesByEntity(entityId)
             ArrayList<String> countryArrayList = new CountryController().show()
             render(view: '/system/state/state',model: [entity:entity, zoneArrayList:zoneArrayList, countryArrayList:countryArrayList])
         }

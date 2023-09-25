@@ -62,6 +62,7 @@ class ZoneMasterService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        long entityId = paramsJsonObject.get("entityId")
 
         String orderColumn = "id"
         switch (orderColumnId) {
@@ -84,6 +85,7 @@ class ZoneMasterService {
                 }
             }
             eq('deleted', false)
+            eq('entityId', entityId)
             order(orderColumn, orderDir)
         }
 

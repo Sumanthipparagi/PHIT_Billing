@@ -6,6 +6,7 @@ import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.SalesService
+import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.HQAreasController
 import phitb_ui.product.BatchRegisterController
@@ -25,14 +26,7 @@ class SchemeEntryController {
     def addScheme()
     {
         String entityId = session.getAttribute("entityId").toString()
-        ArrayList<JSONObject> zoneList = new ArrayList<>()
-        ArrayList<JSONObject> allZones = new ZoneController().show()
-        for (JSONObject jsonObject : allZones) {
-            if(jsonObject.get("entityId").toString().equalsIgnoreCase(entityId))
-            {
-                zoneList.add(jsonObject)
-            }
-        }
+        JSONArray zoneList = new SystemService().getZonesByEntity(entityId)
         ArrayList<String> stateList = new StateController().show() as ArrayList<String>
         //ArrayList<String> cityList = new CityController().show() as ArrayList<String>
         ArrayList<String> hqAreaList = new HQAreasController().getByEntity() as ArrayList<String>
