@@ -9,4 +9,5 @@ include 'phitb_sales'
 include 'phitb_shipments'
 include 'phitb_system'
 include 'phitb_ui'
+include 'phitb_files'
 
