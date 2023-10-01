@@ -303,6 +303,57 @@ class DashboardController
                 def cancelBills = new SalesService().cancelInvoice(dr.id.toString(), session.getAttribute('entityId').toString(), session.getAttribute("financialYear").toString(), session.getAttribute('userId').toString())
                 if (cancelBills != null)
                 {
+                    //return stocks to inventory
+                    def productDetails = dr.get("products")
+                    if (productDetails)
+                    {
+                        for (JSONObject productDetail : productDetails)
+                        {
+                            def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
+                            double remainingQty = stockBook.get("remainingQty")
+                            double remainingFreeQty = stockBook.get("remainingFreeQty")
+
+                            //checking to where the stocks to be returned
+                            double originalSqty = productDetail.get("originalSqty")
+                            double originalFqty = productDetail.get("originalFqty")
+                            double sqty = productDetail.get("sqty")
+                            double freeQty = productDetail.get("freeQty")
+
+                            if ((originalSqty + originalFqty) == (sqty + freeQty) && originalSqty == sqty && originalFqty == freeQty)
+                            {
+                                remainingQty += sqty
+                                remainingFreeQty += freeQty
+                            }
+                            else
+                            {
+                                if (originalSqty >= sqty && originalFqty >= freeQty)
+                                {
+                                    remainingQty += sqty
+                                    remainingFreeQty += freeQty
+                                }
+                                else
+                                {
+                                    if (sqty > originalSqty)
+                                    {
+                                        remainingQty = sqty - (sqty - originalSqty)
+                                        remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
+                                    }
+                                    else if (freeQty > originalFqty)
+                                    {
+                                        remainingQty = remainingQty + sqty + (freeQty - originalFqty)
+                                        remainingFreeQty = freeQty - (freeQty - originalFqty)
+                                    }
+                                }
+                            }
+
+                            double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
+                            stockBook.put("remainingQty", remainingQty.toLong())
+                            stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                            stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                            new InventoryService().updateStockBook(stockBook)
+                        }
+                    }
+
                     jsonObject.put("saleStocks", "SUCCESS")
                 }
             }
