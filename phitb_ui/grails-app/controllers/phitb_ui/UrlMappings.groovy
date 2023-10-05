@@ -923,5 +923,8 @@ class UrlMappings {
         "/zone/datatable"(controller: "zone", action: "dataTable")
         "/zone/update/$id"(controller:"zone",action:"update")
         "/zone/delete/$id"(controller: "zone",action:"delete")
+
+        //file management
+        "/files/upload"(controller: "files", action: "uploadFile")
     }
 }

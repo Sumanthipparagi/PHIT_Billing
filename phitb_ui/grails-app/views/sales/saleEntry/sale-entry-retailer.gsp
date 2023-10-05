@@ -284,7 +284,7 @@
                         <div class="row mt-2">
                             <div class="col-md-12 col-lg-12 col-sm-12">
                                 %{--<div class="form-group">--}%
-                                <label><i class="fa fa-upload"></i> Attachment:</label> <input type="file"/>
+                                <label><i class="fa fa-upload"></i> Attachment:</label> <input id="attachment" onchange="uploadAttachment()" type="file"/>
 
                                 %{--</div>--}%
                             </div>
@@ -2266,6 +2266,61 @@
             cache: true
         }
     });
+
+    function uploadAttachment()
+    {
+        const fileInput = document.getElementById('attachment');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            Swal.fire('Error', 'Please select a file.', 'error');
+            return;
+        }
+
+        // Ask the user for confirmation
+        Swal.fire({
+            title: 'Confirm Upload',
+            text: 'Do you want to upload the selected file?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Upload',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Display uploading popup
+                Swal.fire({
+                    title: 'Uploading...',
+                    text: 'Please wait while the file is being uploaded.',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    onBeforeOpen: () => {
+                        // Initiate the AJAX request to upload the file
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        // Replace 'your_upload_url' with the actual upload URL
+                        fetch('files/upload', {
+                            method: 'POST',
+                            body: formData
+                        }).then((response) => {
+                                if (response.ok) {
+                                    Swal.fire('Success', 'File uploaded successfully!', 'success');
+                                } else {
+                                    Swal.fire('Error', 'File upload failed.', 'error');
+                                }
+                            })
+                            .catch((error) => {
+                                Swal.fire('Error', 'An error occurred while uploading the file.', 'error');
+                            })
+                            .finally(() => {
+                                // Close the uploading popup
+                                Swal.close();
+                            });
+                    }
+                });
+            }
+        });
+    }
 </script>
 
 <g:include view="controls/footer-content.gsp"/>

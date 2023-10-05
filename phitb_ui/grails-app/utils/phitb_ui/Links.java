@@ -952,6 +952,11 @@ public class Links
     public static String SALES_PRODUCT_DEL_CHECK = APP_CONTEXT_PATH +"sales/product-del-check";
     public static String SALES_BATCH_DEL_CHECK = APP_CONTEXT_PATH +"sales/batch-del-check";
 
+    //Files Upload
+    public static String FILE_UPLOAD = APP_CONTEXT_PATH +"files/upload";
+    public static String FILE_DOWNLOAD = APP_CONTEXT_PATH +"files/download";
+    public static String FILE_DELETE = APP_CONTEXT_PATH +"files/delete";
+
 
 
 
