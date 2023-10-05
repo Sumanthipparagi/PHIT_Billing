@@ -171,28 +171,51 @@ class AuthController {
         try {
             if (params.id != "") {
                 def user = new EntityService().getUser(params.id)
-                ArrayList<String> statelist = new StateController().show() as ArrayList<String>
-                ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-                ArrayList<String> citylist = new CityController().show() as ArrayList<String>
-                ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
-                ArrayList<String> genderList = new SystemService().getAllGender()
-                def city = new SystemService().getCityById(user.cityId.toString())
-                ArrayList<String> bank = new AccountsService().getBankRegisterByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
-                ArrayList<String> roles = new RoleController().show() as ArrayList<String>
-                //ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
-                ArrayList<String> division = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString()) as ArrayList<String>
-                ArrayList<String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
-                def department = new EntityService().getDeparmentByEntityId(session.getAttribute('entityId').toString())
-                Object entity = new EntityRegisterController().show() as ArrayList<String>
-                JSONArray routes = new EntityService().getRouteByEntity(session.getAttribute("entityId").toString())
-                render(view: '/usermanagement/auth/updateUser', model: [user       : user, statelist: statelist,
-                                                                        routes     : routes,
-                                                                        countrylist: countrylist, citylist: citylist,
-                                                                        userList   : userList,
-                                                                        genderList : genderList, department: department,
-                                                                        bank       : bank, roles: roles, account: account,
-                                                                        //userregister: userregister,
-                                                                        division   : division, entity: entity, city: city])
+                JSONObject userEntity = user.get("entity")
+                JSONObject userRole = user.get("role")
+
+                //if loggedin user not entity admin or superuser, then he should only open his account
+                if(!session.getAttribute("role").toString().equalsIgnoreCase("ENTITY_ADMIN")
+                    || session.getAttribute("role").toString().equalsIgnoreCase("SUPER_USER"))
+                {
+                    if(params.id != session.getAttribute("userId").toString())
+                    {
+                        redirect(uri: '/')
+                        return
+                    }
+                }
+
+                if((userEntity.get("id") == session.getAttribute("entityId"))
+                        || (session.getAttribute("role").toString().equalsIgnoreCase("ENTITY_ADMIN"))
+                        || (session.getAttribute("role").toString().equalsIgnoreCase("SUPER_USER"))) {
+
+                    ArrayList<String> statelist = new StateController().show() as ArrayList<String>
+                    ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
+                    ArrayList<String> citylist = new CityController().show() as ArrayList<String>
+                    ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
+                    ArrayList<String> genderList = new SystemService().getAllGender()
+                    def city = new SystemService().getCityById(user.cityId.toString())
+                    ArrayList<String> bank = new AccountsService().getBankRegisterByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
+                    ArrayList<String> roles = new RoleController().show() as ArrayList<String>
+                    //ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+                    ArrayList<String> division = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString()) as ArrayList<String>
+                    ArrayList<String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
+                    def department = new EntityService().getDeparmentByEntityId(session.getAttribute('entityId').toString())
+                    Object entity = new EntityRegisterController().show() as ArrayList<String>
+                    JSONArray routes = new EntityService().getRouteByEntity(session.getAttribute("entityId").toString())
+                    render(view: '/usermanagement/auth/updateUser', model: [user       : user, statelist: statelist,
+                                                                            routes     : routes,
+                                                                            countrylist: countrylist, citylist: citylist,
+                                                                            userList   : userList,
+                                                                            genderList : genderList, department: department,
+                                                                            bank       : bank, roles: roles, account: account,
+                                                                            //userregister: userregister,
+                                                                            division   : division, entity: entity, city: city])
+
+                }
+                else {
+                    redirect(uri: '/')
+                }
             } else {
                 redirect(uri: '/')
             }
