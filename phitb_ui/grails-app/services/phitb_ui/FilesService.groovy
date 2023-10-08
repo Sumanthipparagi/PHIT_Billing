@@ -1,11 +1,14 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.glassfish.jersey.client.ClientConfig
 import org.glassfish.jersey.media.multipart.FormDataBodyPart
 import org.glassfish.jersey.media.multipart.FormDataMultiPart
 import org.glassfish.jersey.media.multipart.MultiPart
+import org.glassfish.jersey.media.multipart.MultiPartFeature
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart
 import org.grails.web.json.JSONObject
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.multipart.MultipartFile
 
 import javax.ws.rs.client.Client
@@ -18,11 +21,21 @@ import javax.ws.rs.core.Response
 @Transactional
 class FilesService {
 
+
     JSONObject uploadFile(MultipartFile multipartFile, JSONObject uploadFileDetails) {
 
-        String name = uploadFileDetails.get("entityId").toString() + "-"+new Date().format("ddMMyyyyHHmmss") +"-" + multipartFile.getOriginalFilename()
-        File file = new File(name); // create a new file
-        multipartFile.transferTo(file);
+        String extension = ".tmp"
+        String originalFilename = multipartFile.originalFilename
+        if (originalFilename) {
+            int lastDotIndex = originalFilename.lastIndexOf('.')
+            if (lastDotIndex >= 0 && lastDotIndex < originalFilename.length() - 1) {
+                extension = "."+originalFilename.substring(lastDotIndex + 1).toLowerCase()
+            }
+        }
+
+        // Create a temporary File from the MultipartFile
+        File tempFile = File.createTempFile("temp", extension)
+        multipartFile.transferTo(tempFile)
 
 
         String docNumber = "NA"
@@ -38,25 +51,31 @@ class FilesService {
             description = uploadFileDetails.get("description").toString()
 
         MultiPart multiPart = new MultiPart()
+        multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE)
         multiPart.bodyPart(new FormDataBodyPart("entityId",uploadFileDetails.get("entityId").toString()))
         multiPart.bodyPart(new FormDataBodyPart("userId",uploadFileDetails.get("userId").toString()))
         multiPart.bodyPart(new FormDataBodyPart("docNumber",docNumber))
         multiPart.bodyPart(new FormDataBodyPart("docType",docType))
         multiPart.bodyPart(new FormDataBodyPart("description",description))
-        multiPart.bodyPart(new FileDataBodyPart ("file", file, MediaType.APPLICATION_OCTET_STREAM_TYPE))
+        FormDataBodyPart filePart = new FileDataBodyPart("file", tempFile, MediaType.APPLICATION_OCTET_STREAM_TYPE)
+        multiPart.bodyPart(filePart)
 
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        //WebTarget target = client.target("http://localhost:8080/");
+        //WebTarget target = client.target(new Links().API_GATEWAY);
+        ClientConfig config = new ClientConfig()
+        // Configure Jersey Client to handle multipart requests
+        config.register(MultiPartFeature.class)
+
+        Client client = ClientBuilder.newClient(config)
+
+        WebTarget target = client.target("http://localhost:8080/");
         try {
             Response apiResponse = target
                     .path(new Links().FILE_UPLOAD)
-                    .request()
-                    .post(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA_TYPE))
-            if(apiResponse.status == 200)
-            {
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(multiPart, multiPart.getMediaType()))
+            if(apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
-               return jsonObject
+                return jsonObject
             }
             else
             {

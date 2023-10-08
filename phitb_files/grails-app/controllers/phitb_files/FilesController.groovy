@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 
 class FilesController {
 
+    static allowedMethods = [uploadFile: ['POST']]
     def index() { }
 
     def uploadFile()
@@ -22,8 +23,7 @@ class FilesController {
         SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyhhmmssSSS")
         String date = sdf.format(new Date())
 
-        String folderName = File.separator + entityId +
-                date.format("yyyy") + File.separator + new Date().format("MM") + File.separator
+        String folderName = File.separator + new Date().format("YYYY") + File.separator + new Date().format("MM") + File.separator + entityId + File.separator
         String fileName = ""
         if (multipartFile != null)
         {
