@@ -148,6 +148,10 @@ class PurchaseReturnService {
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
         long entityId = paramsJsonObject.get("entityId")
+        long userId = 0
+        if(paramsJsonObject.has("userId"))
+            userId = Long.parseLong(paramsJsonObject.get("userId").toString())
+
         String orderColumn = "id"
         switch (orderColumnId)
         {
@@ -169,6 +173,9 @@ class PurchaseReturnService {
                     ilike('invoiceNumber', '%' + searchTerm + '%')
                 }
             }
+            if(userId > 0)
+                eq("createdUser", userId)
+
             eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)

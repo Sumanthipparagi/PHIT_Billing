@@ -447,6 +447,8 @@ class SaleOrderEntryController {
         try {
             String userId = session.getAttribute("userId")
             JSONObject jsonObject = new JSONObject(params)
+            if (!session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                jsonObject.put("userId", userId)
             jsonObject.put("entityId", session.getAttribute("entityId"))
             jsonObject.put("financialYear", session.getAttribute("financialYear"))
             def apiResponse = new SalesService().showSaleOrder(jsonObject)

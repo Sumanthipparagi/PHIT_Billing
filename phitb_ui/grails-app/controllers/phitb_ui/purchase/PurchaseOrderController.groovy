@@ -3,6 +3,7 @@ package phitb_ui.purchase
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -363,7 +364,8 @@ class PurchaseOrderController
     def dataTable() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("userId", session.getAttribute("userId"))
+            if (!session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                jsonObject.put("userId", session.getAttribute("userId"))
             jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new PurchaseService().showPurchaseOrderDetails(jsonObject)
             if (apiResponse.status == 200) {

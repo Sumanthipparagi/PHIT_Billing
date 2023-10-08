@@ -461,6 +461,9 @@ class DeliveryChallanController
         {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId",session.getAttribute('entityId'))
+            if (!session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                jsonObject.put("userId", session.getAttribute("userId"))
+
             def apiResponse = new SalesService().showDeliveryChallan(jsonObject)
             if (apiResponse.status == 200)
             {

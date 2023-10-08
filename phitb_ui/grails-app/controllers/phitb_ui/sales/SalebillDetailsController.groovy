@@ -145,7 +145,7 @@ class SalebillDetailsController {
     def dataTable() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            if (session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+            if (!session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
                 jsonObject.put("userId", session.getAttribute("userId"))
             jsonObject.put("entityId", session.getAttribute("entityId"))
             jsonObject.put("financialYear", session.getAttribute("financialYear"))

@@ -87,6 +87,10 @@ class DeliveryChallanService {
         String invoiceStatus = paramsJsonObject.get("invoiceStatus")
         long entityId = paramsJsonObject.get("entityId")
 
+        long userId = 0
+        if(paramsJsonObject.has("userId"))
+            userId = Long.parseLong(paramsJsonObject.get("userId").toString())
+
         String orderColumn = "id"
         switch (orderColumnId)
         {
@@ -111,6 +115,9 @@ class DeliveryChallanService {
             {
                 eq('billStatus', invoiceStatus)
             }
+
+            if(userId > 0)
+                eq("createdUser", userId)
             eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)

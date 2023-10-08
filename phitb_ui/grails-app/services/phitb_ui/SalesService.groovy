@@ -915,6 +915,7 @@ contains both sale bill and products
     def showSaleOrder(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target("http://localhost:8083/");
         try {
             Response apiResponse = target
                     .path(new Links().SALE_ORDER_DATATABLE)
@@ -1470,6 +1471,7 @@ contains both sale bill and products
     def salesReturnDatatable(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target("http://localhost:8083/");
         try {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_DATATABLE)
@@ -2040,6 +2042,7 @@ contains both deliveryChallan and products
     def showDeliveryChallan(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target("http://localhost:8083/");
         try {
             Response apiResponse = target
                     .path(new Links().DELIVERY_CHALLAN_DATATABLE)

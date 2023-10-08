@@ -137,6 +137,10 @@ class SalesOrderEntryService
         long entityId = paramsJsonObject.get("entityId")
         String financialYear = paramsJsonObject.get("financialYear")
 
+        long userId = 0
+        if(paramsJsonObject.has("userId"))
+            userId = Long.parseLong(paramsJsonObject.get("userId").toString())
+
         String orderColumn = "id"
         switch (orderColumnId)
         {
@@ -157,6 +161,9 @@ class SalesOrderEntryService
                     ilike('refNumber', '%' + searchTerm + '%')
                 }
             }
+
+            if(userId > 0)
+                eq("createdUser", userId)
 
             eq("entityId", entityId)
             eq('deleted', false)

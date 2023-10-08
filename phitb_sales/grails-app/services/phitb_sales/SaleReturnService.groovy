@@ -170,6 +170,11 @@ class SaleReturnService {
         String orderDir = paramsJsonObject.get("order[0][dir]")
         long entityId = paramsJsonObject.get("entityId")
         String financialYear = paramsJsonObject.get("financialYear")
+
+        long userId = 0
+        if(paramsJsonObject.has("userId"))
+            userId = Long.parseLong(paramsJsonObject.get("userId").toString())
+
         String orderColumn = "id"
         switch (orderColumnId)
         {
@@ -191,6 +196,10 @@ class SaleReturnService {
                     ilike('invoiceNumber', '%' + searchTerm + '%')
                 }
             }
+
+            if(userId > 0)
+                eq("createdUser", userId)
+
             eq('entityId', entityId)
             eq('deleted', false)
             eq('financialYear', financialYear)

@@ -2105,7 +2105,9 @@ class SaleReturnController {
     def salesReturnDatatables() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("userId", session.getAttribute("userId"))
+            if (!session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                jsonObject.put("userId", session.getAttribute("userId"))
+
             jsonObject.put("entityId", session.getAttribute("entityId"))
             jsonObject.put("financialYear", session.getAttribute("financialYear"))
             def apiResponse = new SalesService().salesReturnDatatable(jsonObject)

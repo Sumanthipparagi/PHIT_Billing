@@ -462,7 +462,9 @@ class PurchaseReturnController
     def purchaseReturnDatatables() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("userId", session.getAttribute("userId"))
+            if (!session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                jsonObject.put("userId", session.getAttribute("userId"))
+
             jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new PurchaseService().purchaseReturnDatatable(jsonObject)
             if (apiResponse.status == 200) {
