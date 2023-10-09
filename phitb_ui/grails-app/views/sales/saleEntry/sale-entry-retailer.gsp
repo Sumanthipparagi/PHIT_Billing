@@ -289,7 +289,7 @@
                                 </div>
                                 <div id="FileUploadedContainer" class="hidden">
                                     <input type="hidden" name="uploadedAttachment" id="uploadedAttachment"/>
-                                    Attachment Uploaded <i class="zmdi zmdi-check"></i> &nbsp;&nbsp;<span><a href="#"><i class="zmdi zmdi-download" ></i> Download</a></span> &nbsp;&nbsp; <span><a href="#" class="danger" onclick="deleteFile()"><i class="zmdi zmdi-delete" ></i> Delete</a></span>
+                                    Attachment Uploaded <i class="zmdi zmdi-check"></i> &nbsp;&nbsp;<span><a href="#" onclick="downloadFile()"><i class="zmdi zmdi-download" ></i> Download</a></span> &nbsp;&nbsp; <span><a href="#" class="danger" onclick="deleteFile()"><i class="zmdi zmdi-delete" ></i> Delete</a></span>
                                 </div>
                             </div>
                         </div>
@@ -2343,6 +2343,18 @@
                 });
             }
         });
+    }
+
+    function downloadFile()
+    {
+        var uploadedFileName = $("#uploadedAttachment").val();
+        if (uploadedFileName == null || uploadedFileName.length < 2) {
+            Swal.fire('Error', 'File not uploaded', 'error');
+            return;
+        }
+
+        window.open("files/download?filename="+uploadedFileName);
+
     }
 
     function deleteFile()

@@ -926,6 +926,7 @@ class UrlMappings {
 
         //file management
         "/files/upload"(controller: "files", action: "uploadFile")
+        "/files/download"(controller: "files", action: "downloadFile")
         "/files/delete"(controller: "files", action: "deleteFile")
     }
 }

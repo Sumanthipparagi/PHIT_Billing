@@ -247,9 +247,15 @@
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
+
+                        var downloadAttachment = ""
+                        if(json.data[i].attachment != null && json.data[i].attachment.length > 1)
+                        {
+                            downloadAttachment = '<a class="btn btn-sm btn-info" title="Attachment" onclick="downloadFile(\'' + json.data[i].attachment +'\')" href="#"><i class="fa fa-download"></i></a>'
+                        }
                         var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
                         return_data.push({
-                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
+                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice + " "+downloadAttachment,
                             /*'action': '',*/
                             'customer': json.data[i].customer?.entityName,
                             'invNo': invoiceNumber,
@@ -335,6 +341,11 @@
 
     function invoiceStatusChanged() {
         saleInvoiceTable();
+    }
+
+    function downloadFile(filename)
+    {
+        window.open("files/download?filename="+filename);
     }
 
 </script>

@@ -863,6 +863,7 @@ class SaleEntryController
             String publicNote = params.publicNote
             String rep = params.rep
             String refDate = params.refDate
+            String attachment = params.attachment
             if (!message) {
                 message = "NA"
             }
@@ -1052,6 +1053,7 @@ class SaleEntryController
             saleBillDetails.put("exempted", 0) //TODO: to be changed
             saleBillDetails.put("seriesCode", seriesCode)
             saleBillDetails.put("drname", drname)
+            saleBillDetails.put("attachment", attachment)
             saleBillDetails.put("uuid", params.uuid)
             saleBillDetails.put("rep", rep)
             saleBillDetails.put("refNo", refNo)

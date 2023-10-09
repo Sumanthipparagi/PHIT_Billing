@@ -658,6 +658,7 @@
                 var saleBillId = $(".saleBillId").val(invoice.id);
                 var einvoice = "<a class='btn btn-sm btn-info' style='color: white;' onclick='exportIRNSingle(" + invoice.id + ")'><i class='fa fa-download'></i> e-invoice JSON</a>"
                 var ewaybill = "<a class='btn btn-sm btn-info' style='color: white;' onclick='showEwayBillModal(" + invoice.id + ",\"" + invoice.invoiceNumber + "\")'><i class='fa fa-truck'></i> e-Way Bill</a>"
+
                 if (invoice.billStatus !== "DRAFT") {
                     if (invoice.invoiceNumber !== undefined) {
                         orderDate = moment(invoice.orderDate.split("T")[0], "YYYY-MM-DD").format("DD/MM/YYYY");

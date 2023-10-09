@@ -27,7 +27,15 @@ class FilesController {
 
     def downloadFile()
     {
-
+        String fileName = params.filename
+        long entityId = session.getAttribute("entityId")
+        File file = new FilesService().downloadFile(fileName, entityId)
+        if(file != null)
+        {
+            render(file: file, contentType: getServletContext().getMimeType(file.getName()), fileName: fileName)
+        }
+        else
+            response.status = 400
     }
 
     def deleteFile()

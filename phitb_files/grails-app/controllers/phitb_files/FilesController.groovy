@@ -119,7 +119,7 @@ class FilesController {
                     {
                         if (requestedFile.exists())
                         {
-                            render(file: requestedFile, contentType: getServletContext().getMimeType(requestedFile.getName()))
+                            render(file: requestedFile, contentType: getServletContext().getMimeType(requestedFile.getName()), fileName: fileName)
                         }
                         else
                         {

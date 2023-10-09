@@ -779,6 +779,10 @@ class SaleBillDetailsService
         saleBillDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         saleBillDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         saleBillDetails.uuid = jsonObject.get("uuid").toString()
+        if(jsonObject.has("attachment"))
+        {
+            saleBillDetails.attachment = jsonObject.get("attachment").toString()
+        }
         saleBillDetails.save(flush: true)
         if (!saleBillDetails.hasErrors())
         {

@@ -1,6 +1,7 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.apache.commons.io.IOUtils
 import org.glassfish.jersey.client.ClientConfig
 import org.glassfish.jersey.media.multipart.FormDataBodyPart
 import org.glassfish.jersey.media.multipart.FormDataMultiPart
@@ -67,7 +68,7 @@ class FilesService {
 
         Client client = ClientBuilder.newClient(config)
 
-        WebTarget target = client.target("http://localhost:8080/");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
                     .path(new Links().FILE_UPLOAD)
@@ -95,17 +96,23 @@ class FilesService {
     def downloadFile(String fileName, long entityId)
     {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target("http://localhost:8080/");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
                     .path(new Links().FILE_DOWNLOAD)
                     .queryParam("fileName",fileName)
                     .queryParam("entityId", entityId)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
                     .get()
             if(apiResponse.status == 200) {
-                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
-                return jsonObject
+                InputStream input = apiResponse.readEntity(InputStream.class);
+                byte[] fileBytes = IOUtils.toByteArray(input); // IOUtils is from Apache Commons
+                File file = File.createTempFile("tmp-",fileName)
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(fileBytes);
+                fos.flush();
+                fos.close()
+                return file
             }
             else
             {
@@ -122,7 +129,7 @@ class FilesService {
     def deleteFile(String fileName, long entityId)
     {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target("http://localhost:8080/");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
                     .path(new Links().FILE_DELETE)
