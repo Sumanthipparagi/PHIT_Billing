@@ -283,10 +283,14 @@
 
                         <div class="row mt-2">
                             <div class="col-md-12 col-lg-12 col-sm-12">
-                                %{--<div class="form-group">--}%
+                                <div id="FileUploadContainer">
                                 <label><i class="fa fa-upload"></i> Attachment:</label> <input id="attachment" onchange="uploadAttachment()" type="file"/>
 
-                                %{--</div>--}%
+                                </div>
+                                <div id="FileUploadedContainer" class="hidden">
+                                    <input type="hidden" name="uploadedAttachment" id="uploadedAttachment"/>
+                                    Attachment Uploaded <i class="zmdi zmdi-check"></i> &nbsp;&nbsp;<span><a href="#"><i class="zmdi zmdi-download" ></i> Download</a></span> &nbsp;&nbsp; <span><a href="#" class="danger" onclick="deleteFile()"><i class="zmdi zmdi-delete" ></i> Delete</a></span>
+                                </div>
                             </div>
                         </div>
 
@@ -1319,6 +1323,7 @@
             $("#saveDraftBtn").prop("disabled", false);
             return;
         }
+        var attachment = $("#uploadedAttachment").val();
         var saleData = JSON.stringify(hot.getSourceData());
         var url = "";
         url = "/savesaleRetailerEntry";
@@ -1355,7 +1360,8 @@
                         publicNote: publicNote,
                         privateNote: privateNote,
                         rep: rep,
-                        uuid: self.crypto.randomUUID()
+                        uuid: self.crypto.randomUUID(),
+                        attachment: attachment
                     },
                     beforeSend: function () {
                         Swal.fire({
@@ -2301,25 +2307,84 @@
                         // Replace 'your_upload_url' with the actual upload URL
                         fetch('files/upload', {
                             method: 'POST',
-                            body: formData
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
                         }).then((response) => {
                                 if (response.ok) {
-                                    Swal.fire('Success', 'File uploaded successfully!', 'success');
+                                    response.json().then((data) => {
+                                        Swal.fire('Success', 'File uploaded successfully!', 'success');
+                                        $("#FileUploadedContainer").removeClass("hidden");
+                                        $("#FileUploadContainer").addClass("hidden");
+                                        $("#uploadedAttachment").val(data.fileName);
+                                    });
+
                                 } else {
                                     Swal.fire('Error', 'File upload failed.', 'error');
+                                    $("#FileUploadContainer").removeClass("hidden");
+                                    $("#FileUploadedContainer").addClass("hidden");
+                                    $("#uploadedAttachment").val("");
+                                    $("#attachment").val("");
                                 }
                             })
                             .catch((error) => {
                                 Swal.fire('Error', 'An error occurred while uploading the file.', 'error');
+                                $("#FileUploadContainer").removeClass("hidden");
+                                $("#FileUploadedContainer").addClass("hidden");
+                                $("#uploadedAttachment").val("");
+                                $("#attachment").val("");
                             })
                             .finally(() => {
                                 // Close the uploading popup
-                                Swal.close();
+                                //Swal.close();
                             });
                     }
                 });
             }
         });
+    }
+
+    function deleteFile()
+    {
+        var uploadedFileName = $("#uploadedAttachment").val();
+        if (uploadedFileName == null || uploadedFileName.length < 2) {
+            Swal.fire('Error', 'File not uploaded', 'error');
+            return;
+        }
+
+        // Ask the user for confirmation
+        Swal.fire({
+            title: 'Delete file?',
+            text: 'Do you want to delete the uploaded file?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                fetch('files/delete?filename='+uploadedFileName, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then((response) => {
+                    if (response.ok) {
+                        Swal.fire('Success', 'File deleted', 'success');
+                        $("#FileUploadContainer").removeClass("hidden");
+                        $("#FileUploadedContainer").addClass("hidden");
+                        $("#uploadedAttachment").val("");
+                        $("#attachment").val("");
+                    }
+                    else
+                    {
+                        Swal.fire('Error', 'An error occurred while deleting the file.', 'error');
+                    }
+                });
+
+            }
+        })
     }
 </script>
 

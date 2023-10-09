@@ -15,10 +15,12 @@ class UploadedFile implements Serializable, LogicalDelete<UploadedFile> {
 
     Date dateCreated
     Date lastUpdated
+    Date deletedTime
 
     static constraints = {
         docType nullable: true
         docNumber nullable: true
         description nullable: true
+        deletedTime nullable: true
     }
 }

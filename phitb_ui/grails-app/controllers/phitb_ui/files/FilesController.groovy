@@ -17,6 +17,29 @@ class FilesController {
         uploadedFileDetails.put("description", params.description)
 
         JSONObject jsonObject = new FilesService().uploadFile(multipartFile, uploadedFileDetails)
-        respond jsonObject, formats: ['json']
+        if(jsonObject != null) {
+            respond jsonObject, formats: ['json'], status: 200
+        }
+        else {
+            response.status = 400
+        }
+    }
+
+    def downloadFile()
+    {
+
+    }
+
+    def deleteFile()
+    {
+        String fileName = params.filename
+        long entityId = session.getAttribute("entityId")
+        JSONObject jsonObject = new FilesService().deleteFile(fileName, entityId)
+        if(jsonObject != null) {
+            respond jsonObject, formats: ['json'], status: 200
+        }
+        else {
+            response.status = 400
+        }
     }
 }

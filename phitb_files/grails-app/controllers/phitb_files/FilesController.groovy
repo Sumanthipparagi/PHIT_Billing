@@ -99,80 +99,55 @@ class FilesController {
 
         try
         {
-            String defaultFileName = new FilesService().getApplicationPath() + "noimage.jpg"
-            String path = params.path
-            path = URLDecoder.decode(path)
-            def fileLocation = new FilesService().getApplicationPath() + File.separator + path
-
-            if (path.toLowerCase().contains('keypair'))
+            String fileName = params.fileName
+            long entityId = Long.parseLong(params.entityId)
+            UploadedFile uploadedFile = UploadedFile.findByFileNameAndEntityId(fileName, entityId)
+            if(uploadedFile != null)
             {
-                response.status = 400
-                return
-            }
-            if (path.toLowerCase().contains("_small")) {
-                defaultFileName = new FilesService().getApplicationPath() + "noimage.jpg"
-                fileLocation = new FilesService().getApplicationPath() + File.separator + path
-            }
+                String fileLocation = new FilesService().getApplicationPath() + "documents" + File.separator + uploadedFile.folderName + uploadedFile.fileName
+                File requestedFile = new File(fileLocation)
+                println("File Controller: Complete path requested file: " + requestedFile.absolutePath)
 
-
-            File requestedFile = new File(fileLocation)
-            println("File Controller: Complete path requested file: " + requestedFile.absolutePath)
-
-            if (requestedFile.isDirectory())
-            {
-                System.out.println("Requested for folder, instead of file")
-                render(text: "No Such File.")
+                if (requestedFile.isDirectory())
+                {
+                    System.out.println("Requested for folder, instead of file")
+                    render(text: "No Such File.")
+                }
+                else
+                {
+                    try
+                    {
+                        if (requestedFile.exists())
+                        {
+                            render(file: requestedFile, contentType: getServletContext().getMimeType(requestedFile.getName()))
+                        }
+                        else
+                        {
+                            response.status = 400
+                        }
+                    }
+                    catch (ClientAbortException cl)
+                    {
+                        println("FileLocationController:: " + cl.message)
+                        response.status = 400
+                    }
+                    catch (ClientErrorException ce)
+                    {
+                        println("FileLocationController:: " + ce.message)
+                        response.status = 400
+                    }
+                    catch (Exception ex)
+                    {
+                        println("FileLocationController:: " + ex.message)
+                        response.status = 400
+                    }
+                }
             }
             else
             {
-                try
-                {
-                    if (path.toLowerCase().contains(".jpg") || path.toLowerCase().contains(".png") || path.toLowerCase().contains(".jpeg"))
-                    {
-                        if (requestedFile.exists())
-                        {
-                            render(file: requestedFile, contentType: getServletContext().getMimeType(requestedFile.getName()))
-                        }
-                        else
-                        {
-                            File defaultFile = new File(defaultFileName);
-                            println("File controller: Default path taken... since file " + requestedFile.absolutePath + " doesn't exist.")
-                            render(file: defaultFile, contentType: getServletContext().getMimeType(defaultFileName))
-                        }
-                    }
-                    else if (path.toLowerCase().substring(path.length() - 2, path.length()).equals("na"))
-                    {
-                        System.out.println("File Does not exists");
-                        File defaultFile = new File(defaultFileName);
-                        render(file: defaultFile, contentType: getServletContext().getMimeType(defaultFileName))
-                    }
-                    else
-                    {
-                        if (requestedFile.exists())
-                        {
-                            render(file: requestedFile, contentType: getServletContext().getMimeType(requestedFile.getName()))
-                        }
-                        else
-                        {
-                            File defaultFile = new File(defaultFileName);
-                            println("File controller: Default path taken... since file " + requestedFile.absolutePath + " doesn't exist.")
-                            render(file: defaultFile, contentType: getServletContext().getMimeType(defaultFileName))
-                        }
-                    }
-                }
-                catch (ClientAbortException cl)
-                {
-                    println("FileLocationController:: " + cl.message)
-                }
-                catch (ClientErrorException ce)
-                {
-                    println("FileLocationController:: " + ce.message)
-                }
-                catch (Exception ex)
-                {
-                    println("FileLocationController:: " + ex.message)
-                }
+                response.status = 400
             }
+
         }
         catch (Exception ex)
         {
@@ -183,6 +158,27 @@ class FilesController {
 
     def deleteFile()
     {
+        String fileName = params.fileName
+        long entityId = Long.parseLong(params.entityId)
+        UploadedFile uploadedFile = UploadedFile.findByFileNameAndEntityId(fileName, entityId)
+        if(uploadedFile != null)
+        {
+            String fileLocation = new FilesService().getApplicationPath() + "documents" + File.separator + uploadedFile.folderName + uploadedFile.fileName
+            File file = new File(fileLocation)
+            if(file.exists())
+            {
+                file.delete()
+            }
+            uploadedFile.deletedTime = new Date()
+            uploadedFile.save(flush:true)
+            //remove it
+            uploadedFile.delete()
 
+            respond uploadedFile, formats: ['json'], status: 200
+        }
+        else
+        {
+            response.status = 400
+        }
     }
 }

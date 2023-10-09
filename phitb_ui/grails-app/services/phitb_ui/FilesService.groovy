@@ -88,7 +88,61 @@ class FilesService {
             return null
         }
         finally {
-            file.delete()
+            tempFile.delete()
+        }
+    }
+
+    def downloadFile(String fileName, long entityId)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target("http://localhost:8080/");
+        try {
+            Response apiResponse = target
+                    .path(new Links().FILE_DOWNLOAD)
+                    .queryParam("fileName",fileName)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200) {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :FilesService , action :  uploadFile  , Ex:' + ex)
+            log.error('Service :FilesService , action :  uploadFile  , Ex:' + ex)
+            return null
+        }
+    }
+
+    def deleteFile(String fileName, long entityId)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target("http://localhost:8080/");
+        try {
+            Response apiResponse = target
+                    .path(new Links().FILE_DELETE)
+                    .queryParam("fileName",fileName)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200) {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :FilesService , action :  uploadFile  , Ex:' + ex)
+            log.error('Service :FilesService , action :  uploadFile  , Ex:' + ex)
+            return null
         }
     }
 }

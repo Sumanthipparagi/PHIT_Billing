@@ -71,6 +71,8 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
 
     String irnDetails
     String ewayBillDetails
+
+    String attachment
     static constraints = {
         invoiceNumber unique: true, nullable: true
         irnDetails nullable: true
@@ -103,6 +105,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
         totalDiscount scale: 2
         totalAmount scale: 2
         ewayBillDetails nullable: true
+        attachment nullable: true
     }
 
     static mapping = {
