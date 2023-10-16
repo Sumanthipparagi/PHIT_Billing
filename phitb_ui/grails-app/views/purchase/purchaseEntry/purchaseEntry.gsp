@@ -633,7 +633,7 @@
 <g:include view="controls/sales/batch-detail.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
-<g:include view="controls/product/add-batch-register.gsp"/>
+<g:include view="controls/product/add-batch-register-purchase-entry.gsp"/>
 
 
 <!-- Jquery Core Js -->

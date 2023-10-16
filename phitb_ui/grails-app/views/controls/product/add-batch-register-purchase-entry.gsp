@@ -15,7 +15,7 @@
                                 Product <small class="required-indicator" style="color: red;">*</small>
                             </label>
 
-                            <select style="width: 100%" class="form-control show-tick select select2-hidden-accessible productSelect" name="product" id="productSelect"></select>
+                            <input type="hidden" style="width: 100%" class="form-control show-tick select select2-hidden-accessible productSelect" name="product" id="productSelect"/>
                             <input type="hidden" class="productId" name="productId"/>
                         </div>
 
