@@ -658,6 +658,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"
         integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 
+
 <script>
 
     var headerRow = [
@@ -786,35 +787,8 @@
             }
         });
         </g:else>
-/*        $("#productSelect").select2({
-            dropdownAutoWidth: true,
-            allowClear: true,
-            ajax: {
-                url: "/product/series/" + seriesId,
-                dataType: 'json',
-                quietMillis: 250,
-                data: function (term, page) {
-                    return {
-                        search: term,
-                        page: page || 1
-                    };
-                },
-                results: function (response, page) {
-                    products = [];
-                    var data = response.products
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].saleType === '${Constants.SALEABLE}') {
-                            if (!products.some(element => element.id === data[i].id))
-                                products.push({id: data[i].id, text: data[i].productName});
-                        }
-                    }
-                    return {
-                        results: products,
-                        more: (page * 10) < response.totalCount
-                    };
-                },
-            }
-        });*/
+
+
         $("#purTransportlogId").val(${purchaseTransportDetail?.id});
         $('#supplierBillDate').val(moment('${purchaseBillDetail?.supplierBillDate}').format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${purchaseTransportDetail?.lrDate}').format('YYYY-MM-DD'));
@@ -1481,6 +1455,36 @@
         });
 
         $('#series').trigger('change');
+
+        $("#productSelect").select2({
+            dropdownAutoWidth: true,
+            allowClear: true,
+            ajax: {
+                url: "/product/series/" + seriesId,
+                dataType: 'json',
+                quietMillis: 250,
+                data: function (term, page) {
+                    return {
+                        search: term,
+                        page: page || 1
+                    };
+                },
+                results: function (response, page) {
+                    products = [];
+                    var data = response.products
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].saleType === '${Constants.SALEABLE}') {
+                            if (!products.some(element => element.id === data[i].id))
+                                products.push({id: data[i].id, text: data[i].productName});
+                        }
+                    }
+                    return {
+                        results: products,
+                        more: (page * 10) < response.totalCount
+                    };
+                },
+            }
+        });
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
