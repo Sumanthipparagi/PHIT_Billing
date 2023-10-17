@@ -713,16 +713,19 @@
                                 };
                             },
                             results: function (response, page) {
-                                products = [];
+                                //products = [];
+                                var dropdownData = [];
                                 var data = response.products
                                 for (var i = 0; i < data.length; i++) {
                                     if (data[i].saleType === '${Constants.SALEABLE}') {
-                                        if (!products.some(element => element.id === data[i].id))
+                                        if (!dropdownData.some(element => element.id === data[i].id)) {
+                                            dropdownData.push({id: data[i].id, text: data[i].productName});
                                             products.push({id: data[i].id, text: data[i].productName});
+                                        }
                                     }
                                 }
                                 return {
-                                    results: products,
+                                    results: dropdownData,
                                     more: (page * 10) < response.totalCount
                                 };
                             },
