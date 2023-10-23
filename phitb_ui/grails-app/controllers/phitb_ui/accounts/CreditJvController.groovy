@@ -12,25 +12,31 @@ import java.text.SimpleDateFormat
 class CreditJvController {
 
     def index() {
-        String entityId = session.getAttribute("entityId").toString()
-        JSONArray accounts = new EntityService().getAllAccountByEntity(entityId)
-        JSONArray reasons = new SalesService().getReasons()
-        ArrayList<JSONObject> debitAccounts = new ArrayList<>()
-        ArrayList<JSONObject> creditAccounts = new ArrayList<>()
-        if (accounts?.size() > 0) {
-            for (JSONObject json : accounts) {
-                if (json.get("showInDebit")) {
-                    debitAccounts.add(json)
-                }
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId").toString()
+            JSONArray accounts = new EntityService().getAllAccountByEntity(entityId)
+            JSONArray reasons = new SalesService().getReasons()
+            ArrayList<JSONObject> debitAccounts = new ArrayList<>()
+            ArrayList<JSONObject> creditAccounts = new ArrayList<>()
+            if (accounts?.size() > 0) {
+                for (JSONObject json : accounts) {
+                    if (json.get("showInDebit")) {
+                        debitAccounts.add(json)
+                    }
 
-                if (json.get("showInCredit")) {
-                    creditAccounts.add(json)
-                }
+                    if (json.get("showInCredit")) {
+                        creditAccounts.add(json)
+                    }
 
+                }
             }
+            render(view: "/accounts/creditJV/index", model: [debitAccounts : debitAccounts, reasons: reasons?.reverse(),
+                                                             creditAccounts: creditAccounts])
         }
-        render(view: "/accounts/creditJV/index", model: [debitAccounts : debitAccounts, reasons: reasons?.reverse(),
-                                                         creditAccounts: creditAccounts])
+        else
+        {
+            redirect(uri:"/dashboard")
+        }
     }
 
     def saveCreditJv() {
@@ -54,7 +60,13 @@ class CreditJvController {
     }
 
     def approval() {
-        render(view: "/accounts/creditJV/approve-creditjv")
+        if (session.getAttribute("financialYearValid")) {
+            render(view: "/accounts/creditJV/approve-creditjv")
+        }
+        else
+        {
+            redirect(uri: "/dashboard")
+        }
     }
 
     //unapproved list

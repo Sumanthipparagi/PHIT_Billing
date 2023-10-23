@@ -17,6 +17,7 @@ class UrlMappings {
         "/dashboard"(controller: 'dashboard', action: "index")
         "/dashboard/stats"(controller: 'dashboard', action: "dashboardStats")
         "/dashboard/graph"(controller: 'dashboard', action: "salesMonthWiseForGraph")
+        "/dashboard/changefinancialyear"(controller: 'dashboard', action: "changeFinancialYear")
         "/forms"(controller: 'dashboard', action: 'forms')
         "/table"(controller: 'dashboard', action: 'table')
         "/timeline"(controller: 'dashboard', action: 'timeline')

@@ -28,32 +28,37 @@ class PurchaseReturnController
 
     def index()
     {
-        String entityId = session.getAttribute("entityId")?.toString()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
-       /* ArrayList<String> supplier = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        JSONArray allReasons = new SystemService().getReason()
-        def taxRegister = new EntityService().getTaxesByEntity(entityId)
-        ArrayList<String> salesmanList = []
-        users.each {
-            if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
-                salesmanList.add(it)
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+            ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
+            /* ArrayList<String> supplier = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            JSONArray allReasons = new SystemService().getReason()
+            def taxRegister = new EntityService().getTaxesByEntity(entityId)
+            ArrayList<String> salesmanList = []
+            users.each {
+                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
+                    salesmanList.add(it)
+                }
             }
-        }
-        JSONArray reasons = new JSONArray()
-        for (Object reason : allReasons) {
-            if(reason.reasonCode != "R" && reason.reasonCode != "OA")
-            {
-                reasons.add(reason)
+            JSONArray reasons = new JSONArray()
+            for (Object reason : allReasons) {
+                if (reason.reasonCode != "R" && reason.reasonCode != "OA") {
+                    reasons.add(reason)
+                }
             }
+            render(view: '/purchase/purchaseReturn/purchase-return', model: [/*supplier: supplier,*/
+                                                                             divisions   : divisions, series: series,
+                                                                             salesmanList: salesmanList,
+                                                                             priorityList: priorityList, reason: reasons,
+                                                                             taxRegister : taxRegister])
         }
-        render(view: '/purchase/purchaseReturn/purchase-return', model: [/*supplier: supplier,*/
-                                                                         divisions: divisions, series:series,
-                                                                         salesmanList: salesmanList,
-                                                                         priorityList:priorityList, reason: reasons,
-                                                                         taxRegister:taxRegister])
+        else
+        {
+            redirect(uri:"/dashboard")
+        }
     }
 
 

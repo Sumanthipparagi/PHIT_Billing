@@ -18,8 +18,14 @@ import phitb_ui.system.ZoneController
 class SchemeEntryController {
 
     def index() {
-        //JSONArray products = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
-        render(view: "/sales/schemeEntry/index", model: [/*products:products*/])
+        if (session.getAttribute("financialYearValid")) {
+            //JSONArray products = new ProductService().getProductsByEntityId(session.getAttribute("entityId").toString())
+            render(view: "/sales/schemeEntry/index", model: [/*products:products*/])
+        }
+        else
+        {
+            redirect(uri: '/dashboard')
+        }
     }
 
 

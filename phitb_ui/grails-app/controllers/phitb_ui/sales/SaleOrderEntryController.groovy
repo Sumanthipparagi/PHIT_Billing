@@ -26,13 +26,14 @@ import java.text.SimpleDateFormat
 class SaleOrderEntryController {
 
     def index() {
-        String entityId = session.getAttribute("entityId")?.toString()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        /*ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        String id = params.id
-      /*  JSONObject saleOrder = null
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+            /*ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            String id = params.id
+            /*  JSONObject saleOrder = null
         if(id)
         {
             saleOrder = new SalesService().getSaleOrderDetailsById(id)
@@ -40,9 +41,14 @@ class SaleOrderEntryController {
             saleOrder.put("products", saleOrderProducts)
 
         }*/
-        render(view: '/sales/saleOrderEntry/sale-order',model: [divisions:divisions,/*customers:customers,
+            render(view: '/sales/saleOrderEntry/sale-order', model: [divisions   : divisions,/*customers:customers,
                                                                 saleOrder: saleOrder,*/
-                                                                priorityList:priorityList,series:series])
+                                                                     priorityList: priorityList, series: series])
+        }
+        else
+        {
+            redirect(uri: "/dashboard")
+        }
     }
 
 

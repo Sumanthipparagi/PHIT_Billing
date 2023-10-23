@@ -17,23 +17,29 @@ import java.text.SimpleDateFormat
 class PaymentCollectionController {
 
     def index() {
-        String entityId = session.getAttribute("entityId").toString()
-        ArrayList<JSONObject> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
-        ArrayList<JSONObject> paymentModes = new ArrayList<>()
-        def apiResponse = new SystemService().getPaymentModes()
-        if (apiResponse.status == 200) {
-            paymentModes = new JSONArray(apiResponse.readEntity(String.class))
-            paymentModes = paymentModes.reverse()
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId").toString()
+            ArrayList<JSONObject> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
+            ArrayList<JSONObject> paymentModes = new ArrayList<>()
+            def apiResponse = new SystemService().getPaymentModes()
+            if (apiResponse.status == 200) {
+                paymentModes = new JSONArray(apiResponse.readEntity(String.class))
+                paymentModes = paymentModes.reverse()
+            }
+
+            ArrayList<JSONObject> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
+            ArrayList<JSONObject> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
+
+            render(view: 'index', model: [bank           : bank,
+                                          accountMode    : accountMode,
+                                          paymentModes   : paymentModes,
+                                          accountRegister: accountRegister
+            ])
         }
-
-        ArrayList<JSONObject> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
-        ArrayList<JSONObject> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
-
-        render(view: 'index', model: [bank  : bank,
-                                      accountMode    : accountMode,
-                                      paymentModes   : paymentModes,
-                                      accountRegister: accountRegister
-        ])
+        else
+        {
+            redirect(uri: "/dashboard")
+        }
     }
 
     def getPendingSaleInvoices()

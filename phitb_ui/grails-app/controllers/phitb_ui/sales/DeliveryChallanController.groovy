@@ -25,22 +25,27 @@ class DeliveryChallanController
 
     def index()
     {
-        String entityId = session.getAttribute("entityId")?.toString()
-        String userId = session.getAttribute("userId")?.toString()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-   /*     ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        ArrayList<String> salesmanList = []
-        /*users.each {
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            String userId = session.getAttribute("userId")?.toString()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+            /*     ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            ArrayList<String> salesmanList = []
+            /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/deliveryChallan/deliveryChallan', model: [/*customers   : customers,*/ divisions: divisions, series: series,
-                                                                       salesmanList: salesmanList, priorityList: priorityList,
-                                                                       transporter : transporter])
+            render(view: '/sales/deliveryChallan/deliveryChallan', model: [/*customers   : customers,*/ divisions   : divisions, series: series,
+                                                                                                        salesmanList: salesmanList, priorityList: priorityList,
+                                                                                                        transporter : transporter])
+        }
+        else{
+            redirect(uri:"/dashboard")
+        }
     }
 
     def saveDeliveryChallan()

@@ -17,22 +17,28 @@ import java.text.SimpleDateFormat
 class StockAdjustmentDetailsController {
 
     def stockAdjustment() {
-        String entityId = session.getAttribute("entityId")?.toString()
-        String userId = session.getAttribute("userId")?.toString()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        //ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        def taxRegister = new EntityService().getTaxesByEntity(entityId)
-        ArrayList<String> salesmanList = []
-        /*users.each {
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            String userId = session.getAttribute("userId")?.toString()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+            //ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            def taxRegister = new EntityService().getTaxesByEntity(entityId)
+            ArrayList<String> salesmanList = []
+            /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/stockAdjustment/stockAdjustment', model: [/*customers   : customers,*/ divisions: divisions, series: series,
-                                                                       salesmanList: salesmanList, priorityList: priorityList,
-                                                                       taxRegister:taxRegister])
+            render(view: '/sales/stockAdjustment/stockAdjustment', model: [/*customers   : customers,*/ divisions   : divisions, series: series,
+                                                                                                        salesmanList: salesmanList, priorityList: priorityList,
+                                                                                                        taxRegister : taxRegister])
+        }
+        else
+        {
+            redirect(uri: "/dashboard")
+        }
     }
 
     def saveStockAdjustmentDetails(){

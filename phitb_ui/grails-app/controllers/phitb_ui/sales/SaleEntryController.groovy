@@ -37,21 +37,22 @@ class SaleEntryController
 
     def index()
     {
-        String entityId = session.getAttribute("entityId")?.toString()
-        String userId = session.getAttribute("userId")?.toString()
-        def users = new UserRegisterController().getByEntity()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-      //  ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        ArrayList<String> salesmanList = []
-        /*users.each {
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            String userId = session.getAttribute("userId")?.toString()
+            def users = new UserRegisterController().getByEntity()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+            //  ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            ArrayList<String> salesmanList = []
+            /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
         }*/
-      /*  JSONArray customerArray = new JSONArray(customers)
+            /*  JSONArray customerArray = new JSONArray(customers)
         for (JSONObject c : customerArray)
         {
             if (c?.cityId != 0)
@@ -60,12 +61,17 @@ class SaleEntryController
                 c.put("city", city)
             }
         }*/
-        def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
-        def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
-        render(view: '/sales/saleEntry/sale-entry', model: [/*customers   : customerArray, */divisions: divisions, series: series,
-                                                            salesmanList: salesmanList, priorityList: priorityList,
-                                                            transporter : transporter, settings: settings, users:
-                                                                    users,entityConfigs:entityConfigs])
+            def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+            def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
+            render(view: '/sales/saleEntry/sale-entry', model: [/*customers   : customerArray, */ divisions   : divisions, series: series,
+                                                                                                  salesmanList: salesmanList, priorityList: priorityList,
+                                                                                                  transporter : transporter, settings: settings, users:
+                                                                        users, entityConfigs                  : entityConfigs])
+        }
+        else
+        {
+            redirect(uri: "/dashboard")
+        }
     }
 
 /*    def getTempStocksOfUser()
@@ -4457,7 +4463,13 @@ class SaleEntryController
 
     def crdDebS()
     {
-        render(view: "/sales/credit-debit-settlement")
+        if (session.getAttribute("financialYearValid")) {
+            render(view: "/sales/credit-debit-settlement")
+        }
+        else
+        {
+            redirect(uri:"/dashboard")
+        }
     }
 
     def DebJV()
@@ -5574,21 +5586,22 @@ class SaleEntryController
 
     def saleEntryRetailer()
     {
-        String entityId = session.getAttribute("entityId")?.toString()
-        String userId = session.getAttribute("userId")?.toString()
-        def users = new UserRegisterController().getByEntity()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-     /*   ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        ArrayList<String> salesmanList = []
-        /*users.each {
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            String userId = session.getAttribute("userId")?.toString()
+            def users = new UserRegisterController().getByEntity()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+            /*   ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            ArrayList<String> salesmanList = []
+            /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
         }*/
-       /* JSONArray customerArray = new JSONArray(customers)
+            /* JSONArray customerArray = new JSONArray(customers)
         for (JSONObject c : customerArray)
         {
             if (c?.cityId != 0)
@@ -5597,11 +5610,15 @@ class SaleEntryController
                 c.put("city", city)
             }
         }*/
-        def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
-        def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
-        render(view: '/sales/saleEntry/sale-entry-retailer', model: [/*customers   : customerArray,*/ divisions: divisions, series: series,
-                                                            salesmanList: salesmanList, priorityList: priorityList,
-                                                            transporter : transporter, settings: settings, users:
-                                                                    users,entityConfigs:entityConfigs])
+            def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+            def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
+            render(view: '/sales/saleEntry/sale-entry-retailer', model: [/*customers   : customerArray,*/ divisions   : divisions, series: series,
+                                                                                                          salesmanList: salesmanList, priorityList: priorityList,
+                                                                                                          transporter : transporter, settings: settings, users:
+                                                                                 users, entityConfigs                 : entityConfigs])
+        }
+        else {
+            redirect(uri: "/dashboard")
+        }
     }
 }

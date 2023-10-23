@@ -459,12 +459,17 @@ class EntityRegisterController {
 
     def bulkImport() {
         try {
-
-            def taxRegister = new EntityService().getTaxesByEntity(session.getAttribute('entityId').toString())
-            def division = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
-            def products = new ProductService().getProductByEntity(session.getAttribute('entityId').toString())
-            render(view: '/entity/entityRegister/bulk-import-wizard',model:[taxRegister:taxRegister,
-                                                                            division:division,products:products])
+            if (session.getAttribute("financialYearValid")) {
+                def taxRegister = new EntityService().getTaxesByEntity(session.getAttribute('entityId').toString())
+                def division = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
+                def products = new ProductService().getProductByEntity(session.getAttribute('entityId').toString())
+                render(view: '/entity/entityRegister/bulk-import-wizard', model: [taxRegister: taxRegister,
+                                                                                  division   : division, products: products])
+            }
+            else
+            {
+                redirect(uri: "/dashboard")
+            }
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

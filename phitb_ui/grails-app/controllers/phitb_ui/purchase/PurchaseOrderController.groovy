@@ -24,15 +24,21 @@ class PurchaseOrderController
 
     def index()
     {
-        String entityId = session.getAttribute("entityId")?.toString()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-      /*  ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        def taxRegister = new TaxController().show() as ArrayList<String>
-        render(view: '/purchase/purchaseOrder/purchaseOrder', model: [divisions   : divisions, /*customers: customers,*/
-                                                                      priorityList: priorityList, series: series,
-                                                                      taxRegister : taxRegister])
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+            /*  ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>*/
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            def taxRegister = new TaxController().show() as ArrayList<String>
+            render(view: '/purchase/purchaseOrder/purchaseOrder', model: [divisions   : divisions, /*customers: customers,*/
+                                                                          priorityList: priorityList, series: series,
+                                                                          taxRegister : taxRegister])
+        }
+        else
+        {
+            redirect(uri:"/dashboard")
+        }
     }
 
 

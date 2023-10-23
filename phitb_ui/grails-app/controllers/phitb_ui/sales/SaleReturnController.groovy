@@ -27,33 +27,38 @@ import java.text.SimpleDateFormat
 class SaleReturnController {
 
     def index() {
-        String entityId = session.getAttribute("entityId")?.toString()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
-       // ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        def allReasons =  new SystemService().getReason()
-        def taxRegister = new EntityService().getTaxesByEntity(entityId)
-        def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
-        def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
-        ArrayList<String> salesmanList = []
-        users.each {
-            if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
-                salesmanList.add(it)
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+            ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
+            // ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            def allReasons = new SystemService().getReason()
+            def taxRegister = new EntityService().getTaxesByEntity(entityId)
+            def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+            def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
+            ArrayList<String> salesmanList = []
+            users.each {
+                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
+                    salesmanList.add(it)
+                }
             }
-        }
-        JSONArray reasons = new JSONArray()
-        for (Object reason : allReasons) {
-            if(reason.reasonCode != "PR")
-            {
-                reasons.add(reason)
+            JSONArray reasons = new JSONArray()
+            for (Object reason : allReasons) {
+                if (reason.reasonCode != "PR") {
+                    reasons.add(reason)
+                }
             }
+            render(view: '/sales/saleRetrun/sale-returns', model: [/*customers   : customers,*/ divisions   : divisions, series: series,
+                                                                                                salesmanList: salesmanList, priorityList:
+                                                                           priorityList, reason             : reasons, taxRegister:
+                                                                           taxRegister, settings            : settings, entityConfigs: entityConfigs])
         }
-        render(view: '/sales/saleRetrun/sale-returns', model: [/*customers   : customers,*/ divisions: divisions, series: series,
-                                                               salesmanList: salesmanList, priorityList:
-                                                                       priorityList, reason: reasons, taxRegister:
-                                                                       taxRegister,settings:settings,entityConfigs:entityConfigs])
+        else
+        {
+            redirect(uri:"/dashboard")
+        }
     }
 
 

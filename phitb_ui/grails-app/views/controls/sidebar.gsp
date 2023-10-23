@@ -104,7 +104,9 @@
         <li><a href="javascript:void(0);" class="fullscreen" data-provide="fullscreen"><i
                 class="zmdi zmdi-fullscreen"></i></a></li>
         <li class="power">
-            <a href="/day-end-details"><i class="zmdi zmdi-settings zmdi-view-day"></i></a>
+            <g:if test="${session.getAttribute("financialYearValid")}">
+                <a href="/day-end-details"><i class="zmdi zmdi-settings zmdi-view-day"></i></a>
+            </g:if>
             <a href="javascript:void(0);" class="js-right-sidebar"><i class="zmdi zmdi-settings zmdi-info"></i></a>
             <a href="/logout" id="logout" class="mega-menu"><i class="zmdi zmdi-power"></i></a>
         </li>
@@ -218,15 +220,19 @@
                             class="badge badge-success float-right"></span></a>
                         <ul class="ml-menu">
                             <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ORDER", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/purchase-order">Purchase Order</a></li>
+                                <g:if test="${session.getAttribute("financialYearValid")}">
+                                    <li><a href="/purchase-order">Purchase Order</a></li>
+                                </g:if>
                                 <li><a href="/purchase-order-list">My Purchase Order</a></li>
                             </g:if>
-                            <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
+                            <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ENTRY", session.getAttribute("permittedFeatures").toString()) && session.getAttribute("financialYearValid")}">
                                 <li><a href="/purchase-entry">Purchase Entry</a></li>
                             </g:if>
                             <li><a href="/purchase-bill-list">Purchase Invoices</a></li>
                             <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_RETURN", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/purchase-return">Purchase Return</a></li>
+                                <g:if test="${session.getAttribute("financialYearValid")}">
+                                    <li><a href="/purchase-return">Purchase Return</a></li>
+                                </g:if>
                                 <li><a href="/purchase-return/purchase-return-list">My Returns</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_MARK_RECIEVED_GOODS", session.getAttribute("permittedFeatures").toString())}">
@@ -246,14 +252,20 @@
                             class="badge badge-success float-right"></span></a>
                         <ul class="ml-menu">
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_ORDER", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/sale-order-entry">Sale Order</a></li>
+                                <g:if test="${session.getAttribute("financialYearValid")}">
+                                    <li><a href="/sale-order-entry">Sale Order</a></li>
+                                </g:if>
                                 <li><a href="/sale-order-entry/my-orders">My Orders</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/sale-entry">Sale Entry</a></li>
+                                <g:if test="${session.getAttribute("financialYearValid")}">
+                                    <li><a href="/sale-entry">Sale Entry</a></li>
+                                </g:if>
                                 <li><a href="/sale-bill-list">My Invoices</a></li>
                                 <g:if test="${session.getAttribute('role').toString() == 'RETAILER'}">
-                                    <li><a href="/sale-entry-retailer">Retailer Sale Entry</a></li>
+                                    <g:if test="${session.getAttribute("financialYearValid")}">
+                                        <li><a href="/sale-entry-retailer">Retailer Sale Entry</a></li>
+                                    </g:if>
                                     <li><a href="/retailer-bill-list">Retailer Invoices</a></li>
                                 </g:if>
                             %{-- <g:if test="${session.getAttribute('role').toString()=='RETAILER'}">
@@ -272,7 +284,9 @@
                                 <li><a href="javascript:void(0);" class="menu-toggle">Sales Return</span> <span
                                         class="badge badge-success float-right"></span></a>
                                     <ul class="ml-menu">
-                                        <li><a href="/sale-return">Create Sales Return</a></li>
+                                        <g:if test="${session.getAttribute("financialYearValid")}">
+                                            <li><a href="/sale-return">Create Sales Return</a></li>
+                                        </g:if>
                                         <li><a href="/sale-return/my-returns">Sales Return List</a></li>
 
                                     </ul>
@@ -283,17 +297,23 @@
                             <li><a href="javascript:void(0);" class="menu-toggle">Delivery Challan</span> <span
                                     class="badge badge-success float-right"></span></a>
                                 <ul class="ml-menu">
-                                    <li><a href="/delivery-challan">Delivery Challan</a></li>
+                                    <g:if test="${session.getAttribute("financialYearValid")}">
+                                        <li><a href="/delivery-challan">Delivery Challan</a></li>
+                                    </g:if>
                                     <li><a href="/delivery-challan-list">Delivery Challan List</a></li>
 
                                 </ul>
                             </li>
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_ORDER", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/gtn">Goods Transfer Note</a></li>
+                                <g:if test="${session.getAttribute("financialYearValid")}">
+                                    <li><a href="/gtn">Goods Transfer Note</a></li>
+                                </g:if>
                             </g:if>
 
                             <g:if test="${UtilsService.isPermitted("VIEW_SCHEME_ENTRY", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>
+                                <g:if test="${session.getAttribute("financialYearValid")}">
+                                    <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>
+                                </g:if>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_STOCK_ADJUSTEMENT", session.getAttribute("permittedFeatures").toString())}">
                             %{--                                <li><a href="#">Stock Adjustment</a></li>--}%
@@ -301,7 +321,9 @@
                                 <li><a href="javascript:void(0);" class="menu-toggle">Stock Adjustment</span> <span
                                         class="badge badge-success float-right"></span></a>
                                     <ul class="ml-menu">
-                                        <li><a href="/stock-adjustment">Stock Adjustment</a></li>
+                                        <g:if test="${session.getAttribute("financialYearValid")}">
+                                            <li><a href="/stock-adjustment">Stock Adjustment</a></li>
+                                        </g:if>
                                         <li><a href="/stock-adjustment-list">Stock Adjustment list</a></li>
                                     </ul>
                                 </li>
@@ -312,7 +334,9 @@
                                        class="menu-toggle">Credit Debit Settlement</span> <span
                                             class="badge badge-success float-right"></span></a>
                                     <ul class="ml-menu">
-                                        <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>
+                                        <g:if test="${session.getAttribute("financialYearValid")}">
+                                            <li><a href="/credit-debit-settlement">Credit Debit Settlement</a></li>
+                                        </g:if>
                                         <li><a href="/credit-debit-settlement/crdb-list">CR DB Settlement List</a></li>
                                     </ul>
                                 </li>
@@ -322,8 +346,10 @@
                             <li><a href="javascript:void(0);" class="menu-toggle">Sample Conversion</span> <span
                                     class="badge badge-success float-right"></span></a>
                                 <ul class="ml-menu">
-                                    <li><a href="/sample-conversion">Sample Conversion</a></li>
-                                    <li><a href="/sample-conversion/sample-invoicing">Sample Invoice</a></li>
+                                    <g:if test="${session.getAttribute("financialYearValid")}">
+                                        <li><a href="/sample-conversion">Sample Conversion</a></li>
+                                        <li><a href="/sample-conversion/sample-invoicing">Sample Invoice</a></li>
+                                    </g:if>
                                     <li><a href="/sample-conversion/sample-invoice-list">Sample Invoice List</a></li>
                                 </ul>
                             </li>
@@ -334,17 +360,21 @@
                             class="zmdi zmdi-book"></i><span>Accounts</span> <span
                             class="badge badge-success float-right"></span></a>
                         <ul class="ml-menu">
-                            <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_JV", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/credit-jv">Credit JV</a></li>
-                            </g:if>
-                            <g:if test="${UtilsService.isPermitted("VIEW_DEBIT_JV", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/debit-jv">Debit JV</a></li>
+                            <g:if test="${session.getAttribute("financialYearValid")}">
+                                <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_JV", session.getAttribute("permittedFeatures").toString())}">
+                                    <li><a href="/credit-jv">Credit JV</a></li>
+                                </g:if>
+                                <g:if test="${UtilsService.isPermitted("VIEW_DEBIT_JV", session.getAttribute("permittedFeatures").toString())}">
+                                    <li><a href="/debit-jv">Debit JV</a></li>
+                                </g:if>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_RECEIPT", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="javascript:void(0);" class="menu-toggle">Receipt</span> <span
                                         class="badge badge-success float-right"></span></a>
                                     <ul class="ml-menu">
-                                        <li><a href="/receipt">Create Receipt</a></li>
+                                        <g:if test="${session.getAttribute("financialYearValid")}">
+                                            <li><a href="/receipt">Create Receipt</a></li>
+                                        </g:if>
                                         <li><a href="/receipt-list">Receipt List</a></li>
 
                                     </ul>
@@ -357,7 +387,9 @@
                                 <li><a href="javascript:void(0);" class="menu-toggle">Payments</span> <span
                                         class="badge badge-success float-right"></span></a>
                                     <ul class="ml-menu">
-                                        <li><a href="/payments">Create Payments</a></li>
+                                        <g:if test="${session.getAttribute("financialYearValid")}">
+                                            <li><a href="/payments">Create Payments</a></li>
+                                        </g:if>
                                         <li><a href="/payments-list">Payments List</a></li>
                                     </ul>
                                 </li>
@@ -368,7 +400,9 @@
                                 <li><a href="javascript:void(0);" class="menu-toggle">Payment Collection</span> <span
                                         class="badge badge-success float-right"></span></a>
                                     <ul class="ml-menu">
-                                        <li><a href="/payment-collection">Payment Collection</a></li>
+                                        <g:if test="${session.getAttribute("financialYearValid")}">
+                                            <li><a href="/payment-collection">Payment Collection</a></li>
+                                        </g:if>
                                         <li><a href="/payment-collection/logs">Logs</a></li>
                                     </ul>
                                 </li>
@@ -488,7 +522,7 @@
                             <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN ||
                                     session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == 'RETAILER'}">
                                 <li><a href="/entity-register">Entity Register</a></li>
-                                %{--<li><a href="/entity-route">Routes</a></li>--}%
+                            %{--<li><a href="/entity-route">Routes</a></li>--}%
                             </g:if>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_USER_REGISTER", session.getAttribute("permittedFeatures").toString())}">
@@ -592,7 +626,9 @@
                             class="badge badge-success float-right"></span></a>
                         <ul class="ml-menu">
                             <g:if test="${UtilsService.isPermitted("VIEW_STOCKBOOK_ENTRY", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/stockbook">Stock Entry</a></li>
+                                <g:if test="${session.getAttribute("financialYearValid")}">
+                                    <li><a href="/stockbook">Stock Entry</a></li>
+                                </g:if>
                             </g:if>
                         </ul>
                     </li>
@@ -613,14 +649,16 @@
                             class="zmdi zmdi-check-circle"></i><span>Approvals</span> <span
                             class="badge badge-success float-right"></span></a>
                         <ul class="ml-menu">
-                            <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_JV", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/credit-jv/approval">Credit JV Approval</a></li>
-                            </g:if>
-                            <g:if test="${UtilsService.isPermitted("VIEW_DEBIT_JV", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/debit-jv/approval">Debit JV Approval</a></li>
-                            </g:if>
-                            <g:if test="${UtilsService.isPermitted("VIEW_RECEIPT", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="/receipt-approval">Receipt Approval</a></li>
+                            <g:if test="${session.getAttribute("financialYearValid")}">
+                                <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_JV", session.getAttribute("permittedFeatures").toString())}">
+                                    <li><a href="/credit-jv/approval">Credit JV Approval</a></li>
+                                </g:if>
+                                <g:if test="${UtilsService.isPermitted("VIEW_DEBIT_JV", session.getAttribute("permittedFeatures").toString())}">
+                                    <li><a href="/debit-jv/approval">Debit JV Approval</a></li>
+                                </g:if>
+                                <g:if test="${UtilsService.isPermitted("VIEW_RECEIPT", session.getAttribute("permittedFeatures").toString())}">
+                                    <li><a href="/receipt-approval">Receipt Approval</a></li>
+                                </g:if>
                             </g:if>
                         </ul>
                     </li>
@@ -632,7 +670,9 @@
                     <ul class="ml-menu">
                         <li><a href="/entity-settings">Entity Settings</a></li>
                         <li><a href="/entity-irn">Entity IRN</a></li>
-                        <li><a href="/bulk-import">Bulk import</a></li>
+                        <g:if test="${session.getAttribute("financialYearValid")}">
+                            <li><a href="/bulk-import">Bulk import</a></li>
+                        </g:if>
                         <li><a href="/email-settings?id=${session.getAttribute("entityId")}">Email Settings</a></li>
                     </ul>
                 </li>

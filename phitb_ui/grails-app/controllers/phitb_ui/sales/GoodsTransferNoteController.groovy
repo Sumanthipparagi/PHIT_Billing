@@ -31,27 +31,33 @@ class GoodsTransferNoteController
 
     def index()
     {
-        String entityId = session.getAttribute("entityId")?.toString()
-        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+        if (session.getAttribute("financialYearValid")) {
+            String entityId = session.getAttribute("entityId")?.toString()
+            JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
 //        JSONArray customers = new EntityService().getByEntity(entityId)
-        def getEntity = new EntityRegisterController().getEnitityById(entityId)
-      /*  def parentEntityResponse = new EntityService().getParentEntities(getEntity?.affiliateId?.toString())
+            def getEntity = new EntityRegisterController().getEnitityById(entityId)
+            /*  def parentEntityResponse = new EntityService().getParentEntities(getEntity?.affiliateId?.toString())
         JSONArray customers
         if (parentEntityResponse?.status == 200) {
             customers = new JSONArray(parentEntityResponse.readEntity(String.class))
         } else {
             customers = new JSONArray()
         }*/
-        def priorityList = new SystemService().getPriorityByEntity(entityId)
-        def series = new SeriesController().getByEntity(entityId)
-        ArrayList<String> salesmanList = []
-        /*users.each {
+            def priorityList = new SystemService().getPriorityByEntity(entityId)
+            def series = new SeriesController().getByEntity(entityId)
+            ArrayList<String> salesmanList = []
+            /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/goodsTransferNote/gtn', model: [/*customers   : customers,*/ divisions: divisions, series: series,
-                                                             salesmanList: salesmanList, priorityList: priorityList])
+            render(view: '/sales/goodsTransferNote/gtn', model: [/*customers   : customers,*/ divisions   : divisions, series: series,
+                                                                                              salesmanList: salesmanList, priorityList: priorityList])
+        }
+        else
+        {
+            redirect(uri:"/dashboard")
+        }
     }
 
     def saveGtn()

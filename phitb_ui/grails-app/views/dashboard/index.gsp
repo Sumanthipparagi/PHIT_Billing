@@ -42,6 +42,13 @@
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ul>
                 </div>
+                <div class="col-lg-5 col-md-5 col-sm-12 pull-right">
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12 pull-right">
+                    <p class="pull-right">
+                        <a href="#" onclick="switchFinYear()">Switch Financial Year</a>
+                    </p>
+                </div>
 
                 %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
                 %{--                    <div class="input-group m-b-0">--}%
@@ -375,6 +382,43 @@
             });
         }*/
     });
+
+    function switchFinYear()
+    {
+        Swal.fire({
+            title: 'Switch Financial Year, selecting previous years will put the system into read-only mode',
+            input: 'select',
+            inputOptions:{
+                <g:each in="${finYears}" var="fy">
+                '${fy.id}': '${fy.startDate} - ${fy.endDate}',
+                </g:each>
+            },
+            inputPlaceholder: 'Select Financial Year'
+        }).then((result) => {
+          var finId = result.value;
+
+            $.ajax({
+                type: "POST",
+                url: "dashboard/changefinancialyear?id="+finId,
+                dataType: 'json',
+                success: function () {
+                    Swal.fire({
+                        title: 'Financial Year Changed!',
+                        text: ''
+                    });
+
+                    window.location.reload();
+                },
+                error: function(){
+                    Swal.fire({
+                        title: 'Error changing financial year!',
+                        text: ''
+                    });
+
+                }
+            });
+        });
+    }
 </script>
 </body>
 </html>
