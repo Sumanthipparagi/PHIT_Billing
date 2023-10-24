@@ -27,7 +27,7 @@ class RouteController {
             ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
-            ArrayList<String> zoneList = new SystemService().getZonesByEntity(session.getAttribute("entityId").toString())
+            def zoneList = new SystemService().getZonesByEntity(session.getAttribute("entityId").toString())
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
