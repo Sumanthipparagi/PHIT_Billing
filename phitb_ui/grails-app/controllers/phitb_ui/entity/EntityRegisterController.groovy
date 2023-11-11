@@ -73,7 +73,7 @@ class EntityRegisterController {
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            def zoneList = new SystemService().getZonesByEntity(session.getAttribute("entityId").toString())
 
             JSONArray routes = new EntityService().getRouteByEntity(entityId)
             def priority = new SystemService().getPriorityByEntity(entityId)
