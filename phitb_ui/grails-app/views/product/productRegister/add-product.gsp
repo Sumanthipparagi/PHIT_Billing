@@ -543,6 +543,13 @@
                                 ">
                                     <div class="row">
                                         <div class="col-lg-6 form-group  form-float">
+                                            <label for="barCode">
+                                                Bar Code
+                                            </label>
+                                            <input type="text" id="barCode" class="form-control barCode" name="barCode"
+                                                   placeholder="Bar Code"/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
                                             <label for="hsnCode">
                                                 HSN Code
                                             </label>

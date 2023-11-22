@@ -398,6 +398,7 @@ public class Links
     public static String PRODUCT_REGISTER_UPDATE = APP_CONTEXT_PATH + "product/productregister/{id}";
     public static String PRODUCT_REGISTER_DELETE = APP_CONTEXT_PATH + "product/productregister/{id}";
     public static String PRODUCT_REGISTER_BY_ID_HSN = APP_CONTEXT_PATH + "product/productregisterbyhsnandentity";
+    public static String PRODUCT_REGISTER_UPDATE_BARCODE = APP_CONTEXT_PATH + "product/updatebarcode";
 
     //Product Type
     public static String PRODUCT_TYPE_SHOW = APP_CONTEXT_PATH + "product/producttypemaster";

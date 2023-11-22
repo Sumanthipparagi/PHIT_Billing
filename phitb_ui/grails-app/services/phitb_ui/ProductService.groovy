@@ -2000,4 +2000,29 @@ class ProductService {
 
     }
 
+
+    def updateProductBarCode(String productId, String barCode, String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_REGISTER_UPDATE_BARCODE)
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .queryParam("barCode", URLEncoder.encode(barCode.toString(), "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200) {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            } else {
+                return []
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  updateProductBarCode  , Ex:' + ex)
+            log.error('Service :ProductService , action :  updateProductBarCode  , Ex:' + ex)
+        }
+    }
+
 }

@@ -547,4 +547,31 @@ class ProductController {
     }
 
 
+    def barCodeMapping()
+    {
+        render(view: 'productRegister/barcode-mapping')
+    }
+
+    def addBarCodeMapping()
+    {
+        String productId = params.productId
+        String barCode = params.barCode
+        long entityId = session.getAttribute("entityId")
+
+        if(productId && barCode && entityId)
+        {
+            JSONObject product = new ProductService().updateProductBarCode(productId, barCode, entityId.toString())
+            if(product)
+            {
+                respond product, formats: ['json'], status: 200
+            }
+            else
+                response.status = 400
+        }
+        else
+        {
+            response.status = 400
+        }
+    }
+
 }

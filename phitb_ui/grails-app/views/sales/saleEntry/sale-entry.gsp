@@ -170,7 +170,7 @@
                             </div>
 
 
-                            <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 50px;">
                                 <br>
                                 <a title="Shipment" class="btn btn-sm btn-primary waves-effect" role="button"
                                    data-toggle="collapse"
@@ -179,7 +179,7 @@
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 50px;">
                                 <br>
                                 <a title="Add Note" class="btn btn-sm btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
@@ -196,7 +196,7 @@
                                 </a>
                             </div>
                             %{--</g:if>--}%
-                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 60px;">
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">
                                 <br>
                                 <a title="Add Row" class="btn btn-sm btn-primary waves-effect"
                                    id="addNewRow" style="background-color: green;color: white;"><i
@@ -204,14 +204,24 @@
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mx-0 px-0" style="margin-top: 5px;">
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">
                                 <br>
+                                <a title="Search Bar Code" class="btn btn-sm btn-primary waves-effect collapsed"
+                                   style="color: white;"  data-toggle="modal" data-target="#searchBarCodeModal"><i
+                                        class="zmdi zmdi-search"></i>
+                                </a>
+                            </div>
+
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="margin-top: 25px;">
                                 <label for="gstInclusive"><strong>Incl. GST?</strong></label>
                                 <input id="gstInclusive" name="gstInclusive" type="checkbox"
                                        class="checkbox checkbox-inline" style="margin-top: 5px;margin-left: 5px;"
                                        value="false"/>
                             </div>
+
+
                         </div>
+
 
                         <div class="row">
                         %{--                            data-toggle="modal"--}%
@@ -512,6 +522,7 @@
 
 <g:include view="controls/sales/batch-detail.gsp"/>
 <g:include view="controls/sales/mass-discount.gsp"/>
+<g:include view="controls/barcode-scan.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 

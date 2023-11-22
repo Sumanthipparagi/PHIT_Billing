@@ -377,4 +377,57 @@ class ProductRegisterController
         }
     }
 
+    def updateProductBarCode()
+    {
+        try{
+            String barCode = params.barCode
+            String entityId = params.entityId
+            String productId = params.productId
+
+            respond productRegisterService.updateBarCode(Long.parseLong(productId), barCode, Long.parseLong(entityId))
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getProductByBarCode()
+    {
+        try
+        {
+            String barCode = params.barCode
+            String entityId = params.entityId
+            if (barCode)
+            {
+                long eId = Long.parseLong(entityId)
+                respond productRegisterService.getProductByBarCode(barCode, eId)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

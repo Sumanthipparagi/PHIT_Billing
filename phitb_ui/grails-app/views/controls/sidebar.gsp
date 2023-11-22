@@ -587,6 +587,7 @@
                         <ul class="ml-menu">
                             <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_REGISTER", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/product">Product Register</a></li>
+                                <li><a href="/product/barcode-mapping">Bar Code Mapping</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_BATCH_REGISTER", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/batch-register">Batch Register</a></li>

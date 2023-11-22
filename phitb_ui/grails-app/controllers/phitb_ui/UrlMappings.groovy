@@ -421,6 +421,8 @@ class UrlMappings {
         "/product/save-bulk-products"(controller: 'product', action: 'saveBulkProducts')
         "/product/get-products-by-entity"(controller: 'product', action: 'productByEntityId')
         "/product/search"(controller: 'product', action: 'searchByName')
+        "/product/barcode-mapping"(controller: 'product', action: 'barCodeMapping')
+        "/product/barcode-mapping/update"(controller: 'product', action: 'addBarCodeMapping')
 
 
         //Division

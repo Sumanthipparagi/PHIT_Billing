@@ -507,6 +507,19 @@
                                                 <option value="0" <g:if test="${product.ccmProduct == "0"}">selected</g:if>>NO</option>
                                             </select>
                                         </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="salesmenPercent">
+                                                Salesman Percent
+                                                <span class="required-indicator" style="color: red;">*</span>
+
+                                            </label>
+                                            <input type="number"
+                                                   class="form-control salesmenPercent" id="salesmenPercent" name="salesmenPercent"
+                                                   onblur="setTwoNumberDecimal()" step="0.25"
+                                                   placeholder="Salesman Percent" value="${product?.salesmenPercent}"
+                                            />
+                                        </div>
+
                                     </div>
                                 </div>
 
@@ -514,6 +527,7 @@
                                 border-radius: 10px;padding: 10px;
                                 ">
                                     <div class="row">
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="hsnCode">
                                                 HSN Code
@@ -524,16 +538,11 @@
                                         </div>
 
                                         <div class="col-lg-6 form-group  form-float">
-                                            <label for="salesmenPercent">
-                                              Salesman Percent
-                                                <span class="required-indicator" style="color: red;">*</span>
-
+                                            <label for="barCode">
+                                                Bar Code
                                             </label>
-                                            <input type="number"
-                                                   class="form-control salesmenPercent" id="salesmenPercent" name="salesmenPercent"
-                                                   onblur="setTwoNumberDecimal()" step="0.25"
-                                                   placeholder="Salesman Percent" value="${product?.salesmenPercent}"
-                                                   />
+                                            <input type="text" id="barCode" class="form-control barCode" name="barCode"
+                                                   placeholder="Bar Code" value="${product?.barCode}"/>
                                         </div>
                                         %{-- <div class="col-lg-6 form-group  form-float">
                                              <label for="soundexCode">

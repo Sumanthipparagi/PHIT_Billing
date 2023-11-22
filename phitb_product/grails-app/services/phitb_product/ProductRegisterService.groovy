@@ -68,6 +68,12 @@ class ProductRegisterService {
         return ProductRegister.findById(Long.parseLong(id))
     }
 
+    ProductRegister getProductByBarCode(String barCode, long entityId)
+    {
+        return ProductRegister.findByBarCodeAndEntityId(barCode, entityId)
+
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         long entityId = paramsJsonObject.get("entityId")
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -209,6 +215,8 @@ class ProductRegisterService {
         productRegister.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
         productRegister.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
         productRegister.saleType =  jsonObject.get("saleType").toString()
+        if(jsonObject.has("barCode"))
+            productRegister.barCode =  jsonObject.get("barCode").toString()
         productRegister.save(flush: true)
         if (!productRegister.hasErrors())
             return productRegister
@@ -316,6 +324,8 @@ class ProductRegisterService {
             productRegister.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
             productRegister.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
             productRegister.saleType =  jsonObject.get("saleType").toString()
+            if(jsonObject.has("barCode"))
+                productRegister.barCode =  jsonObject.get("barCode").toString()
             productRegister.save(flush: true)
             if (!productRegister.hasErrors())
                 return productRegister
@@ -502,9 +512,30 @@ class ProductRegisterService {
             productRegister.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
             productRegister.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
             productRegister.saleType =  jsonObject.get("saleType").toString()
+            if(jsonObject.has("barCode"))
+                productRegister.barCode =  jsonObject.get("barCode").toString()
             productRegister.save(flush: true)
             productArray.add(productRegister)
         }
         return  productArray
+    }
+
+    def updateBarCode(long productId, String barCode, long entityId)
+    {
+        ProductRegister productRegister = ProductRegister.findByIdAndEntityId(productId,entityId)
+        if(productRegister)
+        {
+            productRegister.barCode = barCode
+            productRegister.isUpdatable = true
+            productRegister.save(flush:true)
+            if(!productRegister.hasErrors())
+            {
+                return productRegister
+            }
+            else
+                return null
+        }
+        else
+            return null
     }
 }

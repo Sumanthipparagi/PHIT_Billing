@@ -58,6 +58,7 @@ class ProductRegister implements Serializable, LogicalDelete<ProductRegister> {
     Date lastUpdated
 
     String fieldForceId
+    String barCode
 
     static mapping = {
         narration sqlType: 'longText'
@@ -90,6 +91,7 @@ class ProductRegister implements Serializable, LogicalDelete<ProductRegister> {
         nriRate scale:2
         salesmanCommission scale:2
         grossProfitPercentage scale:2
+        barCode nullable: true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']
