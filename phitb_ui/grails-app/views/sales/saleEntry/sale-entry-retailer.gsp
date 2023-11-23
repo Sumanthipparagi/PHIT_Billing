@@ -159,7 +159,7 @@
                             </div>
 
 
-                            <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 50px;">
                                 <br>
                                 <a title="Shipment" class="btn btn-sm btn-primary waves-effect" role="button"
                                    data-toggle="collapse"
@@ -168,7 +168,7 @@
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mx-0 px-0" style="max-width: 60px;">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 50px;">
                                 <br>
                                 <a title="Add Note" class="btn btn-sm btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
@@ -177,7 +177,7 @@
                             </div>
 
                             %{--<g:if test="${customer!=null}">--}%
-                            <div class="col-md-1 mx-0 px-0 " style="max-width: 60px;">
+                            <div class="col-md-1 mx-0 px-0 " style="max-width: 50px;">
                                 <br>
                                 <a title="Mass Discount" role="button" style="color: white;"
                                    class="btn btn-sm btn-primary waves-effect collapsed"
@@ -185,17 +185,23 @@
                                 </a>
                             </div>
                             %{--</g:if>--}%
-                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 60px;">
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">
                                 <br>
                                 <a title="Add Row" class="btn btn-sm btn-primary waves-effect"
                                    id="addNewRow" style="background-color: green;color: white;"><i
                                         class="zmdi zmdi-plus"></i>
                                 </a>
                             </div>
-
-                            <div class="col-md-1 mx-0 px-0" style="margin-top: 5px;">
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">
                                 <br>
-                                <label for="gstInclusive"><strong>Incl. GST?</strong></label>
+                                <a title="Search Bar Code" class="btn btn-sm btn-primary waves-effect collapsed"
+                                   style="color: white;"  data-toggle="modal" data-target="#searchBarCodeModal"><i
+                                        class="zmdi zmdi-search"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="margin-top: 5px;margin-left: 5px;">
+                                <br>
+                                <label for="gstInclusive" ><strong>Incl.GST?</strong></label>
                                 <input id="gstInclusive" name="gstInclusive" type="checkbox"
                                        class="checkbox checkbox-inline" style="margin-top: 5px;margin-left: 5px;"
                                        value="false"/>
@@ -292,6 +298,7 @@
                                     Attachment Uploaded <i class="zmdi zmdi-check"></i> &nbsp;&nbsp;<span><a href="#" onclick="downloadFile()"><i class="zmdi zmdi-download" ></i> Download</a></span> &nbsp;&nbsp; <span><a href="#" class="danger" onclick="deleteFile()"><i class="zmdi zmdi-delete" ></i> Delete</a></span>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="row">
@@ -390,7 +397,7 @@
         <div class="row clearfix">
             <div class="col-lg-4" style="margin-bottom: 10px;">
                 <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>,
-                Reset Table: <strong>Ctrl+Alt+R</strong>, Register Patient: <strong>Ctrl+M</strong>
+                Reset Table: <strong>Ctrl+Alt+R</strong>, Register Patient: <strong>Ctrl+M</strong>, Search Barcode: <strong>Ctrl+Alt+B</strong>
                 </p>
             </div>
 
@@ -514,6 +521,7 @@
 <g:include view="controls/delete-modal.gsp"/>
 <g:include view="controls/sales/add-patient-modal.gsp"/>
 <g:include view="controls/sales/phone-number.gsp"/>
+<g:include view="controls/barcode-scan.gsp"/>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
@@ -1777,6 +1785,10 @@
                         calculateTotalAmt();
                     }
                 }
+                if (key === 'b') {
+                    $("#searchBarCodeModal").modal("toggle");
+                    $("#barCode").focus();
+                }
             }
 
         }
@@ -2401,6 +2413,54 @@
             }
         })
     }
+
+    $("#barCodeSearch").on("click", function (){
+        var barCode = $("#barCode").val();
+        if(barCode != null && barCode.length > 0)
+        {
+            $.ajax({
+                type: "POST",
+                url: "product/getbybarcode",
+                data: {
+                    barCode: barCode
+                },
+                success: function (response) {
+
+                    Swal.fire({
+                        title: 'Product Found!',
+                        text: "Do you want add "+ response.productName +"?",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.value) {
+                            $("#searchBarCodeModal").modal("toggle");
+                            products.push({id: response.id, text: response.productName});
+                            var lastRow = hot.countRows() - 1;
+                            /* if(lastRow > 0)
+                             {
+                                 addRow();
+                             }*/
+                            hot.selectCell(lastRow, 1);
+                            hot.setDataAtCell(lastRow, 1, response.id);
+
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                        }
+                    });
+                },
+                error: function (response) {
+                    Swal.fire("Product Not Found", "No Products found for the given bar code", "warning");
+                },
+            });
+        }
+        else
+        {
+            Swal.fire("Bar Code can't be empty");
+        }
+    });
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
