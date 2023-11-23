@@ -547,6 +547,24 @@ class ProductController {
     }
 
 
+    def getProductByBarCode()
+    {
+        String barCode = params.barCode
+        if(barCode)
+        {
+            JSONObject product = new ProductService().getProductByBarCode(barCode, session.getAttribute("entityId").toString())
+            if(product)
+            {
+                respond product, formats: ['json'], status:200
+            }
+            else
+            {
+                response.status = 404
+            }
+        }
+        else
+            response.status = 400
+    }
     def barCodeMapping()
     {
         render(view: 'productRegister/barcode-mapping')
@@ -560,13 +578,18 @@ class ProductController {
 
         if(productId && barCode && entityId)
         {
-            JSONObject product = new ProductService().updateProductBarCode(productId, barCode, entityId.toString())
-            if(product)
-            {
-                respond product, formats: ['json'], status: 200
+            JSONObject existingProduct = new ProductService().getProductByBarCode(barCode, session.getAttribute("entityId").toString())
+            if(existingProduct == null) {
+                JSONObject product = new ProductService().updateProductBarCode(productId, barCode, entityId.toString())
+                if (product) {
+                    respond product, formats: ['json'], status: 200
+                } else
+                    response.status = 400
             }
             else
-                response.status = 400
+            {
+                respond existingProduct, formats: ['json'], status: 409
+            }
         }
         else
         {

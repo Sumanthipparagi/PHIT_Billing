@@ -136,11 +136,19 @@
 
                             <input type="hidden" name="purTransportlogId" id="purTransportlogId">
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <br>
                                 <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
                                    href="#shipmentDetails" aria-expanded="false"
                                    aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
+                                </a>
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <br>
+                                <a title="Search Bar Code" class="btn btn-primary waves-effect"
+                                   style="color: white;"  data-toggle="modal" data-target="#searchBarCodeModal"><i
+                                        class="zmdi zmdi-search"></i> Search Bar Code
                                 </a>
                             </div>
 
@@ -180,6 +188,7 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +239,7 @@
         <div class="row clearfix">
             <div class="col-lg-4" style="margin-bottom: 10px;">
                 <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+C</strong>,
-                Reset Table: <strong>Ctrl+Alt+R</strong>, Batch Register: <strong>Ctrl+B</strong>
+                Reset Table: <strong>Ctrl+Alt+R</strong>, Batch Register: <strong>Ctrl+B</strong>, Search Barcode: <strong>Ctrl+Alt+B</strong>
                 </p>
             </div>
 
@@ -632,6 +641,7 @@
 
 <g:include view="controls/sales/batch-detail.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
+<g:include view="controls/barcode-scan.gsp"/>
 
 <g:include view="controls/product/add-batch-register-purchase-entry.gsp"/>
 
@@ -2366,6 +2376,10 @@
                         calculateTotalAmt();
                     }
                 }
+                if (key === 'b') {
+                    $("#searchBarCodeModal").modal("toggle");
+                    $("#barCode").focus();
+                }
             }
 
         }
@@ -2680,6 +2694,53 @@
         });
     });
 
+    $("#barCodeSearch").on("click", function (){
+        var barCode = $("#barCode").val();
+        if(barCode != null && barCode.length > 0)
+        {
+            $.ajax({
+                type: "POST",
+                url: "product/getbybarcode",
+                data: {
+                    barCode: barCode
+                },
+                success: function (response) {
+
+                    Swal.fire({
+                        title: 'Product Found!',
+                        text: "Do you want add "+ response.productName +"?",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.value) {
+                            $("#searchBarCodeModal").modal("toggle");
+                            products.push({id: response.id, text: response.productName});
+                            var lastRow = hot.countRows() - 1;
+                            /* if(lastRow > 0)
+                             {
+                                 addRow();
+                             }*/
+                            hot.selectCell(lastRow, 1);
+                            hot.setDataAtCell(lastRow, 1, response.id);
+
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                        }
+                    });
+                },
+                error: function (response) {
+                    Swal.fire("Product Not Found", "No Products found for the given bar code", "warning");
+                },
+            });
+        }
+        else
+        {
+            Swal.fire("Bar Code can't be empty");
+        }
+    });
 </script>
 
 <g:include view="controls/footer-content.gsp"/>

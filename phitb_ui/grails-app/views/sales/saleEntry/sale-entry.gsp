@@ -400,7 +400,7 @@
 
         <div class="row clearfix">
             <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>, Search Barcode: <strong>Ctrl+Alt+B</strong>
                 </p>
             </div>
 
@@ -1172,52 +1172,10 @@
              });
          }*/
 
-        function checkUnsavedTemp() {
-            var data = hot.getData();
-            for (let i = 0; i < data.length; i++) {
-                console.log(data[i][16])
-                if (data[i][16] === null) {
-                    return true
-                }
-            }
-            return false
-        }
+
 
         document.querySelector('#addNewRow').addEventListener('click', function () {
-            // var col = hot.countRows();
-            // hot.alter('insert_row', col, 1);
-            var tempArray = [];
-            var data = hot.getSourceData();
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].hasOwnProperty('16')) {
-                    tempArray.push(data[i]['16'])
-                }
-            }
-            console.log("new row add!!");
-            console.log(tempArray);
-            console.log(hot.countRows() + 1);
-            console.log(hot.getSourceData());
-            if (tempArray.length !== 0) {
-                console.log(checkUnsavedTemp())
-                if (checkUnsavedTemp()) {
-                    alert("Table consist of unsaved data")
-                    return;
-                }
-                if (hot.isEmptyRow(tempArray.length)) {
-                    if (tempArray.length === hot.countRows() - 1) {
-                        alert("Row already present!");
-                        return;
-                    } else {
-                        hot.alter('insert_row');
-                    }
-                } else {
-                    hot.alter('insert_row');
-                }
-            } else {
-                alert("Row not saved properly!")
-                return;
-            }
-
+            addRow();
         });
 
 
@@ -2258,6 +2216,10 @@
                         calculateTotalAmt();
                     }
                 }
+                if (key === 'b') {
+                    $("#searchBarCodeModal").modal("toggle");
+                    $("#barCode").focus();
+                }
             }
 
         }
@@ -2643,6 +2605,104 @@
             calculateTotalAmt();
         }
     }
+
+    $("#barCodeSearch").on("click", function (){
+       var barCode = $("#barCode").val();
+       if(barCode != null && barCode.length > 0)
+       {
+           $.ajax({
+               type: "POST",
+               url: "product/getbybarcode",
+               data: {
+                   barCode: barCode
+               },
+               success: function (response) {
+
+                   Swal.fire({
+                       title: 'Product Found!',
+                       text: "Do you want add "+ response.productName +"?",
+                       type: 'warning',
+                       showCancelButton: true,
+                       confirmButtonText: 'Yes',
+                       cancelButtonText: 'Cancel',
+                       reverseButtons: true
+                   }).then((result) => {
+                       if (result.value) {
+                           $("#searchBarCodeModal").modal("toggle");
+                           products.push({id: response.id, text: response.productName});
+                           var lastRow = hot.countRows() - 1;
+                         /* if(lastRow > 0)
+                          {
+                              addRow();
+                          }*/
+                           hot.selectCell(lastRow, 1);
+                           hot.setDataAtCell(lastRow, 1, response.id);
+
+                       } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                       }
+                   });
+               },
+               error: function (response) {
+                   Swal.fire("Product Not Found", "No Products found for the given bar code", "warning");
+               },
+           });
+       }
+       else
+       {
+           Swal.fire("Bar Code can't be empty");
+       }
+    });
+
+    function addRow()
+    {
+        // var col = hot.countRows();
+        // hot.alter('insert_row', col, 1);
+        var tempArray = [];
+        var data = hot.getSourceData();
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].hasOwnProperty('16')) {
+                tempArray.push(data[i]['16'])
+            }
+        }
+        console.log("new row add!!");
+        console.log(tempArray);
+        console.log(hot.countRows() + 1);
+        console.log(hot.getSourceData());
+        if (tempArray.length !== 0) {
+            console.log(checkUnsavedTemp())
+            if (checkUnsavedTemp()) {
+                alert("Table consist of unsaved data")
+                return;
+            }
+            if (hot.isEmptyRow(tempArray.length)) {
+                if (tempArray.length === hot.countRows() - 1) {
+                    alert("Row already present!");
+                    return;
+                } else {
+                    hot.alter('insert_row');
+                }
+            } else {
+                hot.alter('insert_row');
+            }
+        } else {
+            alert("Row not saved properly!")
+            return;
+        }
+
+    }
+
+    function checkUnsavedTemp() {
+        var data = hot.getData();
+        for (let i = 0; i < data.length; i++) {
+            console.log(data[i][16])
+            if (data[i][16] === null) {
+                return true
+            }
+        }
+        return false
+    }
+
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

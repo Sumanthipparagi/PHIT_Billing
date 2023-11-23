@@ -7,7 +7,11 @@
                 <h4 class="modal-title" style="font-size: 20px;margin-top: -6px;"><span >Enter / Scan Bar Code</span></h4>
             </div>
             <div class="modal-body">
-                <input type="text" class="barCode" name="barCode" id="barCode" />
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="text" class="barCode" name="barCode" id="barCode" style="width: 100%;" placeholder="Enter / Scan Bar Code"/>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

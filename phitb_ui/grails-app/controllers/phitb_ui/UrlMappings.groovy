@@ -422,6 +422,7 @@ class UrlMappings {
         "/product/get-products-by-entity"(controller: 'product', action: 'productByEntityId')
         "/product/search"(controller: 'product', action: 'searchByName')
         "/product/barcode-mapping"(controller: 'product', action: 'barCodeMapping')
+        "/product/getbybarcode"(controller: 'product', action: 'getProductByBarCode')
         "/product/barcode-mapping/update"(controller: 'product', action: 'addBarCodeMapping')
 
 

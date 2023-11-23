@@ -148,6 +148,7 @@ class UrlMappings {
                         'save']
             }
             "/updatebarcode(.$format)?"(controller: 'productRegister') {action = [GET: 'updateProductBarCode']}
+            "/productregister/barcode(.$format)?"(controller: 'productRegister') {action = [GET: 'getProductByBarCode']}
 
             "/productregister/datatable(.$format)?"(controller: 'productRegister') {action = [GET: 'dataTable']}
             "/productregister/search(.$format)?"(controller: 'productRegister') {action = [GET: 'getProductByName']}

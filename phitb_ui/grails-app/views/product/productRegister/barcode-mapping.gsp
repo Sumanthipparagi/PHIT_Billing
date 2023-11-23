@@ -187,6 +187,17 @@
                         },
                         success: function (response) {
                             Swal.fire("Success!", "Bar Code updated for "+ response.productName, "success");
+                        },
+                        error: function(response)
+                        {
+                            if(response.status === 409)
+                            {
+                                Swal.fire("Already Exists!", "Bar Code exists for "+ response.responseJSON.productName, "warning");
+                            }
+                            else
+                            {
+                                Swal.fire("Error!", "Unable to map bar code!", "danger");
+                            }
                         }
                     });
 

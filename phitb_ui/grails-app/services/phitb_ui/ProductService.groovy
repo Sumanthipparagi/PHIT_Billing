@@ -2025,4 +2025,27 @@ class ProductService {
         }
     }
 
+    def getProductByBarCode(String barCode, String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_REGISTER_GET_BY_BARCODE)
+                    .queryParam("barCode", barCode)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            } else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductByBarCode  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductByBarCode  , Ex:' + ex)
+        }
+
+    }
+
 }
