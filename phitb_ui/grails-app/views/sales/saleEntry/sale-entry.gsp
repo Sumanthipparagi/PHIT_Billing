@@ -2195,7 +2195,7 @@
         if (ctrl) {
             if (alt) {
                 var result = false;
-                if (key === 'c') {
+                if (key === 'd') {
                     result = confirm("Delete this row?");
                     if (result) {
                         const selection = hot.getSelected()[0];
@@ -2218,7 +2218,11 @@
                 }
                 if (key === 'b') {
                     $("#searchBarCodeModal").modal("toggle");
-                    $("#barCode").focus();
+                    //$("#barCode").focus();
+
+                    $("#searchBarCodeModal").on('shown.bs.modal', function () {
+                        $(this).find('#barCode').focus();
+                    });
                 }
             }
 

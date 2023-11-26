@@ -91,13 +91,37 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-6 form-group  form-float">
-                                <button class="btn btn-primary" onclick="updateBarCode()">Update Bar Code</button>
+                                <button class="btn btn-success" onclick="updateBarCode()">Update Bar Code</button>
+                                <button class="btn btn-primary" onclick="updateBarCode(true)">Auto Generate & Update Code</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="header">
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 form-group  form-float">
+                                <div id="qrCodeContainer" class="align-center" >
+                                <img id="qrCode" src="${assetPath(src: '/themeassets/images/qr-placeholder.svg')}" width="200" height="200" />
+
+                                    <br>
+                                </div>
+                                <hr>
+                                <button class="btn btn-info align-center" onclick="printCode()"><i class="zmdi zmdi-print"></i> Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 <!-- Jquery Core Js -->
@@ -122,6 +146,7 @@
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
 <asset:javascript src="/themeassets/plugins/select2/dist/js/select2.js"/>
+<asset:javascript src="/themeassets/plugins/printThis/printThis.js"/>
 
 <script>
     $(function () {
@@ -156,16 +181,22 @@
             var data = e.params.data;
             $('#barCode').focus();
             if(data.barCode != null)
-                $("#barCode").val(data.barCode);
+                $("#barCode").val(data.barCode).trigger("change");
             else
-                $("#barCode").val("");
+                $("#barCode").val("").trigger("change");
         });
     });
 
-    function updateBarCode()
+    function updateBarCode(autogen)
     {
         var productId = $('#productSelect').val();
         var barCode = $('#barCode').val();
+
+        if(productId != null && autogen)
+        {
+            barCode = "${session.getAttribute("entityId")}" + productId + generateRandomString(5);
+            $('#barCode').val(barCode).trigger("change");
+        }
 
         if(productId != null && barCode != null) {
             Swal.fire({
@@ -211,6 +242,32 @@
         else {
             Swal.fire("Error!", "Select product and enter Bar Code.", "danger");
         }
+    }
+
+    $("#barCode").on("change input", function (){
+        var barCode = $("#barCode").val();
+        if(barCode.length > 0) {
+            $("#qrCode").attr("src", "../qrcode/text?text=" + barCode + "&s=200");
+        }
+        else
+        {
+            $("#qrCode").attr("src", "${assetPath(src: '/themeassets/images/qr-placeholder.svg')}");
+        }
+    });
+
+    function generateRandomString(n) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        for (let i = 0; i < n; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    function printCode()
+    {
+        $("#qrCodeContainer").printThis();
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>
