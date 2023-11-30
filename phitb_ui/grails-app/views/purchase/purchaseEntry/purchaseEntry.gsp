@@ -2378,7 +2378,15 @@
                 }
                 if (key === 'b') {
                     $("#searchBarCodeModal").modal("toggle");
-                    $("#barCode").focus();
+                    $("#searchBarCodeModal").on('shown.bs.modal', function () {
+                        $(this).find('#barCode').focus();
+                    });
+                }
+            }
+            else
+            {
+                if (key === 'b') {
+                    $('#addbatchModal').modal('show');
                 }
             }
 
@@ -2627,14 +2635,6 @@
         this.value = parseFloat(this.value);
     }
 
-    $(document).on('keydown', function (e) {
-        // You may replace `m` with whatever key you want
-        if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'b')) {
-            $('#addbatchModal').modal('show')
-        }
-
-    });
-
     $('.manfDate').bootstrapMaterialDatePicker({
         time: false,
         format: 'DD/MM/YYYY',
@@ -2694,7 +2694,7 @@
         });
     });
 
-    $("#barCodeSearch").on("click", function (){
+    $("#barCode").on("change keyup paste", function (){
         var barCode = $("#barCode").val();
         if(barCode != null && barCode.length > 0)
         {
@@ -2706,33 +2706,19 @@
                 },
                 success: function (response) {
 
-                    Swal.fire({
-                        title: 'Product Found!',
-                        text: "Do you want add "+ response.productName +"?",
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes',
-                        cancelButtonText: 'Cancel',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.value) {
-                            $("#searchBarCodeModal").modal("toggle");
-                            products.push({id: response.id, text: response.productName});
-                            var lastRow = hot.countRows() - 1;
-                            /* if(lastRow > 0)
-                             {
-                                 addRow();
-                             }*/
-                            hot.selectCell(lastRow, 1);
-                            hot.setDataAtCell(lastRow, 1, response.id);
-
-                        } else if (result.dismiss === Swal.DismissReason.cancel) {
-
-                        }
-                    });
+                    $("#searchBarCodeModal").modal("toggle");
+                    products.push({id: response.id, text: response.productName});
+                    var lastRow = hot.countRows() - 1;
+                    /* if(lastRow > 0)
+                     {
+                         addRow();
+                     }*/
+                    hot.selectCell(lastRow, 1);
+                    hot.setDataAtCell(lastRow, 1, response.id);
                 },
                 error: function (response) {
-                    Swal.fire("Product Not Found", "No Products found for the given bar code", "warning");
+                    $("#barCode").focus();
+                    //Swal.fire("Product Not Found", "No Products found for the given bar code", "warning");
                 },
             });
         }
