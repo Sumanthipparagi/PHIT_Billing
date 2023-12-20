@@ -397,26 +397,28 @@
         }).then((result) => {
           var finId = result.value;
 
-            $.ajax({
-                type: "POST",
-                url: "dashboard/changefinancialyear?id="+finId,
-                dataType: 'json',
-                success: function () {
-                    Swal.fire({
-                        title: 'Financial Year Changed!',
-                        text: ''
-                    });
+          if(finId != null && finId.length > 0) {
+              $.ajax({
+                  type: "POST",
+                  url: "dashboard/changefinancialyear?id=" + finId,
+                  dataType: 'json',
+                  success: function () {
+                      Swal.fire({
+                          title: 'Financial Year Changed!',
+                          text: ''
+                      });
 
-                    window.location.reload();
-                },
-                error: function(){
-                    Swal.fire({
-                        title: 'Error changing financial year!',
-                        text: ''
-                    });
+                      window.location.reload();
+                  },
+                  error: function () {
+                      Swal.fire({
+                          title: 'Error changing financial year!',
+                          text: ''
+                      });
 
-                }
-            });
+                  }
+              });
+          }
         });
     }
 </script>

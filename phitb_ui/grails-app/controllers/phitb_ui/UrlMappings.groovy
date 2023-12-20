@@ -870,6 +870,9 @@ class UrlMappings {
         "/transport-type/update/$id"(controller:"transportType",action:"update")
         "/transport-type/delete/$id"(controller: "transportType",action:"delete")
 
+        "/transportation-info"(controller: "transportationInfo",action:"index")
+        "/transportation-info/getdocuments"(controller: "transportationInfo",action:"getDocuments")
+
         //Transporter
         "/transporter"(controller: "transporter") {
             action = [GET: "index", POST: "save"]

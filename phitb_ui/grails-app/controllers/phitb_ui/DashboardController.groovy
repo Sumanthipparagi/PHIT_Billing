@@ -499,30 +499,37 @@ class DashboardController
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
             String financialYearId = params.id
-            JSONObject finYear = new JSONObject()
-            JSONArray finYears = new EntityService().getFinancialYearByEntity(session.getAttribute("entityId").toString())
+            if(financialYearId?.length() > 0) {
+                JSONObject finYear = new JSONObject()
+                JSONArray finYears = new EntityService().getFinancialYearByEntity(session.getAttribute("entityId").toString())
 
-            if (finYears?.length() > 0) {
+                if (finYears?.length() > 0) {
 
-                for (JSONObject fn : finYears) {
-                    if (fn.get("id").toString() == financialYearId) {
-                        finYear = fn;
+                    for (JSONObject fn : finYears) {
+                        if (fn.get("id").toString() == financialYearId) {
+                            finYear = fn;
+                        }
                     }
+                    Date currentDate = new Date()
+                    Date startDate = sdf.parse(finYear.get("startDate").toString())
+                    Date endDate = sdf.parse(finYear.get("endDate").toString())
+                    session.setAttribute("financialYear", startDate.toCalendar().get(Calendar.YEAR) + "-" + endDate.toCalendar().get(Calendar.YEAR))
+                    session.setAttribute("startDate", startDate.format("dd/MM/yyyy"))
+                    session.setAttribute("endDate", endDate.format("dd/MM/yyyy"))
+                    boolean financialYearValid = new UtilsService().isDateWithinRange(currentDate, startDate, endDate)
+                    session.setAttribute("financialYearValid", financialYearValid)
                 }
-                Date currentDate = new Date()
-                Date startDate = sdf.parse(finYear.get("startDate").toString())
-                Date endDate = sdf.parse(finYear.get("endDate").toString())
-                session.setAttribute("financialYear", startDate.toCalendar().get(Calendar.YEAR) + "-" + endDate.toCalendar().get(Calendar.YEAR))
-                session.setAttribute("startDate", startDate.format("dd/MM/yyyy"))
-                session.setAttribute("endDate", endDate.format("dd/MM/yyyy"))
-                boolean financialYearValid = new UtilsService().isDateWithinRange(currentDate, startDate, endDate)
-                session.setAttribute("financialYearValid", financialYearValid)
+                respond finYear, formats: ['json']
             }
-            respond finYear, formats: ['json']
+            else
+            {
+                response.status = 400
+            }
         }
         catch (Exception ex)
         {
             ex.printStackTrace()
+            response.status = 400
         }
     }
 

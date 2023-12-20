@@ -642,6 +642,7 @@
                             <li><a href="/transporter">Transporter</a></li>
                             <li><a href="/transport-type">Transport Type</a></li>
                             <li><a href="/vehicle-detail">Vehicle Details</a></li>
+                            <li><a href="/transportation-info">Transportation Information</a></li>
                         </ul>
                     </li>
 
