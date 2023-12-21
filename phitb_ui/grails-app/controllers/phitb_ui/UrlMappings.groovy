@@ -652,11 +652,6 @@ class UrlMappings {
         "/delivery-challan/print-delivery-challan"(controller: "deliveryChallan", action: "printDeliveryChallan")
 
 
-
-
-
-
-
 //        Sample conversion
         "/sample-conversion/save"(controller: 'sampleConversion', action: 'saveSampleConversion')
         "/sample-conversion"(controller: 'sampleConversion', action: 'sampleConversion')
@@ -872,6 +867,8 @@ class UrlMappings {
 
         "/transportation-info"(controller: "transportationInfo",action:"index")
         "/transportation-info/getdocuments"(controller: "transportationInfo",action:"getDocuments")
+        "/transportation-info/savesaletransport"(controller: "transportationInfo",action:"SaveSaleTransportation")
+        "/transportation-info/savepurchasetransport"(controller: "transportationInfo",action:"SavePurchaseTransportation")
 
         //Transporter
         "/transporter"(controller: "transporter") {

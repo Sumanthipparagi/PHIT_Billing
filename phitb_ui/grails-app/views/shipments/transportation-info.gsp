@@ -210,7 +210,7 @@
                             $.each (data["SALES"], function (index, value) {
                                 var lrNumberValue = "";
                                 var transportDateValue = "";
-                                var transporterDropdown = "<select data-doctype='SALE_INVOICE' data-id='"+value?.id+"' class='select2-container' onchange='updateDetails(this)' id='"+value.id+"'>";
+                                var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' class='select2-container' onchange='updateDetails(this)' id='"+value.id+"'>";
                                 transporterDropdown += "<option selected disabled>--SELECT--</option>"
                                 <g:each in="${transporters}" var="transporter" >
                                 transporterDropdown += "<option value='${transporter.id}'>${transporter.name}</option>"
@@ -225,8 +225,8 @@
                                     transportDateValue = date.format("YYYY-MM-DD");
                                 }
 
-                                var transportDate = "<input type='date' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' onblur='updateDetails(this)' value='"+transportDateValue+"'/>";
-                                var LRNumber = "<input type='text' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+lrNumberValue+"' onblur='updateDetails(this)'/>";
+                                var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' onblur='updateDetails(this)' value='"+transportDateValue+"'/>";
+                                var LRNumber = "<input id='lrnumber"+value?.id+"' type='text' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+lrNumberValue+"' onblur='updateDetails(this)'/>";
 
                                 var row = "<tr> <td>"+value?.customer?.entityName+"</td><td>"+value?.city?.areaName+"</td><td>Sale Entry</td><td>"+value?.invoiceNumber+"</td><td>"+value?.entryDate+"</td><td>"+transporterDropdown+"</td><td>"+transportDate+"</td><td>"+LRNumber+"</td></tr>";
                                 $("#shipmentDetailsTableBody").append(row);
@@ -251,10 +251,29 @@
 
     function updateDetails(element)
     {
-        var value = element.value;
         var id = $(element).attr("data-id");
-        var doctype = $(element).attr("data-doctype");
-        alert(doctype + " : "+id + " : "+value);
+        var docType = $(element).attr("data-doctype");
+        var transporter = $("#transporter"+id).val();
+        var transportDate = $("#transportdate"+id).val();
+        var lrNumber = $("#lrnumber"+id).val();
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/transportation-info/savesaletransport',
+            data: {
+                id: id,
+                docType: docType,
+                transporter: transporter,
+                transportDate: transportDate,
+                lrNumber: lrNumber
+            },
+            dataType: 'json',
+            success: function (data) {
+
+            }
+        });
+
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>
