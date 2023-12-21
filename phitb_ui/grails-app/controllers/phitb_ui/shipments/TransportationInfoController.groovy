@@ -8,6 +8,8 @@ import phitb_ui.SalesService
 import phitb_ui.ShipmentService
 import phitb_ui.SystemService
 
+import javax.ws.rs.core.Response
+
 class TransportationInfoController {
 
     def index() {
@@ -58,5 +60,57 @@ class TransportationInfoController {
         }
 
         respond documents, formats: ['json']
+    }
+
+    def SaveSaleTransportation()
+    {
+        String saleId = params.id
+        String doctype = params.doctype
+        JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleId)
+        JSONObject transportObject = new JSONObject();
+        transportObject.put("finId", 0)
+        transportObject.put("billId", saleId)
+        transportObject.put("billType", doctype)
+        transportObject.put("serBillId", saleBillDetail.serBillId)
+        transportObject.put("series", saleBillDetail.seriesId)
+        transportObject.put("customerId", saleBillDetail.customerId)
+        transportObject.put("transporterId", params.transporter)
+        transportObject.put("lrDate", params.lrDate)
+        transportObject.put("lrNumber", params.lrNumber)
+        transportObject.put("cartonsCount", "")
+        transportObject.put("paid", 0)
+        transportObject.put("toPay", 0)
+        transportObject.put("generalInfo", 0)
+        transportObject.put("selfNo", 0)
+        transportObject.put("ccm", 0)
+        transportObject.put("recievedTemprature", 0)
+        transportObject.put("freightCharge", 0)
+        transportObject.put("vechileId", 0)
+        transportObject.put("deliveryStatus", 0)
+        transportObject.put("dispatchDateTime", 0)
+        transportObject.put("deliveryDateTime", 0)
+        transportObject.put("trackingDetails", 0)
+        transportObject.put("ewaybillId", 0)
+        transportObject.put("genralInfo", 0)
+        transportObject.put("weight", 0)
+        transportObject.put("ewaysupplytype", 0)
+        transportObject.put("ewaysupplysubtype", 0)
+        transportObject.put("ewaydoctype", 0)
+        transportObject.put("consignmentNo", 0)
+        transportObject.put("syncStatus", 0)
+        transportObject.put("financialYear", 0)
+        transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+        transportObject.put("entityId", session.getAttribute('entityId'))
+        Response transportation = new SalesService().saveSaleTransportation(transportObject)
+        if (transportation?.status == 200) {
+            println("Transportation details added")
+        } else {
+            println("something went wrong!!")
+        }
+    }
+
+    def SavePurchaseTransportation()
+    {
+
     }
 }
