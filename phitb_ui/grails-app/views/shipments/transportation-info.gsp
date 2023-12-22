@@ -171,81 +171,61 @@
 <script>
 
     var shipmentDetailsTable = null;
+    var docTypeToSelectURL = "SALE";
     $(function () {
         initDatatable();
     });
 
     function initDatatable()
     {
+        // Define the csv button configuration
+        var csvButton = {
+            extend: "csv",
+            exportOptions: {
+                format: {
+                    // Define a custom export function
+                    body: function (data, row, column, node) {
+                        data = data +""; //converting into string
+                        var strVal = "";
+                        if(data.startsWith("<input"))
+                        {
+                            strVal = $(data).val();
+                        }
+                        else if(data.startsWith("<select"))
+                        {
+                            strVal = $("option:selected", data).text()
+                            if(strVal === "--SELECT--")
+                            {
+                                strVal = "NA";
+                            }
+                        }
+                        else{
+                            strVal = data;
+                        }
+                        return strVal;
+                    }
+                }
+            }
+        };
+
         shipmentDetailsTable = $("#shipmentDetailsTable").DataTable({
             "order": [[0, "desc"]],
             "iDisplayLength": 100,
-           /* dom: 'Bfrtip',
+            dom: 'lBfrtip',
             buttons: [
-               'csv'
-            ],*/
+                $.extend( true, {}, csvButton, {
+                    extend: 'csvHtml5'
+                })
+            ],
             sPaginationType: "simple_numbers",
             autoWidth: false,
             destroy: true,
             bJQueryUI: true,
             sScrollX: "100%",
-            info: true,
-            language: {
-                searchPlaceholder: "Search Vehicle Details"
-            }
+            info: true
         });
         shipmentDetailsTable.column(0).visible(false);
 
-        // Define the csv button configuration
-        var csvButton = {
-            extend: "csv",
-            exportOptions: {
-                // Define a custom export function
-                exportData: function (data, config) {
-                    // Get the data from the table
-                    var rows = data.body;
-                    var columns = data.header;
-                    var modifier = data.modifier;
-                    var output = [];
-
-                    // Loop over the rows
-                    for (var i = 0; i < rows.length; i++) {
-                        var row = rows[i];
-                        var outRow = [];
-
-                        // Loop over the columns
-                        for (var j = 0; j < columns.length; j++) {
-                            var column = columns[j];
-                            var cell = row[j];
-
-                            // Check if the cell contains an input element
-                            if ($(cell).is("input")) {
-                                // Get the value of the input element
-                                var value = $(cell).val();
-                                // Add the value to the output row
-                                outRow.push(value);
-                            } else {
-                                // Add the cell as it is to the output row
-                                outRow.push(cell);
-                            }
-                        }
-
-                        // Add the output row to the output array
-                        output.push(outRow);
-                    }
-
-                    // Return the output array
-                    return {
-                        header: columns,
-                        body: output,
-                        footer: data.footer
-                    };
-                }
-            }
-        };
-
-// Add the csv button to the table
-        shipmentDetailsTable.button().add(0, csvButton);
     }
 
     $("#docType").select2();
@@ -289,11 +269,12 @@
                     {
                         if(data["SALES"] != null)
                         {
+                            docTypeToSelectURL = "SALE";
                             $.each (data["SALES"], function (index, value) {
                                 var transportationDetails = value.transportationDetails;
                                 var lrNumberValue = "";
                                 var transportDateValue = "";
-                                var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' class='select2-container' id='"+value.id+"'>";
+                                var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' class='select2-container' id='"+value.id+"' onchange='updateDetails(this)'>";
                                 transporterDropdown += "<option selected disabled>--SELECT--</option>"
                                 <g:each in="${transporters}" var="transporter" >
                                 var selected = "";
@@ -309,17 +290,97 @@
                                     var date = moment(transportDateValue);
                                     transportDateValue = date.format("YYYY-MM-DD");
                                 }
-
-                                var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+transportDateValue+"'/>";
+                                var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+transportDateValue+"' onblur='updateDetails(this)'/>";
                                 var LRNumber = "<input id='lrnumber"+value?.id+"' type='text' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+lrNumberValue+"' onblur='updateDetails(this)'/>";
-
                                 var rowData = [value?.id, value?.customer?.entityName+"", value?.city?.areaName+"", 'SALE INVOICE', value?.invoiceNumber+"", value?.entryDate+"", transporterDropdown,transportDate, LRNumber];
-                                //var row = '<tr> <td>'+value?.customer?.entityName+'</td><td>'+value?.city?.areaName+'</td><td>Sale Entry</td><td>'+value?.invoiceNumber+'</td><td>'+value?.entryDate+'</td><td>'+transporterDropdown+'</td><td>'+transportDate+'</td><td>'+LRNumber+'</td></tr>';
-                                //$("#shipmentDetailsTableBody").append(row);
                                 shipmentDetailsTable.row.add(rowData);
-                                /*if(transportationDetails != null) {
-                                    $("#transporter" + value.id).val(transportationDetails.transporterId);
-                                }*/
+                            });
+                        }
+                        else if(data["SALE_RETURN"] != null)
+                        {
+                            docTypeToSelectURL = "SALE";
+                            $.each (data["SALE_RETURN"], function (index, value) {
+                                var transportationDetails = value.transportationDetails;
+                                var lrNumberValue = "";
+                                var transportDateValue = "";
+                                var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='SALE_RETURN' data-id='"+value?.id+"' class='select2-container' id='"+value.id+"' onchange='updateDetails(this)'>";
+                                transporterDropdown += "<option selected disabled>--SELECT--</option>"
+                                <g:each in="${transporters}" var="transporter" >
+                                var selected = "";
+                                if(transportationDetails?.transporterId === ${transporter.id})
+                                    selected = " selected";
+                                transporterDropdown += "<option value='${transporter.id}' "+selected+">${transporter.name}</option>"
+                                </g:each>
+                                transporterDropdown += "</select>";
+                                if(transportationDetails != null)
+                                {
+                                    lrNumberValue = transportationDetails.lrNumber;
+                                    transportDateValue = transportationDetails.lrDate;
+                                    var date = moment(transportDateValue);
+                                    transportDateValue = date.format("YYYY-MM-DD");
+                                }
+                                var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='SALE_RETURN' data-id='"+value?.id+"' value='"+transportDateValue+"' onblur='updateDetails(this)'/>";
+                                var LRNumber = "<input id='lrnumber"+value?.id+"' type='text' data-doctype='SALE_RETURN' data-id='"+value?.id+"' value='"+lrNumberValue+"' onblur='updateDetails(this)'/>";
+                                var rowData = [value?.id, value?.customer?.entityName+"", value?.city?.areaName+"", 'SALE RETURN', value?.invoiceNumber+"", value?.entryDate+"", transporterDropdown,transportDate, LRNumber];
+                                shipmentDetailsTable.row.add(rowData);
+                            });
+                        }
+                        else if(data["PURCHASE"] != null)
+                        {
+                            docTypeToSelectURL = "PURCHASE";
+                            $.each (data["PURCHASE"], function (index, value) {
+                                var transportationDetails = value.transportationDetails;
+                                var lrNumberValue = "";
+                                var transportDateValue = "";
+                                var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='PURCHASE_INVOICE' data-id='"+value?.id+"' class='select2-container' id='"+value.id+"' onchange='updateDetails(this)'>";
+                                transporterDropdown += "<option selected disabled>--SELECT--</option>"
+                                <g:each in="${transporters}" var="transporter" >
+                                var selected = "";
+                                if(transportationDetails?.transporterId === ${transporter.id})
+                                    selected = " selected";
+                                transporterDropdown += "<option value='${transporter.id}' "+selected+">${transporter.name}</option>"
+                                </g:each>
+                                transporterDropdown += "</select>";
+                                if(transportationDetails != null)
+                                {
+                                    lrNumberValue = transportationDetails.lrNumber;
+                                    transportDateValue = transportationDetails.lrDate;
+                                    var date = moment(transportDateValue);
+                                    transportDateValue = date.format("YYYY-MM-DD");
+                                }
+                                var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='PURCHASE_INVOICE' data-id='"+value?.id+"' value='"+transportDateValue+"' onblur='updateDetails(this)'/>";
+                                var LRNumber = "<input id='lrnumber"+value?.id+"' type='text' data-doctype='PURCHASE_INVOICE' data-id='"+value?.id+"' value='"+lrNumberValue+"' onblur='updateDetails(this)'/>";
+                                var rowData = [value?.id, value?.customer?.entityName+"", value?.city?.areaName+"", 'PURCHASE INVOICE', value?.invoiceNumber+"", value?.entryDate+"", transporterDropdown,transportDate, LRNumber];
+                                shipmentDetailsTable.row.add(rowData);
+                            });
+                        }
+                        else if(data["PURCHASE_RETURN"] != null)
+                        {
+                            docTypeToSelectURL = "PURCHASE";
+                            $.each (data["PURCHASE_RETURN"], function (index, value) {
+                                var transportationDetails = value.transportationDetails;
+                                var lrNumberValue = "";
+                                var transportDateValue = "";
+                                var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='PURCHASE_RETURN' data-id='"+value?.id+"' class='select2-container' id='"+value.id+"' onchange='updateDetails(this)'>";
+                                transporterDropdown += "<option selected disabled>--SELECT--</option>"
+                                <g:each in="${transporters}" var="transporter" >
+                                var selected = "";
+                                if(transportationDetails?.transporterId === ${transporter.id})
+                                    selected = " selected";
+                                transporterDropdown += "<option value='${transporter.id}' "+selected+">${transporter.name}</option>"
+                                </g:each>
+                                transporterDropdown += "</select>";
+                                if(transportationDetails != null)
+                                {
+                                    lrNumberValue = transportationDetails.lrNumber;
+                                    transportDateValue = transportationDetails.lrDate;
+                                    var date = moment(transportDateValue);
+                                    transportDateValue = date.format("YYYY-MM-DD");
+                                }
+                                var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='PURCHASE_RETURN' data-id='"+value?.id+"' value='"+transportDateValue+"' onblur='updateDetails(this)'/>";
+                                var LRNumber = "<input id='lrnumber"+value?.id+"' type='text' data-doctype='PURCHASE_RETURN' data-id='"+value?.id+"' value='"+lrNumberValue+"' onblur='updateDetails(this)'/>";
+                                var rowData = [value?.id, value?.customer?.entityName+"", value?.city?.areaName+"", 'PURCHASE RETURN', value?.invoiceNumber+"", value?.entryDate+"", transporterDropdown,transportDate, LRNumber];
+                                shipmentDetailsTable.row.add(rowData);
                             });
                         }
                     }
@@ -340,6 +401,15 @@
 
     function updateDetails(element)
     {
+        var url = ""
+        if(docTypeToSelectURL === "SALE")
+        {
+            url = "/transportation-info/savesaletransport";
+        }
+        else
+        {
+            url = "/transportation-info/savepurchasetransport";
+        }
         var id = $(element).attr("data-id");
         var docType = $(element).attr("data-doctype");
         var transporter = $("#transporter"+id).val();
@@ -350,7 +420,7 @@
         if(transportDate != null && transportDate.length > 1 && transporter != null && transporter.length > 0 && lrNumber != null && lrNumber.length > 1) {
             $.ajax({
                 type: 'POST',
-                url: '/transportation-info/savesaletransport',
+                url: url,
                 data: {
                     id: id,
                     docType: docType,
@@ -380,12 +450,12 @@
         }
         else
         {
-            iziToast.warning({
-                title: 'Error!',
+          /*  iziToast.warning({
+                title: 'Warning!',
                 message: 'Please select transporter and transport date, and also enter the LR Number',
                 timeout: 5000,
                 position: 'topRight'
-            });
+            });*/
         }
 
     }

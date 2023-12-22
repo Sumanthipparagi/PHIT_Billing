@@ -125,7 +125,7 @@ class PurchaseTransportationDetailService {
             purchaseTransportationDetail.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
             purchaseTransportationDetail.series = Long.parseLong(jsonObject.get("series").toString())
             purchaseTransportationDetail.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
-            purchaseTransportationDetail.transporterId = Long.parseLong(jsonObject.get("transportTypeId").toString())
+            purchaseTransportationDetail.transporterId = Long.parseLong(jsonObject.get("transporterId").toString())
             purchaseTransportationDetail.lrDate = sdf.parse(jsonObject.get("lrDate").toString())
             purchaseTransportationDetail.lrNumber = jsonObject.get("lrNumber").toString()
             purchaseTransportationDetail.cartonsCount = jsonObject.get("cartonsCount").toString()

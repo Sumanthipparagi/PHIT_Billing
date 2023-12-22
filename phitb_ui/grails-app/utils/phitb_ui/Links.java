@@ -889,6 +889,7 @@ public class Links
 
     //   purchase transportation details
     public static String PURCHASE_TRANSPORTATION_SAVE = APP_CONTEXT_PATH + "purchase/transportationdetail";
+    public static String PURCHASE_TRANSPORTATION_UPDATE = APP_CONTEXT_PATH + "purchase/transportationdetail/{id}";
     public static String PURCHASE_TRANSPORTATION_BY_BILL = APP_CONTEXT_PATH + "purchase/transportationdetail/billid";
 
 

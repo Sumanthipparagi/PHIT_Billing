@@ -683,6 +683,28 @@ class PurchaseService {
         }
     }
 
+    def updatePurchaseTransportation(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_TRANSPORTATION_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :purchaseService , action :  updatePurchaseTransportation  , Ex:' + ex)
+            log.error('Service :purchaseService , action :  updatePurchaseTransportation  , Ex:' + ex)
+        }
+    }
+
 
     def deletePurchaseProduct(String id) {
         Client client = ClientBuilder.newClient();
