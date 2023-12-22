@@ -117,9 +117,10 @@
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover shipmentDetailsTable dataTable">
+                            <table class="table table-bordered table-striped table-hover dataTable" id="shipmentDetailsTable">
                                 <thead>
                                 <tr>
+                                    <th style="width: 20%">ID</th>
                                     <th style="width: 20%">Customer Name</th>
                                     <th style="width: 20%">City</th>
                                     <th style="width: 20%">Transaction Type</th>
@@ -169,15 +170,23 @@
 <asset:javascript src="/themeassets/newplugins/iziToast/dist/js/iziToast.js"/>
 <script>
 
+    var shipmentDetailsTable = null;
     $(function () {
-        $("#shipmentDetailsTable").DataTable({
+        initDatatable();
+    });
+
+    function initDatatable()
+    {
+        shipmentDetailsTable = $("#shipmentDetailsTable").DataTable({
             "order": [[0, "desc"]],
+            "iDisplayLength": 100,
+           /* dom: 'Bfrtip',
+            buttons: [
+               'csv'
+            ],*/
             sPaginationType: "simple_numbers",
-            responsive: {
-                details: false
-            },
-            destroy: true,
             autoWidth: false,
+            destroy: true,
             bJQueryUI: true,
             sScrollX: "100%",
             info: true,
@@ -185,8 +194,59 @@
                 searchPlaceholder: "Search Vehicle Details"
             }
         });
-    });
+        shipmentDetailsTable.column(0).visible(false);
 
+        // Define the csv button configuration
+        var csvButton = {
+            extend: "csv",
+            exportOptions: {
+                // Define a custom export function
+                exportData: function (data, config) {
+                    // Get the data from the table
+                    var rows = data.body;
+                    var columns = data.header;
+                    var modifier = data.modifier;
+                    var output = [];
+
+                    // Loop over the rows
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = rows[i];
+                        var outRow = [];
+
+                        // Loop over the columns
+                        for (var j = 0; j < columns.length; j++) {
+                            var column = columns[j];
+                            var cell = row[j];
+
+                            // Check if the cell contains an input element
+                            if ($(cell).is("input")) {
+                                // Get the value of the input element
+                                var value = $(cell).val();
+                                // Add the value to the output row
+                                outRow.push(value);
+                            } else {
+                                // Add the cell as it is to the output row
+                                outRow.push(cell);
+                            }
+                        }
+
+                        // Add the output row to the output array
+                        output.push(outRow);
+                    }
+
+                    // Return the output array
+                    return {
+                        header: columns,
+                        body: output,
+                        footer: data.footer
+                    };
+                }
+            }
+        };
+
+// Add the csv button to the table
+        shipmentDetailsTable.button().add(0, csvButton);
+    }
 
     $("#docType").select2();
 
@@ -222,23 +282,26 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $("#shipmentDetailsTableBody").empty();
-
-
+                   // $("#shipmentDetailsTableBody").empty();
+                    shipmentDetailsTable.clear();
+                    shipmentDetailsTable.draw();
                     if(data != null)
                     {
                         if(data["SALES"] != null)
                         {
                             $.each (data["SALES"], function (index, value) {
+                                var transportationDetails = value.transportationDetails;
                                 var lrNumberValue = "";
                                 var transportDateValue = "";
                                 var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' class='select2-container' id='"+value.id+"'>";
                                 transporterDropdown += "<option selected disabled>--SELECT--</option>"
                                 <g:each in="${transporters}" var="transporter" >
-                                transporterDropdown += "<option value='${transporter.id}'>${transporter.name}</option>"
+                                var selected = "";
+                                if(transportationDetails?.transporterId === ${transporter.id})
+                                    selected = " selected";
+                                transporterDropdown += "<option value='${transporter.id}' "+selected+">${transporter.name}</option>"
                                 </g:each>
                                 transporterDropdown += "</select>";
-                                var transportationDetails = value.transportationDetails;
                                 if(transportationDetails != null)
                                 {
                                     lrNumberValue = transportationDetails.lrNumber;
@@ -250,15 +313,19 @@
                                 var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+transportDateValue+"'/>";
                                 var LRNumber = "<input id='lrnumber"+value?.id+"' type='text' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+lrNumberValue+"' onblur='updateDetails(this)'/>";
 
-                                var row = "<tr> <td>"+value?.customer?.entityName+"</td><td>"+value?.city?.areaName+"</td><td>Sale Entry</td><td>"+value?.invoiceNumber+"</td><td>"+value?.entryDate+"</td><td>"+transporterDropdown+"</td><td>"+transportDate+"</td><td>"+LRNumber+"</td></tr>";
-                                $("#shipmentDetailsTableBody").append(row);
-
-                                if(transportationDetails != null) {
+                                var rowData = [value?.id, value?.customer?.entityName+"", value?.city?.areaName+"", 'SALE INVOICE', value?.invoiceNumber+"", value?.entryDate+"", transporterDropdown,transportDate, LRNumber];
+                                //var row = '<tr> <td>'+value?.customer?.entityName+'</td><td>'+value?.city?.areaName+'</td><td>Sale Entry</td><td>'+value?.invoiceNumber+'</td><td>'+value?.entryDate+'</td><td>'+transporterDropdown+'</td><td>'+transportDate+'</td><td>'+LRNumber+'</td></tr>';
+                                //$("#shipmentDetailsTableBody").append(row);
+                                shipmentDetailsTable.row.add(rowData);
+                                /*if(transportationDetails != null) {
                                     $("#transporter" + value.id).val(transportationDetails.transporterId);
-                                }
+                                }*/
                             });
                         }
                     }
+                    shipmentDetailsTable.draw();
+                    shipmentDetailsTable.columns.adjust();
+                    shipmentDetailsTable.column(0).visible(false);
                     searchingSwal.close();
                 }, error: function () {
                     searchingSwal.close();
