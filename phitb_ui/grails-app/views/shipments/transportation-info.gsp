@@ -21,6 +21,7 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
     <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/newplugins/iziToast/dist/css/iziToast.css"/>
     <style>
 
     /*div.dataTables_scrollBody table tbody  td {*/
@@ -116,7 +117,7 @@
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover vehicleDetailTable dataTable">
+                            <table class="table table-bordered table-striped table-hover shipmentDetailsTable dataTable">
                                 <thead>
                                 <tr>
                                     <th style="width: 20%">Customer Name</th>
@@ -165,9 +166,30 @@
 <asset:javascript src="/themeassets/plugins/daterangepicker/moment.min.js"/>
 <asset:javascript src="/themeassets/plugins/daterangepicker/daterangepicker.js"/>
 <asset:javascript src="/themeassets/plugins/select2/dist/js/select2.min.js"/>
+<asset:javascript src="/themeassets/newplugins/iziToast/dist/js/iziToast.js"/>
 <script>
 
+    $(function () {
+        $("#shipmentDetailsTable").DataTable({
+            "order": [[0, "desc"]],
+            sPaginationType: "simple_numbers",
+            responsive: {
+                details: false
+            },
+            destroy: true,
+            autoWidth: false,
+            bJQueryUI: true,
+            sScrollX: "100%",
+            info: true,
+            language: {
+                searchPlaceholder: "Search Vehicle Details"
+            }
+        });
+    });
+
+
     $("#docType").select2();
+
     $('.dateRange').daterangepicker({
         locale: {
             format: "DD/MM/YYYY"
@@ -210,7 +232,7 @@
                             $.each (data["SALES"], function (index, value) {
                                 var lrNumberValue = "";
                                 var transportDateValue = "";
-                                var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' class='select2-container' onchange='updateDetails(this)' id='"+value.id+"'>";
+                                var transporterDropdown = "<select id='transporter"+value?.id+"' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' class='select2-container' id='"+value.id+"'>";
                                 transporterDropdown += "<option selected disabled>--SELECT--</option>"
                                 <g:each in="${transporters}" var="transporter" >
                                 transporterDropdown += "<option value='${transporter.id}'>${transporter.name}</option>"
@@ -225,14 +247,14 @@
                                     transportDateValue = date.format("YYYY-MM-DD");
                                 }
 
-                                var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' onblur='updateDetails(this)' value='"+transportDateValue+"'/>";
+                                var transportDate = "<input id='transportdate"+value?.id+"' type='date' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+transportDateValue+"'/>";
                                 var LRNumber = "<input id='lrnumber"+value?.id+"' type='text' data-doctype='SALE_INVOICE' data-id='"+value?.id+"' value='"+lrNumberValue+"' onblur='updateDetails(this)'/>";
 
                                 var row = "<tr> <td>"+value?.customer?.entityName+"</td><td>"+value?.city?.areaName+"</td><td>Sale Entry</td><td>"+value?.invoiceNumber+"</td><td>"+value?.entryDate+"</td><td>"+transporterDropdown+"</td><td>"+transportDate+"</td><td>"+LRNumber+"</td></tr>";
                                 $("#shipmentDetailsTableBody").append(row);
 
                                 if(transportationDetails != null) {
-                                    $("#" + value.id).val(transportationDetails.transporterId);
+                                    $("#transporter" + value.id).val(transportationDetails.transporterId);
                                 }
                             });
                         }
@@ -258,21 +280,46 @@
         var lrNumber = $("#lrnumber"+id).val();
 
 
-        $.ajax({
-            type: 'POST',
-            url: '/transportation-info/savesaletransport',
-            data: {
-                id: id,
-                docType: docType,
-                transporter: transporter,
-                transportDate: transportDate,
-                lrNumber: lrNumber
-            },
-            dataType: 'json',
-            success: function (data) {
+        if(transportDate != null && transportDate.length > 1 && transporter != null && transporter.length > 0 && lrNumber != null && lrNumber.length > 1) {
+            $.ajax({
+                type: 'POST',
+                url: '/transportation-info/savesaletransport',
+                data: {
+                    id: id,
+                    docType: docType,
+                    transporter: transporter,
+                    transportDate: transportDate,
+                    lrNumber: lrNumber
+                },
+                dataType: 'json',
+                success: function (data) {
+                    iziToast.success({
+                        title: 'Success!',
+                        message: 'Transportation details updated.',
+                        timeout: 3000,
+                        position: 'topRight'
+                    });
 
-            }
-        });
+                },
+                error: function (data) {
+                    iziToast.error({
+                        title: 'Error!',
+                        message: 'Unable to save, try again.',
+                        timeout: 3000,
+                        position: 'topRight'
+                    });
+                }
+            });
+        }
+        else
+        {
+            iziToast.warning({
+                title: 'Error!',
+                message: 'Please select transporter and transport date, and also enter the LR Number',
+                timeout: 5000,
+                position: 'topRight'
+            });
+        }
 
     }
 </script>
