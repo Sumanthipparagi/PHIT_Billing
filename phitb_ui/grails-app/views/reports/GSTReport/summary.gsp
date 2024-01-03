@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="PharmIT">
 
-    <title>:: PharmIt ::  Product Statement</title>
+    <title>:: PharmIt ::  GST Summary</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -44,27 +44,17 @@
     </div>
 </div>
 <g:include view="controls/sidebar.gsp"/>
-
 <section class="content">
     <div class="container-fluid">
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Product Statement</h2>
+                    <h2>GST Summary</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Product Statement</li>
+                        <li class="breadcrumb-item active">GST Summary</li>
                     </ul>
                 </div>
-
-%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
-%{--                    <div class="input-group m-b-0">--}%
-%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
-%{--                        <span class="input-group-addon">--}%
-%{--                            <i class="zmdi zmdi-search"></i>--}%
-%{--                        </span>--}%
-%{--                    </div>--}%
-%{--                </div>--}%
             </div>
         </div>
 
@@ -119,8 +109,6 @@
 
     </div>
 </section>
-
-
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
@@ -140,117 +128,6 @@
 <asset:javascript src="/themeassets/plugins/jQuery.print/jQuery.print.min.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-%{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.umd.min.js"/>--}%
-%{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.plugin.autotable.js"/>--}%
-%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>--}%
-%{--
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.js" integrity="sha512-Bw9Zj8x4giJb3OmlMiMaGbNrFr0ERD2f9jL3en5FmcTXLhkI+fKyXVeyGyxKMIl1RfgcCBDprJJt4JvlglEb3A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
---}%
-<script>
-    $('.dateRange').daterangepicker({
-        locale: {
-            format: "DD/MM/YYYY"
-        }
-    });
-
-    function getReport() {
-        var loading = Swal.fire({
-            title: "Getting reports, Please wait!",
-            html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
-            showDenyButton: false,
-            showCancelButton: false,
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            closeOnClickOutside: false
-        });
-        var dateRange = $('.dateRange').val();
-        // var sortBy = $('.sortBy').val();
-
-        $.ajax({
-            url: "/reports/products/getstatement?dateRange=" + dateRange,
-            type: "GET",
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                var content = "";
-                var grandTotal = 0.00;
-                var mainTableHeader = "<table class='table-bordered table-sm' style='width: 100%;color: #212529;'><thead>" +
-                    "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
-                    "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='10'>Product Statement, Date: " + dateRange + "</th></tr>" +
-                    "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Expiry</th>" +
-                    "<th data-f-bold='true'>MRP</th><th data-f-bold='true'>Pur.</th><th data-f-bold='true'>Pur. Rt.</th><th data-f-bold='true'>Sales</th><th data-f-bold='true'>Sales Rt.</th><th data-f-bold='true'>Brkg/Exp</th></tr></thead><tbody>";
-                var index = 1;
-                $.each(data, function (key, product) {
-
-                    $.each(product, function (k, batch) {
-                        content += "<tr><td>"+(index)+"</td><td>"+batch.productName+"</td><td>"+batch.batchNumber+"</td>" +
-                            "<td>"+batch.expiryDate+"</td><td>"+batch.mrp.toFixed(2)+"</td><td>"+(batch.purchaseSqty+batch.purchaseFreeQty)+"</td><td>"+batch.purchaseReturn+"</td>" +
-                            "<td>"+(batch.saleSqty+batch.saleFreeQty)+"</td><td>"+batch.saleReturn+"</td><td>"+batch.saleReturnBreakage+"</td></tr>";
-                        index = index+1;
-                    });
-
-                });
-                var mainTableFooter = "</tbody></table>";
-
-                $("#result").html(mainTableHeader + content + mainTableFooter);
-                loading.close();
-                $("#grandTotal").text(grandTotal.toFixed(2));
-            },
-            error: function () {
-                loading.close();
-                swal("Error!", "Unable to generate report at the moment", "error");
-            }
-        })
-    }
-
-    $("#btnExport").click(function () {
-        let table = document.getElementById("result");
-        TableToExcel.convert(table, {
-            name: 'customerwise-sales-report.xlsx',
-            sheet: {
-                name: 'Sheet 1' // sheetName
-            }
-        });
-    });
-
-    $("#btnPrint").click(function () {
-        $("#result").print({
-            globalStyles: true,
-            mediaPrint: false,
-            stylesheet: null,
-            noPrintSelector: ".no-print",
-            iframe: true,
-            append: null,
-            prepend: null,
-            manuallyCopyFormValues: true,
-            deferred: $.Deferred(),
-            timeout: 750,
-            title: null,
-            doctype: '<!doctype html>'
-        });
-    });
-
-    /*  $(document).ready(function() {
-          window.jsPDF = window.jspdf.jsPDF;
-          $("#btnPdf").click(function () {
-              var doc = new jsPDF();
-              doc.autoTable({ html: '#result' });
-              doc.save('table.pdf');
-          });
-      });*/
-
-    function dateFormat(dt)
-    {
-        dt = dt.replace("T", " ").replace("Z", '');
-        var date = moment(dt, 'DD/MM/YYYY HH:mm:ss');
-        return moment(date).format('DD/MM/YYYY hh:mm:ss a');
-
-    }
-
-
-</script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("reports-menu");

@@ -458,6 +458,15 @@
                                     <li><a href="/reports/products/price-list">Price List</a></li>
                                 </ul>
                             </li>
+
+                            <li><a href="javascript:void(0);" class="menu-toggle">GST Report</span><span
+                                    class="badge badge-success float-right"></span></a>
+                                <ul class="ml-menu">
+                                    <li><a href="/reports/gst/summary">GST Summary</a></li>
+                                    %{--<li><a href="/reports/gst/statement">Batchwise Statement</a></li>
+                                    <li><a href="/reports/gst/price-list">Price List</a></li>--}%
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                 </g:if>
