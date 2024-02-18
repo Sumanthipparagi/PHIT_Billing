@@ -4,7 +4,9 @@ import grails.gorm.transactions.Transactional
 
 import java.text.SimpleDateFormat
 import java.util.zip.ZipFile
-
+import org.apache.commons.net.ftp.FTPClient
+import org.apache.commons.net.ftp.FTPReply
+import org.springframework.web.multipart.MultipartFile
 @Transactional
 class FilesService {
 
@@ -61,6 +63,70 @@ class FilesService {
         File destinationFile = new File(destinationFilePath);
         boolean fileMoved = sourceFile.renameTo(destinationFile);
         return fileMoved
+    }
+
+
+    public static String uploadFileDynamicallyToFTP(String type, InputStream inputStream, String fileName, String entityId) {
+        FTPClient ftpClient = new FTPClient();
+        String dirToCreate = "/" + type + "/" + entityId + "/";
+        try {
+            ftpClient.connect("webikind.net", 21);
+            ftpClient.login("pharmitdev2@webikind.net", "pharmit!23");
+
+            int reply = ftpClient.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(reply)) {
+                ftpClient.disconnect();
+                throw new Exception("FTP server refused connection.");
+            }
+
+            // Check if the directory exists and create it if it doesn't
+            if (!ftpClient.changeWorkingDirectory(dirToCreate)) {
+                String[] dirs = dirToCreate.split("/");
+                String currentDir = "";
+                for (String dir : dirs) {
+                    currentDir += "/" + dir;
+                    if (!dir.isEmpty()) {
+                        if (!ftpClient.changeWorkingDirectory(currentDir)) {
+                            if (!ftpClient.makeDirectory(currentDir)) {
+                                throw new Exception("Failed to create directory: " + currentDir);
+                            }
+                        }
+                    }
+                }
+            }
+
+            ftpClient.changeWorkingDirectory(dirToCreate);
+
+            // Switch to active mode
+            ftpClient.enterLocalActiveMode(); // Use this instead of enterLocalPassiveMode()
+
+            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+
+            // Attempt to upload the file
+            if (!ftpClient.storeFile(fileName, inputStream)) {
+                throw new Exception("Error uploading file to FTP server. Reply Code: " + ftpClient.getReplyCode() + ", Reply String: " + ftpClient.getReplyString());
+            }
+
+            return dirToCreate + fileName;
+        } catch (Exception ex) {
+            System.err.println("Error in uploadFileDynamicallyToFTP: " + ex.getMessage());
+            ex.printStackTrace();
+            return null;
+        } finally {
+            // Ensure resources are always properly closed
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (ftpClient.isConnected()) {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                }
+            } catch (IOException ex) {
+                System.err.println("Error closing FTP connection: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
     }
 
 }

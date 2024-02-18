@@ -488,6 +488,11 @@ class UrlMappings {
         "/unit-type/update/$id"(controller:"unitType",action:"update")
         "/unit-type/delete/$id"(controller: "unitType",action:"delete")
 
+        //Out of Stock
+        "/outofstock"(controller: "outOfStock") {
+            action = [GET: "index"]
+        }
+
 
         //Division Group register
         "/division-group"(controller: "divisionGroup") {
@@ -661,6 +666,17 @@ class UrlMappings {
         "/sample-conversion/datatable"(controller: 'sampleConversion', action:'dataTable')
         "/sample-conversion/sample-invoice-list"(controller: 'sampleConversion', action: 'sampleConversionList')
         "/sample-conversion/cancel"(controller: 'sampleConversion', action: 'cancelSampleInvoice')
+
+
+        // Invoice Signature
+
+        "/invoiceSignature"(controller: "invoiceSignature") {
+            action = [GET: "index"]
+        }
+
+        "/invoiceSignature/getbyinvoicenumber/$id"(controller: 'invoiceSignature', action: 'getByInvoiceNumber')
+
+
 
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
 
@@ -935,5 +951,7 @@ class UrlMappings {
         "/files/upload"(controller: "files", action: "uploadFile")
         "/files/download"(controller: "files", action: "downloadFile")
         "/files/delete"(controller: "files", action: "deleteFile")
+        "/files/delete"(controller: "files", action: "deleteFile")
+        "/files/savecanvasimagetoftp"(controller: "files", action:"savecanvasimagetoftp")
     }
 }

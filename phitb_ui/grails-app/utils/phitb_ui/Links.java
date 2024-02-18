@@ -648,6 +648,10 @@ public class Links
     public static String DC_PRODUCTS_BY_DC = APP_CONTEXT_PATH + "sales/deliverychallanproduct/deliverychallan";
 
 
+    // Invoice Signature
+    public static String INVOICE_SIGN_GETBY_INVOICENUMBER = APP_CONTEXT_PATH + "sales/invoiceSignature/getbyinvoicenumber";
+
+
 
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 
@@ -959,6 +963,8 @@ public class Links
     public static String FILE_UPLOAD = APP_CONTEXT_PATH +"files/upload";
     public static String FILE_DOWNLOAD = APP_CONTEXT_PATH +"files/download";
     public static String FILE_DELETE = APP_CONTEXT_PATH +"files/delete";
+
+    public static String FILE_UPLOAD_TO_FTP = APP_CONTEXT_PATH +"files/canvasimageuploadtoftp";
 
 
 

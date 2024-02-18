@@ -17,6 +17,7 @@ class UrlMappings {
             "/upload"(controller: 'files', action: 'uploadFile')
             "/download"(controller: 'files', action: 'downloadFile')
             "/delete"(controller: 'files', action: 'deleteFile')
+            "/canvasimageuploadtoftp"(controller:'files', action: 'saveCanvasImage')
         }
     }
 }

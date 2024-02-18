@@ -111,7 +111,7 @@
 %{--                                   <th style="width: 20%">Entity</th>--}%
 %{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
-                                </tr>s
+                                </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
                                 %{--                                <tr>--}%

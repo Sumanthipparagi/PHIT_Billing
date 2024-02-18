@@ -50,4 +50,35 @@ class FilesController {
             response.status = 400
         }
     }
+
+//    def savecanvasimagetoftp()
+//    {
+//        String entityId = session.getAttribute("entityId")?.toString()
+//        JSONObject jsonObject = new JSONObject(params)
+//        jsonObject.put("entityId",entityId)
+//        JSONObject result = new FilesService().savecanvasimagetoftp(jsonObject)
+//        if(jsonObject != null) {
+//            respond jsonObject, formats: ['json'], status: 200
+//        }
+//        else {
+//            response.status = 400
+//        }
+//    }
+
+    def savecanvasimagetoftp() {
+
+        MultipartFile multipartFile = params.file
+        JSONObject uploadedFileDetails = new JSONObject()
+        uploadedFileDetails.put("entityId", session.getAttribute("entityId").toString())
+        uploadedFileDetails.put("type", params.type)
+        uploadedFileDetails.put("file", multipartFile)
+
+        JSONObject jsonObject = new FilesService().uploadCanvasimage(multipartFile, uploadedFileDetails)
+        if(jsonObject != null) {
+            respond jsonObject, formats: ['json'], status: 200
+        }
+        else {
+            response.status = 400
+        }
+    }
 }

@@ -2410,4 +2410,50 @@ contains both deliveryChallan and products
         }
     }
 
+//    def getInvoiceDetailsByInvoiceNumber(JSONObject jsonObject) {
+//        Client client = ClientBuilder.newClient();
+////        WebTarget target = client.target(new Links().API_GATEWAY);
+//        WebTarget target = client.target("http://localhost:8083");
+//        try {
+//            Response apiResponse = target
+//                    .path(new Links().INVOICE_SIGN_GETBY_INVOICENUMBER + "/" + id)
+//                    .request(MediaType.APPLICATION_JSON_TYPE)
+//                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+//            if (apiResponse.status == 200) {
+//                JSONObject result = new JSONObject(apiResponse.readEntity(String.class))
+//                return result
+//            } else {
+//                return null
+//            }
+//        }
+//        catch (Exception ex) {
+//            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+//            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+//        }
+//    }
+
+    def getInvoiceDetailsByInvoiceNumber(String id, String entityId) {
+        Client client = ClientBuilder.newClient();
+//        WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8083");
+        try {
+            Response apiResponse = target
+                    .path(new Links().INVOICE_SIGN_GETBY_INVOICENUMBER + "/" + id + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get();
+            if (apiResponse.getStatus() == 200) { // Use getStatus() instead of .status
+                String responseString = apiResponse.readEntity(String.class);
+                JSONObject result = new JSONObject(responseString); // Use JSONObject here
+                return result;
+            } else {
+                return null;
+            }
+        }
+        catch (Exception ex) {
+            System.err.println("Service :SalesService , action :  getProducts  , Ex:" + ex);
+            log.error("Service :SalesService , action :  getProducts  , Ex:" + ex);
+            return null; // Ensure method always returns or handles exceptions properly
+        }
+    }
+
 }

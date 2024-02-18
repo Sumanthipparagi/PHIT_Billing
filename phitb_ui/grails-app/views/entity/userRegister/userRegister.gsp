@@ -98,7 +98,7 @@
                     <div class="header">
                         <a href="/user-register/add-user-register">  <button type="button"
                                                                             class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add User Regsiter</font></font></button></a>
+                                style="vertical-align: inherit;">Add User Register</font></font></button></a>
                     </div>
                     <div class="body">
                         <div class="table-responsive">

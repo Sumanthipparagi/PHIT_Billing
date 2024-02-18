@@ -25,7 +25,6 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
-
 server:
     port: 8083
 #    contextPath: "/sale"
@@ -77,13 +76,15 @@ dataSource:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: phitb_user
     password: 'zsTEM2%9%3'
+#    username: root
+#    password: 'Sumant@9'
 
 environments:
     development:
         dataSource:
             dbCreate: update
-            url: jdbc:mysql://172.16.17.143/phitb_sales?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
- #           url: jdbc:mysql://localhost/phitb_sales?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+#            url: jdbc:mysql://172.16.17.143/phitb_sales?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://localhost/phitb_sales?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
     test:
         dataSource:
             dbCreate: update

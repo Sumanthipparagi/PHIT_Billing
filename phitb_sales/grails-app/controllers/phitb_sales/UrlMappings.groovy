@@ -480,6 +480,9 @@ class UrlMappings {
             "/delete-drafts-sale-bill(.$format)"(controller: 'saleBillDetails', action: 'deleteAllDraftsSaleBill')
             "/drafts-sale-bill(.$format)"(controller: 'saleBillDetails', action: 'getAllDraftSaleBillsByEntityAndUser')
 
+            "/invoiceSignature/getbyinvoicenumber/$id/$entityId"(controller: "invoiceSignature"){
+                action = [GET: 'getDetailsByInvoiceNumber']
+            }
 
             //Goods Transfer Note
             "/gtn(.$format)?"(controller: 'goodsTransferNote') {

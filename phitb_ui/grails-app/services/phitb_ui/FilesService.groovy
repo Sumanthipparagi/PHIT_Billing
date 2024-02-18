@@ -19,6 +19,12 @@ import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
+import javax.ws.rs.core.MediaType;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
+
 @Transactional
 class FilesService {
 
@@ -152,4 +158,72 @@ class FilesService {
             return null
         }
     }
+
+    JSONObject uploadCanvasimage(MultipartFile multipartFile, JSONObject uploadFileDetails) {
+
+        String extension = ".jpg"
+        String originalFilename = multipartFile.originalFilename
+        if (originalFilename) {
+            int lastDotIndex = originalFilename.lastIndexOf('.')
+            if (lastDotIndex >= 0 && lastDotIndex < originalFilename.length() - 1) {
+                extension = "."+originalFilename.substring(lastDotIndex + 1).toLowerCase()
+            }
+        }
+        // Assuming multipartFile is the actual file to be uploaded.
+        String type = uploadFileDetails.getString("type");
+        String entityId = uploadFileDetails.getString("entityId");
+//        String filename = uploadFileDetails.get("file");
+
+//        // Assuming you need to pass the file content as 'file' form-data part
+//        FormDataMultiPart multiPart = new FormDataMultiPart()
+//                .field("entityId", entityId)
+//                .field("type", type)
+//                .field("filename", filename)
+//                .bodyPart(new StreamDataBodyPart("file", multipartFile.getInputStream(), filename));
+
+        MultiPart multiPart = new MultiPart()
+        multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE)
+        multiPart.bodyPart(new FormDataBodyPart("entityId",uploadFileDetails.get("entityId").toString()))
+        multiPart.bodyPart(new FormDataBodyPart("type",type))
+        FormDataContentDisposition contentDisposition = FormDataContentDisposition
+                .name("file")
+                .fileName(multipartFile.getOriginalFilename()) // Ensure the filename is set here
+                .build();
+
+        FormDataBodyPart filePart = new FormDataBodyPart("file", multipartFile.getInputStream(),
+                MediaType.APPLICATION_OCTET_STREAM_TYPE).contentDisposition(contentDisposition);
+        multiPart.bodyPart(filePart);
+
+        ClientConfig config = new ClientConfig();
+        config.register(MultiPartFeature.class);
+        Client client = ClientBuilder.newClient(config);
+
+        WebTarget target = client.target("http://localhost:8085");
+        try {
+            Response apiResponse = target
+                    .path(new Links().FILE_UPLOAD_TO_FTP)
+                    .request()
+                    .post(Entity.entity(multiPart, multiPart.getMediaType()));
+
+            if (apiResponse.getStatus() == 200) {
+                String responseString = apiResponse.readEntity(String.class);
+                JSONObject jsonObject = new JSONObject(responseString);
+                return jsonObject;
+            } else {
+                // Handle the error response
+                String errorResponse = apiResponse.readEntity(String.class);
+                log.error("Error response from server: " + errorResponse);
+                return null;
+            }
+        } catch (Exception ex) {
+            System.err.println("Service :FilesService , action : uploadFile , Ex:" + ex);
+            log.error("Service :FilesService , action : uploadFile , Ex:" + ex);
+            return null;
+        } finally {
+            // Cleanup resources
+            multiPart.close();
+        }
+    }
 }
+
+

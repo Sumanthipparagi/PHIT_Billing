@@ -352,6 +352,7 @@
                                     </g:if>
                                     <li><a href="/sample-conversion/sample-invoice-list">Sample Invoice List</a></li>
                                 </ul>
+                            <li><a href="/invoiceSignature">Invoice Signature</a></li>
                             </li>
                         </ul>
                     </li>
@@ -629,6 +630,7 @@
                                 <li><a href="/product-cost-range">Product Cost Range</a></li>
                             </g:if>
                             <li><a href="/unit-type">Unit Type</a></li>
+                            <li><a href="/outofstock">Out of stock</a></li>
                         </ul>
                     </li>
                     <li id="inventory-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i

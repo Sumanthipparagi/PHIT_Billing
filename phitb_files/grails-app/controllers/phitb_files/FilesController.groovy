@@ -1,8 +1,12 @@
 package phitb_files
 
+import grails.converters.JSON
+import grails.web.servlet.mvc.GrailsParameterMap
 import org.apache.catalina.connector.ClientAbortException
+import org.grails.web.json.JSONObject
 import org.springframework.web.multipart.MultipartFile
 
+import javax.servlet.http.Part
 import javax.ws.rs.ClientErrorException
 import java.text.SimpleDateFormat
 
@@ -179,6 +183,63 @@ class FilesController {
         else
         {
             response.status = 400
+        }
+    }
+
+    def saveCanvasImage() {
+        try {
+//            GrailsParameterMap parameterMap = getParams()
+            JSONObject paramsJsonObject = new JSONObject(params)
+            String type = paramsJsonObject.get("type")
+            def entity = paramsJsonObject.get("entityId").toString()
+
+
+            if (entity) {
+                String result = ""
+                boolean fileProcessed = false
+
+                for (Part part : request.getParts()) {
+                    String fileName = part.getSubmittedFileName()
+
+                    if (fileName) {
+                        long fileSize = part.getSize()
+                        InputStream inputStream = part.getInputStream()
+                        if (result.isEmpty()) {
+                            result = FilesService.uploadFileDynamicallyToFTP(type, inputStream, fileName, entity)
+                        } else {
+                            result += "," + FilesService.uploadFileDynamicallyToFTP(type, inputStream, fileName, entity)
+                        }
+                        fileProcessed = true
+                    }
+                }
+
+                if (fileProcessed) {
+                    def responseData = [
+                            'results': 'success',
+                            'file'   : result
+                    ]
+                    render responseData as JSON
+                } else {
+                    def responseData = [
+                            'results': 'error',
+                            'message': 'No files processed'
+                    ]
+                    render responseData as JSON
+                }
+            } else {
+                def responseData = [
+                        'results': 'error',
+                        'message': 'EntityId or DivisionId is missing'
+                ]
+                render responseData as JSON
+            }
+        } catch (Exception ex) {
+            log.error("Error uploading file: ${ex.message}", ex)
+            def responseData = [
+                    'results': 'error',
+                    'message': ex.message
+            ]
+            render responseData as JSON
         }
     }
 }
