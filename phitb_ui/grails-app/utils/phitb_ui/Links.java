@@ -485,6 +485,12 @@ public class Links
     public static String BATCH_REGISTER_DELETE = APP_CONTEXT_PATH + "product/batchregister/{id}";
     public static String GET_BY_BATCH_AND_PRODUCT = APP_CONTEXT_PATH + "product/batch-and-product";
 
+
+    public static String GET_ALL_PRODUCT = APP_CONTEXT_PATH + "product/getallproduct";
+    public static String GET_ALL_COMPANY = APP_CONTEXT_PATH + "product/getallcompany";
+
+    public static String GET_ALL_COMPOSITION = APP_CONTEXT_PATH + "product/getallcomposition";
+
     /*<--------------------------------------------Sales------------------------------------------------->*/
     //Sale Bill Details
     public static String GET_REASON = APP_CONTEXT_PATH + "sales/reasonmaster";
@@ -502,6 +508,8 @@ public class Links
     public static String SALE_BILL_DATATABLE = APP_CONTEXT_PATH + "sales/salebilldetails/datatable";
     public static String SALE_BILL_UPDATE = APP_CONTEXT_PATH + "sales/salebilldetails/{id}";
     public static String SALE_BILL_DELETE = APP_CONTEXT_PATH + "sales/salebilldetails/{id}";
+
+    public static String SALE_BILL_UPDATE_CANVAS_IMAGE_URL = APP_CONTEXT_PATH + "sales/salebilldetails/updatecanvasimageurl";
     public static String SALE_BILL_UNSETTLED = APP_CONTEXT_PATH + "sales/salebillunsettledbycustomer";
     public static String SALE_BILL_SETTLED = APP_CONTEXT_PATH + "sales/salebillsettledbycustomer";
     public static String SALE_BILL_PAYMENT = APP_CONTEXT_PATH + "sales/salebillbypaymentstatus";

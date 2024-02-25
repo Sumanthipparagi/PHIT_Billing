@@ -884,4 +884,22 @@ class SaleBillDetailsService
         }
     }
 
+
+    SaleBillDetails updateInvoiceUrl(JSONObject jsonObject, String invoice)
+    {
+        SaleBillDetails saleBillDetails = SaleBillDetails.findByInvoiceNumber(invoice)
+        saleBillDetails.isUpdatable = true
+
+//        saleBillDetails.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        saleBillDetails.invsignurl = jsonObject.get("ftpPath").toString()
+
+        saleBillDetails.save(flush: true)
+        if (saleBillDetails.hasErrors())
+        {
+            throw new BadRequestException()
+        }else{
+            return  saleBillDetails
+        }
+    }
+
 }

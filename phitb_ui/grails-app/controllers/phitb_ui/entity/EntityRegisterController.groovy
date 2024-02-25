@@ -435,8 +435,16 @@ class EntityRegisterController {
     }
 
 
-    def getEnitityById(String id) {
-        return new EntityService().getEntityById(id)
+    def getEnitityById(long id) {
+        try {
+            def results = new EntityService().getEntityById(id)
+            respond results, formats: ['json'], status: 200
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
     }
 
     def getEntityTypeById() {

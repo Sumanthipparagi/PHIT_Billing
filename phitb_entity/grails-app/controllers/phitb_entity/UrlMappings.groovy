@@ -146,8 +146,8 @@ class UrlMappings
 
 
             //Entity register
-            "/entityregister(.$format)?"(controller: 'entityRegister') {
-                action = [GET: 'index', POST:
+            "/entityregister/$id(.$format)?"(controller: 'entityRegister') {
+                action = [GET: 'show', POST:
                         'save']
             }
 

@@ -185,6 +185,7 @@ class UrlMappings {
         "/entity-register/getentities"(controller: "entityRegister",action:"getByParent")
         "/entity-register/getbyaffiliates/$id"(controller: "entityRegister",action:"getByAffiliates")
         "/getentitytypebyId"(controller: 'entityRegister', action: 'getEntityTypeById')
+        "/getEntityById/$id"(controller: 'entityRegister',  action: 'getEnitityById')
 
 
         //Entity on board information
@@ -493,6 +494,22 @@ class UrlMappings {
             action = [GET: "index"]
         }
 
+        "/alternateproduct"(controller: "alternateProduct") {
+            action = [GET: "index"]
+        }
+
+        "/alternateproduct/getallproduct"(controller: "alternateProduct") {
+            action = [GET: "getAllProduct"]
+        }
+
+        "/alternateproduct/getallcompany"(controller: "alternateProduct") {
+            action = [GET: "getAllCompany"]
+        }
+
+        "/alternateproduct/getallcomposition"(controller: "alternateProduct") {
+            action = [GET: "getAllComposition"]
+        }
+
 
         //Division Group register
         "/division-group"(controller: "divisionGroup") {
@@ -545,6 +562,7 @@ class UrlMappings {
         "/sale-bill/download-irn/$id"(controller: "salebillDetails", action: 'exportSingleGSTEInvoiceJSON')
         "/sale-bill/genarate-irn"(controller: 'salebillDetails', action: 'genrateIrn')
         "/mail-template"(controller: 'saleEntry', action: 'mailInvoice')
+        "/salebill/updatecanvasimageurl"(controller: 'salebillDetails', action: 'updateCanvasImageUrl')
 
 
 //        stock Adjustment

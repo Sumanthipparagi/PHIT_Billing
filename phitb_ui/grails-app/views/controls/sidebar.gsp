@@ -630,7 +630,8 @@
                                 <li><a href="/product-cost-range">Product Cost Range</a></li>
                             </g:if>
                             <li><a href="/unit-type">Unit Type</a></li>
-                            <li><a href="/outofstock">Out of stock</a></li>
+                            <li><a href="/outOfStock">Out of stock</a></li>
+                            <li><a href="/alternateProduct">Alternate Product</a></li>
                         </ul>
                     </li>
                     <li id="inventory-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i

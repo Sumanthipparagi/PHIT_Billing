@@ -2048,4 +2048,56 @@ class ProductService {
 
     }
 
+
+    def getAllProducts() {
+        Client client = ClientBuilder.newClient();
+//        WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8089");
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_ALL_PRODUCT)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get();
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def getAllCompany() {
+        Client client = ClientBuilder.newClient();
+//        WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8089");
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_ALL_COMPANY)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get();
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
+
+    def getAllComposition() {
+        Client client = ClientBuilder.newClient();
+//        WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8089");
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_ALL_COMPOSITION)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get();
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
 }

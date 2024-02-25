@@ -1783,17 +1783,19 @@ class EntityService {
 
     }
 
-    def getEntityById(String id) {
+    def getEntityById(long id) {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+//        WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8088");
         try {
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse.status == 200) {
-                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
-                return jsonObject
+                String responseString = apiResponse.readEntity(String.class);
+                JSONObject result = new JSONObject(responseString); // Use JSONObject here
+                return result;
             } else
                 return null
         }

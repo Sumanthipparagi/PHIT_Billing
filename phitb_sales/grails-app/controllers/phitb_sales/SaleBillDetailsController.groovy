@@ -1,5 +1,6 @@
 package phitb_sales
 
+import com.google.gson.annotations.JsonAdapter
 import grails.converters.*
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsParameterMap
@@ -916,6 +917,25 @@ class SaleBillDetailsController {
                 }
             }
             respond saleBillDetails
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def updateCanvasImageUrl() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String invoice = jsonObject.get("invoiceNumber")
+            respond saleBillDetailsService.updateInvoiceUrl(jsonObject, invoice)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

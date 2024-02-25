@@ -26,7 +26,7 @@ endpoints:
     jmx:
         enabled: true
 server:
-    port: 8085
+    port: 8089
 #    contextPath: "/product"
 ---
 grails:
@@ -87,8 +87,8 @@ environments:
     development:
         dataSource:
             dbCreate: update
-            url: jdbc:mysql://172.16.17.143/phitb_product?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
- #           url: jdbc:mysql://localhost/phitb_product?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+#            url: jdbc:mysql://172.16.17.143/phitb_product?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://localhost/phitb_product?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
     test:
         dataSource:
             dbCreate: update

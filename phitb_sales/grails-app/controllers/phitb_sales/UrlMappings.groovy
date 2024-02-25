@@ -85,6 +85,12 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
+
+            "/salebilldetails/updatecanvasimageurl(.$format)?"(controller: 'saleBillDetails') {
+                action = [POST: 'updateCanvasImageUrl']
+            }
+
+
             "/draftsalebilldetails(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'getDraftBillById']
             }

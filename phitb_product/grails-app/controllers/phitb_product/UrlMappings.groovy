@@ -196,6 +196,19 @@ class UrlMappings {
                 action = [GET: 'getAllByEntityId']
             }
 
+            //alternate product
+
+            "/getallproduct(.$format)?"(controller: 'alternateProduct') {
+                action = [GET: 'showProduct']
+            }
+
+            "/getallcompany(.$format)?"(controller: 'alternateProduct') {
+                action = [GET: 'showCompany']
+            }
+
+            "/getallcomposition(.$format)?"(controller: 'alternateProduct') {
+                action = [GET: 'showComposition']
+            }
 
 
             //Unit Type Master
@@ -214,5 +227,7 @@ class UrlMappings {
 
             "/status"(controller: 'status',action: 'index')
         }
+
+
     }
 }

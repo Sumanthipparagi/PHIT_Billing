@@ -49,6 +49,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     String message
     String financialYear
     String invtype
+    String invsignurl
     long entityTypeId
     long entityId
     long createdUser

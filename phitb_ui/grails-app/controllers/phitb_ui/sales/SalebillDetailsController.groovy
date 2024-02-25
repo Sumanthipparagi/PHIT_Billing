@@ -1,5 +1,6 @@
 package phitb_ui.sales
 
+import grails.converters.JSON
 import phitb_ui.AccountsService
 import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
@@ -508,5 +509,27 @@ class SalebillDetailsController {
     def retailerBillDetails() {
         render(view: '/sales/saleEntry/retailer-bill-list')
     }
+
+    def updateCanvasImageUrl() {
+        try {
+            println(params)
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId").toString())
+            jsonObject.put("userId", session.getAttribute("userId"))
+            def apiResponse = new SalesService().updateCanvasImageUrl(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
 
 }
