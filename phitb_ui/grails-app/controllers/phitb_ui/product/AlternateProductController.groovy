@@ -88,4 +88,58 @@ class AlternateProductController {
             response.status = 400
         }
     }
+
+    def getProductsByCompositionId()
+    {
+
+        try
+        {
+//            def entityId = session.getAttribute("entityId").toString()
+            String id = params.compositionId
+            def apiResponse = new ProductService().getProductsByCompositionId(id)
+            if (apiResponse.status == 200)
+            {
+                JSONArray responseObject = new JSONArray(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def getProductsByCompanyId()
+    {
+
+        try
+        {
+//            def entityId = session.getAttribute("entityId").toString()
+            String id = params.companyId
+            def apiResponse = new ProductService().getProductsByCompanyId(id)
+            if (apiResponse.status == 200)
+            {
+                JSONArray responseObject = new JSONArray(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
 }

@@ -210,6 +210,14 @@ class UrlMappings {
                 action = [GET: 'showComposition']
             }
 
+            "/getproductsbycompositionid/$id(.$format)?"(controller: 'alternateProduct') {
+                action = [GET: 'getProductsByCompositionId']
+            }
+
+            "/getproductsbycompanyid/$id(.$format)?"(controller: 'alternateProduct') {
+                action = [GET: 'getProductsByCompanyId']
+            }
+
 
             //Unit Type Master
             "/unittypemaster(.$format)?"(controller: 'unitTypeMaster') {

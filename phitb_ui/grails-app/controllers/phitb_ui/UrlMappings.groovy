@@ -510,6 +510,17 @@ class UrlMappings {
             action = [GET: "getAllComposition"]
         }
 
+        "/alternateproduct/getproductbycompositionid"(controller: "alternateProduct") {
+            action = [GET: "getProductsByCompositionId"]
+        }
+
+        "/alternateproduct/getproductbycompanyid"(controller: "alternateProduct") {
+            action = [GET: "getProductsByCompanyId"]
+        }
+
+
+
+
 
         //Division Group register
         "/division-group"(controller: "divisionGroup") {

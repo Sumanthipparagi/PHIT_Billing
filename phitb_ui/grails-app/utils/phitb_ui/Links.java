@@ -488,8 +488,11 @@ public class Links
 
     public static String GET_ALL_PRODUCT = APP_CONTEXT_PATH + "product/getallproduct";
     public static String GET_ALL_COMPANY = APP_CONTEXT_PATH + "product/getallcompany";
-
     public static String GET_ALL_COMPOSITION = APP_CONTEXT_PATH + "product/getallcomposition";
+
+    public static String GET_PRODUCTS_BY_COMPOSITION_ID =  APP_CONTEXT_PATH + "product/getproductsbycompositionid";
+
+    public static String GET_PRODUCTS_BY_COMPANY_ID =  APP_CONTEXT_PATH + "product/getproductsbycompanyid";
 
     /*<--------------------------------------------Sales------------------------------------------------->*/
     //Sale Bill Details

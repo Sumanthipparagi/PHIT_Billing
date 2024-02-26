@@ -66,6 +66,7 @@
         cursor: pointer; /* Changes the mouse cursor to indicate it's clickable */
         /* Add your additional styles here */
     }
+
     </style>
 </head>
 
@@ -116,16 +117,16 @@
 
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="productDetails" aria-expanded="true">
-                <div class="col-lg-4 form-group  form-float">
-                    <label for="product">
-                        Product
-                    </label>
-                    <select style="width: 100%"  class="form-control show-tick product" name="productId" id="product">
-%{--                         <option selected disabled>SELECT</option>--}%
-%{--                         <g:each var="p" in="${productList}">--}%
-%{--                             <option value="${p.id}">${p.productName}</option>--}%
-%{--                         </g:each>--}%
-                    </select>
+                <div class="col-lg-4 form-group form-float">
+                    <label for="product">Product</label>
+                    <div class="d-flex align-items-center justify-content-start">
+                        <select class="form-control show-tick product" name="productId" id="product" style="flex-grow: 1;">
+                            <!-- Options here -->
+                        </select>
+                        <div style="margin-left: 15px;"> <!-- Add spacing by wrapping button in a div -->
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -151,7 +152,7 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="CompanyDetails" aria-expanded="false">
-                <div class="col-lg-4 form-group  form-float">
+                <div class="col-lg-3 form-group  form-float">
                     <label for="company">
                         Company
                     </label>
@@ -161,19 +162,19 @@
                         %{--                             <option value="${p.id}">${p.productName}</option>--}%
                         %{--                         </g:each>--}%
                     </select>
+                    <div> <!-- Add spacing by wrapping button in a div -->
+                        <button type="submit" id="companysubmit" class="btn btn-primary">Submit</button>
+                    </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
+                        <table class="table table-bordered table-striped table-hover companyTable" style="width: 100%;table-layout: fixed;">
                             <thead>
                             <tr>
-                                <th style="width: 5%;">#</th>
-                                <th style="width: 25%;">Product</th>
+                                <th style="width: auto;">Company</th>
+                                <th>Product</th>
                                 <th>Composition</th>
-                                <th>Company</th>
-                                <th>Amt.</th>
-                                <th>View</th>
                             </tr>
                             </thead>
                             <tbody id="companyTableBody"
@@ -186,30 +187,45 @@
                 </div>
             </div>
 
+
             <div role="tabpanel" class="tab-pane" id="compositionDetails" aria-expanded="false">
-                <div class="col-lg-4 form-group  form-float">
+                <div class="col-lg-2 form-group  form-float">
                     <label for="composition">
                         Composition
                     </label>
-                    <select style="width: 100%"  class="form-control show-tick composition" name="CompositionId" id="composition">
+                    <select style="width: 100%"  class="form-control show-tick composition" name="compositionId" id="composition" >
                         %{--                         <option selected disabled>SELECT</option>--}%
                         %{--                         <g:each var="p" in="${productList}">--}%
                         %{--                             <option value="${p.id}">${p.productName}</option>--}%
                         %{--                         </g:each>--}%
                     </select>
+                    <div> <!-- Add spacing by wrapping button in a div -->
+                        <button type="submit" id="compsubmit" class="btn btn-primary">Submit</button>
+                    </div>
                 </div>
+
+%{--                    %{-<div role="tabpanel" class="tab-pane" id="compositionDetails" aria-expanded="false">--}%
+%{--                    <div class="col-lg-2 form-group form-float">--}%
+%{--                    <label for="composition">Composition</label>--}%
+%{--                            <div class="d-flex align-items-center"> <!-- Flex container -->--}%
+%{--                                <select class="form-control show-tick composition" name="compositionId" id="composition" style="flex: 1; margin-right: 10px;">--}%
+%{--                           --}%
+%{--                                </select>--}%
+%{--                                    <button type="submit" class="btn btn-primary">Submit</button>--}%
+%{--                                </div>--}%
+%{--                            </div>--}%
+%{--                        </div>  --}%
+
+
 
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
+                        <table class="table table-bordered table-striped table-hover compositionTable" style="width: 100%;table-layout: fixed;">
                             <thead>
                             <tr>
-                                <th style="width: 5%;">#</th>
-                                <th style="width: 25%;">Product</th>
-                                <th>Composition</th>
+                                <th style="width: auto;">Composition</th>
+                                <th>Product</th>
                                 <th>Company</th>
-                                <th>Amt.</th>
-                                <th>View</th>
                             </tr>
                             </thead>
                             <tbody id="compositionTableBody"
@@ -286,8 +302,196 @@
 
 <script>
 
-    window.onload = alignPanel;
-    window.onresize = alignPanel;
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize select2 elements
+        initializeSelect2('#product', '/alternateproduct/getallproduct');
+        initializeSelect2('#company', '/alternateproduct/getallcompany');
+        initializeSelect2('#composition', '/alternateproduct/getallcomposition');
+
+        // Attach event listeners for window resizing
+        window.onresize = alignPanel;
+
+        // Event listener for the submit button
+        document.querySelector('#compsubmit').addEventListener('click', function () {
+            compositionTable();
+        });
+
+        document.querySelector('#companysubmit').addEventListener('click', function () {
+            companyTable();
+        });
+
+        // Function to align the details panel
+        alignPanel();
+    });
+
+    function initializeSelect2(selector, url) {
+        $(selector).select2({
+            dropdownAutoWidth: true,
+            allowClear: true,
+            ajax: {
+                url: url,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                id: item.id,
+                                text: item.productName || item.companyName || item.compositionName
+                            };
+                        }),
+                        pagination: {
+                            more: (params.page * 10) < data.totalCount
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+    }
+
+    function compositionTable() {
+
+        // Your existing code to initialize the DataTabl
+        var loading = Swal.fire({
+            title: "Getting reports, Please wait!",
+            html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            closeOnClickOutside: false
+        });
+
+        var compositionId = $('#composition').val();
+
+        // Check if the DataTable instance already exists and destroy it if necessary
+        if ($.fn.dataTable.isDataTable('.compositionTable')) {
+            $('.compositionTable').DataTable().destroy();
+        }
+
+        // Initialize DataTable with new settings
+        $(".compositionTable").DataTable({
+            paging: true,
+            responsive: {
+                details: false
+            },
+            destroy: true, // Ensures the table can be reinitialized
+            autoWidth: false,
+            bJQueryUI: true,
+            sScrollX: "100%",
+            info: true,
+            processing: true,
+            serverSide: true, // Set to true if the server performs operations like sorting, pagination, etc.
+            language: {
+                searchPlaceholder: "Search Product"
+            },
+            ajax: {
+                type: 'GET',
+                url: "/alternateproduct/getproductbycompositionid",
+                data: {
+                    compositionId: compositionId
+                },
+                dataType: 'json',
+                dataSrc: function (json) {
+                        console.log('Update successful:', json);
+                    var return_data = [];
+                    // Use a for loop to transform each item in the response
+                    for (var i = 0; i < json.length; i++) {
+                        return_data.push({
+                            composition: json[i].composition,
+                            productName: json[i].productName,
+                            company: json[i].company
+                        });
+                    }
+                    return return_data;
+                }
+
+                },
+            columns: [
+                {data: 'composition', width: '20%'},
+                {data: 'productName', width: '20%'},
+                {data: 'company', width: '20%'}
+            ]
+
+        });
+        loading.close()
+    }
+
+    function companyTable() {
+
+        // Your existing code to initialize the DataTabl
+        var loading = Swal.fire({
+            title: "Getting reports, Please wait!",
+            html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            closeOnClickOutside: false
+        });
+
+        var companyId = $('#company').val();
+
+        // Check if the DataTable instance already exists and destroy it if necessary
+        if ($.fn.dataTable.isDataTable('.companyTable')) {
+            $('.companyTable').DataTable().destroy();
+        }
+
+        // Initialize DataTable with new settings
+        $(".companyTable").DataTable({
+            paging: true,
+            responsive: {
+                details: false
+            },
+            destroy: true, // Ensures the table can be reinitialized
+            autoWidth: false,
+            bJQueryUI: true,
+            sScrollX: "100%",
+            info: true,
+            processing: true,
+            serverSide: true, // Set to true if the server performs operations like sorting, pagination, etc.
+            language: {
+                searchPlaceholder: "Search Product"
+            },
+            ajax: {
+                type: 'GET',
+                url: "/alternateproduct/getproductbycompanyid",
+                data: {
+                    companyId: companyId
+                },
+                dataType: 'json',
+                dataSrc: function (json) {
+                    console.log('Update successful:', json);
+                    var return_data = [];
+                    // Use a for loop to transform each item in the response
+                    for (var i = 0; i < json.length; i++) {
+                        return_data.push({
+                            composition: json[i].company,
+                            productName: json[i].productName,
+                            company: json[i].composition
+                        });
+                    }
+                    return return_data;
+                }
+
+            },
+            columns: [
+                {data: 'company', width: '20%'},
+                {data: 'productName', width: '20%'},
+                {data: 'composition', width: '20%'}
+            ]
+
+        });
+        loading.close()
+    }
 
     function alignPanel() {
         var tableOffsetTop = document.querySelector('.table').getBoundingClientRect().top;
@@ -298,116 +502,11 @@
     function toggleDetails() {
         var detailsContainer = document.getElementById("detailsContainer");
         var collapseIcon = document.getElementById("collapseIcon");
-        if (collapseIcon.classList.contains("fa-angle-double-right")) {
-            collapseIcon.classList.remove("fa-angle-double-right");
-            collapseIcon.classList.add("fa-angle-double-left");
-            detailsContainer.classList.add("open");
-            detailsContainer.style.right = "0";
-        } else {
-            collapseIcon.classList.remove("fa-angle-double-left");
-            collapseIcon.classList.add("fa-angle-double-right");
-            detailsContainer.classList.remove("open");
-            detailsContainer.style.right = "-300px";
-        }
+        detailsContainer.classList.toggle("open");
+        collapseIcon.classList.toggle("fa-angle-double-right");
+        collapseIcon.classList.toggle("fa-angle-double-left");
     }
 
-        $("#product").select2({
-            /*data: products,*/
-            dropdownAutoWidth: true,
-            allowClear: true,
-            ajax: {
-                url: "/alternateproduct/getallproduct",
-                dataType: 'json',
-                quietMillis: 250,
-                data: function (data) {
-                    return {
-                        search: data.term,
-                        page: data.page || 1
-                    };
-                },
-                processResults: function (response, params) {
-                    params.page = params.page || 1
-                    products = [];
-                    var data = response
-                    for (var i = 0; i < data.length; i++) {
-                        if (!products.some(element => element.id === data[i].id))
-                            products.push({id: data[i].id, text: data[i].productName});
-                    }
-                    return {
-                        results: products,
-                        pagination: {
-                            more: (params.page * 10) < response.totalCount
-                        }
-                    };
-                },
-            }
-        });
-
-
-    $("#company").select2({
-        /*data: products,*/
-        dropdownAutoWidth: true,
-        allowClear: true,
-        ajax: {
-            url: "/alternateproduct/getallcompany",
-            dataType: 'json',
-            quietMillis: 250,
-            data: function (data) {
-                return {
-                    search: data.term,
-                    page: data.page || 1
-                };
-            },
-            processResults: function (response, params) {
-                params.page = params.page || 1
-                company = [];
-                var data = response
-                for (var i = 0; i < data.length; i++) {
-                    if (!company.some(element => element.id === data[i].id))
-                        company.push({id: data[i].id, text: data[i].companyName});
-                }
-                return {
-                    results: company,
-                    pagination: {
-                        more: (params.page * 10) < response.totalCount
-                    }
-                };
-            },
-        }
-    });
-
-
-    $("#composition").select2({
-        /*data: products,*/
-        dropdownAutoWidth: true,
-        allowClear: true,
-        ajax: {
-            url: "/alternateproduct/getallcomposition",
-            dataType: 'json',
-            quietMillis: 250,
-            data: function (data) {
-                return {
-                    search: data.term,
-                    page: data.page || 1
-                };
-            },
-            processResults: function (response, params) {
-                params.page = params.page || 1
-                composition = [];
-                var data = response
-                for (var i = 0; i < data.length; i++) {
-                    if (!composition.some(element => element.id === data[i].id))
-                        composition.push({id: data[i].id, text: data[i].compositionName});
-                }
-                return {
-                    results: composition,
-                    pagination: {
-                        more: (params.page * 10) < response.totalCount
-                    }
-                };
-            },
-        }
-    });
 
 </script>
 
