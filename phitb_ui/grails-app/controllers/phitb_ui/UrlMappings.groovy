@@ -518,6 +518,12 @@ class UrlMappings {
             action = [GET: "getProductsByCompanyId"]
         }
 
+        "/alternateproduct/getcompositionlistbyproductid"(controller: "alternateProduct") {
+            action = [GET: "getCompositionListByProductId"]
+        }
+
+        
+
 
 
 

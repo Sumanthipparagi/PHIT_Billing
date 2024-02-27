@@ -141,5 +141,31 @@ class AlternateProductController {
         }
     }
 
+    def getCompositionListByProductId()
+    {
+
+        try
+        {
+//            def entityId = session.getAttribute("entityId").toString()
+            String id = params.productId
+            def apiResponse = new ProductService().getCompositionListByProductId(id)
+            if (apiResponse.status == 200)
+            {
+                JSONArray responseObject = new JSONArray(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
 
 }

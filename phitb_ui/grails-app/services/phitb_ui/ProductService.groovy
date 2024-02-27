@@ -2119,6 +2119,24 @@ class ProductService {
         }
     }
 
+    def getCompositionListByProductId(String id) {
+        Client client = ClientBuilder.newClient();
+//        WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8089");
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_COMPOSITIONLIST_BY_PRODUCT_ID + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get();
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println("Service :SalesService , action :  getProducts  , Ex:" + ex);
+            log.error("Service :SalesService , action :  getProducts  , Ex:" + ex);
+            return null; // Ensure method always returns or handles exceptions properly
+        }
+    }
+
     def getProductsByCompanyId(String id) {
         Client client = ClientBuilder.newClient();
 //        WebTarget target = client.target(new Links().API_GATEWAY);

@@ -41,12 +41,12 @@
 
     /* Styling for the details panel */
     #detailsContainer {
-        width: 300px; /* Width of the side panel */
+        width: 325px; /* Width of the side panel */
         background-color: #fff; /* Background color for the side panel */
         overflow-y: auto; /* Allows scrolling within the side panel */
         position: fixed; /* Fixed position to stay in place during scroll */
-        top: 0; /* Top position which will be set dynamically with JavaScript */
-        right: -300px; /* Initially placed off-screen to the right */
+        top: 355px; /* Adjusted top position to lower the panel from the top */
+        right: -350px; /* Initially placed off-screen to the right */
         bottom: 0; /* Stretches from the top position to the bottom of the viewport */
         z-index: 1040; /* Ensures it's above other content */
         transition: right 0.5s ease; /* Smooth transition for showing and hiding */
@@ -55,16 +55,6 @@
     /* Class to be added via JavaScript when the panel is open */
     #detailsContainer.open {
         right: 0; /* Brings the panel into view */
-    }
-
-    /* Styling for the toggle button */
-    .toggle-btn {
-        position: fixed; /* Fixed position to stay in place during scroll */
-        top: 20px; /* Position from the top of the viewport */
-        right: 320px; /* Position from the right of the viewport, adjust based on the panel's width */
-        z-index: 1050; /* Ensures it's above the side panel */
-        cursor: pointer; /* Changes the mouse cursor to indicate it's clickable */
-        /* Add your additional styles here */
     }
 
     </style>
@@ -124,7 +114,7 @@
                             <!-- Options here -->
                         </select>
                         <div style="margin-left: 15px;"> <!-- Add spacing by wrapping button in a div -->
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" id="prodSubmit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -132,15 +122,15 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
+                        <table class="table table-bordered table-striped table-hover productTable" style="width: 100%;table-layout: fixed;">
                             <thead>
                             <tr>
-                                <th style="width: 5%;">#</th>
-                                <th style="width: 25%;">Product</th>
-                                <th>Composition</th>
+                                <th style="width: auto;">Product</th>
                                 <th>Company</th>
-                                <th>Amt.</th>
+                                <th>Composition</th>
+                                <th>Mrp</th>
                                 <th>View</th>
+                                <th>Addtomylist</th>
                             </tr>
                             </thead>
                             <tbody id="saleProductsTableBody"
@@ -175,6 +165,9 @@
                                 <th style="width: auto;">Company</th>
                                 <th>Product</th>
                                 <th>Composition</th>
+                                <th>Mrp</th>
+                                <th>View</th>
+                                <th>Addtomylist</th>
                             </tr>
                             </thead>
                             <tbody id="companyTableBody"
@@ -226,6 +219,9 @@
                                 <th style="width: auto;">Composition</th>
                                 <th>Product</th>
                                 <th>Company</th>
+                                <th>Mrp</th>
+                                <th>View</th>
+                                <th>Addtomylist</th>
                             </tr>
                             </thead>
                             <tbody id="compositionTableBody"
@@ -243,8 +239,10 @@
                 <div class="card">
                     <div class="card-header">
                         Product Details
+                        <button type="button" class="close" aria-label="Close" onclick="hideDetailsPanel()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-
                     <div class="card-body">
                         <!-- Details content goes here -->
                         Details Panel Content
@@ -252,9 +250,9 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary mb-2" onclick="toggleDetails()">
-                <i class="fa fa-angle-double-right" id="collapseIcon"></i> Toggle Details
-            </button>
+%{--            <button class="btn btn-primary mb-2" onclick="toggleDetails()">--}%
+%{--                <i class="fa fa-angle-double-right" id="collapseIcon"></i> Toggle Details--}%
+%{--            </button>--}%
         </div>
     </div>
 </section>
@@ -302,6 +300,39 @@
 
 <script>
 
+    viewPanel();
+
+    function viewPanel() {
+        $('body').on('click', '.view-btn', function () {
+            var table = $(this).closest('table').DataTable(); // Get the DataTable instance
+            var tr = $(this).closest('tr'); // Find the closest tr parent to get the row
+            var row = table.row(tr).data(); // Get the data for the row
+
+            // Now you can use `row` to access the data for the clicked row
+            console.log(row);
+
+            // Example: Update the details in the side panel
+            updateDetailsPanel(row);
+
+            // Show the details panel
+            showDetailsPanel();
+        });
+    }
+
+    function updateDetailsPanel(rowData) {
+        $('#detailsContainer .card-body').html('Product Name: ' + rowData.productName + '<br>Company: ' + rowData.company + '<br>MRP: ' + rowData.mrp + '<br>composition: ' + rowData.composition);
+    }
+
+    function showDetailsPanel() {
+        var detailsContainer = document.getElementById("detailsContainer");
+        detailsContainer.classList.add("open");
+    }
+
+    function hideDetailsPanel() {
+        var detailsContainer = document.getElementById("detailsContainer");
+        detailsContainer.classList.remove("open");
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         // Initialize select2 elements
         initializeSelect2('#product', '/alternateproduct/getallproduct');
@@ -309,7 +340,7 @@
         initializeSelect2('#composition', '/alternateproduct/getallcomposition');
 
         // Attach event listeners for window resizing
-        window.onresize = alignPanel;
+        // window.onresize = alignPanel;
 
         // Event listener for the submit button
         document.querySelector('#compsubmit').addEventListener('click', function () {
@@ -320,8 +351,11 @@
             companyTable();
         });
 
-        // Function to align the details panel
-        alignPanel();
+        document.querySelector('#prodSubmit').addEventListener('click', function () {
+            productTable();
+        });
+
+        // alignPanel();
     });
 
     function initializeSelect2(selector, url) {
@@ -408,7 +442,8 @@
                         return_data.push({
                             composition: json[i].composition,
                             productName: json[i].productName,
-                            company: json[i].company
+                            company: json[i].company,
+                            mrp: json[i].mrp
                         });
                     }
                     return return_data;
@@ -418,12 +453,41 @@
             columns: [
                 {data: 'composition', width: '20%'},
                 {data: 'productName', width: '20%'},
-                {data: 'company', width: '20%'}
+                {data: 'company', width: '20%'},
+                {data: 'mrp', width: '20%'},
+                // Adding the fifth column for the View button with render function
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        // Assuming 'id' is a property in your row data that you want to associate with the button
+                        return '<button class="btn btn-info view-btn" data-id="' + row.id + '">View</button>';
+                    },
+                    width: '20%',
+                    orderable: false
+                },{
+                    data: null,
+                    render: function (data, type, row) {
+                        // Assuming 'id' is a property in your row data that you want to associate with the button
+                        return '<button class="btn btn-info view-btn" data-id="' + row.id + '">+MyList</button>';
+                    },
+                    width: '20%',
+                    orderable: false
+                }
             ]
 
         });
         loading.close()
     }
+
+    $('.compositionTable tbody').on('click', '.view-btn', function() {
+        var table = $('.compositionTable').DataTable(); // Get the DataTable instance
+        var tr = $(this).closest('tr'); // Find the closest tr parent to get the row
+        var row = table.row(tr); // Get the DataTable row
+        var rowData = row.data(); // Get the data for the row
+
+        console.log(rowData);
+
+    });
 
     function companyTable() {
 
@@ -474,9 +538,10 @@
                     // Use a for loop to transform each item in the response
                     for (var i = 0; i < json.length; i++) {
                         return_data.push({
-                            composition: json[i].company,
+                            company: json[i].company,
                             productName: json[i].productName,
-                            company: json[i].composition
+                            composition: json[i].composition,
+                            mrp: json[i].mrp
                         });
                     }
                     return return_data;
@@ -486,27 +551,145 @@
             columns: [
                 {data: 'company', width: '20%'},
                 {data: 'productName', width: '20%'},
-                {data: 'composition', width: '20%'}
+                {data: 'composition', width: '20%'},
+                {data: 'mrp', width: '20%'},
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        // Assuming 'id' is a property in your row data that you want to associate with the button
+                        return '<button class="btn btn-info view-btn" data-id="' + row.id + '">View</button>';
+                    },
+                    width: '20%',
+                    orderable: false
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        // Assuming 'id' is a property in your row data that you want to associate with the button
+                        return '<button class="btn btn-info view-btn" data-id="' + row.id + '">+MyList</button>';
+                    },
+                    width: '20%',
+                    orderable: false
+                }
             ]
 
         });
         loading.close()
     }
 
-    function alignPanel() {
-        var tableOffsetTop = document.querySelector('.table').getBoundingClientRect().top;
-        var detailsPanel = document.getElementById('detailsContainer');
-        detailsPanel.style.top = tableOffsetTop + 'px';
+    $('.companyTable tbody').on('click', '.view-btn', function() {
+        var table = $('.companyTable').DataTable(); // Get the DataTable instance
+        var tr = $(this).closest('tr'); // Find the closest tr parent to get the row
+        var row = table.row(tr); // Get the DataTable row
+        var rowData = row.data(); // Get the data for the row
+
+        console.log(rowData);
+
+    });
+
+
+    function productTable() {
+
+        // Your existing code to initialize the DataTabl
+        var loading = Swal.fire({
+            title: "Getting reports, Please wait!",
+            html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            closeOnClickOutside: false
+        });
+
+        var productId = $('#product').val();
+
+        // Check if the DataTable instance already exists and destroy it if necessary
+        if ($.fn.dataTable.isDataTable('.productTable')) {
+            $('.productTable').DataTable().destroy();
+        }
+
+        // Initialize DataTable with new settings
+        $(".productTable").DataTable({
+            paging: true,
+            responsive: {
+                details: false
+            },
+            destroy: true, // Ensures the table can be reinitialized
+            autoWidth: false,
+            bJQueryUI: true,
+            sScrollX: "100%",
+            info: true,
+            processing: true,
+            serverSide: true, // Set to true if the server performs operations like sorting, pagination, etc.
+            language: {
+                searchPlaceholder: "Search Product"
+            },
+            ajax: {
+                type: 'GET',
+                url: "/alternateproduct/getcompositionlistbyproductid",
+                data: {
+                    productId: productId
+                },
+                dataType: 'json',
+                dataSrc: function (json) {
+                    console.log('Update successful:', json);
+                    var return_data = [];
+                    // Use a for loop to transform each item in the response
+                    for (var i = 0; i < json.length; i++) {
+                        return_data.push({
+                            productName: json[i].productName,
+                            company: json[i].company,
+                            composition: json[i].composition,
+                            mrp: json[i].mrp
+                        });
+                    }
+                    return return_data;
+                }
+
+            },
+            columns: [
+                {data: 'productName', width: '20%'},
+                {data: 'company', width: '20%'},
+                {data: 'composition', width: '20%'},
+                {data: 'mrp', width: '20%'},
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return '<button class="btn btn-info view-btn" data-id="' + row.id + '">View</button>';
+                    },
+                    width: '20%',
+                    orderable: false
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return '<button class="btn btn-info view-btn" data-id="' + row.id + '">+MyList</button>';
+                    },
+                    width: '20%',
+                    orderable: false
+                }
+
+            ]
+
+        });
+        loading.close()
     }
 
-    function toggleDetails() {
-        var detailsContainer = document.getElementById("detailsContainer");
-        var collapseIcon = document.getElementById("collapseIcon");
-        detailsContainer.classList.toggle("open");
-        collapseIcon.classList.toggle("fa-angle-double-right");
-        collapseIcon.classList.toggle("fa-angle-double-left");
-    }
+    $('.productTable tbody').on('click', '.view-btn', function() {
+        var table = $('.productTable').DataTable(); // Get the DataTable instance
+        var tr = $(this).closest('tr'); // Find the closest tr parent to get the row
+        var row = table.row(tr); // Get the DataTable row
+        var rowData = row.data(); // Get the data for the row
 
+        console.log(rowData);
+
+    });
+
+    // function alignPanel() {
+    //     var tableOffsetTop = document.querySelector('.table').getBoundingClientRect().top;
+    //     var detailsPanel = document.getElementById('detailsContainer');
+    //     detailsPanel.style.top = tableOffsetTop + 'px';
+    // }
 
 </script>
 

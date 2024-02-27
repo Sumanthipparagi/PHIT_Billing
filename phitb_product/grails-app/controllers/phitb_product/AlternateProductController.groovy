@@ -81,8 +81,23 @@ class AlternateProductController {
         try {
 
             if (id) {
-                def res = alternateProductService.getProductByCompositionId(id)
-                respond res
+                def products = alternateProductService.getProductByCompositionId(id)
+
+                products.each { product ->
+                    // Assuming `product` is a map. If it's a domain object, you might need to adjust this.
+                    if (product.composition && product.company) {
+                        def composition = MasterComposition.findById(product.composition)
+                        def company = CompanyMaster.findById(product.company)
+                        if (composition && company) {
+                            product.putAt('composition', composition.compositionName)
+                            product.putAt('company',company.companyName)
+                        } else {
+                            // Handle case where composition is not found
+                            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+                        }
+                    }
+                }
+                respond products
             }
         }
         catch (ResourceNotFoundException ex)
@@ -102,10 +117,54 @@ class AlternateProductController {
 
     def getProductsByCompanyId(String id) {
         try {
+            if (id) {
+                def products = alternateProductService.getProductByCompanyId(id)
+
+                products.each { product ->
+                    // Assuming `product` is a map. If it's a domain object, you might need to adjust this.
+                    if (product.composition && product.company) {
+                        def composition = MasterComposition.findById(product.composition)
+                        def company = CompanyMaster.findById(product.company)
+                        if (composition && company) {
+                            product.putAt('composition', composition.compositionName)
+                            product.putAt('company',company.companyName)
+                        } else {
+                            // Handle case where composition is not found
+                            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+                        }
+                    }
+                }
+
+                respond products
+            }
+        } catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getCompositionListByProductId(String id) {
+        try {
 
             if (id) {
-                def res = alternateProductService.getProductByCompanyId(id)
-                respond res
+                def products = alternateProductService.getCompositionListByProductId(id)
+
+                products.each { product ->
+                    // Assuming `product` is a map. If it's a domain object, you might need to adjust this.
+                    if (product.composition && product.company) {
+                        def composition = MasterComposition.findById(product.composition)
+                        def company = CompanyMaster.findById(product.company)
+                        if (composition && company) {
+                            product.putAt('composition', composition.compositionName)
+                            product.putAt('company',company.companyName)
+                        } else {
+                            // Handle case where composition is not found
+                            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+                        }
+                    }
+                }
+
+                respond products
+
             }
         }
         catch (ResourceNotFoundException ex)

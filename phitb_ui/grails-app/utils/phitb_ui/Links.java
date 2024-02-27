@@ -494,6 +494,8 @@ public class Links
 
     public static String GET_PRODUCTS_BY_COMPANY_ID =  APP_CONTEXT_PATH + "product/getproductsbycompanyid";
 
+    public static String GET_COMPOSITIONLIST_BY_PRODUCT_ID =  APP_CONTEXT_PATH + "product/getcompositionlistbyproductid";
+
     /*<--------------------------------------------Sales------------------------------------------------->*/
     //Sale Bill Details
     public static String GET_REASON = APP_CONTEXT_PATH + "sales/reasonmaster";

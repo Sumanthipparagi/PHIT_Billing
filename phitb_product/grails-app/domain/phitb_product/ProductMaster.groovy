@@ -6,7 +6,7 @@ class ProductMaster implements Serializable, LogicalDelete<ProductMaster> {
 
     String productName
     String composition
-    long company
+    String company
     String mrp
     String packing
     String rxStatus

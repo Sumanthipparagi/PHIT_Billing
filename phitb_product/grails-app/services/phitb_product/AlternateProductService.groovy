@@ -61,8 +61,24 @@ class AlternateProductService {
     def getProductByCompanyId(String companyId)
     {
         try {
-            def result = ProductMaster.findAllByCompany(Long.parseLong(companyId))
+            def result = ProductMaster.findAllByCompany(companyId)
             return result
+        }
+        catch (Exception ex)
+        {
+            log.error("SaleProductDeatilsService" + ex)
+            println("SaleProductDeatilsService" + ex)
+        }
+    }
+
+    def getCompositionListByProductId(String productId)
+    {
+        try {
+            def result = ProductMaster.findById(Long.parseLong(productId))
+            def composition = result.composition
+
+            def products = ProductMaster.findAllByComposition(Long.parseLong(composition))
+            return products
 
         }
         catch (Exception ex)
