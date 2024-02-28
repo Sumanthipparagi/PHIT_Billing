@@ -2120,13 +2120,14 @@ class ProductService {
         }
     }
 
-    def getCompositionListByProductId(String id) {
+    def getProductsByCompanyId(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
 //        WebTarget target = client.target(new Links().API_GATEWAY);
         WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
-                    .path(new Links().GET_COMPOSITIONLIST_BY_PRODUCT_ID + "/" + id)
+                    .path(new Links().GET_PRODUCTS_BY_COMPANY_ID)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get();
             return apiResponse
@@ -2138,13 +2139,14 @@ class ProductService {
         }
     }
 
-    def getProductsByCompanyId(String id) {
+    def getCompositionListByProductId(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
 //        WebTarget target = client.target(new Links().API_GATEWAY);
         WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
-                    .path(new Links().GET_PRODUCTS_BY_COMPANY_ID + "/" + id)
+                    .path(new Links().GET_COMPOSITIONLIST_BY_PRODUCT_ID)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get();
             return apiResponse

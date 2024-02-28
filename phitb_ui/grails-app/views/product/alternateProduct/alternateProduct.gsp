@@ -162,8 +162,8 @@
                                style="width: 100%;table-layout: fixed;">
                             <thead>
                             <tr>
-                                <th style="width: auto;">Company</th>
-                                <th>Product</th>
+                                <th style="width: auto;">Product</th>
+                                <th>Company</th>
                                 <th>Composition</th>
                                 <th>Mrp</th>
                                 <th>View</th>
@@ -202,9 +202,9 @@
                                style="width: 100%;table-layout: fixed;">
                             <thead>
                             <tr>
-                                <th style="width: auto;">Composition</th>
-                                <th>Product</th>
+                                <th style="width: auto;">Product</th>
                                 <th>Company</th>
+                                <th>Composition</th>
                                 <th>Mrp</th>
                                 <th>View</th>
                                 <th>Addtomylist</th>
@@ -425,9 +425,9 @@
 
             },
             columns: [
-                {data: 'composition', width: '20%'},
                 {data: 'productName', width: '20%'},
                 {data: 'company', width: '20%'},
+                {data: 'composition', width: '20%'},
                 {data: 'mrp', width: '20%'},
                 // Adding the fifth column for the View button with render function
                 {
@@ -507,12 +507,12 @@
                     console.log('Update successful:', json);
                     var return_data = [];
                     // Use a for loop to transform each item in the response
-                    for (var i = 0; i < json.length; i++) {
+                    for (var i = 0; i < json.productList.length; i++) {
                         return_data.push({
-                            company: json[i].company,
-                            productName: json[i].productName,
-                            composition: json[i].composition,
-                            mrp: json[i].mrp
+                            composition: json.productList[i].composition,
+                            productName: json.productList[i].productName,
+                            company: json.productList[i].company,
+                            mrp: json.productList[i].mrp
                         });
                     }
                     return return_data;
@@ -520,8 +520,8 @@
 
             },
             columns: [
-                {data: 'company', width: '20%'},
                 {data: 'productName', width: '20%'},
+                {data: 'company', width: '20%'},
                 {data: 'composition', width: '20%'},
                 {data: 'mrp', width: '20%'},
                 {
@@ -604,12 +604,12 @@
                     console.log('Update successful:', json);
                     var return_data = [];
                     // Use a for loop to transform each item in the response
-                    for (var i = 0; i < json.length; i++) {
+                    for (var i = 0; i < json.productList.length; i++) {
                         return_data.push({
-                            productName: json[i].productName,
-                            company: json[i].company,
-                            composition: json[i].composition,
-                            mrp: json[i].mrp
+                            composition: json.productList[i].composition,
+                            productName: json.productList[i].productName,
+                            company: json.productList[i].company,
+                            mrp: json.productList[i].mrp
                         });
                     }
                     return return_data;

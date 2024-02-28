@@ -67,6 +67,10 @@ class AlternateProductService {
             }
 
             JSONObject results = new JSONObject()
+            def recordsTotal = compositionArrayList.totalCount
+            results.put("draw", paramsJsonObject.draw)
+            results.put("recordsTotal", recordsTotal)
+            results.put("recordsFiltered", recordsTotal)
             results.put("productList", compositionArrayList)
 
 
@@ -80,11 +84,36 @@ class AlternateProductService {
         }
     }
 
-    def getProductByCompanyId(String companyId)
+    JSONObject getProductByCompanyId(JSONObject paramsJsonObject, String start, String length)
     {
         try {
-            def result = ProductMaster.findAllByCompany(companyId)
-            return result
+
+            String searchTerm = paramsJsonObject.get("search[value]")
+            String company = paramsJsonObject.get("companyId")
+
+            Integer offset = start ? Integer.parseInt(start.toString()) : 0
+            Integer max = length ? Integer.parseInt(length.toString()) : 100
+            def companyCriteria = ProductMaster.createCriteria()
+            def companyArrayList = companyCriteria.list(max: max, offset: offset) {
+                eq('company', company)  // It works as findAllBy
+                or {
+                    if (searchTerm != "") {
+                        def decodedSearchTerm = URLDecoder.decode(searchTerm, "UTF-8")
+                        def normalizedSearchTerm = decodedSearchTerm.trim().replaceAll("\\s+", " ")
+                        ilike('productName', '%' + normalizedSearchTerm + '%')
+                    }
+                }
+            }
+
+            JSONObject results = new JSONObject()
+            def recordsTotal = companyArrayList.totalCount
+            results.put("draw", paramsJsonObject.draw)
+            results.put("recordsTotal", recordsTotal)
+            results.put("recordsFiltered", recordsTotal)
+            results.put("productList", companyArrayList)
+
+            return results
+
         }
         catch (Exception ex)
         {
@@ -93,14 +122,41 @@ class AlternateProductService {
         }
     }
 
-    def getCompositionListByProductId(String productId)
+    JSONObject getCompositionListByProductId(JSONObject paramsJsonObject, String start, String length)
     {
         try {
-            def result = ProductMaster.findById(Long.parseLong(productId))
-            def composition = result.composition
+            JSONObject jsonObject =  new JSONObject()
+            String product = paramsJsonObject.get("productId")
 
-            def products = ProductMaster.findAllByComposition(Long.parseLong(composition))
-            return products
+            def result = ProductMaster.findById(Long.parseLong(product))
+            String compositionId = result.composition
+
+            jsonObject.put("productList", result)
+
+            String searchTerm = paramsJsonObject.get("search[value]")
+
+            Integer offset = start ? Integer.parseInt(start.toString()) : 0
+            Integer max = length ? Integer.parseInt(length.toString()) : 100
+            def masterCompositionCriteria = ProductMaster.createCriteria()
+            def compositionArrayList = masterCompositionCriteria.list(max: max, offset: offset) {
+                eq('composition', compositionId)  // It works as findAllB
+                or {
+                    if (searchTerm != "") {
+                        def decodedSearchTerm = URLDecoder.decode(searchTerm, "UTF-8")
+                        def normalizedSearchTerm = decodedSearchTerm.trim().replaceAll("\\s+", " ")
+                        ilike('productName', '%' + normalizedSearchTerm + '%')
+                    }
+                }
+            }
+
+            JSONObject results = new JSONObject()
+            def recordsTotal = compositionArrayList.totalCount
+            results.put("draw", paramsJsonObject.draw)
+            results.put("recordsTotal", recordsTotal)
+            results.put("recordsFiltered", recordsTotal)
+            results.put("productList", compositionArrayList)
+
+            return results
 
         }
         catch (Exception ex)
