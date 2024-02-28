@@ -2101,13 +2101,14 @@ class ProductService {
         }
     }
 
-    def getProductsByCompositionId(String id) {
+    def getProductsByCompositionId(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
 //        WebTarget target = client.target(new Links().API_GATEWAY);
         WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
-                    .path(new Links().GET_PRODUCTS_BY_COMPOSITION_ID + "/" + id)
+                    .path(new Links().GET_PRODUCTS_BY_COMPOSITION_ID)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get();
             return apiResponse

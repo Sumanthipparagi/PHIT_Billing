@@ -3,6 +3,8 @@ package phitb_product
 
 import grails.rest.*
 import grails.converters.*
+import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
 
@@ -17,7 +19,7 @@ class AlternateProductController {
 
     def showProduct() {
         try {
-                def res = alternateProductService.getAllProducts()
+              def res = alternateProductService.getAllProducts()
               respond res
         }
         catch (ResourceNotFoundException ex)
@@ -77,29 +79,32 @@ class AlternateProductController {
         }
     }
 
-    def getProductsByCompositionId(String id) {
+    def getProductsByCompositionId() {
         try {
+                GrailsParameterMap parameterMap = getParams()
+                JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+                String start = paramsJsonObject.get("start")
+                String length = paramsJsonObject.get("length")
+                def products = alternateProductService.getProductByCompositionId(paramsJsonObject,start,length)
 
-            if (id) {
-                def products = alternateProductService.getProductByCompositionId(id)
-
-                products.each { product ->
-                    // Assuming `product` is a map. If it's a domain object, you might need to adjust this.
-                    if (product.composition && product.company) {
-                        def composition = MasterComposition.findById(product.composition)
-                        def company = CompanyMaster.findById(product.company)
-                        if (composition && company) {
-                            product.putAt('composition', composition.compositionName)
-                            product.putAt('company',company.companyName)
-                        } else {
-                            // Handle case where composition is not found
-                            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-                        }
-                    }
+                products.productList.each { product ->
+                // Assuming product has a 'composition' field that is the ID for MasterComposition
+                if (product.composition && product.company) {
+                    def composition = MasterComposition.findById(product.composition)
+                    def company = CompanyMaster.findById(product.company)
+                    // Now, add details from 'composition' to 'product'
+                    // This assumes 'product' is a Map or something you can put key-value pairs into.
+                    // If 'product' is a domain object, you'll need to convert it to a Map or adjust its properties directly if they
+                    // Add any specific property you need, for example:
+                    product.putAt('composition', composition.compositionName)
+                    product.putAt('company',company.companyName)
                 }
-                respond products
             }
-        }
+
+// Assuming you want to update the productList with the enhanced products
+            products.put("productList", products.productList)
+            respond products
+            }
         catch (ResourceNotFoundException ex)
         {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -121,7 +126,6 @@ class AlternateProductController {
                 def products = alternateProductService.getProductByCompanyId(id)
 
                 products.each { product ->
-                    // Assuming `product` is a map. If it's a domain object, you might need to adjust this.
                     if (product.composition && product.company) {
                         def composition = MasterComposition.findById(product.composition)
                         def company = CompanyMaster.findById(product.company)
@@ -129,12 +133,11 @@ class AlternateProductController {
                             product.putAt('composition', composition.compositionName)
                             product.putAt('company',company.companyName)
                         } else {
-                            // Handle case where composition is not found
+
                             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
                         }
                     }
                 }
-
                 respond products
             }
         } catch (Exception ex) {
@@ -157,14 +160,11 @@ class AlternateProductController {
                             product.putAt('composition', composition.compositionName)
                             product.putAt('company',company.companyName)
                         } else {
-                            // Handle case where composition is not found
                             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
                         }
                     }
                 }
-
                 respond products
-
             }
         }
         catch (ResourceNotFoundException ex)

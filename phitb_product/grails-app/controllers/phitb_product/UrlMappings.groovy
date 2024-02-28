@@ -210,7 +210,7 @@ class UrlMappings {
                 action = [GET: 'showComposition']
             }
 
-            "/getproductsbycompositionid/$id(.$format)?"(controller: 'alternateProduct') {
+            "/getproductsbycompositionid(.$format)?"(controller: 'alternateProduct') {
                 action = [GET: 'getProductsByCompositionId']
             }
 

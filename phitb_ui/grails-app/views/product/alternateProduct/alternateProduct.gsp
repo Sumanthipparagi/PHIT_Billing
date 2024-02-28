@@ -25,36 +25,33 @@
     <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
     <style>
-    /* This is the styling for the main content area which contains the table and the panel */
+
     .contentRow {
         display: flex;
         flex-wrap: nowrap;
-        position: relative; /* Ensures that absolute positioning is relative to this container */
+        position: relative;
     }
 
-    /* Styling for the container of the table */
     #tableContainer {
-        flex-grow: 1; /* Takes up the remaining space */
-        transition: margin-right 0.5s ease; /* Smooth transition for margin changes */
-        /* Add your additional styles here */
+        flex-grow: 1;
+        transition: margin-right 0.5s ease;
+
     }
 
-    /* Styling for the details panel */
     #detailsContainer {
-        width: 325px; /* Width of the side panel */
-        background-color: #fff; /* Background color for the side panel */
-        overflow-y: auto; /* Allows scrolling within the side panel */
-        position: fixed; /* Fixed position to stay in place during scroll */
+        width: 325px;
+        background-color: #fff;
+        overflow-y: auto;
+        position: fixed;
         top: 355px; /* Adjusted top position to lower the panel from the top */
-        right: -350px; /* Initially placed off-screen to the right */
-        bottom: 0; /* Stretches from the top position to the bottom of the viewport */
+        right: -350px;
+        bottom: 0;
         z-index: 1040; /* Ensures it's above other content */
         transition: right 0.5s ease; /* Smooth transition for showing and hiding */
     }
 
-    /* Class to be added via JavaScript when the panel is open */
     #detailsContainer.open {
-        right: 0; /* Brings the panel into view */
+        right: 0;
     }
 
     </style>
@@ -90,7 +87,7 @@
             <div class="col-12 mt-4">
                 <div class="row">
                     <div class="col-12 form-group form-float">
-                        <span>Search by: </span>
+                        <span>Search by:</span>
                         <ul class="nav nav-tabs justify-content-start">
                             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#productDetails"
                                                     aria-expanded="true">Product</a></li>
@@ -109,11 +106,14 @@
             <div role="tabpanel" class="tab-pane active" id="productDetails" aria-expanded="true">
                 <div class="col-lg-4 form-group form-float">
                     <label for="product">Product</label>
+
                     <div class="d-flex align-items-center justify-content-start">
-                        <select class="form-control show-tick product" name="productId" id="product" style="flex-grow: 1;">
+                        <select class="form-control show-tick product" name="productId" id="product"
+                                style="flex-grow: 1;">
                             <!-- Options here -->
                         </select>
-                        <div style="margin-left: 15px;"> <!-- Add spacing by wrapping button in a div -->
+
+                        <div style="margin-left: 15px;">
                             <button type="submit" id="prodSubmit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
@@ -122,7 +122,8 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-bordered table-striped table-hover productTable" style="width: 100%;table-layout: fixed;">
+                        <table class="table table-bordered table-striped table-hover productTable"
+                               style="width: 100%;table-layout: fixed;">
                             <thead>
                             <tr>
                                 <th style="width: auto;">Product</th>
@@ -146,20 +147,19 @@
                     <label for="company">
                         Company
                     </label>
-                    <select style="width: 100%"  class="form-control show-tick company" name="companyId" id="company">
-                        %{--                         <option selected disabled>SELECT</option>--}%
-                        %{--                         <g:each var="p" in="${productList}">--}%
-                        %{--                             <option value="${p.id}">${p.productName}</option>--}%
-                        %{--                         </g:each>--}%
+                    <select style="width: 100%" class="form-control show-tick company" name="companyId" id="company">
+
                     </select>
-                    <div> <!-- Add spacing by wrapping button in a div -->
+
+                    <div>
                         <button type="submit" id="companysubmit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-bordered table-striped table-hover companyTable" style="width: 100%;table-layout: fixed;">
+                        <table class="table table-bordered table-striped table-hover companyTable"
+                               style="width: 100%;table-layout: fixed;">
                             <thead>
                             <tr>
                                 <th style="width: auto;">Company</th>
@@ -186,34 +186,20 @@
                     <label for="composition">
                         Composition
                     </label>
-                    <select style="width: 100%"  class="form-control show-tick composition" name="compositionId" id="composition" >
-                        %{--                         <option selected disabled>SELECT</option>--}%
-                        %{--                         <g:each var="p" in="${productList}">--}%
-                        %{--                             <option value="${p.id}">${p.productName}</option>--}%
-                        %{--                         </g:each>--}%
+                    <select style="width: 100%" class="form-control show-tick composition" name="compositionId"
+                            id="composition">
+
                     </select>
-                    <div> <!-- Add spacing by wrapping button in a div -->
+
+                    <div>
                         <button type="submit" id="compsubmit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
 
-%{--                    %{-<div role="tabpanel" class="tab-pane" id="compositionDetails" aria-expanded="false">--}%
-%{--                    <div class="col-lg-2 form-group form-float">--}%
-%{--                    <label for="composition">Composition</label>--}%
-%{--                            <div class="d-flex align-items-center"> <!-- Flex container -->--}%
-%{--                                <select class="form-control show-tick composition" name="compositionId" id="composition" style="flex: 1; margin-right: 10px;">--}%
-%{--                           --}%
-%{--                                </select>--}%
-%{--                                    <button type="submit" class="btn btn-primary">Submit</button>--}%
-%{--                                </div>--}%
-%{--                            </div>--}%
-%{--                        </div>  --}%
-
-
-
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-bordered table-striped table-hover compositionTable" style="width: 100%;table-layout: fixed;">
+                        <table class="table table-bordered table-striped table-hover compositionTable"
+                               style="width: 100%;table-layout: fixed;">
                             <thead>
                             <tr>
                                 <th style="width: auto;">Composition</th>
@@ -243,16 +229,13 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+
                     <div class="card-body">
                         <!-- Details content goes here -->
                         Details Panel Content
                     </div>
                 </div>
             </div>
-
-%{--            <button class="btn btn-primary mb-2" onclick="toggleDetails()">--}%
-%{--                <i class="fa fa-angle-double-right" id="collapseIcon"></i> Toggle Details--}%
-%{--            </button>--}%
         </div>
     </div>
 </section>
@@ -289,7 +272,8 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"
+        integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 <asset:javascript src="/themeassets/plugins/icons/all.js"/>
 
 
@@ -303,18 +287,15 @@
     viewPanel();
 
     function viewPanel() {
+
         $('body').on('click', '.view-btn', function () {
             var table = $(this).closest('table').DataTable(); // Get the DataTable instance
             var tr = $(this).closest('tr'); // Find the closest tr parent to get the row
             var row = table.row(tr).data(); // Get the data for the row
-
-            // Now you can use `row` to access the data for the clicked row
             console.log(row);
 
-            // Example: Update the details in the side panel
             updateDetailsPanel(row);
 
-            // Show the details panel
             showDetailsPanel();
         });
     }
@@ -334,15 +315,11 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        // Initialize select2 elements
+
         initializeSelect2('#product', '/alternateproduct/getallproduct');
         initializeSelect2('#company', '/alternateproduct/getallcompany');
         initializeSelect2('#composition', '/alternateproduct/getallcomposition');
 
-        // Attach event listeners for window resizing
-        // window.onresize = alignPanel;
-
-        // Event listener for the submit button
         document.querySelector('#compsubmit').addEventListener('click', function () {
             compositionTable();
         });
@@ -355,7 +332,6 @@
             productTable();
         });
 
-        // alignPanel();
     });
 
     function initializeSelect2(selector, url) {
@@ -393,7 +369,6 @@
 
     function compositionTable() {
 
-        // Your existing code to initialize the DataTabl
         var loading = Swal.fire({
             title: "Getting reports, Please wait!",
             html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
@@ -406,7 +381,6 @@
 
         var compositionId = $('#composition').val();
 
-        // Check if the DataTable instance already exists and destroy it if necessary
         if ($.fn.dataTable.isDataTable('.compositionTable')) {
             $('.compositionTable').DataTable().destroy();
         }
@@ -435,21 +409,21 @@
                 },
                 dataType: 'json',
                 dataSrc: function (json) {
-                        console.log('Update successful:', json);
+                    console.log('Update successful:', json);
                     var return_data = [];
                     // Use a for loop to transform each item in the response
-                    for (var i = 0; i < json.length; i++) {
+                    for (var i = 0; i < json.productList.length; i++) {
                         return_data.push({
-                            composition: json[i].composition,
-                            productName: json[i].productName,
-                            company: json[i].company,
-                            mrp: json[i].mrp
+                            composition: json.productList[i].composition,
+                            productName: json.productList[i].productName,
+                            company: json.productList[i].company,
+                            mrp: json.productList[i].mrp
                         });
                     }
                     return return_data;
                 }
 
-                },
+            },
             columns: [
                 {data: 'composition', width: '20%'},
                 {data: 'productName', width: '20%'},
@@ -464,7 +438,7 @@
                     },
                     width: '20%',
                     orderable: false
-                },{
+                }, {
                     data: null,
                     render: function (data, type, row) {
                         // Assuming 'id' is a property in your row data that you want to associate with the button
@@ -479,7 +453,7 @@
         loading.close()
     }
 
-    $('.compositionTable tbody').on('click', '.view-btn', function() {
+    $('.compositionTable tbody').on('click', '.view-btn', function () {
         var table = $('.compositionTable').DataTable(); // Get the DataTable instance
         var tr = $(this).closest('tr'); // Find the closest tr parent to get the row
         var row = table.row(tr); // Get the DataTable row
@@ -491,7 +465,6 @@
 
     function companyTable() {
 
-        // Your existing code to initialize the DataTabl
         var loading = Swal.fire({
             title: "Getting reports, Please wait!",
             html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
@@ -504,12 +477,10 @@
 
         var companyId = $('#company').val();
 
-        // Check if the DataTable instance already exists and destroy it if necessary
         if ($.fn.dataTable.isDataTable('.companyTable')) {
             $('.companyTable').DataTable().destroy();
         }
 
-        // Initialize DataTable with new settings
         $(".companyTable").DataTable({
             paging: true,
             responsive: {
@@ -577,7 +548,7 @@
         loading.close()
     }
 
-    $('.companyTable tbody').on('click', '.view-btn', function() {
+    $('.companyTable tbody').on('click', '.view-btn', function () {
         var table = $('.companyTable').DataTable(); // Get the DataTable instance
         var tr = $(this).closest('tr'); // Find the closest tr parent to get the row
         var row = table.row(tr); // Get the DataTable row
@@ -590,7 +561,6 @@
 
     function productTable() {
 
-        // Your existing code to initialize the DataTabl
         var loading = Swal.fire({
             title: "Getting reports, Please wait!",
             html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
@@ -608,7 +578,6 @@
             $('.productTable').DataTable().destroy();
         }
 
-        // Initialize DataTable with new settings
         $(".productTable").DataTable({
             paging: true,
             responsive: {
@@ -675,21 +644,14 @@
         loading.close()
     }
 
-    $('.productTable tbody').on('click', '.view-btn', function() {
+    $('.productTable tbody').on('click', '.view-btn', function () {
         var table = $('.productTable').DataTable(); // Get the DataTable instance
         var tr = $(this).closest('tr'); // Find the closest tr parent to get the row
         var row = table.row(tr); // Get the DataTable row
         var rowData = row.data(); // Get the data for the row
 
         console.log(rowData);
-
     });
-
-    // function alignPanel() {
-    //     var tableOffsetTop = document.querySelector('.table').getBoundingClientRect().top;
-    //     var detailsPanel = document.getElementById('detailsContainer');
-    //     detailsPanel.style.top = tableOffsetTop + 'px';
-    // }
 
 </script>
 

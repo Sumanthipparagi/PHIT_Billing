@@ -94,12 +94,12 @@ class AlternateProductController {
 
         try
         {
+            JSONObject jsonObject = new JSONObject(params)
 //            def entityId = session.getAttribute("entityId").toString()
-            String id = params.compositionId
-            def apiResponse = new ProductService().getProductsByCompositionId(id)
+            def apiResponse = new ProductService().getProductsByCompositionId(jsonObject)
             if (apiResponse.status == 200)
             {
-                JSONArray responseObject = new JSONArray(apiResponse.readEntity(String.class))
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
                 respond responseObject, formats: ['json'], status: 200
             }
             else

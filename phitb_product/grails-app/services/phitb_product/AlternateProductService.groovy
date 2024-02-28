@@ -1,6 +1,7 @@
 package phitb_product
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONObject
 
 @Transactional
 class AlternateProductService {
@@ -13,8 +14,8 @@ class AlternateProductService {
         }
         catch (Exception ex)
         {
-            log.error("SaleProductDeatilsService" + ex)
-            println("SaleProductDeatilsService" + ex)
+            log.error("AlternateProductService" + ex)
+            println("AlternateProductService" + ex)
         }
     }
 
@@ -26,8 +27,8 @@ class AlternateProductService {
         }
         catch (Exception ex)
         {
-            log.error("SaleProductDeatilsService" + ex)
-            println("SaleProductDeatilsService" + ex)
+            log.error("AlternateProductService" + ex)
+            println("AlternateProductService" + ex)
         }
     }
 
@@ -39,22 +40,43 @@ class AlternateProductService {
         }
         catch (Exception ex)
         {
-            log.error("SaleProductDeatilsService" + ex)
-            println("SaleProductDeatilsService" + ex)
+            log.error("AlternateProductService" + ex)
+            println("AlternateProductService" + ex)
         }
     }
 
-    def getProductByCompositionId(String compositionId)
+    JSONObject getProductByCompositionId(JSONObject paramsJsonObject, String start, String length)
     {
         try {
-            def result = ProductMaster.findAllByComposition(Long.parseLong(compositionId))
-            return result
+
+            String searchTerm = paramsJsonObject.get("search[value]")
+            String composition = paramsJsonObject.get("compositionId")
+
+            Integer offset = start ? Integer.parseInt(start.toString()) : 0
+            Integer max = length ? Integer.parseInt(length.toString()) : 100
+            def masterCompositionCriteria = ProductMaster.createCriteria()
+            def compositionArrayList = masterCompositionCriteria.list(max: max, offset: offset) {
+                eq('composition', composition)  // It works as findAllB
+                or {
+                    if (searchTerm != "") {
+                        def decodedSearchTerm = URLDecoder.decode(searchTerm, "UTF-8")
+                        def normalizedSearchTerm = decodedSearchTerm.trim().replaceAll("\\s+", " ")
+                        ilike('productName', '%' + normalizedSearchTerm + '%')
+                    }
+                }
+            }
+
+            JSONObject results = new JSONObject()
+            results.put("productList", compositionArrayList)
+
+
+            return results
 
         }
         catch (Exception ex)
         {
-            log.error("SaleProductDeatilsService" + ex)
-            println("SaleProductDeatilsService" + ex)
+            log.error("AlternateProductService" + ex)
+            println("AlternateProductService" + ex)
         }
     }
 
@@ -66,8 +88,8 @@ class AlternateProductService {
         }
         catch (Exception ex)
         {
-            log.error("SaleProductDeatilsService" + ex)
-            println("SaleProductDeatilsService" + ex)
+            log.error("AlternateProductService" + ex)
+            println("AlternateProductService" + ex)
         }
     }
 
@@ -83,8 +105,8 @@ class AlternateProductService {
         }
         catch (Exception ex)
         {
-            log.error("SaleProductDeatilsService" + ex)
-            println("SaleProductDeatilsService" + ex)
+            log.error("AlternateProductService" + ex)
+            println("AlternateProductService" + ex)
         }
     }
 }
