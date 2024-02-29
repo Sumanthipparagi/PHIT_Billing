@@ -170,7 +170,7 @@
                             </div>
 
 
-                            <div class="col-md-1 mx-0 px-0" style="max-width: 50px;">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 51px;">
                                 <br>
                                 <a title="Shipment" class="btn btn-sm btn-primary waves-effect" role="button"
                                    data-toggle="collapse"
@@ -179,7 +179,7 @@
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mx-0 px-0" style="max-width: 46px;">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 47px;">
                                 <br>
                                 <a title="Add Note" class="btn btn-sm btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
@@ -188,7 +188,7 @@
                             </div>
 
                             %{--<g:if test="${customer!=null}">--}%
-                            <div class="col-md-1 mx-0 px-0 " style="max-width: 52px;">
+                            <div class="col-md-1 mx-0 px-0 " style="max-width: 53px;">
                                 <br>
                                 <a title="Mass Discount" role="button" style="color: white;"
                                    class="btn btn-sm btn-primary waves-effect collapsed"
@@ -196,7 +196,7 @@
                                 </a>
                             </div>
                             %{--</g:if>--}%
-                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 35px;">
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 36px;">
                                 <br>
                                 <a title="Add Row" class="btn btn-sm btn-primary waves-effect"
                                    id="addNewRow" style="background-color: green;color: white;"><i
@@ -204,19 +204,22 @@
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 39px;">
                                 <br>
                                 <a title="Search Bar Code" class="btn btn-sm btn-primary waves-effect collapsed"
                                    style="color: white;"  data-toggle="modal" data-target="#searchBarCodeModal"><i
                                         class="zmdi zmdi-search"></i>
                                 </a>
                             </div>
-                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">
+
+
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 39px;">
                                 <br>
-                                <a href="javascript:void(0);" onclick="window.open('/alternateproduct/view', 'newwindow', 'width=800,height=600,resizable=no'); return false;">
-                                <i class="zmdi zmdi-search"></i>
+                                <a href="javascript:void(0);" onclick="window.open('/alternateproduct/view', 'newwindow', 'width=800,height=600'); return false;" class="btn btn-sm btn-primary waves-effect" style="color: white;">
+                                    <i class="zmdi zmdi-swap"></i> <!-- Hypothetical example for alternate product icon -->
                                 </a>
                             </div>
+
 
 %{--                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">--}%
 %{--                                <br>--}%
@@ -1292,6 +1295,8 @@
         });
         $("#customerSelect").trigger('change');
         $('#series').trigger('change');
+
+
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
