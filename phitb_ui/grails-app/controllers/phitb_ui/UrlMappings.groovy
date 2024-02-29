@@ -621,6 +621,11 @@ class UrlMappings {
         "/sale-entry"(controller: "saleEntry") {
             action = [GET: "index", POST: 'saveSaleEntry']
         }
+
+        "/alternateproduct/view"(controller: "saleEntry") {
+            action = [GET: "alternateProductPage"]
+        }
+
         "/edit-sale-entry"(controller: "saleEntry") {
             action = [GET: "editSaleBillDetails", POST: 'updateSaleBillDetails']
         }

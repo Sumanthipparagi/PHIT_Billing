@@ -74,6 +74,10 @@ class SaleEntryController
         }
     }
 
+    def alternateProductPage() {
+        render(view: '/sales/saleEntry/sale-entry-alternateprodcut')
+    }
+
 /*    def getTempStocksOfUser()
     {
         def tempStocks

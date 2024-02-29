@@ -83,7 +83,7 @@
                                 </g:if>
                                 <g:else>
                                     <input style="width: 100%" type="hidden" id="customerSelect"/>
-                                %{-- <select class="form-control show-tick" id="customerSelect"
+                                 <select class="form-control show-tick" id="customerSelect"
                                          onchange="customerSelectChanged()">
                                      <option selected disabled>--SELECT--</option>
                                      <g:each in="${customers}" var="cs">
@@ -96,7 +96,7 @@
                                                              test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
                                          </g:if>
                                      </g:each>
-                                 </select>--}%
+                                 </select>
                                 </g:else>
                                 <span id="freezeContent"></span>
                             </div>
@@ -179,7 +179,7 @@
                                 </a>
                             </div>
 
-                            <div class="col-md-1 mx-0 px-0" style="max-width: 50px;">
+                            <div class="col-md-1 mx-0 px-0" style="max-width: 46px;">
                                 <br>
                                 <a title="Add Note" class="btn btn-sm btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
@@ -188,7 +188,7 @@
                             </div>
 
                             %{--<g:if test="${customer!=null}">--}%
-                            <div class="col-md-1 mx-0 px-0 " style="max-width: 60px;">
+                            <div class="col-md-1 mx-0 px-0 " style="max-width: 52px;">
                                 <br>
                                 <a title="Mass Discount" role="button" style="color: white;"
                                    class="btn btn-sm btn-primary waves-effect collapsed"
@@ -196,7 +196,7 @@
                                 </a>
                             </div>
                             %{--</g:if>--}%
-                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 35px;">
                                 <br>
                                 <a title="Add Row" class="btn btn-sm btn-primary waves-effect"
                                    id="addNewRow" style="background-color: green;color: white;"><i
@@ -211,6 +211,18 @@
                                         class="zmdi zmdi-search"></i>
                                 </a>
                             </div>
+                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">
+                                <br>
+                                <a href="javascript:void(0);" onclick="window.open('/alternateproduct/view', 'newwindow', 'width=800,height=600,resizable=no'); return false;">
+                                <i class="zmdi zmdi-search"></i>
+                                </a>
+                            </div>
+
+%{--                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">--}%
+%{--                                <br>--}%
+%{--                                <a href="javascript:void(0);" onclick="window.open('/alternateproduct/view', 'newwindow', 'width=800,height=600,resizable=no'); return false;">Sale Entry</a>--}%
+%{--                                <i class="zmdi zmdi-search"></i>--}%
+%{--                            </div>--}%
 
                             <div class="col-md-1 mx-0 px-0 ml-2" style="margin-top: 25px;">
                                 <label for="gstInclusive"><strong>Incl. GST?</strong></label>
@@ -1638,7 +1650,7 @@
 
         var customer = $("#customerSelect").val();
         <g:if test="${customer}">
-            customer = ${customer.id};
+        customer = ${customer.id};
         </g:if>
         var publicNote = $("#publicNote").val();
         var privateNote = $("#privateNote").val();
@@ -2611,37 +2623,37 @@
     }
 
     $("#barCode").on("change keyup paste", function (){
-       var barCode = $("#barCode").val();
-       if(barCode != null && barCode.length > 0)
-       {
-           $.ajax({
-               type: "POST",
-               url: "product/getbybarcode",
-               data: {
-                   barCode: barCode
-               },
-               success: function (response) {
+        var barCode = $("#barCode").val();
+        if(barCode != null && barCode.length > 0)
+        {
+            $.ajax({
+                type: "POST",
+                url: "product/getbybarcode",
+                data: {
+                    barCode: barCode
+                },
+                success: function (response) {
 
-                   $("#searchBarCodeModal").modal("toggle");
-                   products.push({id: response.id, text: response.productName});
-                   var lastRow = hot.countRows() - 1;
-                   /* if(lastRow > 0)
-                    {
-                        addRow();
-                    }*/
-                   hot.selectCell(lastRow, 1);
-                   hot.setDataAtCell(lastRow, 1, response.id);
-               },
-               error: function (response) {
-                   $("#barCode").focus();
-                   //Swal.fire("Product Not Found", "No Products found for the given bar code", "warning");
-               },
-           });
-       }
-       else
-       {
-           Swal.fire("Bar Code can't be empty");
-       }
+                    $("#searchBarCodeModal").modal("toggle");
+                    products.push({id: response.id, text: response.productName});
+                    var lastRow = hot.countRows() - 1;
+                    /* if(lastRow > 0)
+                     {
+                         addRow();
+                     }*/
+                    hot.selectCell(lastRow, 1);
+                    hot.setDataAtCell(lastRow, 1, response.id);
+                },
+                error: function (response) {
+                    $("#barCode").focus();
+                    //Swal.fire("Product Not Found", "No Products found for the given bar code", "warning");
+                },
+            });
+        }
+        else
+        {
+            Swal.fire("Bar Code can't be empty");
+        }
     });
 
     function addRow()
