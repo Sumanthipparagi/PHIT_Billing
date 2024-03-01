@@ -215,11 +215,10 @@
 
                             <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 39px;">
                                 <br>
-                                <a href="javascript:void(0);" onclick="window.open('/alternateproduct/view', 'newwindow', 'width=800,height=600'); return false;" class="btn btn-sm btn-primary waves-effect" style="color: white;">
-                                    <i class="zmdi zmdi-swap"></i> <!-- Hypothetical example for alternate product icon -->
+                                <a href="javascript:void(0);" onclick="window.open('/alternateproduct/view', 'newwindow', 'width=800,height=600'); return false;" class="btn btn-sm btn-primary waves-effect" style="color: white;" data-toggle="tooltip" data-placement="top" title="Alternate Product">
+                                    <i class="zmdi zmdi-swap"></i>
                                 </a>
                             </div>
-
 
 %{--                            <div class="col-md-1 mx-0 px-0 ml-2" style="max-width: 40px;">--}%
 %{--                                <br>--}%
@@ -1295,6 +1294,10 @@
         });
         $("#customerSelect").trigger('change');
         $('#series').trigger('change');
+
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
 
 
     });

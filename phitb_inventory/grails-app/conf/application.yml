@@ -26,7 +26,7 @@ endpoints:
     jmx:
         enabled: true
 server:
-    port: 8086
+    port: 8082
 #    contextPath: "/inventory"
 ---
 grails:

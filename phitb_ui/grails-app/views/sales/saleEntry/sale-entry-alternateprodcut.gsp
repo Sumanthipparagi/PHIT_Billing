@@ -78,17 +78,17 @@
     }
 
     .nav-item .nav-link {
-        color: #888; /* Replace #yourDesiredColor with the color code you want */
-        /* Keep the existing styles */
-        border-radius: 50px;
+        color: #888;
+        border-radius: 25px;
         margin-right: 10px;
-        padding: 10px 20px;
+        padding: 5px 15px;
+        font-size: 14px; /* Adjust the font size as needed */
     }
 
     /* Ensure active tab color is different if needed */
     .nav-item .nav-link.active {
 
-        border-radius: 50px;
+        border-radius: 35px;
         /* Add any other styles for the active state */
     }
 
@@ -109,6 +109,10 @@
 
     .block-header h2 {
         color: #616161; /* Sets the color */
+    }
+
+    .form-group.form-float select.form-control {
+        width: 300px; /* Set your desired width */
     }
 
 
@@ -138,41 +142,54 @@
 
         <div class="row">
             <div class="col-12 mt-4">
-                <div class="row">
-                    <div class="col-12 form-group form-float">
-                        <span>Search by:</span>
-                        <br><br>
-                        <ul class="nav nav-tabs justify-content-start">
-                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#productDetails"
-                                                    aria-expanded="true">Product</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#CompanyDetails"
-                                                    aria-expanded="false">Company</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#compositionDetails"
-                                                    aria-expanded="false">Composition</a></li>
-                        </ul>
-                    </div>
+                <div class="d-flex align-items-center">
+                    <span>Search by:</span>
+                    <!-- Add ml-2 for a small margin to the left of the tabs. Adjust the number for larger spacing -->
+                    <ul class="nav nav-tabs ml-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#productDetails" aria-expanded="true">Product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#CompanyDetails" aria-expanded="false">Company</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#compositionDetails" aria-expanded="false">Composition</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
 
 
+
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="productDetails" aria-expanded="true">
-                <div class="col-lg-4 form-group form-float">
-                    <label for="product">Product</label>
+%{--                <div class="col-lg-3 form-group form-float">--}%
+%{--                    <label for="product">Product</label>--}%
 
-                    <div class="d-flex align-items-center justify-content-start">
-                        <select class="form-control show-tick product" name="productId" id="product"
-                                style="flex-grow: 1;">
+%{--                    <div class="d-flex align-items-center justify-content-start">--}%
+%{--                        <select class="form-control show-tick product" name="productId" id="product"--}%
+%{--                                style="flex-grow: 1;">--}%
+%{--                            <!-- Options here -->--}%
+%{--                        </select>--}%
+
+%{--                        <div style="margin-left: 15px;">--}%
+%{--                            <button type="submit" id="prodSubmit" class="btn btn-primary">Submit</button>--}%
+%{--                        </div>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
+
+                <div class="col-lg-3 form-group form-float">
+                    <label for="product">Product</label>
+                    <div>
+                        <select class="form-control show-tick product" name="productId" id="product" style="width: 300px;">
                             <!-- Options here -->
                         </select>
-
-                        <div style="margin-left: 15px;">
-                            <button type="submit" id="prodSubmit" class="btn btn-primary">Submit</button>
-                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button type="submit" id="prodSubmit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
-
 
                 <div class="row">
                     <div class="col-md-12">
@@ -196,18 +213,33 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="CompanyDetails" aria-expanded="false">
-                <div class="col-lg-3 form-group  form-float">
-                    <label for="company">
-                        Company
-                    </label>
-                    <select style="width: 100%" class="form-control show-tick company" name="companyId" id="company">
+%{--                <div class="col-lg-2 form-group  form-float">--}%
+%{--                    <label for="company">--}%
+%{--                        Company--}%
+%{--                    </label>--}%
+%{--                    <select style="width: 100%" class="form-control show-tick company" name="companyId" id="company">--}%
 
-                    </select>
+%{--                    </select>--}%
 
+%{--                    <div>--}%
+%{--                        <button type="submit" id="companysubmit" class="btn btn-primary">Submit</button>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
+
+
+                <div class="col-lg-3 form-group form-float">
+                    <label for="company">Company</label>
                     <div>
+                        <select class="form-control show-tick product" name="companyId" id="company" style="width: 300px;">
+                            <!-- Options here -->
+                        </select>
+                    </div>
+                    <div style="margin-top: 15px;">
                         <button type="submit" id="companysubmit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
+
+
 
                 <div class="row">
                     <div class="col-md-12">
@@ -234,19 +266,33 @@
 
 
             <div role="tabpanel" class="tab-pane" id="compositionDetails" aria-expanded="false">
-                <div class="col-lg-2 form-group  form-float">
-                    <label for="composition">
-                        Composition
-                    </label>
-                    <select style="width: 100%" class="form-control show-tick composition" name="compositionId"
-                            id="composition">
+%{--                <div class="col-lg-2 form-group form-float" style="display: flex; align-items: flex-start;">--}%
+%{--                    <div style="flex-grow: 1; margin-right: 10px;">--}%
+%{--                        <label for="composition">--}%
+%{--                            Composition--}%
+%{--                        </label>--}%
+%{--                        <select style="width: 100%;" class="form-control show-tick composition" name="compositionId" id="composition">--}%
+%{--                            <!-- Options go here -->--}%
+%{--                        </select>--}%
+%{--                    </div>--}%
+%{--                    <div style="margin-top: 28px;"> <!-- Adjust this value as needed to align the button with the dropdown -->--}%
+%{--                        <button type="submit" id="compsubmit" class="btn btn-primary">Submit</button>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
 
-                    </select>
 
+                <div class="col-lg-3 form-group form-float">
+                    <label for="composition">Composition</label>
                     <div>
+                        <select class="form-control show-tick product" name="compositionId" id="composition" style="width: 300px;">
+                            <!-- Options here -->
+                        </select>
+                    </div>
+                    <div style="margin-top: 15px;">
                         <button type="submit" id="compsubmit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
+
 
 
                 <div class="row">

@@ -104,18 +104,30 @@
 
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="productDetails" aria-expanded="true">
-                <div class="col-lg-4 form-group form-float">
-                    <label for="product">Product</label>
+%{--                <div class="col-lg-4 form-group form-float">--}%
+%{--                    <label for="product">Product</label>--}%
 
-                    <div class="d-flex align-items-center justify-content-start">
-                        <select class="form-control show-tick product" name="productId" id="product"
-                                style="flex-grow: 1;">
+%{--                    <div class="d-flex align-items-center justify-content-start">--}%
+%{--                        <select class="form-control show-tick product" name="productId" id="product"--}%
+%{--                                style="flex-grow: 1;">--}%
+%{--                            <!-- Options here -->--}%
+%{--                        </select>--}%
+
+%{--                        <div style="margin-left: 15px;">--}%
+%{--                            <button type="submit" id="prodSubmit" class="btn btn-primary">Submit</button>--}%
+%{--                        </div>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
+
+                <div class="col-lg-3 form-group form-float">
+                    <label for="product">Product</label>
+                    <div>
+                        <select class="form-control show-tick product" name="productId" id="product" style="width: 300px;">
                             <!-- Options here -->
                         </select>
-
-                        <div style="margin-left: 15px;">
-                            <button type="submit" id="prodSubmit" class="btn btn-primary">Submit</button>
-                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button type="submit" id="prodSubmit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
 
@@ -143,15 +155,27 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="CompanyDetails" aria-expanded="false">
-                <div class="col-lg-3 form-group  form-float">
-                    <label for="company">
-                        Company
-                    </label>
-                    <select style="width: 100%" class="form-control show-tick company" name="companyId" id="company">
+%{--                <div class="col-lg-3 form-group  form-float">--}%
+%{--                    <label for="company">--}%
+%{--                        Company--}%
+%{--                    </label>--}%
+%{--                    <select style="width: 100%" class="form-control show-tick company" name="companyId" id="company">--}%
 
-                    </select>
+%{--                    </select>--}%
 
+%{--                    <div>--}%
+%{--                        <button type="submit" id="companysubmit" class="btn btn-primary">Submit</button>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
+
+                <div class="col-lg-3 form-group form-float">
+                    <label for="company">Company</label>
                     <div>
+                        <select class="form-control show-tick product" name="companyId" id="company" style="width: 300px;">
+                            <!-- Options here -->
+                        </select>
+                    </div>
+                    <div style="margin-top: 10px;">
                         <button type="submit" id="companysubmit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
@@ -182,16 +206,28 @@
 
 
             <div role="tabpanel" class="tab-pane" id="compositionDetails" aria-expanded="false">
-                <div class="col-lg-2 form-group  form-float">
-                    <label for="composition">
-                        Composition
-                    </label>
-                    <select style="width: 100%" class="form-control show-tick composition" name="compositionId"
-                            id="composition">
+%{--                <div class="col-lg-2 form-group  form-float">--}%
+%{--                    <label for="composition">--}%
+%{--                        Composition--}%
+%{--                    </label>--}%
+%{--                    <select style="width: 100%" class="form-control show-tick composition" name="compositionId"--}%
+%{--                            id="composition">--}%
 
-                    </select>
+%{--                    </select>--}%
 
+%{--                    <div>--}%
+%{--                        <button type="submit" id="compsubmit" class="btn btn-primary">Submit</button>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
+
+                <div class="col-lg-3 form-group form-float">
+                    <label for="composition">Composition</label>
                     <div>
+                        <select class="form-control show-tick product" name="compositionId" id="composition" style="width: 300px;">
+                            <!-- Options here -->
+                        </select>
+                    </div>
+                    <div style="margin-top: 10px;">
                         <button type="submit" id="compsubmit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>

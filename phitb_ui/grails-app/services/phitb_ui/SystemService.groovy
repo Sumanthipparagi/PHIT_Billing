@@ -799,6 +799,7 @@ class SystemService {
     def getCityById(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
+//        WebTarget target = client.target("http://localhost:8081");
         try {
             Response apiResponse = target
                     .path(new Links().CITY_MASTER_SHOW + "/" + id)

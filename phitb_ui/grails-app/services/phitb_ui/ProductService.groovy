@@ -2051,8 +2051,8 @@ class ProductService {
 
     def getAllProducts() {
         Client client = ClientBuilder.newClient();
-//        WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8089");
+        WebTarget target = client.target(new Links().API_GATEWAY);
+//        WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
                     .path(new Links().GET_ALL_PRODUCT)
@@ -2068,8 +2068,8 @@ class ProductService {
 
     def getAllCompany() {
         Client client = ClientBuilder.newClient();
-//        WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8089");
+        WebTarget target = client.target(new Links().API_GATEWAY);
+//        WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
                     .path(new Links().GET_ALL_COMPANY)
@@ -2086,8 +2086,8 @@ class ProductService {
 
     def getAllComposition() {
         Client client = ClientBuilder.newClient();
-//        WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8089");
+        WebTarget target = client.target(new Links().API_GATEWAY);
+//        WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
                     .path(new Links().GET_ALL_COMPOSITION)
@@ -2103,8 +2103,8 @@ class ProductService {
 
     def getProductsByCompositionId(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
-//        WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8089");
+        WebTarget target = client.target(new Links().API_GATEWAY);
+//        WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
                     .path(new Links().GET_PRODUCTS_BY_COMPOSITION_ID)
@@ -2122,8 +2122,8 @@ class ProductService {
 
     def getProductsByCompanyId(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
-//        WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8089");
+        WebTarget target = client.target(new Links().API_GATEWAY);
+//        WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
                     .path(new Links().GET_PRODUCTS_BY_COMPANY_ID)
@@ -2141,8 +2141,8 @@ class ProductService {
 
     def getCompositionListByProductId(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
-//        WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8089");
+        WebTarget target = client.target(new Links().API_GATEWAY);
+//        WebTarget target = client.target("http://localhost:8089");
         try {
             Response apiResponse = target
                     .path(new Links().GET_COMPOSITIONLIST_BY_PRODUCT_ID)
